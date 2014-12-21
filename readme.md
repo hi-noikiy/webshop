@@ -13,7 +13,7 @@ Documentation for the entire framework can be found on the [Laravel website](htt
 ### Contributing to this project
 
 **All pull requests will be rejected!**
-Only [DuckThom](https://github.com/DuckThom) is the contributor for this project.
+[DuckThom](https://github.com/DuckThom) is the only contributor for this project.
 
 ### License
 
