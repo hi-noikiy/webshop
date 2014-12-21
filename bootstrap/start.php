@@ -26,7 +26,9 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('homestead', 'Macbook-Pro-Luna', 'Hackintosh-Luna'),
+	'local'         => array('homestead', '*.local'),
+        'staging'       => array('luna-server'),
+        'production'    => array('key2publish.nl'),
 
 ));
 
