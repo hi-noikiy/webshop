@@ -1,13 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-	    <meta charset="UTF-8">
-	    <title>WTG</title>
-	    <style>
-		        @import url(//fonts.googleapis.com/css?family=Lato:300);
+        <meta charset="UTF-8">
+        <title>WTG</title>
+
+        @yield('extraCSS')
+
+        <style>
+                @import url(//fonts.googleapis.com/css?family=Lato:300);
                 @import url(//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css);
                 @import url(//localhost:8000/css/app.min.css);
-	    </style>
+        </style>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,14 +38,14 @@
                         <div class="collapse navbar-collapse" id="navbar">
                                 <ul class="nav navbar-nav">
                                         <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="/">Home</a></li>
-                                        <li class="dropdown">
+                                        <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' ) active @endif">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
                                                 <ul class="dropdown-menu" role="menu">
                                                         <li><a href="/about">Over ons</a></li>
                                                         <li><a href="/contact">Contact</a></li>
                                                  </ul>
                                         </li>
-                                        <li class="@if( Route::current()->getUri() === '/downloads' ) active @endif"><a href="/downloads">Downloads</a></li>
+                                        <li class="@if( Route::current()->getUri() === 'downloads' ) active @endif"><a href="/downloads">Downloads</a></li>
                                         <li class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Webshop <span class="caret"></span></a>
                                                 <ul class="dropdown-menu" role="menu">
@@ -98,6 +101,8 @@
 
                         <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
                         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+                        @yield('extraJS')
 
                         <script type="text/javascript">
                                 $(function () {
