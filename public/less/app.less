@@ -1,0 +1,305 @@
+/**
+ * LESS Variables
+ **/
+
+@light-red: #FF1919;
+@dark-red: #420D0F;
+@logo-red: #C2272D;
+
+
+/**
+ * CSS Animation definitions
+ **/
+
+// Chrome, Safari, Opera animations
+@-webkit-keyframes navHover {
+        from {
+                color: #fff;
+                background-color: @logo-red;
+        }
+        to {
+                color: #C2272D;
+                background-color: #fff;
+        }
+}
+
+// Standard syntax
+@keyframes navHover {
+        from {
+                color: #fff;
+                background-color: @logo-red;
+        }
+        to {
+                color: #C2272D;
+                background-color: #fff;
+        }
+}
+
+
+/**
+ * Default LESS Code
+ **/
+
+html, body {
+        height: 100%;
+        font-size: 16px;
+        font-weight: 300 !important;
+        font-family: 'Lato', sans-serif;
+        overflow-x: hidden;
+        background-image: url("../img/star-bg.png");
+}
+
+h1, h2, h3, h4, h5 {
+        font-weight: 300;
+}
+
+b {
+        font-weight: 400;
+}
+
+body > .container {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        padding-top: 20px;
+        background-color: #fff;
+        border-radius: 0px 0px 10px 10px;
+}
+
+.row {
+        padding: 0px;
+}
+
+img {
+        max-width: 100%;
+        max-height: 400px;
+        vertical-align: middle;
+        margin: 0px auto;
+        padding: 5px;
+}
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+        background-color: white;
+        color: @logo-red;
+}
+
+.dropdown-menu {
+        background-color: @logo-red;
+
+        & > li > a {
+                color: white;
+        }
+
+        & > li > a:hover {
+                animation: navHover 500ms;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                -webkit-animation: navHover 500ms;
+                -webkit-animation-iteration-count: 1;
+                -webkit-animation-fill-mode: forwards;
+        }
+
+        & > li > a:focus {
+                background-color: @dark-red;
+        }
+}
+
+.site-title > h3 {
+        margin: 10px 0px;
+}
+
+.footer {
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #EEEEEE;
+}
+
+.no-padding {
+        padding: 0px;
+}
+
+.hidden {
+        display: none;
+}
+
+.navbar-wtg {
+        background-color: @logo-red;
+        border: none;
+        box-shadow: 0 1px 0 rgba(255,255,255,.1);
+        height: 50px;
+        margin: 0;
+
+        .navbar-collapse {
+                border-color: @dark-red;
+        }
+
+        .navbar-brand {
+                color: white;
+                background-color: @logo-red;
+
+                &:hover {
+                        animation: navHover 500ms;
+                        animation-iteration-count: 1;
+                        animation-fill-mode: forwards;
+                        -webkit-animation: navHover 500ms;
+                        -webkit-animation-iteration-count: 1;
+                        -webkit-animation-fill-mode: forwards;
+                }
+        }
+
+        .navbar-nav {
+                & > li > a {
+                        .navbar-brand();
+                }
+
+                & > .active > a,
+                & > .active > a:hover {
+                        color: white;
+                        background-color: @dark-red;
+                }
+        }
+
+        .navbar-toggle {
+                border-color: @light-red;
+
+                &:hover {
+                        border-color: @dark-red;
+                        background-color: @dark-red;
+                }
+        }
+}
+
+.page-header {
+        background: #efefef url("../img/bg-header.png");
+        margin: 0;
+}
+
+.modal {
+        overflow-y: hidden;
+}
+
+.btn-default .badge {
+        color: #fff;
+        background-color: #999;
+}
+
+.navbar-form.navbar-right:last-child {
+        margin-right: 0px;
+}
+
+.product-title {
+        font-weight: bold;
+        text-align: center;
+        font-family: sans-serif;
+        padding: 10px;
+}
+
+.site-title {
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 5px 15px 15px 15px;
+}
+
+.toast {
+        position: absolute;
+        right: 100px;
+        bottom: 50px;
+        left: 100px;
+        width: 500px;
+        text-align: center;
+        margin: 0px auto;
+}
+
+.btn-navbar-wiringa {
+        border-color: #CCC;
+        color: @dark-red;
+        background-color: #fff;
+}
+
+.btn-navbar-wiringa:hover {
+        border-color: #CCC;
+        background-color: @dark-red;
+        color: #fff;
+}
+
+.disclaimer {
+        font-size: 13px;
+        margin: 10px 0px;
+}
+
+.product-image {
+        max-width: 200px;
+        max-height: 200px;
+        position: relative;
+        top: 0px;
+        left: 0px;
+}
+
+.actie-image {
+        max-width: 200px;
+        max-height: 200px;
+        position: absolute;
+        left: 95px;
+}
+
+.sidebar {
+        height: 70px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+        color: #BBB;
+}
+
+.carousel {
+        .carousel-indicators {
+                top: -15px;
+
+                li {
+                        border: 1px solid #000 !important;
+                }
+
+                .active {
+                        background-color: #000 !important;
+                }
+        }
+
+        .carousel-inner .item {
+                img {
+                      height: 300px;
+                }
+
+                .carousel-caption {
+                        background-color: rgba(0, 0, 0, 0.5);
+                        position: relative;
+                        text-align: center;
+                        padding: 3px;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                }
+        }
+
+}
+
+
+.search-field {
+        border-bottom: 1px solid #fff;
+}
+
+.search-field > input {
+        display: block;
+        border: none;
+        color: #fff;
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0px;
+}
+
+.search-field > input:focus {
+        outline: none;
+        border-color: #bbb;
+        box-shadow: none;
+}
