@@ -1,13 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>WTG</title>
-	<style>
-		@import url(//fonts.googleapis.com/css?family=Lato:300);
+	    <meta charset="UTF-8">
+	    <title>WTG</title>
+	    <style>
+		        @import url(//fonts.googleapis.com/css?family=Lato:300);
                 @import url(//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css);
                 @import url(//localhost:8000/css/app.min.css);
-	</style>
+	    </style>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 </head>
 <body>
         <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
@@ -51,12 +58,10 @@
                                 </ul>
 
                                 <form action="/search" method="POST" class="navbar-form navbar-right hidden-xs" role="search">
-                                        <ul class="nav navbar-nav">
-                                                <li class="search-field">
-                                                        <input type="text" id="searchInput" class="form-control search-field" placeholder="Zoeken" value="Zoeken" name="search" maxlength="15" title="Geef een zoekopdracht van minimaal 3 en maximaal 15 tekens op." required>
-                                                        <span class="glyphicon glyphicon-search" style="color: #fff; cursor: pointer;"></span>
-                                                </li>
-                                        </ul>
+                                        <div class="form-group search-field has-feedback">
+                                                <input id="searchInput" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
+                                                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                        </div>
                                 </form>
                         </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
@@ -93,6 +98,18 @@
 
                         <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
                         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+                        <script type="text/javascript">
+                                $(function () {
+                                        $('[data-toggle="tooltip"]').tooltip();
+
+                                        $('.search-field').hover(function() {
+                                                $('#searchInput').focus();
+                                        }, function() {
+                                                $('#searchInput').blur();
+                                        });
+                                })
+                        </script>
                 </footer>
         </div>
 </body>

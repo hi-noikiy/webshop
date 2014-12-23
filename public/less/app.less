@@ -12,26 +12,84 @@
  **/
 
 // Chrome, Safari, Opera animations
+// Hover over the navigation buttons
 @-webkit-keyframes navHover {
         from {
-                color: #fff;
+                color: white;
                 background-color: @logo-red;
         }
         to {
-                color: #C2272D;
-                background-color: #fff;
+                color: @logo-red;
+                background-color: white;
+        }
+}
+// Hover over the navigation brand
+@-webkit-keyframes navBrandHover {
+        from {
+                color: white;
+                background-color: @logo-red;
+                font-size: 18px;
+        }
+        to {
+                color: @logo-red;
+                background-color: white;
+                font-size: 22px;
+        }
+}
+// Expand the searchbar
+@-webkit-keyframes navExpandSearch {
+        from {
+                width: 0;
+                background: transparent;
+                padding-left: 0;
+                padding-right: 32px;
+        }
+        to {
+                width: 181px;
+                background-color: white;
+                padding-left: 12px;
+                padding-right: 42px;
         }
 }
 
 // Standard syntax
+// Hover over the navigation buttons
 @keyframes navHover {
         from {
-                color: #fff;
+                color: white;
                 background-color: @logo-red;
         }
         to {
-                color: #C2272D;
-                background-color: #fff;
+                color: @logo-red;
+                background-color: white;
+        }
+}
+// Hover over the navigation brand
+@keyframes navBrandHover {
+        from {
+                color: white;
+                background-color: @logo-red;
+                font-size: 18px;
+        }
+        to {
+                color: @logo-red;
+                background-color: white;
+                font-size: 22px;
+        }
+}
+// Expand the searchbar
+@keyframes navExpandSearch {
+        from {
+                width: 0;
+                background: transparent;
+                padding-left: 0;
+                padding-right: 32px;
+        }
+        to {
+                width: 181px;
+                background-color: white;
+                padding-left: 12px;
+                padding-right: 42px;
         }
 }
 
@@ -49,10 +107,6 @@ html, body {
         background-image: url("../img/star-bg.png");
 }
 
-h1, h2, h3, h4, h5 {
-        font-weight: 300;
-}
-
 b {
         font-weight: 400;
 }
@@ -61,7 +115,7 @@ body > .container {
         padding-bottom: 20px;
         margin-bottom: 20px;
         padding-top: 20px;
-        background-color: #fff;
+        background-color: white;
         border-radius: 0px 0px 10px 10px;
 }
 
@@ -138,20 +192,41 @@ img {
         .navbar-brand {
                 color: white;
                 background-color: @logo-red;
+                -webkit-transition: 250ms ease-out;
+                -moz-transition: 250ms ease-out;
+                -o-transition: 250ms ease-out;
+                transition: 250ms ease-out;
 
                 &:hover {
-                        animation: navHover 500ms;
+                        animation: navBrandHover 500ms;
                         animation-iteration-count: 1;
                         animation-fill-mode: forwards;
-                        -webkit-animation: navHover 500ms;
+                        -webkit-animation: navBrandHover 500ms;
                         -webkit-animation-iteration-count: 1;
                         -webkit-animation-fill-mode: forwards;
                 }
         }
 
         .navbar-nav {
-                & > li > a {
-                        .navbar-brand();
+                margin-top: 0px;
+                margin-bottom: 0px;
+
+                & > li:not(.active) > a {
+                        color: white;
+                        background-color: @logo-red;
+                        -webkit-transition: 250ms ease-out;
+                        -moz-transition: 250ms ease-out;
+                        -o-transition: 250ms ease-out;
+                        transition: 250ms ease-out;
+
+                        &:hover {
+                                animation: navHover 500ms;
+                                animation-iteration-count: 1;
+                                animation-fill-mode: forwards;
+                                -webkit-animation: navHover 500ms;
+                                -webkit-animation-iteration-count: 1;
+                                -webkit-animation-fill-mode: forwards;
+                        }
                 }
 
                 & > .active > a,
@@ -159,14 +234,70 @@ img {
                         color: white;
                         background-color: @dark-red;
                 }
+
+                .open .dropdown-menu {
+                        background-color: @logo-red;
+                        color: white;
+                        border-radius: 0;
+                }
+
         }
 
         .navbar-toggle {
-                border-color: @light-red;
+                border-color: white;
+                background-color: @logo-red;
 
                 &:hover {
                         border-color: @dark-red;
-                        background-color: @dark-red;
+                        background-color: white;
+
+                        .icon-bar {
+                                background-color: @dark-red;
+                        }
+                }
+
+                .icon-bar {
+                        display: block;
+                        width: 22px;
+                        height: 2px;
+                        background-color: white;
+                        border-radius: 1px;
+                }
+        }
+
+        .navbar-form {
+                .search-field {
+                        input {
+                                width: 0;
+                                background: transparent;
+                                box-shadow: none;
+                                padding-left: 0;
+                                padding-right: 32px;
+                                -webkit-transition: 250ms ease-out;
+                                -moz-transition: 250ms ease-out;
+                                -o-transition: 250ms ease-out;
+                                transition: 250ms ease-out;
+
+                                &:focus {
+                                        outline: none;
+                                        box-shadow: none;
+                                        color: @dark-red;
+                                        animation: navExpandSearch 500ms;
+                                        animation-iteration-count: 1;
+                                        animation-fill-mode: forwards;
+                                        -webkit-animation: navExpandSearch 500ms;
+                                        -webkit-animation-iteration-count: 1;
+                                        -webkit-animation-fill-mode: forwards;
+                                }
+                        }
+
+                        input + .form-control-feedback {
+                                color: white;
+                        }
+
+                        input:focus + .form-control-feedback {
+                                color: @dark-red;
+                        }
                 }
         }
 }
@@ -181,7 +312,7 @@ img {
 }
 
 .btn-default .badge {
-        color: #fff;
+        color: white;
         background-color: #999;
 }
 
@@ -215,13 +346,13 @@ img {
 .btn-navbar-wiringa {
         border-color: #CCC;
         color: @dark-red;
-        background-color: #fff;
-}
+        background-color: white;
 
-.btn-navbar-wiringa:hover {
-        border-color: #CCC;
-        background-color: @dark-red;
-        color: #fff;
+        &:hover {
+                border-color: #CCC;
+                background-color: @dark-red;
+                color: white;
+        }
 }
 
 .disclaimer {
@@ -258,11 +389,11 @@ img {
                 top: -15px;
 
                 li {
-                        border: 1px solid #000 !important;
+                        border: 1px solid black !important;
                 }
 
                 .active {
-                        background-color: #000 !important;
+                        background-color: black !important;
                 }
         }
 
@@ -282,24 +413,4 @@ img {
                 }
         }
 
-}
-
-
-.search-field {
-        border-bottom: 1px solid #fff;
-}
-
-.search-field > input {
-        display: block;
-        border: none;
-        color: #fff;
-        background: transparent;
-        box-shadow: none;
-        border-radius: 0px;
-}
-
-.search-field > input:focus {
-        outline: none;
-        border-color: #bbb;
-        box-shadow: none;
 }
