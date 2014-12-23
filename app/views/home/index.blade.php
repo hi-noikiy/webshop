@@ -9,14 +9,14 @@
                 <div class="col-md-5">
                         <div id="slideshow" class="carousel slide">
                                 <ol class="carousel-indicators">
-                                        <li data-target="#slideshow" data-slide-to="0" class=""></li>
+                                        <li data-target="#slideshow" data-slide-to="0" class="active"></li>
                                         <li data-target="#slideshow" data-slide-to="1" class=""></li>
                                         <li data-target="#slideshow" data-slide-to="2" class=""></li>
-                                        <li data-target="#slideshow" data-slide-to="3" class="active"></li>
+                                        <li data-target="#slideshow" data-slide-to="3" class=""></li>
                                         <li data-target="#slideshow" data-slide-to="4" class=""></li>
                                 </ol>
                                 <div class="carousel-inner">
-                                        <div class="item">
+                                        <div class="item active">
                                                 <img src="/img/carousel/profactie.jpg" alt="profactie.jpg">
                                                 <div class="carousel-caption">
                                                         <h3>Viega Profipress actiepakket</h3>
@@ -37,7 +37,7 @@
                                                         <p>Blucher vloerputten programma</p>
                                                 </div>
                                         </div>
-                                        <div class="item active">
+                                        <div class="item">
                                                 <img src="/img/carousel/ra280326.jpg" alt="ra280326.jpg">
                                                 <div class="carousel-caption">
                                                         <h3>Raminex terugstroombeveiligingen</h3>
