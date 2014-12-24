@@ -134,9 +134,6 @@ img {
 .dropdown-menu  > li > a:focus {
   background-color: #420d0f;
 }
-.site-title > h3 {
-  margin: 10px 0px;
-}
 .footer {
   text-align: center;
   padding-top: 20px;
@@ -321,6 +318,9 @@ img {
 .slick-prev:before,
 .slick-next:before {
   color: #BBB;
+}
+.carousel {
+  margin-bottom: 20px;
 }
 .carousel .carousel-indicators {
   top: -15px;
