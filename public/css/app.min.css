@@ -287,13 +287,11 @@ img {
   color: white;
   background-color: #c2272d;
 }
-.btn-wtg:hover {
+.btn-wtg:hover,
+.btn-wtg:focus {
   border-color: #420d0f;
   background-color: white;
   color: #420d0f;
-}
-.btn-wtg:active {
-  color: white;
 }
 .disclaimer {
   font-size: 13px;
