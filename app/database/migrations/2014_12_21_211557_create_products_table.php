@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration {
 			$table->string('image', 34);			// VARCHAR(34)	 : Name for the image file
 			$table->string('length', 9)->nullable();	// VARCHAR(9)	 : Length of the product -> optional
 			$table->decimal('price', 10, 2);		// DECIMAL(10,2) : Price
+			$table->decimal('vat', 10, 5);			// DECIMAL(10,5) : VAT
 			$table->string('brand', 25);			// VARCHAR(25)	 : Brand
 			$table->string('series', 25);			// VARCHAR(25)	 : Series
 			$table->string('type', 25);			// VARCHAR(25)	 : Type
