@@ -7,7 +7,7 @@
         @yield('extraCSS')
 
         <style>
-                @import url(//fonts.googleapis.com/css?family=Lato:300);
+                @import url(//fonts.googleapis.com/css?family=Lato:300,400,500);
                 @import url(//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css);
                 @import url(//localhost:8000/css/app.min.css);
         </style>
