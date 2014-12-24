@@ -20,6 +20,39 @@
         <![endif]-->
 </head>
 <body>
+        @if(!Auth::check())
+                <div class="modal fade" id="loginModal">
+                        <div class="modal-dialog">
+                                <div class="modal-content">
+                                        <form action="/login" method="POST" class="form form-horizontal">
+                                                <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Login</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                        <div class="form-group">
+                                                                <label for="inputUsername" class="col-sm-2 control-label">Login</label>
+                                                                <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="inputUsername" placeholder="Login">
+                                                                </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                                <label for="inputPassword" class="col-sm-2 control-label">Wachtwoord</label>
+                                                                <div class="col-sm-10">
+                                                                        <input type="password" class="form-control" id="inputPassword" placeholder="Wachtwoord">
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
+                                                        <button type="submit" class="btn btn-primary">Login</button>
+                                                </div>
+                                        </form>
+                                </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+        @endif
+
         <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
                 <div class="container">
                         <div class="navbar-header">
@@ -57,7 +90,7 @@
                                 </ul>
 
                                 <ul class="nav navbar-nav navbar-right">
-                                        <li><a href="/login">Login</a></li>
+                                        <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
                                 </ul>
 
                                 <form action="/search" method="POST" class="navbar-form navbar-right hidden-xs" role="search">
@@ -76,7 +109,7 @@
                                 <a href="/"><img src="/img/logo.png" alt="Logo"></a>
                         </div>
                         <div class="col-md-6">
-                                <h3>Sinds 1956 uw inkoop gemak van bodem tot dak. Uw partner voor non-ferro, leidingsystemen, dakbedekking, sanitair en appendages.</h3>
+                                <h3>Sinds 1956 uw inkoop gemak van bodem tot dak.<br />Uw partner voor non-ferro, leidingsystemen, dakbedekking, sanitair en appendages.</h3>
                         </div>
                 </div>
         </header>

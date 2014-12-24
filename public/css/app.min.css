@@ -1,3 +1,6 @@
+/*.navbar-form.navbar-right:last-child {
+        margin-right: 0px;
+}*/
 /**
  * LESS Variables
  **/
@@ -259,9 +262,9 @@ img {
   color: white;
   background-color: #999;
 }
-.navbar-form.navbar-right:last-child {
-  margin-right: 0px;
-}
+/*.navbar-form.navbar-right:last-child {
+        margin-right: 0px;
+}*/
 .product-title {
   font-weight: bold;
   text-align: center;
@@ -282,14 +285,17 @@ img {
   text-align: center;
   margin: 0px auto;
 }
-.btn-navbar-wiringa {
+.btn-wtg {
   border-color: #CCC;
-  color: #420d0f;
-  background-color: white;
+  color: white;
+  background-color: #c2272d;
 }
-.btn-navbar-wiringa:hover {
-  border-color: #CCC;
-  background-color: #420d0f;
+.btn-wtg:hover {
+  border-color: #420d0f;
+  background-color: white;
+  color: #420d0f;
+}
+.btn-wtg:active {
   color: white;
 }
 .disclaimer {
