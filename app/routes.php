@@ -25,3 +25,4 @@ Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Produ
 // POST Requests will be handeled here
 Route::post('/login', 'LoginController@login');                         // Login handler
 Route::post('/forgotPassword', 'LoginController@resetPassword');        // Password reset handler
+Route::post('/search', 'SearchController@search');                      // Page with the search results
