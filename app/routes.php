@@ -19,7 +19,7 @@ Route::get('/downloads', 'HomeController@downloads');                   // Downl
 
 Route::get('/login', 'WebshopController@loginPage');                    // Login page
 Route::get('/forgotPassword', 'WebshopController@resetPassword');       // Forgot password page
-Route::get('/webshop', 'WebshopController@search');                     // Main webshop page
+Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
 Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Product page
 
 // POST Requests will be handeled here
