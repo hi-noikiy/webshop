@@ -28,7 +28,7 @@ class CreateProductsTable extends Migration {
 			$table->string('ean', 16);			// VARCHAR(16)	 : EAN Code
 			$table->string('image', 34);			// VARCHAR(34)	 : Name for the image file
 			$table->string('length', 9)->nullable();	// VARCHAR(9)	 : Length of the product -> optional
-			$table->decimal('price', 10, 2);		// DECIMAL(10,2) : Price
+			$table->string('price', 10);			// VARCHAR(10) 	 : Price
 			$table->decimal('vat', 10, 5);			// DECIMAL(10,5) : VAT
 			$table->string('brand', 25);			// VARCHAR(25)	 : Brand
 			$table->string('series', 25);			// VARCHAR(25)	 : Series
