@@ -6,7 +6,7 @@
 
 @section('content')
         <div class="row">
-                <div class="col-md-5">
+                <div class="col-lg-5">
                         <div id="slideshow" class="carousel slide">
                                 <ol class="carousel-indicators">
                                         <li data-target="#slideshow" data-slide-to="0" class="active"></li>
@@ -58,20 +58,40 @@
                         </div>
                 </div>
 
-                <div class="col-md-7">
+                <div class="col-lg-7">
                         @if(Auth::check())
-                                <p>Welkom op de vernieuwde website. De belangrijkste wijziging is onze nieuwe webshop.</p>
-                                <p>Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.</p>
-                        @else
-                                <div class="row">
-                                        <div class="col-md-7">
+                                <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                                <h3 class="panel-title">Nieuws</h3>
+                                        </div>
+                                        <div class="panel-body">
                                                 <p>
-                                                        Welkom op de vernieuwde website. <br />
+                                                        Welkom op de vernieuwde website.<br />
                                                         De belangrijkste wijziging is onze nieuwe webshop.
                                                 </p>
-                                                <p>Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.</p>
+                                                <p>
+                                                        Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.
+                                                </p>
                                         </div>
-                                        <div class="col-md-5">
+                                </div>
+                        @else
+                                <div class="row">
+                                        <div class="col-md-8">
+                                                <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                                <h3 class="panel-title">Nieuws</h3>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                                <p>
+                                                                        Welkom op de vernieuwde website.<br />
+                                                                        De belangrijkste wijziging is onze nieuwe webshop.
+                                                                </p>
+                                                                <p>
+                                                                        Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.
+                                                                </p>
+                                                        </div>
+                                                </div>                                        </div>
+                                        <div class="col-md-4">
                                                 <div class="well well-sm text-center">
                                                         <h3>Klant worden?</h3>
                                                         <a class="btn btn-block btn-success" href="/register">Ja, ik wil klant worden!</a>
