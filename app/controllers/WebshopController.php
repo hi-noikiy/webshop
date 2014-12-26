@@ -37,4 +37,67 @@ class WebshopController extends BaseController {
                 return View::make('webshop.login');
         }
 
+        // Search
+        public function search()
+        {
+                $startTime = microtime(true);
+                $str = Input::get('q');
+                $inputBrand = Input::get('brand');
+                $inputSerie = Input::get('serie');
+                $inputType = Input::get('type');
+
+                $query = DB::table('products')
+                        ->orWhere('name', 'LIKE', $str)
+                        ->orWhere('number', 'LIKE', $str)
+                        ->orWhere('group', 'LIKE', $str)
+                        ->orWhere('altNumber', 'LIKE', $str);
+
+                $query->orWhere(function($subQuery)
+                {
+                        foreach (explode(' ', Input::get('q')) as $word) {
+                                // Split the input so the order of the search query doesn't matter
+                                $subQuery->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
+                        }
+                });
+
+                if (Input::has('brand')) $query = $query->where('brand', $inputBrand);
+                if (Input::has('serie')) $query = $query->where('series', $inputSerie);
+                if (Input::has('type'))  $query = $query->where('type', $inputType);
+
+                // Get all the results to filter the brands, series and types from it
+                $allResults = $query->orderBy('number', 'asc')->get();
+
+                // Get the paginated results
+                $results = $query->paginate(25);
+
+                // Initialize $brands, $series, $types as array
+                $brands =
+                $series =
+                $types = array();
+
+                // Get the brands from the search results
+                foreach ($allResults as $brand) {
+                        $brands[] = $brand->brand;
+                }
+
+                // Get the series from the search results
+                foreach ($allResults as $serie) {
+                        $series[] = $serie->series;
+                }
+
+                // Get the series from the search results
+                foreach ($allResults as $type) {
+                        $types[] = $type->type;
+                }
+
+                // Return the search view with the fetched data
+                return View::make('webshop.search', array(
+                                'results'       => $results,
+                                'brands'        => array_unique($brands),
+                                'series'        => array_unique($series),
+                                'types'         => array_unique($types),
+                                'scriptTime'    => round(microtime(true) - $startTime, 4)
+                        )
+                );
+        }
 }

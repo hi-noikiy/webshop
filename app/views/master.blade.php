@@ -93,9 +93,9 @@
                                         <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
                                 </ul>
 
-                                <form action="/search" method="POST" class="navbar-form navbar-right hidden-xs" role="search">
+                                <form action="/search" method="GET" class="navbar-form navbar-right hidden-xs" role="search">
                                         <div class="form-group search-field has-feedback">
-                                                <input id="searchInput" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
+                                                <input name="q" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
                                                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
                                         </div>
                                 </form>
