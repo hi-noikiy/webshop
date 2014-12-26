@@ -1,14 +1,17 @@
 @extends('master')
 
 @section('title')
-        <h3>Webshop</h3>
+        <h3>Zoeken</h3>
 @stop
 
 @section('content')
+        <div class="alert alert-success" role="alert">
+                {{ $results->getTotal() }} resultaten gevonden in {{ $scriptTime }} seconden.
+        </div>
         <div class="panel panel-default">
                 <div class="panel-heading">
                         <h4 class="panel-title text-center">
-                                Snel zoeken
+                                Geavanceerd zoeken
                         </h4>
                 </div>
                 <div class="panel-body">
@@ -21,7 +24,7 @@
                                                                 <select onchange="wtg.quickSearch();" name="brand" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($brands as $brand)
-                                                                                <option value="{{ $brand->brand }}">{{ $brand->brand }}</option>
+                                                                                <option @if(Input::get('brand') === $brand) selected @endif value="{{ $brand }}">{{ $brand }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
@@ -34,7 +37,7 @@
                                                                 <select onchange="wtg.quickSearch();" name="serie" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($series as $serie)
-                                                                                <option value="{{ $serie->series }}">{{ $serie->series }}</option>
+                                                                                <option @if(Input::get('serie') === $serie) selected @endif value="{{ $serie }}">{{ $serie }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
@@ -47,33 +50,49 @@
                                                                 <select onchange="wtg.quickSearch();" name="type" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($types as $type)
-                                                                                <option value="{{ $type->type }}">{{ $type->type }}</option>
+                                                                                <option @if(Input::get('type') === $type) selected @endif value="{{ $type }}">{{ $type }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
-
-                                <hr>
-
-                                <div class="row">
-                                        <div class="col-md-12">
-                                                <div class="input-group">
-                                                        <input id="quickSearchInput" class="form-control" name="q" placeholder="Zoeken" type="text">
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-primary">Zoeken</button>
-						</span>
-                                                </div>
-                                        </div>
-                                </div>
+                                <input name="q" type="hidden" value="{{ Input::get('q') }}">
                         </form>
+
+                        <a href="javascript:window.history.go(-1);"><span class="glyphicon glyphicon-chevron-left"></span> terug naar vorige pagina</a>
 
                         <!-- Hidden on load, will show after a dropdown option has changed -->
                         <div class="row text-center" id="searchLoading" style="display: none;">
                                 <img src="/img/loading.gif" width="70px">
                         </div>
                 </div>
+        </div>
+
+
+        <table class="table table-striped">
+                <thead>
+                        <th>Artikelnummer</th>
+                        <th>Omschrijving</th>
+                        <th>Bruto prijs</th>
+                        <th>Korting</th>
+                        <th>Netto prijs</th>
+                </thead>
+                <tbody>
+                        @foreach($results as $product)
+                                <tr>
+                                        <td>{{ $product->number }}</td>
+                                        <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
+                                        <td>&euro;{{ $product->price }}</td>
+                                        <td>0%</td>
+                                        <td>&euro;{{ $product->price }}</td>
+                                </tr>
+                        @endforeach
+                </tbody>
+        </table>
+
+        <div class="text-center">
+                {{ $results->appends(array('brand' => Input::get('brand'), 'serie' => Input::get('serie'), 'type' => Input::get('type'), 'q' => Input::get('q')))->links() }}
         </div>
 @stop
 

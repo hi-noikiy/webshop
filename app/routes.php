@@ -21,8 +21,8 @@ Route::get('/login', 'WebshopController@loginPage');                    // Login
 Route::get('/forgotPassword', 'WebshopController@resetPassword');       // Forgot password page
 Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
 Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Product page
+Route::get('/search', 'WebshopController@search');                      // Page with the search results
 
 // POST Requests will be handeled here
 Route::post('/login', 'LoginController@login');                         // Login handler
 Route::post('/forgotPassword', 'LoginController@resetPassword');        // Password reset handler
-Route::post('/search', 'SearchController@search');                      // Page with the search results
