@@ -15,7 +15,11 @@ class WebshopController extends BaseController {
         |
         */
 
-        // The main webshop page
+        /**
+         * The main webshop page
+         *
+         * @return mixed
+         */
         public function main()
         {
                 $brands         = DB::table('products')->select('brand')->distinct()->get();
@@ -31,13 +35,21 @@ class WebshopController extends BaseController {
                 return View::make('webshop.main', $data);
         }
 
-        // Login page
+        /**
+         * The login page for mobile users
+         *
+         * @return mixed
+         */
         public function loginPage()
         {
                 return View::make('webshop.login');
         }
 
-        // Search
+        /**
+         * The search page
+         *
+         * @return mixed
+         */
         public function search()
         {
                 $startTime = microtime(true);
@@ -99,5 +111,19 @@ class WebshopController extends BaseController {
                                 'scriptTime'    => round(microtime(true) - $startTime, 4)
                         )
                 );
+        }
+
+        /**
+         * The product page
+         * Will throw 404 error when no product matches the product id
+         *
+         * @param $product_Id
+         * @return mixed
+         */
+        public function showProduct($product_Id)
+        {
+                $product = Product::where('number', $product_Id)->firstOrFail();
+
+                return View::make('webshop.product', array('productData' => $product));
         }
 }
