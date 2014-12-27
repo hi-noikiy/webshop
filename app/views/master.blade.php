@@ -95,7 +95,7 @@
 
                                 <form action="/search" method="GET" class="navbar-form navbar-right hidden-xs" role="search">
                                         <div class="form-group search-field has-feedback">
-                                                <input name="q" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
+                                                <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
                                                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
                                         </div>
                                 </form>

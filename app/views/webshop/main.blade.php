@@ -12,7 +12,7 @@
                         </h4>
                 </div>
                 <div class="panel-body">
-                        <form action="/search" method="GET" role="search" class="form-horizontal" name="advancedsearch" id="searchForm quickSearch">
+                        <form action="/search" method="GET" role="search" class="form-horizontal" name="advancedsearch" id="searchForm">
                                 <div class="row">
                                         <div class="col-md-4">
                                                 <div class="form-group">
