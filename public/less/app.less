@@ -5,6 +5,7 @@
 @light-red: #FF1919;
 @dark-red: #420D0F;
 @logo-red: #C2272D;
+@transTime: 150ms;
 
 
 /**
@@ -146,10 +147,10 @@ img {
         }
 
         & > li > a:hover {
-                animation: navHover 500ms;
+                animation: navHover @transTime;
                 animation-iteration-count: 1;
                 animation-fill-mode: forwards;
-                -webkit-animation: navHover 500ms;
+                -webkit-animation: navHover @transTime;
                 -webkit-animation-iteration-count: 1;
                 -webkit-animation-fill-mode: forwards;
         }
@@ -188,16 +189,16 @@ img {
         .navbar-brand {
                 color: white;
                 background-color: @logo-red;
-                -webkit-transition: 250ms ease-out;
-                -moz-transition: 250ms ease-out;
-                -o-transition: 250ms ease-out;
-                transition: 250ms ease-out;
+                -webkit-transition: @transTime ease-out;
+                -moz-transition: @transTime ease-out;
+                -o-transition: @transTime ease-out;
+                transition: @transTime ease-out;
 
                 &:hover {
-                        animation: navBrandHover 500ms;
+                        animation: navBrandHover @transTime;
                         animation-iteration-count: 1;
                         animation-fill-mode: forwards;
-                        -webkit-animation: navBrandHover 500ms;
+                        -webkit-animation: navBrandHover @transTime;
                         -webkit-animation-iteration-count: 1;
                         -webkit-animation-fill-mode: forwards;
                 }
@@ -210,16 +211,16 @@ img {
                 & > li:not(.active) > a {
                         color: white;
                         background-color: @logo-red;
-                        -webkit-transition: 250ms ease-out;
-                        -moz-transition: 250ms ease-out;
-                        -o-transition: 250ms ease-out;
-                        transition: 250ms ease-out;
+                        -webkit-transition: @transTime ease-out;
+                        -moz-transition: @transTime ease-out;
+                        -o-transition: @transTime ease-out;
+                        transition: @transTime ease-out;
 
                         &:hover {
-                                animation: navHover 500ms;
+                                animation: navHover @transTime;
                                 animation-iteration-count: 1;
                                 animation-fill-mode: forwards;
-                                -webkit-animation: navHover 500ms;
+                                -webkit-animation: navHover @transTime;
                                 -webkit-animation-iteration-count: 1;
                                 -webkit-animation-fill-mode: forwards;
                         }
@@ -269,19 +270,19 @@ img {
                                 box-shadow: none;
                                 padding-left: 0;
                                 padding-right: 32px;
-                                -webkit-transition: 250ms ease-out;
-                                -moz-transition: 250ms ease-out;
-                                -o-transition: 250ms ease-out;
-                                transition: 250ms ease-out;
+                                -webkit-transition: @transTime ease-out;
+                                -moz-transition: @transTime ease-out;
+                                -o-transition: @transTime ease-out;
+                                transition: @transTime ease-out;
 
                                 &:focus {
                                         outline: none;
                                         box-shadow: none;
                                         color: @dark-red;
-                                        animation: navExpandSearch 500ms;
+                                        animation: navExpandSearch @transTime;
                                         animation-iteration-count: 1;
                                         animation-fill-mode: forwards;
-                                        -webkit-animation: navExpandSearch 500ms;
+                                        -webkit-animation: navExpandSearch @transTime;
                                         -webkit-animation-iteration-count: 1;
                                         -webkit-animation-fill-mode: forwards;
                                 }
@@ -311,10 +312,6 @@ img {
         color: white;
         background-color: #999;
 }
-
-/*.navbar-form.navbar-right:last-child {
-        margin-right: 0px;
-}*/
 
 .product-title {
         font-weight: bold;
