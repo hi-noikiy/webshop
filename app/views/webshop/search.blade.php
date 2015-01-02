@@ -72,20 +72,28 @@
 
         <table class="table table-striped">
                 <thead>
-                        <th>Artikelnummer</th>
-                        <th>Omschrijving</th>
-                        <th>Bruto prijs</th>
-                        <th>Korting</th>
-                        <th>Netto prijs</th>
+                        <tr>
+                                <th></th>
+                                <th>Artikelnummer</th>
+                                <th>Omschrijving</th>
+                                @if(Auth::check())
+                                        <th>Bruto prijs</th>
+                                        <th>Korting</th>
+                                        <th>Netto prijs</th>
+                                @endif
+                        </tr>
                 </thead>
                 <tbody>
                         @foreach($results as $product)
                                 <tr>
+                                        <td class="product-thumbnail"><img src="/img/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td>{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
-                                        <td>&euro;{{ $product->price }}</td>
-                                        <td>0%</td>
-                                        <td>&euro;{{ $product->price }}</td>
+                                        @if(Auth::check())
+                                                <td>&euro;{{ $product->price }}</td>
+                                                <td>0%</td>
+                                                <td>&euro;{{ $product->price }}</td>
+                                        @endif
                                 </tr>
                         @endforeach
                 </tbody>

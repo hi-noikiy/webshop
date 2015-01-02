@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @param $code
+ * @return string
+ */
 function stockCode($code)
 {
         switch ($code) {
@@ -21,6 +25,10 @@ function stockCode($code)
         }
 }
 
+/**
+ * @param $code
+ * @return string
+ */
 function price_per($code) {
         switch ($code) {
                 case 'Stk':
@@ -56,7 +64,27 @@ function price_per($code) {
         }
 }
 
-function getProductKorting($group, $number, $userId)
+function getProductKorting($group = 0 , $product = 0, $userId)
 {
-        return 0;
+        $discountarray = array();
+
+        $default_discounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('product', 'NOT IN', "(SELECT product FROM 'discounts' WHERE table = 'VA-220' AND User_Id = '" . $userId ."')")->get();
+
+        foreach ($default_discounts as $discount)
+                $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
+
+        $groupDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-220')->get();
+
+        foreach ($groupDiscounts as $discount)
+                $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
+
+        $productDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-260')->get();
+
+        foreach ($productDiscounts as $discount)
+                $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
+
+        if ($group === 0 && $product === 0)
+                return $discountarray;
+        else
+                return (isset($discountarray[$product]) ? $discountarray[$product] : $discountarray[$group]);
 }

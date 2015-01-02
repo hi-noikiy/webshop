@@ -8,7 +8,7 @@
         <?php
                 if ($productData->special_price === '0.00') {
                         $action 		= false;
-                        $discount		= (double) getProductKorting($productData->group, $productData->number, 0 /* userId */);
+                        $discount		= (double) getProductKorting($productData->group, $productData->number, Session::get('id'));
                         $price 			= (double) number_format((preg_replace("/\,/", ".", $productData->price) * $productData->refactor) / $productData->price_per, 2, ".", "");
                 } else {
                         $action 		= true;
@@ -52,11 +52,11 @@
                                                                 @if (!$action)
                                                                         <tr>
                                                                                 <td><b>Bruto prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($productData->price, 2, ".", "") }}</span></td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price, 2, ".", "") }}</span></td>
                                                                         </tr>
                                                                         <tr>
                                                                                 <td><b>Netto prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($productData->price * ((100-$discount) / 100), 2, ".", "") }}</span></td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</span></td>
                                                                         </tr>
                                                                         <tr>
                                                                                 <td><b>Korting</b></td>
@@ -65,7 +65,7 @@
                                                                 @else
                                                                         <tr>
                                                                                 <td><b>Actie prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($productData->price, 2, ".", "") }}</td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($price, 2, ".", "") }}</td>
                                                                         </tr>
                                                                 @endif
                                                                 </tbody>
@@ -111,7 +111,7 @@
                                                         <div class="col-sm-6">
                                                                 @if (!$action)
                                                                         Bruto prijs: <span class="glyphicon glyphicon-euro"></span> {{ number_format($price, 2, ".", "") }}<br />
-                                                                        Netto prijs: <span class="glyphicon glyphicon-euro"></span> {{ number_format($price * ((100-$korting) / 100), 2, ".", "") }}
+                                                                        Netto prijs: <span class="glyphicon glyphicon-euro"></span> {{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}
                                                                 @else
                                                                         Actie prijs: <span class="glyphicon glyphicon-euro"></span> {{ number_format($price, 2, ".", "") }}<br />
                                                                 @endif
@@ -189,3 +189,4 @@
                 }
         </style>
 @stop
+

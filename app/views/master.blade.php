@@ -9,7 +9,7 @@
         <style>
                 @import url(//fonts.googleapis.com/css?family=Lato:300,400,500);
                 @import url(//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css);
-                @import url(//localhost:8000/css/app.min.css);
+                @import url({{ URL::to('/') }}/css/app.min.css);
         </style>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -33,13 +33,13 @@
                                                         <div class="form-group">
                                                                 <label for="inputUsername" class="col-sm-2 control-label">Login</label>
                                                                 <div class="col-sm-10">
-                                                                        <input type="text" class="form-control" id="inputUsername" placeholder="Login">
+                                                                        <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{ Session::get('username') }}" @endif>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
                                                                 <label for="inputPassword" class="col-sm-2 control-label">Wachtwoord</label>
                                                                 <div class="col-sm-10">
-                                                                        <input type="password" class="form-control" id="inputPassword" placeholder="Wachtwoord">
+                                                                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Wachtwoord" required>
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -90,7 +90,21 @@
                                 </ul>
 
                                 <ul class="nav navbar-nav navbar-right">
-                                        <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
+                                        @if(Auth::check())
+                                                <li><a href="/cart" style="height: 50px">Winkelwagen <span class="badge">1{{-- $cart_product_count --}}</span></a></li>
+                                                <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                                <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
+                                                                <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
+                                                                <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                                                <li class="divider"></li>
+                                                                <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
+                                                        </ul>
+                                                </li>
+                                        @else
+                                                <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
+                                        @endif
                                 </ul>
 
                                 <form action="/search" method="GET" class="navbar-form navbar-right hidden-xs" role="search">
@@ -134,10 +148,15 @@
 
                         <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
                         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                        <script src="/js/jquery.toaster.js"></script>
 
                         @yield('extraJS')
 
                         <script type="text/javascript">
+                                @if(Session::has('error'))
+                                        var error = '{{ Session::get('error') }}';
+                                @endif
+
                                 $(function () {
                                         $('[data-toggle="tooltip"]').tooltip();
 
@@ -146,9 +165,15 @@
                                         }, function() {
                                                 $('#searchInput').blur();
                                         });
-                                })
+                                });
+
+                                if (typeof error != 'undefined') {
+                                        $.toaster({ priority : 'danger', title : 'Error', message : error, timeout : 3000 });
+                                }
                         </script>
                 </footer>
         </div>
+
+
 </body>
 </html>

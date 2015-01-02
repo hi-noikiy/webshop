@@ -126,4 +126,32 @@ class WebshopController extends BaseController {
 
                 return View::make('webshop.product', array('productData' => $product));
         }
+
+        public function login()
+        {
+                if (Input::has('username') && Input::has('password'))
+                {
+                        if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), true))
+                        {
+                                Session::put('id', Auth::user()->login);
+                        }
+                } else
+                {
+                        // The input field(s) is/are empty, go back to the previous page with an error message
+                        return Redirect::back()->with('error', 'Gebruikersnaam en/of wachtwoord onjuist')->with('username', Input::get('username'));
+                }
+        }
+
+        public function logout()
+        {
+                if (Auth::check())
+                {
+                        Auth::logout();
+
+                        return Redirect::to('/')->with('success', 'U bent nu uitgelogd');
+                } else
+                {
+                        return Redirect::to('/')->with('error', 'Geen gebruiker ingelogd');
+                }
+        }
 }
