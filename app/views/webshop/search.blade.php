@@ -84,15 +84,26 @@
                         </tr>
                 </thead>
                 <tbody>
+                        <?php $discounts = (Auth::check() ? getProductDiscount(Auth::user()->login) : ''); ?>
                         @foreach($results as $product)
+                                <?php $price = number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
+
+                                @if(isset($discounts[$product->number]))
+                                        <?php $discount = $discounts[$product->number]; ?>
+                                @elseif(isset($discounts[$product->group]))
+                                        <?php $discount = $discounts[$product->group]; ?>
+                                @else
+                                        <?php $discount = 0; ?>
+                                @endif
+
                                 <tr>
                                         <td class="product-thumbnail"><img src="/img/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td>{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
-                                                <td>&euro;{{ $product->price }}</td>
-                                                <td>0%</td>
-                                                <td>&euro;{{ $product->price }}</td>
+                                                <td>&euro;{{ $price }}</td>
+                                                <td>{{ $discount }}%</td>
+                                                <td>&euro;{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</td>
                                         @endif
                                 </tr>
                         @endforeach
