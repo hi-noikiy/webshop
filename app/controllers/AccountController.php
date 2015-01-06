@@ -101,6 +101,11 @@ class AccountController extends BaseController {
                 return View::make('account.orderhistory', array('orderlist' => $orderList));
         }
 
+        /**
+         * The address list page
+         *
+         * @return mixed
+         */
         public function addresslist()
         {
                 $addressList = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
@@ -108,6 +113,11 @@ class AccountController extends BaseController {
                 return View::make('account.addresslist', array('addresslist' => $addressList));
         }
 
+        /**
+         * The user is able to download their discounts file from here in ICC and CSV format
+         *
+         * @return mixed
+         */
         public function discountfile()
         {
                 return View::make('account.discountfile');
