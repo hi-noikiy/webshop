@@ -284,6 +284,10 @@ img {
   margin-bottom: 20px;
   padding: 5px 15px 15px 15px;
 }
+.site-title small {
+  color: white;
+  font-style: italic;
+}
 .toast {
   position: absolute;
   right: 100px;
