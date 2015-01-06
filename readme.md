@@ -22,7 +22,7 @@ In order to learn the Laravel framework, I am trying to rewrite the website/webs
 
     * `env.local.php` for local development
     
-    * `env.staging.php` for staging - **NOTE: go to** `bootstrap/start.php` **and set the hostnames for staging and production to the appropriate values**
+    * `env.staging.php` for staging - **NOTE: edit** `bootstrap/start.php` **and set the hostnames for staging and production to the appropriate values**
     
     * `.env.php` or `.env.production.php` for production **NOTE: Laravel will default to** `.env.php` **when it doesn't match any hostname in** `bootstrap/start.php`
     
