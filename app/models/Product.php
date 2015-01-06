@@ -16,11 +16,4 @@ class Product extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'products';
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password', 'remember_token');
-
 }
