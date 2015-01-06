@@ -83,7 +83,7 @@
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Webshop <span class="caret"></span></a>
                                                 <ul class="dropdown-menu" role="menu">
                                                         <li><a href="/webshop">Bestellen</a></li>
-                                                        <li><a href="/special">Acties</a></li>
+                                                        <li><a href="/specials">Acties</a></li>
                                                         <li><a href="/clearance">Opruiming</a></li>
                                                 </ul>
                                         </li>
@@ -154,7 +154,13 @@
 
                         <script type="text/javascript">
                                 @if(Session::has('error'))
-                                        var error = '{{ Session::get('error') }}';
+                                        var msg = '{{ Session::get('error') }}';
+                                        $.toaster({ priority : 'danger', title : 'Error', message : msg, timeout : 3000 });
+                                @endif
+
+                                @if(Session::has('success'))
+                                        var msg = '{{ Session::get('success') }}';
+                                        $.toaster({ priority : 'danger', title : 'Error', message : msg, timeout : 3000 });
                                 @endif
 
                                 $(function () {
@@ -166,10 +172,6 @@
                                                 $('#searchInput').blur();
                                         });
                                 });
-
-                                if (typeof error != 'undefined') {
-                                        $.toaster({ priority : 'danger', title : 'Error', message : error, timeout : 3000 });
-                                }
                         </script>
                 </footer>
         </div>
