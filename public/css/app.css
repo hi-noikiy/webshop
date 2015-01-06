@@ -96,16 +96,16 @@ body > .container {
   margin-bottom: 20px;
   padding-top: 20px;
   background-color: white;
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 0 0 10px 10px;
 }
 .row {
-  padding: 0px;
+  padding: 0;
 }
 img {
   max-width: 100%;
   max-height: 400px;
   vertical-align: middle;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 5px;
 }
 .nav .open > a,
@@ -138,7 +138,7 @@ img {
   background-color: #EEEEEE;
 }
 .no-padding {
-  padding: 0px;
+  padding: 0;
 }
 .hidden {
   display: none;
@@ -170,8 +170,8 @@ img {
   -webkit-animation-fill-mode: forwards;
 }
 .navbar-wtg .navbar-nav {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .navbar-wtg .navbar-nav > li:not(.active) > a {
   color: white;
@@ -266,18 +266,18 @@ img {
   max-width: 200px;
   max-height: 200px;
   position: relative;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
 }
 .product-thumbnail {
-  padding: 0px;
+  padding: 0;
   width: 100px;
   text-align: center;
 }
 .product-thumbnail > img {
   max-width: 100px;
   height: 50px;
-  padding: 0px;
+  padding: 0;
 }
 .site-title {
   text-align: center;
@@ -291,7 +291,7 @@ img {
   left: 100px;
   width: 500px;
   text-align: center;
-  margin: 0px auto;
+  margin: 0 auto;
 }
 .btn-wtg {
   border-color: #CCC;
@@ -306,7 +306,7 @@ img {
 }
 .disclaimer {
   font-size: 13px;
-  margin: 10px 0px;
+  margin: 10px 0;
 }
 .actie-image {
   max-width: 200px;
