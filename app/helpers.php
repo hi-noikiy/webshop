@@ -64,21 +64,29 @@ function price_per($code) {
         }
 }
 
-function getProductKorting($group = 0 , $product = 0, $userId)
+function getProductDiscount($userId, $group = 0 , $product = 0)
 {
         $discountarray = array();
 
-        $default_discounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('product', 'NOT IN', "(SELECT product FROM 'discounts' WHERE table = 'VA-220' AND User_Id = '" . $userId ."')")->get();
+        // Add the default discounts
+        $default_discounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-221')->whereNotIn('product', function($query) use ($userId) {
+                $query->select('product')
+                        ->from('discounts')
+                        ->where('table', 'VA-220')
+                        ->where('User_Id', $userId);
+        })->get();
 
         foreach ($default_discounts as $discount)
                 $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
 
-        $groupDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-220')->get();
+        // Overwrite the defaults with the discounts linked to the product group
+        $groupDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-220')->where('User_Id', $userId)->get();
 
         foreach ($groupDiscounts as $discount)
                 $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
 
-        $productDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-260')->get();
+        // Overwrite the previous data with the discounts linked to the product number
+        $productDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-260')->where('User_Id', $userId)->get();
 
         foreach ($productDiscounts as $discount)
                 $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
@@ -86,5 +94,10 @@ function getProductKorting($group = 0 , $product = 0, $userId)
         if ($group === 0 && $product === 0)
                 return $discountarray;
         else
-                return (isset($discountarray[$product]) ? $discountarray[$product] : $discountarray[$group]);
+        {
+                if (!isset($discountarray[$product]) && !isset($discountarray[$group]))
+                        App::abort(500, 'Geen korting gevonden voor product: ' . $product);
+                else
+                        return (isset($discountarray[$product]) ? $discountarray[$product] : $discountarray[$group]);
+        }
 }
