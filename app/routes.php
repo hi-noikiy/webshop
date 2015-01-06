@@ -23,6 +23,8 @@ Route::get('/forgotPassword', 'WebshopController@resetPassword');       // Forgo
 Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
 Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Product page
 Route::get('/search', 'WebshopController@search');                      // Page with the search results
+Route::get('/specials', 'WebshopController@specials');                  // Show only the specials
+Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
 
 Route::get('/cart', 'CartController@view');                             // Show the cart
 
