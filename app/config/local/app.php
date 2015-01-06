@@ -13,6 +13,6 @@ return array(
 	|
 	*/
 
-	'debug' => true,
+	'debug' => $_ENV['debug_mode'],
 
 );
