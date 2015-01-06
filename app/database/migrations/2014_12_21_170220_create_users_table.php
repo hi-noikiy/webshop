@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
 			$table->string('password');		// VARCHAR()	 : Password
 			$table->mediumText('favorites');	// MEDIUMTEXT	 : A serialized array containing the favorite products from the user
 			$table->mediumText('cart');		// MEDIUMTEXT	 : The cart is saved here between sessions
+			$table->rememberToken();
 			$table->timestamps();
 		});
 	}
