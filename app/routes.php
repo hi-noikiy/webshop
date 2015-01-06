@@ -26,6 +26,6 @@ Route::get('/search', 'WebshopController@search');                      // Page 
 
 Route::get('/cart', 'CartController@view');                             // Show the cart
 
-// POST Requests will be handeled here
+// POST Requests will be handled here
 Route::post('/login', 'WebshopController@login');                       // Login handler
 Route::post('/forgotPassword', 'WebshopController@resetPassword');      // Password reset handler
