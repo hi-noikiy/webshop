@@ -29,7 +29,7 @@ Route::get('/clearance', 'WebshopController@clearance');                // Show 
 Route::get('/account', 'AccountController@overview');                   // Account overview
 Route::get('/account/changepassword', 'AccountController@changePass');  // Change password page
 Route::get('/account/favorites', 'AccountController@favorites');        // Favorites
-Route::get('/account/history', 'AccountController@history');            // Order history
+Route::get('/account/orderhistory', 'AccountController@orderhistory');  // Order history
 Route::get('/account/addresslist', 'AccountController@addresslist');    // Addresslist
 Route::get('/account/discountfile', 'AccountController@discountfile');  // ICC/CSV Discount generation page
 
