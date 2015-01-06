@@ -8,7 +8,6 @@
         <?php
                 if ($productData->special_price === '0.00') {
                         $action 		= false;
-                        $discount		= (double) getProductKorting($productData->group, $productData->number, Session::get('id'));
                         $price 			= (double) number_format((preg_replace("/\,/", ".", $productData->price) * $productData->refactor) / $productData->price_per, 2, ".", "");
                 } else {
                         $action 		= true;
@@ -144,6 +143,10 @@
                                                 <tr>
                                                         <td><b>Product nummer</b></td>
                                                         <td>{{ $productData->number }}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><b>Product groep</b></td>
+                                                        <td>{{ $productData->group }}</td>
                                                 </tr>
                                                 <tr>
                                                         <td><b>Fabrieksnummer</b></td>
