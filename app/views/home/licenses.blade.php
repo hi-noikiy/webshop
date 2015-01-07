@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-        <h2><a href="http://laravel.com">Laravel</a> by <a href="https://github.com/taylorotwell">Taylor Otwell</a></h2>
+        <h2><a href="http://laravel.com" target="_blank">Laravel</a> by <a href="https://github.com/taylorotwell" target="_blank">Taylor Otwell</a> <small>(<a href="https://github.com/laravel/framework/blob/4.2/LICENSE.txt" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 The MIT License (MIT)
@@ -31,7 +31,7 @@
                 THE SOFTWARE.
         </pre>
         <hr />
-        <h2><a href="https://github.com/barryvdh/laravel-debugbar">laravel-debugbar</a> by <a href="https://github.com/barryvdh">Barry vd. Heuvel</a></h2>
+        <h2><a href="https://github.com/barryvdh/laravel-debugbar" target="_blank">laravel-debugbar</a> by <a href="https://github.com/barryvdh" target="_blank">Barry vd. Heuvel</a> <small>(<a href="https://github.com/barryvdh/laravel-debugbar/blob/master/LICENSE" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 Copyright (C) 2013-2014 Barry vd. Heuvel
@@ -55,7 +55,7 @@
                 SOFTWARE.
         </pre>
         <hr />
-        <h2><a href="https://github.com/Crinsane/LaravelShoppingcart">LaravelShoppingcart</a> by <a href="https://github.com/Crinsane">Rob Gloudemans</a></h2>
+        <h2><a href="https://github.com/Crinsane/LaravelShoppingcart" target="_blank">LaravelShoppingcart</a> by <a href="https://github.com/Crinsane" target="_blank">Rob Gloudemans</a> <small>(<a href="https://github.com/Crinsane/LaravelShoppingcart/blob/master/LICENSE" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 The MIT License (MIT)
@@ -81,7 +81,7 @@
                 SOFTWARE.
         </pre>
         <hr />
-        <h2><a href="https://getbootstrap.com">Twitter Bootstrap</a> by <a href="https://github.com/mdo">Mark Otto</a> and <a href="https://github.com/fat">Jacob Thornton</a></h2>
+        <h2><a href="https://getbootstrap.com" target="_blank">Twitter Bootstrap</a> by <a href="https://github.com/mdo" target="_blank">Mark Otto</a> and <a href="https://github.com/fat" target="_blank">Jacob Thornton</a> <small>(<a href="https://github.com/twbs/bootstrap/blob/master/LICENSE" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 The MIT License (MIT)
@@ -107,7 +107,7 @@
                 THE SOFTWARE.
         </pre>
         <hr />
-        <h2><a href="https://jquery.org">jQuery</a></h2>
+        <h2><a href="https://jquery.org" target="_blank">jQuery</a> by <a href="https://github.com/jquery" target="_blank">The jQuery Foundation</a> <small>(<a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 Copyright jQuery Foundation and other contributors, https://jquery.org/
@@ -144,7 +144,7 @@
                 the terms above.
         </pre>
         <hr />
-        <h2><a href="https://github.com/scottoffen/jquery.toaster">jQuery Toaster</a> by <a href="https://github.com/scottoffen">Scott Offen</a></h2>
+        <h2><a href="https://github.com/scottoffen/jquery.toaster" target="_blank">jQuery Toaster</a> by <a href="https://github.com/scottoffen" target="_blank">Scott Offen</a> <small>(<a href="https://github.com/scottoffen/jquery.toaster/blob/master/LICENSE" target="_blank">license</a>)</small></h2>
         <br />
         <pre>
                 Copyright 2014 Scott Offen
