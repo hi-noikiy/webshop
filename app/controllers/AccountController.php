@@ -177,11 +177,11 @@ class AccountController extends BaseController {
                                 ),
                                 array(
                                         'name'          => 'required',
-                                        'street'        => array('required', 'regex:[a-zA-Z0-9\s]'),
-                                        'postcode'      => array('required', 'regex:[a-zA-Z0-9\s]', 'digits_between:6,8'),
-                                        'city'          => array('required', 'regex:[a-zA-Z\s]'),
-                                        'telephone'     => array('regex:[0-9\s\-]'),
-                                        'mobile'        => array('regex:[0-9\s\-]')
+                                        'street'        => array('required', 'regex:/^[a-zA-Z0-9\s]+$/'),
+                                        'postcode'      => array('required', 'regex:/^[a-zA-Z0-9\s]+$/', 'between:6,8'),
+                                        'city'          => array('required', 'regex:/^[a-zA-Z\s]+$/'),
+                                        'telephone'     => array('regex:/^[0-9\s\-]+$/'),
+                                        'mobile'        => array('regex:/^[0-9\s\-]+$/')
                                 )
                         );
 
@@ -217,6 +217,11 @@ class AccountController extends BaseController {
                 }
         }
 
+        /**
+         * This function handles the removal of an address
+         *
+         * @return mixed
+         */
         public function removeAddress()
         {
                 if (Input::has('id'))
@@ -246,5 +251,314 @@ class AccountController extends BaseController {
         public function discountfile()
         {
                 return View::make('account.discountfile');
+        }
+
+        /**
+         * This will handle the requests for the generation of the discounts file
+         *
+         * @param $type
+         * @param $method
+         * @return mixed
+         */
+        public function generateFile($type, $method)
+        {
+                if ($type === 'icc')
+                {
+                        if ($method === 'download')
+                        {
+                                // Create a filesystem link to the temp file
+                                $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
+
+                                // Remove the file when finished
+                                App::finish(function($request, $response) use ($filename)
+                                {
+                                        unlink($filename);
+                                });
+
+                                File::put($filename, AccountController::discountICC());
+
+                                return Response::download($filename);
+
+                        } elseif ($method === 'mail')
+                        {
+                                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
+
+                                App::finish(function($request, $response) use ($filename)
+                                {
+                                        unlink($filename);
+                                });
+
+                                File::put($filename, AccountController::discountICC());
+
+                                Mail::send('email.discountfile', array(), function($message) use ($filename)
+                                {
+                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+
+                                        $message->attach($filename);
+                                });
+
+                                return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                        } else
+                        {
+                                return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
+                        }
+                } elseif ($type === 'csv')
+                {
+                        if ($method === 'download')
+                        {
+                                // Create a filesystem link to the temp file
+                                $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
+
+                                // Remove the file when finished
+                                App::finish(function($request, $response) use ($filename)
+                                {
+                                        unlink($filename);
+                                });
+
+                                File::put($filename, AccountController::discountCSV());
+
+                                return Response::download($filename);
+
+                        } elseif ($method === 'mail')
+                        {
+                                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
+
+                                App::finish(function($request, $response) use ($filename)
+                                {
+                                        unlink($filename);
+                                });
+
+                                File::put($filename, AccountController::discountCSV());
+
+                                Mail::send('email.discountfile', array(), function($message) use ($filename)
+                                {
+                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+
+                                        $message->attach($filename);
+                                });
+
+                                return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                        } else
+                        {
+                                return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
+                        }
+                } else
+                {
+                        return Redirect::to('account/discountfile')->with('error', 'Ongeldig bestands type');
+                }
+        }
+
+        /**
+         * This function will generate the data for the ICC file
+         *
+         * @return string
+         */
+        private function discountICC()
+        {
+                /**
+                 * These variables are static.
+                 * We only need to set them once
+                 */
+                $GLN = 8714253038995;
+                $empty1 = '       ';
+                $debiteur = Auth::user()->login;
+                $empty2 = '               ';
+                $date = date('Ymd');
+                $version = '1.1  ';
+                $name = Auth::user()->name;
+
+                /*
+                 * Used in the rows containing the discounts
+                 */
+                $korting2 = '00000';
+                $korting3 = '00000';
+                $nettoprijs = '000000000';
+                $startdatum = $date;
+                $einddatum = 99991231;
+
+                while (strlen($name) <= 70) {
+                        $name .= ' ';
+                }
+
+                $text = '';
+
+                /*
+                 * Append the "Groepsgebonden" discounts to the ICC file
+                 */
+                $query = DB::table('discounts')
+                        ->where('User_id', $debiteur)
+                        ->where('table', 'VA-220')
+                        ->where('group_desc', '!=', 'Vervallen');
+
+                $groep_korting = $query->get();
+                $count = $query->count();
+
+                foreach ($groep_korting as $korting) {
+                        $groepsnummer = $korting->product;
+                        while (strlen($groepsnummer) < 20) {
+                                $groepsnummer .= ' ';
+                        }
+                        $artikelnummer = '                    '; //20 empty positions
+                        $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+                        while (strlen($omschrijving) < 50) {
+                                $omschrijving .= ' ';
+                        }
+                        $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+                        while (strlen($korting1) < 5) {
+                                $korting1 .= '0';
+                        }
+
+                        $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+                }
+
+                /*
+                 * Append the "Standaard" discounts to the ICC file
+                 */
+                $query = DB::table('discounts')
+                        ->where('table', 'VA-221')
+                        ->where('group_desc', '!=', 'Vervallen')
+                        ->whereNotIn('product', function($query) use ($debiteur) {
+                                $query->select('product')
+                                        ->from('discounts')
+                                        ->where('table', 'VA-220')
+                                        ->where('User_Id', $debiteur);
+                        });
+
+                $default_korting = $query->get();
+                $count = $query->count() + $count;
+
+                foreach ($default_korting as $korting) {
+                        $groepsnummer = $korting->product;
+                        while (strlen($groepsnummer) < 20) {
+                                $groepsnummer .= ' ';
+                        }
+                        $artikelnummer = '                    '; //20 empty positions
+                        $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+                        while (strlen($omschrijving) < 50) {
+                                $omschrijving .= ' ';
+                        }
+                        $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+                        while (strlen($korting1) < 5) {
+                                $korting1 .= '0';
+                        }
+
+                        $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+                }
+
+                /*
+                 * Append the "Productgebonden" discounts to the ICC file
+                 */
+                $query = DB::table('discounts')
+                        ->where('User_id', $debiteur)
+                        ->where('table', 'VA-260');
+
+                $product_korting = $query->get();
+                $count = $query->count() + $count;
+
+                foreach ($product_korting as $korting) {
+                        $groepsnummer = '                    '; //20 empty positions
+                        $artikelnummer = $korting->product;
+                        while (strlen($artikelnummer) < 20) {
+                                $artikelnummer .= ' ';
+                        }
+                        $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+                        while (strlen($omschrijving) < 50) {
+                                $omschrijving .= ' ';
+                        }
+                        $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+                        while (strlen($korting1) < 5) {
+                                $korting1 .= '0';
+                        }
+
+                        $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+                }
+
+                /*
+                 * Prepend the first row last so the count doesnt mess up.
+                 */
+                $count = sprintf("%'06d", $count);
+                $text = $GLN . $empty1 . $debiteur . $empty2 . $date . $count . $version . $name . "\r\n" . $text;
+
+                return $text;
+        }
+
+        /**
+         * This function will generate the data for the CSV file
+         *
+         * @return string
+         */
+        private function discountCSV()
+        {
+                // Static variables
+                $firstRow 	= 'Artikelnr;Omschrijving;Kortingspercentage;ingangsdatum' . "\r\n";
+                $debiteur 	= Auth::user()->login;
+                $date		= date('Y-m-d');
+                $delimiter	= ';';
+
+                $text 		= $firstRow;
+
+                /*
+                 * Append the "Groepsgebonden" discounts to the CSV file
+                 */
+                $query = DB::table('discounts')
+                        ->where('User_id', $debiteur)
+                        ->where('table', 'VA-220')
+                        ->where('group_desc', '!=', 'Vervallen');
+
+                $groep_korting = $query->get();
+
+                foreach ($groep_korting as $korting) {
+                        $groepsnummer 	= $korting->product;
+                        $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+                        $korting1 	= $korting->discount . "%";
+
+                        $text 	       .= $groepsnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+                }
+
+                /*
+                 * Append the "Standaard" discounts to the CSV file
+                 */
+                $query = DB::table('discounts')
+                        ->where('table', 'VA-221')
+                        ->where('group_desc', '!=', 'Vervallen')
+                        ->whereNotIn('product', function($query) use ($debiteur) {
+                                $query->select('product')
+                                        ->from('discounts')
+                                        ->where('table', 'VA-220')
+                                        ->where('User_Id', $debiteur);
+                        });
+
+                $default_korting = $query->get();
+
+                foreach ($default_korting as $korting) {
+                        $groepsnummer 	= $korting->product;
+                        $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+                        $korting1 	= $korting->discount . "%";
+
+                        $text 	       .= $groepsnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+                }
+
+                /*
+                 * Append the "Productgebonden" discounts to the CSV file
+                 */
+                $query = DB::table('discounts')
+                        ->where('User_id', $debiteur)
+                        ->where('table', 'VA-260');
+
+                $product_korting = $query->get();
+
+                foreach ($product_korting as $korting) {
+                        $artikelnummer 	= $korting->product;
+                        $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+                        $korting1 	= $korting->discount . "%";
+
+                        $text 	       .= $artikelnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+                }
+
+                return $text;
         }
 }

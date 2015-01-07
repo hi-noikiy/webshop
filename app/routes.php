@@ -27,12 +27,13 @@ Route::get('/search', 'WebshopController@search');                      // Page 
 Route::get('/specials', 'WebshopController@specials');                  // Show only the specials
 Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
 
-Route::get('/account', 'AccountController@overview');                   // Account overview
-Route::get('/account/changepassword', 'AccountController@changePassGET');  // Change password page
-Route::get('/account/favorites', 'AccountController@favorites');        // Favorites
-Route::get('/account/orderhistory', 'AccountController@orderhistory');  // Order history
-Route::get('/account/addresslist', 'AccountController@addresslist');    // Addresslist
-Route::get('/account/discountfile', 'AccountController@discountfile');  // ICC/CSV Discount generation page
+Route::get('/account', 'AccountController@overview');                                   // Account overview
+Route::get('/account/changepassword', 'AccountController@changePassGET');               // Change password page
+Route::get('/account/favorites', 'AccountController@favorites');                        // Favorites
+Route::get('/account/orderhistory', 'AccountController@orderhistory');                  // Order history
+Route::get('/account/addresslist', 'AccountController@addresslist');                    // Addresslist
+Route::get('/account/discountfile', 'AccountController@discountfile');                  // ICC/CSV Discount generation page
+Route::get('/account/generate_{type}/{method}', 'AccountController@generateFile');      // Discount file generation handler
 
 Route::get('/cart', 'CartController@view');                             // Show the cart
 
