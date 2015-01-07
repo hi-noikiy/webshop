@@ -156,7 +156,7 @@ class AccountController extends BaseController {
                                         unset($currentFavorites[$key]);
 
                                         // Save the new favorites array to the database
-                                        $user = User::find(Auth:user()->id);
+                                        $user = User::find(Auth::user()->id);
                                         $user->favorites = serialize($currentFavorites);
                                         $user->save();
 
@@ -168,7 +168,7 @@ class AccountController extends BaseController {
                                         array_push($currentFavorites, $product);
 
                                         // Save the new favorites array to the database
-                                        $user = User::find(Auth:user()->id);
+                                        $user = User::find(Auth::user()->id);
                                         $user->favorites = serialize($currentFavorites);
                                         $user->save();
 

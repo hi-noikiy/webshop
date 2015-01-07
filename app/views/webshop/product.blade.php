@@ -195,7 +195,7 @@
 
 @section('extraJS')
         <script type="text/javascript">
-                $('#changeFav').hover( //The button on the product page
+                $('.changeFav').hover( //The button on the product page
                         function() { //Runs when the mouse enters the button
                                 var artNr = $('#changeFav').data("id");
 

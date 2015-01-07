@@ -45,4 +45,4 @@ Route::post('/account/changepassword', 'AccountController@changePassPOST'); // H
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
 Route::post('/account/removeAddress', 'AccountController@removeAddress');   // Remove address from the database
 Route::post('/account/modFav', 'AccountController@modFav');                 // Change the favorites
-Route::post('/account/isFav', 'AccountController@isDav');                   // Check the product array
+Route::post('/account/isFav', 'AccountController@isFav');                   // Check the product array
