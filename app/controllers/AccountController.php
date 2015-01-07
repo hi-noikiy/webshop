@@ -166,19 +166,51 @@ class AccountController extends BaseController {
                         $telephone      = (Input::has('telephone') ? Input::get('telephone') : '');
                         $mobile         = (Input::has('mobile') ? Input::get('mobile') : '');
 
-                        $address = new Address;
+                        $validator = Validator::make(
+                                array(
+                                        'name'          => $name,
+                                        'street'        => $street,
+                                        'postcode'      => $postcode,
+                                        'city'          => $city,
+                                        'telephone'     => $telephone,
+                                        'mobile'        => $mobile
+                                ),
+                                array(
+                                        'name'          => 'required',
+                                        'street'        => array('required', 'regex:[a-zA-Z0-9\s]'),
+                                        'postcode'      => array('required', 'regex:[a-zA-Z0-9\s]', 'digits_between:6,8'),
+                                        'city'          => array('required', 'regex:[a-zA-Z\s]'),
+                                        'telephone'     => array('regex:[0-9\s\-]'),
+                                        'mobile'        => array('regex:[0-9\s\-]')
+                                )
+                        );
 
-                        $address->name          = $name;
-                        $address->street        = $street;
-                        $address->postcode      = $postcode;
-                        $address->city          = $city;
-                        $address->telephone     = $telephone;
-                        $address->mobile        = $mobile;
-                        $address->User_id       = Auth::user()->login;
+                        if (!$validator->fails())
+                        {
+                                $address = new Address;
 
-                        $address->save();
+                                $address->name          = $name;
+                                $address->street        = $street;
+                                $address->postcode      = $postcode;
+                                $address->city          = $city;
+                                $address->telephone     = $telephone;
+                                $address->mobile        = $mobile;
+                                $address->User_id       = Auth::user()->login;
 
-                        return Redirect::to('account/addresslist')->with('success', 'Het adres is toegevoegd');
+                                $address->save();
+
+                                return Redirect::to('account/addresslist')->with('success', 'Het adres is toegevoegd');
+                        } else
+                        {
+                                $messages = $validator->messages();
+                                $msg = '';
+
+                                foreach($messages->all() as $key => $message)
+                                        $msg .= ucfirst($message) . "<br />";
+
+                                return Redirect::to('account/addresslist')->with('error', $msg);
+                        }
+
                 } else
                 {
                         return Redirect::to('account/addresslist')->with('error', 'Een of meer vereiste velden zijn leeg');
