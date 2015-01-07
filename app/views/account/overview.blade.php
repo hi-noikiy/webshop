@@ -10,7 +10,7 @@
                         @include('account.sidebar')
                 </div>
                 <div class="col-md-9">
-                        <table class="table table-striped">
+                        <table class="table">
                                 <tr>
                                         <td><b>Inlognaam</b></td>
                                         <td>{{ Auth::user()->login }}</td>
@@ -20,12 +20,12 @@
                                         <td>{{ Auth::user()->company }}</td>
                                 </tr>
                                 <tr>
-                                        <td><b>Gekoppelde E-Mail adres</b></td>
+                                        <td><b>Correspondentie adres</b></td>
                                         <td>{{ Auth::user()->email }}</td>
                                 </tr>
                                 <tr>
                                         <td><b>Aantal bestellingen</b></td>
-                                        <td>0</td>
+                                        <td>{{ $orderCount }}</td>
                                 </tr>
                         </table>
                 </div>

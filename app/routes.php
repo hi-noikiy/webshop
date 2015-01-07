@@ -28,7 +28,7 @@ Route::get('/specials', 'WebshopController@specials');                  // Show 
 Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
 
 Route::get('/account', 'AccountController@overview');                   // Account overview
-Route::get('/account/changepassword', 'AccountController@changePass');  // Change password page
+Route::get('/account/changepassword', 'AccountController@changePassGET');  // Change password page
 Route::get('/account/favorites', 'AccountController@favorites');        // Favorites
 Route::get('/account/orderhistory', 'AccountController@orderhistory');  // Order history
 Route::get('/account/addresslist', 'AccountController@addresslist');    // Addresslist
@@ -39,3 +39,5 @@ Route::get('/cart', 'CartController@view');                             // Show 
 // POST Requests will be handled here
 Route::post('/login', 'WebshopController@login');                       // Login handler
 Route::post('/forgotpassword', 'WebshopController@resetPassword');      // Password reset handler
+
+Route::post('/account/changepassword', 'AccountController@changePassPOST');

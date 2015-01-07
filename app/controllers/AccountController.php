@@ -37,17 +37,54 @@ class AccountController extends BaseController {
          */
         public function overview()
         {
-                return View::make('account.overview');
+                $orderCount = DB::table('orders')->where('User_id', Auth::user()->login)->count();
+
+                return View::make('account.overview', array('orderCount' => $orderCount));
         }
 
         /**
-         * The change password page
+         * The change password page (GET Request)
          *
          * @return mixed
          */
-        public function changePass()
+        public function changePassGET()
         {
                 return View::make('account.changePass');
+        }
+
+        public function changePassPOST()
+        {
+                if (Input::has('oldPass') && Input::has('newPass') && Input::has('newPassVerify'))
+                {
+                        $oldPass        = Input::get('oldPass');
+                        $newPass        = Input::get('newPass');
+                        $newPassVerify  = Input::get('newPassVerify');
+
+                        if (Auth::validate(array('login' => Auth::user()->login, 'password' => $oldPass)))
+                        {
+                                if ($newPass === $newPassVerify)
+                                {
+                                        $hashedPass     = Hash::make($newPass);
+                                        $user           = User::find(Auth::id());
+
+                                        $user->password = $hashedPass;
+
+                                        $user->save();
+
+                                        return Redirect::to('account')->with('success', 'Uw wachtwoord is gewijzigd');
+                                } else
+                                {
+                                        return Redirect::to('account/changepassword')->with('error', 'De nieuwe wachtwoorden komen niet overeen');
+                                }
+                        } else
+                        {
+                                Log::warning('User: ' . Auth::user()->login . ' tried to change password but entered the wrong password.');
+                                return Redirect::to('account/changepassword')->with('error', 'Het oude wachtwoord is onjuist!');
+                        }
+                } else
+                {
+                        return Redirect::to('account/changepassword')->with('error', 'Niet alle velden zijn ingevuld');
+                }
         }
 
         /**
