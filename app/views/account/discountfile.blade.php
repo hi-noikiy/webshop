@@ -13,7 +13,7 @@
                         <h3>ICC Bestand</h3>
                         <div class="btn-group btn-group-justified">
                                 <div class="btn-group">
-                                        <a class="btn btn-default" href="/account/generate_icc/download'">Downloaden</a>
+                                        <a class="btn btn-default" href="/account/generate_icc/download">Downloaden</a>
                                 </div>
                                 <div class="btn-group">
                                         <a class="btn btn-default" href="/account/generate_icc/mail">Mailen</a>
@@ -25,7 +25,7 @@
                         <h3>CSV Bestand</h3>
                         <div class="btn-group btn-group-justified">
                                 <div class="btn-group">
-                                        <a class="btn btn-default" href="/account/generate_csv/download'">Downloaden</a>
+                                        <a class="btn btn-default" href="/account/generate_csv/download">Downloaden</a>
                                 </div>
                                 <div class="btn-group">
                                         <a class="btn btn-default" href="/account/generate_csv/mail">Mailen</a>
