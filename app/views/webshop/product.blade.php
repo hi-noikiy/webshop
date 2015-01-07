@@ -193,3 +193,64 @@
         </style>
 @stop
 
+@section('extraJS')
+        <script type="text/javascript">
+                $('#changeFav').hover( //The button on the product page
+                        function() { //Runs when the mouse enters the button
+                                var artNr = $('#changeFav').data("id");
+
+                                $.ajax({
+                                        url: "/account/isFav",
+                                        type: "POST",
+                                        dataType: "text",
+                                        data: {product : artNr},
+                                        success: function (data) {
+                                                if (data === 'IN_ARRAY') {
+                                                        $("#defaultFav").hide();
+                                                        $("#okFav").hide();
+                                                        $("#addFav").hide();
+                                                        $("#removeFav").show();
+                                                } else if (data === 'NOT_IN_ARRAY') {
+                                                        $("#defaultFav").hide();
+                                                        $("#okFav").hide();
+                                                        $("#removeFav").hide();
+                                                        $("#addFav").show();
+                                                } else if (data === 'ERROR') {
+                                                        alert("Something went wrong");
+                                                }
+                                        }
+                                });
+                        }, function() { //Runs when the mouse leaves the button
+                                $("#removeFav").hide();
+                                $("#addFav").hide();
+                                $("#okFav").hide();
+                                $("#defaultFav").show();
+                        }
+                );
+
+                $('#changeFav').click(function() { //The button the the product page and the fav list
+                        var artNr = $('#changeFav').data("id");
+
+                        $.ajax({
+                                url: "/account/modFav",
+                                type: "POST",
+                                dataType: "text",
+                                data: {product : artNr},
+                                success: function (data) {
+                                        if (data === 'SUCCESS') {
+                                                $("#removeFav").hide();
+                                                $("#addFav").hide();
+                                                $("#defaultFav").hide();
+                                                $("#okFav").show();
+
+                                                if ($('#changeFav').data("refresh") === true) {
+                                                        location.reload(); // refresh the page
+                                                }
+                                        } else if (data === 'ERROR') {
+                                                alert("Something went wrong");
+                                        }
+                                }
+                        });
+                });
+        </script>
+@stop

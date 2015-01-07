@@ -127,6 +127,106 @@ class AccountController extends BaseController {
         }
 
         /**
+         * This will be accessed by AJAX
+         * and will update the favorites
+         *
+         * @return mixed
+         */
+        public function modFav()
+        {
+                if (Request::ajax())
+                {
+                        $product = Input::get('product');
+
+                        $validator = Validator::make(
+                                array('product' => $product),
+                                array('product' => array('required', 'digits:7'))
+                        );
+
+                        if (!$validator->fails())
+                        {
+                                $currentFavorites = unserialize(Auth::user()->favorites);
+
+                                // Remove the product from the favorites if it is already in
+                                if (in_array($product, $currentFavorites))
+                                {
+                                        $key = array_search($product, $currentFavorites);
+
+                                        // Remove the product from the favorites array
+                                        unset($currentFavorites[$key]);
+
+                                        // Save the new favorites array to the database
+                                        $user = User::find(Auth:user()->id);
+                                        $user->favorites = serialize($currentFavorites);
+                                        $user->save();
+
+                                        echo 'SUCCESS';
+                                        exit();
+                                } else
+                                {
+                                        // Add the product to the favorites array
+                                        array_push($currentFavorites, $product);
+
+                                        // Save the new favorites array to the database
+                                        $user = User::find(Auth:user()->id);
+                                        $user->favorites = serialize($currentFavorites);
+                                        $user->save();
+
+                                        echo 'SUCCESS';
+                                        exit();
+                                }
+                        } else
+                        {
+                                echo 'FAILED';
+                                exit();
+                        }
+                } else
+                {
+                        return Redirect::back()->with('error', 'Geen AJAX verzoek!');
+                }
+        }
+
+        /**
+         * Check if the product is in the favorites array
+         *
+         * @return mixed
+         */
+        public function isFav()
+        {
+                if (Request::ajax())
+                {
+                        $product = Input::get('product');
+
+                        $validator = Validator::make(
+                                array('product' => $product),
+                                array('product' => array('required', 'digits:7'))
+                        );
+
+                        if (!$validator->fails())
+                        {
+                                $currentFavorites = unserialize(Auth::user()->favorites);
+
+                                if (in_array($product, $currentFavorites))
+                                {
+                                        echo 'IN_ARRAY';
+                                        exit();
+                                } else
+                                {
+                                        echo 'NOT_IN_ARRAY';
+                                        exit();
+                                }
+                        } else
+                        {
+                                echo 'FAILED';
+                                exit();
+                        }
+                } else
+                {
+                        return Redirect::back()->with('error', 'Geen AJAX verzoek!');
+                }
+        }
+
+        /**
          * This page will show the orderhistory
          *
          * @return mixed
