@@ -160,7 +160,7 @@
 
                                 @if(Session::has('success'))
                                         var msg = '{{ Session::get('success') }}';
-                                        $.toaster({ priority : 'danger', title : 'Error', message : msg, timeout : 3000 });
+                                        $.toaster({ priority : 'success', title : 'Succes', message : msg, timeout : 3000 });
                                 @endif
 
                                 $(function () {

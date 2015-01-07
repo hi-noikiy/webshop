@@ -40,4 +40,6 @@ Route::get('/cart', 'CartController@view');                             // Show 
 Route::post('/login', 'WebshopController@login');                       // Login handler
 Route::post('/forgotpassword', 'WebshopController@resetPassword');      // Password reset handler
 
-Route::post('/account/changepassword', 'AccountController@changePassPOST');
+Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
+Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
+Route::post('/account/removeAddress', 'AccountController@removeAddress');   // Remove address from the database

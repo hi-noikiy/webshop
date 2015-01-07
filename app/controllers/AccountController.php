@@ -151,6 +151,62 @@ class AccountController extends BaseController {
         }
 
         /**
+         * Handle the add address request
+         *
+         * @return mixed
+         */
+        public function addAddress()
+        {
+                if (Input::has('name') && Input::has('street') && Input::has('postcode') && Input::has('city'))
+                {
+                        $name           = Input::get('name');
+                        $street         = Input::get('street');
+                        $postcode       = Input::get('postcode');
+                        $city           = Input::get('city');
+                        $telephone      = (Input::has('telephone') ? Input::get('telephone') : '');
+                        $mobile         = (Input::has('mobile') ? Input::get('mobile') : '');
+
+                        $address = new Address;
+
+                        $address->name          = $name;
+                        $address->street        = $street;
+                        $address->postcode      = $postcode;
+                        $address->city          = $city;
+                        $address->telephone     = $telephone;
+                        $address->mobile        = $mobile;
+                        $address->User_id       = Auth::user()->login;
+
+                        $address->save();
+
+                        return Redirect::to('account/addresslist')->with('success', 'Het adres is toegevoegd');
+                } else
+                {
+                        return Redirect::to('account/addresslist')->with('error', 'Een of meer vereiste velden zijn leeg');
+                }
+        }
+
+        public function removeAddress()
+        {
+                if (Input::has('id'))
+                {
+                        $address = Address::find(Input::get('id'));
+
+                        if (!empty($address) && $address->User_id === Auth::user()->login)
+                        {
+                                $address->delete();
+
+                                return Redirect::to('account/addresslist')->with('success', 'Het adres is verwijderd');
+                        } else
+                        {
+                                return Redirect::to('account/addresslist')->with('error', 'Het adres bestaat niet of behoort niet bij uw account');
+                        }
+                } else
+                {
+                        return Redirect::to('account/addresslist')->with('error', 'Geen adres id aangegeven');
+                }
+        }
+
+        /**
          * The user is able to download their discounts file from here in ICC and CSV format
          *
          * @return mixed

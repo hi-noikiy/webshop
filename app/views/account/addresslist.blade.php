@@ -15,25 +15,25 @@
                                         </div>
                                         <div class="modal-body">
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Naam</label>
+                                                        <label for="inputName" class="col-sm-2 control-label">Naam*</label>
                                                         <div class="col-sm-10">
                                                                 <input type="text" name="name" class="form-control" id="inputName" placeholder="Naam" maxlength="100" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Straat + Huisnr</label>
+                                                        <label for="inputStraat" class="col-sm-2 control-label">Straat + Huisnr*</label>
                                                         <div class="col-sm-10">
                                                                 <input type="text" name="street" class="form-control" id="inputStraat" placeholder="Straat + Huisnr" maxlength="50" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputPostcode" class="col-sm-2 control-label">Postcode</label>
+                                                        <label for="inputPostcode" class="col-sm-2 control-label">Postcode*</label>
                                                         <div class="col-sm-10">
-                                                                <input type="text" name="postcode" class="form-control" id="inputPostcode" placeholder="Postcode (1234 AB)" maxlength="7" required>
+                                                                <input type="text" name="postcode" class="form-control" id="inputPostcode" placeholder="Postcode (XXXX YY)" maxlength="7" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Plaats</label>
+                                                        <label for="inputStraat" class="col-sm-2 control-label">Plaats*</label>
                                                         <div class="col-sm-10">
                                                                 <input type="text" name="city" class="form-control" id="inputPlaats" placeholder="Plaats" maxlength="30" required>
                                                         </div>
@@ -86,14 +86,14 @@
                                         @foreach ($addresslist as $address)
                                                 <tr>
                                                         <td>{{{ $address->name }}}</td>
-                                                        <td><?php echo $address['Straat']; ?></td>
-                                                        <td><?php echo $address['Postcode']; ?></td>
-                                                        <td><?php echo $address['Plaats']; ?></td>
-                                                        <td><?php echo $address['Telephone']; ?></td>
-                                                        <td><?php echo $address['Mobile']; ?></td>
+                                                        <td>{{{ $address->street }}}</td>
+                                                        <td>{{{ $address->postcode }}}</td>
+                                                        <td>{{{ $address->city }}}</td>
+                                                        <td>{{{ $address->telephone }}}</td>
+                                                        <td>{{{ $address->mobile }}}</td>
                                                         <td>
                                                                 <form action="/account/removeAddress" method="POST">
-                                                                        <input class="hidden" value="<?php echo $address['Id']; ?>" name="id">
+                                                                        <input class="hidden" value="{{{ $address->id }}}" name="id">
                                                                         <button type="submit" class="btn btn-danger">
                                                                                 <span class="glyphicon glyphicon-remove"></span>
                                                                         </button>
