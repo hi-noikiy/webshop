@@ -50,3 +50,7 @@ The laravel-debugbar by barryvdh license can be found [here](https://github.com/
 The LaravelShoppingcart by Crinsane license can be found [here](https://github.com/Crinsane/LaravelShoppingcart/blob/master/LICENSE)
 
 The Twitter Bootstrap license can be found [here](https://github.com/twbs/bootstrap/blob/master/LICENSE)
+
+The jQuery license can be found [here](https://jquery.org/license/)
+
+The jQuery Toaster license can be found [here](https://github.com/scottoffen/jquery.toaster/blob/master/LICENSE)
