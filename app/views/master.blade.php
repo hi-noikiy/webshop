@@ -33,7 +33,7 @@
                                                         <div class="form-group">
                                                                 <label for="inputUsername" class="col-sm-2 control-label">Login</label>
                                                                 <div class="col-sm-10">
-                                                                        <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{ Session::get('username') }}" @endif>
+                                                                        <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{{ Session::get('username') }}}" @endif>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
@@ -91,7 +91,7 @@
 
                                 <ul class="nav navbar-nav navbar-right">
                                         @if(Auth::check())
-                                                <li><a href="/cart" style="height: 50px">Winkelwagen <span class="badge">1{{-- $cart_product_count --}}</span></a></li>
+                                                <li><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
                                                 <li class="dropdown">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
                                                         <ul class="dropdown-menu" role="menu">
@@ -142,7 +142,7 @@
 
                 <footer>
                         <div class="text-center">
-                                <div class="glyphicon glyphicon-copyright-mark"></div> Wiringa Technische Groothandel (2014 - 2015) - <a href="#">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a>
+                                <div class="glyphicon glyphicon-copyright-mark"></div> Wiringa Technische Groothandel (2014 - 2015) | <a href="#">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                                 <p><small>Alle leveringen geschieden volgens onze algemene verkoopvoorwaarden gedeponeerd ter griffie van de arrondissementsrechtbank te Groningen onder nummer HK-255/93.</small></p>
                         </div>
 
@@ -175,7 +175,5 @@
                         </script>
                 </footer>
         </div>
-
-
 </body>
 </html>

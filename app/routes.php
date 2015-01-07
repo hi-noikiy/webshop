@@ -16,6 +16,7 @@ Route::get('/', 'HomeController@home');                                 // Homep
 Route::get('/about', 'HomeController@about');                           // About us
 Route::get('/contact', 'HomeController@contact');                       // Contact
 Route::get('/downloads', 'HomeController@downloads');                   // Downloads
+Route::get('/licenses', 'HomeController@licenses');                     // Licenses
 
 Route::get('/login', 'WebshopController@loginPage');                    // Login page
 Route::get('/logout', 'WebshopController@logout');                      // Logout the current user
