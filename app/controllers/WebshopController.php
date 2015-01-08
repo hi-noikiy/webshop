@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class WebshopController extends BaseController {
 
         /*
@@ -116,6 +118,9 @@ class WebshopController extends BaseController {
         {
                 $product  = Product::where('number', $product_Id)->firstOrFail();
                 $discount = (Auth::check() ? getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+
+                if (preg_match("/search/", Request::server('HTTP_REFERER')))
+                        Session::put('continueShopping', Request::server('HTTP_REFERER'));
 
                 return View::make('webshop.product', array(
                                 'productData' => $product,
@@ -257,5 +262,134 @@ class WebshopController extends BaseController {
                                 'scriptTime'    => round(microtime(true) - $startTime, 4)
                         )
                 );
+        }
+
+        /**
+         * Show the cart
+         *
+         * @return mixed
+         */
+        public function viewCart()
+        {
+                $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
+
+                return View::make('webshop.cart', array('cart' => Cart::content(), 'addresses' => $addresses));
+        }
+
+        /**
+         * Add a product to the cart
+         *
+         * @return mixed
+         */
+        public function addToCart()
+        {
+                $number  = Input::get('product');
+                $qty     = Input::get('qty');
+
+                $validator = Validator::make(
+                        array(
+                                'product'       => $number,
+                                'qty'           => $qty
+                        ),
+                        array(
+                                'product'       => array('required', 'digits:7'),
+                                'qty'           => array('required', 'numeric')
+                        )
+                );
+
+                if (!$validator->fails())
+                {
+                        App::error(function(ModelNotFoundException $e) use ($number)
+                        {
+                                return Redirect::back()->with('error', 'Geen product gevonden met nummer: ' . $number);
+                        });
+
+                        $product = Product::where('number', $number)->firstOrFail();
+
+                        Cart::add(
+                                array(
+                                        'id' => $product->number,
+                                        'name' => $product->name,
+                                        'qty' => $qty,
+                                        'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                                        'options' => array(
+                                                'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                        )
+                                )
+                        );
+
+                        return Redirect::to('cart/view');
+                }
+        }
+
+        /**
+         * Modify or remove a product from the cart
+         *
+         * @return mixed
+         */
+        public function updateCart()
+        {
+                $rowId   = Input::get('rowId');
+                $qty     = Input::get('qty');
+
+                $validator = Validator::make(
+                        array(
+                                'rowId'         => $rowId,
+                                'qty'           => $qty
+                        ),
+                        array(
+                                'rowId'         => array('required'),
+                                'qty'           => array('required', 'numeric')
+                        )
+                );
+
+                if (!$validator->fails())
+                {
+                        if (Input::get('edit') === "")
+                        {
+                                Cart::update($rowId, array('qty' => $qty));
+
+                                return Redirect::to('cart/view')->with('success', 'Uw winkelwagen is geupdatet');
+                        } elseif (Input::get('remove') === "")
+                        {
+                                Cart::remove($rowId);
+
+                                return Redirect::to('cart/view')->with('success', 'Het product is verwijderd');
+                        } else
+                        {
+                                return Redirect::to('cart/view')->with('error', 'Er is een fout opgetreden');
+                        }
+                } else
+                {
+                        $messages = $validator->messages();
+                        $msg = '';
+
+                        foreach($messages->all() as $key => $message)
+                                $msg .= ucfirst($message) . "<br />";
+
+                        return Redirect::to('cart/view')->with('error', $msg);
+                }
+        }
+
+        /**
+         * To destroy or not to destroy
+         *
+         * @return mixed
+         */
+        public function cartDestroy()
+        {
+                // Cart::destroy() returns NULL, issue:
+                // https://github.com/Crinsane/LaravelShoppingcart/issues/56
+                if (!Cart::destroy())
+                {
+                        $user = User::find(Auth::user()->id);
+                        $user->cart = '';
+                        $user->save();
+
+                        return Redirect::to('/')->with('success', 'Uw winkelwagen is geleegd');
+                } else
+                {
+                        return Redirect::to('cart/view')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
+                }
         }
 }
