@@ -53,10 +53,10 @@
                                         </div>
                                         <div class="modal-footer">
                                                 <div class="row">
-                                                        <div class="col-lg-6">
+                                                        <div class="col-sm-6">
                                                                 <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Annuleren</button>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-sm-6">
                                                                 <button type="submit" class="btn btn-success btn-block">Toevoegen</button>
                                                         </div>
                                                 </div>
