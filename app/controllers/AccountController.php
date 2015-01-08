@@ -299,7 +299,7 @@ class AccountController extends BaseController {
 
                                 $address->save();
 
-                                return Redirect::to('account/addresslist')->with('success', 'Het adres is toegevoegd');
+                                return Redirect::back()->with('success', 'Het adres is toegevoegd');
                         } else
                         {
                                 $messages = $validator->messages();
@@ -308,12 +308,12 @@ class AccountController extends BaseController {
                                 foreach($messages->all() as $key => $message)
                                         $msg .= ucfirst($message) . "<br />";
 
-                                return Redirect::to('account/addresslist')->with('error', $msg);
+                                return Redirect::back()->with('error', $msg);
                         }
 
                 } else
                 {
-                        return Redirect::to('account/addresslist')->with('error', 'Een of meer vereiste velden zijn leeg');
+                        return Redirect::back()->with('error', 'Een of meer vereiste velden zijn leeg');
                 }
         }
 
