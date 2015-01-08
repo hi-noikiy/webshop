@@ -26,6 +26,8 @@ Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Produ
 Route::get('/search', 'WebshopController@search');                      // Page with the search results
 Route::get('/specials', 'WebshopController@specials');                  // Show only the specials
 Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
+Route::get('/cart/view', 'WebshopController@viewCart');                 // Show the cart
+Route::get('/cart/destroy', 'WebshopController@cartDestroy');           // Remove all items from the cart
 
 Route::get('/account', 'AccountController@overview');                                   // Account overview
 Route::get('/account/changepassword', 'AccountController@changePassGET');               // Change password page
@@ -35,11 +37,11 @@ Route::get('/account/addresslist', 'AccountController@addresslist');            
 Route::get('/account/discountfile', 'AccountController@discountfile');                  // ICC/CSV Discount generation page
 Route::get('/account/generate_{type}/{method}', 'AccountController@generateFile');      // Discount file generation handler
 
-Route::get('/cart', 'CartController@view');                             // Show the cart
-
 // POST Requests will be handled here
-Route::post('/login', 'WebshopController@login');                       // Login handler
-Route::post('/forgotpassword', 'WebshopController@resetPassword');      // Password reset handler
+Route::post('/login', 'WebshopController@login');                           // Login handler
+Route::post('/forgotpassword', 'WebshopController@resetPassword');          // Password reset handler
+Route::post('/cart/add', 'WebshopController@addToCart');                    // Add product to cart
+Route::post('/cart/update', 'WebshopController@updateCart');                // Update or remove product from cart
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
