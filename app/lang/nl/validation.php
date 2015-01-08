@@ -106,6 +106,7 @@ return array(
                 'city'          => 'Plaats',
                 'telephone'     => 'Telefoon',
                 'mobile'        => 'Mobiel',
+                'qty'           => 'Aantal',
         ),
 
 );
