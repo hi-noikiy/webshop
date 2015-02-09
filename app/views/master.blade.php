@@ -98,6 +98,7 @@
                                                                 <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
                                                                 <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
                                                                 <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                                                <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
                                                                 <li class="divider"></li>
                                                                 <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
                                                         </ul>

@@ -550,6 +550,39 @@ class AccountController extends BaseController {
                 }
 
                 /*
+                 * Append the "Global Product" discounts to the ICC file
+                 */
+                $query = DB::table('discounts')
+                        ->where('table', 'VA-261')
+                        ->whereNotIn('product', function($query) use ($debiteur) {
+                        $query->select('product')
+                                ->from('discounts')
+                                ->where('table', 'VA-260')
+                                ->where('User_Id', $debiteur);
+                });
+
+                $product_korting = $query->get();
+                $count = $query->count() + $count;
+
+                foreach ($product_korting as $korting) {
+                        $groepsnummer = '                    '; //20 empty positions
+                        $artikelnummer = $korting->product;
+                        while (strlen($artikelnummer) < 20) {
+                                $artikelnummer .= ' ';
+                        }
+                        $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+                        while (strlen($omschrijving) < 50) {
+                                $omschrijving .= ' ';
+                        }
+                        $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+                        while (strlen($korting1) < 5) {
+                                $korting1 .= '0';
+                        }
+
+                        $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+                }
+
+                /*
                  * Append the "Productgebonden" discounts to the ICC file
                  */
                 $query = DB::table('discounts')

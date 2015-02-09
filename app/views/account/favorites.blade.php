@@ -72,8 +72,8 @@
                                                         </div>
                                                 </div>
                                         </div>
+                                        <?php $counter++; ?>
                                 @endforeach
-                        <?php $counter++; ?>
                         @endif
                 </div>
         </div>

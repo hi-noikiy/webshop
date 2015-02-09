@@ -64,6 +64,14 @@ function price_per($code) {
         }
 }
 
+/**
+ * Get all the discounts for a specific user
+ *
+ * @param $userId
+ * @param int $group
+ * @param int $product
+ * @return array
+ */
 function getProductDiscount($userId, $group = 0 , $product = 0)
 {
         $discountarray = array();
@@ -86,6 +94,12 @@ function getProductDiscount($userId, $group = 0 , $product = 0)
                 $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
 
         // Overwrite the previous data with the discounts linked to the product number
+        $productDiscounts = DB::table('discounts')->select('discount', 'product')->where('table', 'VA-261')->get();
+
+        foreach ($productDiscounts as $discount)
+                $discountarray[$discount->product] = preg_replace("/\,/", ".", $discount->discount);
+
+        // Overwrite the previous data with the discounts linked to the product number and to the customer
         $productDiscounts = DB::table('discounts')->select('discount', 'User_Id', 'product')->where('table', 'VA-260')->where('User_Id', $userId)->get();
 
         foreach ($productDiscounts as $discount)
