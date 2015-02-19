@@ -102,22 +102,23 @@
 html, body {
         height: 100%;
         font-size: 16px;
-        font-weight: 300 !important;
-        font-family: 'Lato', sans-serif;
+        letter-spacing: 1px;
+        font-weight: 300;
+        font-family: "Dosis",sans-serif;
         overflow-x: hidden;
         background-image: url("../img/star-bg.png");
+
+        & > .container {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                padding-top: 20px;
+                background-color: white;
+                border-radius: 0 0 10px 10px;
+        }
 }
 
 b {
-        font-weight: 400;
-}
-
-body > .container {
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-        padding-top: 20px;
-        background-color: white;
-        border-radius: 0 0 10px 10px;
+        font-weight: 600;
 }
 
 .row {
@@ -181,6 +182,7 @@ img {
         box-shadow: 0 1px 0 rgba(255,255,255,.1);
         height: 50px;
         margin: 0;
+        text-transform: uppercase;
 
         .navbar-collapse {
                 border-color: @dark-red;
