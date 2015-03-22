@@ -36,6 +36,7 @@ class CreateProductsTable extends Migration {
 			$table->decimal('special_price', 10, 2);	// DECIMAL(10,2) : Static price, ignores discounts
 			$table->string('action_type', 10);		// VARCHAR(10)	 : Type of action. Example: Temporary discount or clearing
 			$table->string('keywords', 40);			// VARCHAR(40)	 : Extra search keywords
+                        $table->string('related_products', 50);         // VARCHAR(50)   : Comma separated list of related product numbers
 			$table->timestamps();
 		});
 	}
