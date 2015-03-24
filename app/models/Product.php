@@ -16,4 +16,11 @@ class Product extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'products';
 
+        /**
+         * The guarded columns in the table
+         *
+         * @var array
+         */
+        protected $guarded = array('id');
+
 }

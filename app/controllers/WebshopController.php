@@ -116,15 +116,28 @@ class WebshopController extends BaseController {
          */
         public function showProduct($product_Id)
         {
-                $product  = Product::where('number', $product_Id)->firstOrFail();
-                $discount = (Auth::check() ? getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+                $product                = Product::where('number', $product_Id)->firstOrFail();
+                $discount               = (Auth::check() ? getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+                $prevPage               = Input::get('ref');
+
+                if ($product->related_products)
+                {
+                        foreach(explode(',', $product->related_products) as $related_product)
+                                $related_products[] = Product::where('number', $related_product)->first();
+                } else
+                {
+                        $related_products = NULL;
+                }
+
 
                 if (preg_match("/search/", Request::server('HTTP_REFERER')))
                         Session::put('continueShopping', Request::server('HTTP_REFERER'));
 
                 return View::make('webshop.product', array(
-                                'productData' => $product,
-                                'discount' => $discount
+                                'productData'           => $product,
+                                'discount'              => $discount,
+                                'related_products'      => $related_products,
+                                'prevPage'              => $prevPage
                         )
                 );
         }
@@ -285,6 +298,7 @@ class WebshopController extends BaseController {
         {
                 $number  = Input::get('product');
                 $qty     = Input::get('qty');
+                $ref     = Input::get('ref');
 
                 $validator = Validator::make(
                         array(
@@ -318,7 +332,10 @@ class WebshopController extends BaseController {
                                 )
                         );
 
-                        return Redirect::to('cart/view');
+                        if ($ref)
+                                return Redirect::to($ref)->with('success', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
+                        else
+                                return Redirect::to('cart/view');
                 }
         }
 

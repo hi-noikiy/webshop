@@ -23,6 +23,7 @@
 
                                 <!-- Non editable form data -->
                                 <input class="hidden" name="product" value="{{ $productData->number }}">
+                                <input class="hidden" name="ref" value="{{ Input::get('ref') }}">
 
                                 <div class="modal-dialog">
                                         <div class="modal-content">
@@ -91,7 +92,7 @@
         <div class="row">
                 <div class="col-md-4" id="image">
                         <div class="well well-lg text-center">
-                                <img src="/img/{{ $productData->image }}" alt="{{ $productData->image }}" class="product-image">
+                                <img src="/img/product/{{ $productData->image }}" alt="{{ $productData->image }}" class="product-image">
                                 @if (isset($actie))
                                         <img src="/img/actie.png" class="actie-image hidden-xs">
                                 @endif
@@ -178,20 +179,39 @@
                         </div>
                 </div>
         </div>
+
+        @if ($related_products !== NULL)
+                <hr />
+
+                <h2>Verwante artikelen</h2>
+
+                <table class="table">
+                        <tbody>
+                                @foreach($related_products as $relatedProduct)
+                                        <tr>
+                                                <td class="product-thumbnail"><img src="/img/product/{{ $relatedProduct->image }}"></td>
+                                                <td>
+                                                        <a href="/product/{{ $relatedProduct->number }}?ref=/product/{{ $productData->number }}">{{ $relatedProduct->name }}</a>
+                                                </td>
+                                        </tr>
+                                @endforeach
+                        </tbody>
+                </table>
+        @endif
 @stop
 
 @section('extraCSS')
         <style type="text/css">
                 .panel-body {
-                        padding: 0px !important;
+                        padding: 0 !important;
                 }
         </style>
 @stop
 
 @section('extraJS')
         <script type="text/javascript">
-                $('.changeFav').hover( //The button on the product page
-                        function() { //Runs when the mouse enters the button
+                $('.changeFav').hover( // The button on the product page
+                        function() {   // Runs when the mouse enters the button
                                 var artNr = $('#changeFav').data("id");
 
                                 $.ajax({
@@ -215,7 +235,7 @@
                                                 }
                                         }
                                 });
-                        }, function() { //Runs when the mouse leaves the button
+                        }, function() { // Runs when the mouse leaves the button
                                 $("#removeFav").hide();
                                 $("#addFav").hide();
                                 $("#okFav").hide();

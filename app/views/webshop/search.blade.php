@@ -97,7 +97,7 @@
                                 @endif
 
                                 <tr>
-                                        <td class="product-thumbnail"><img src="/img/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                                        <td class="product-thumbnail"><img src="/img/product/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td>{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
