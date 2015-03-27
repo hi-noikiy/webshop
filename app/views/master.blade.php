@@ -122,7 +122,7 @@
                         <div class="col-md-4">
                                 <a href="/"><img src="/img/logo.png" alt="Logo"></a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                                 <h3>Sinds 1956 uw inkoop gemak van bodem tot dak.<br />Uw partner voor non-ferro, leidingsystemen, dakbedekking, sanitair en appendages.</h3>
                         </div>
                 </div>

@@ -77,4 +77,79 @@ class AdminController extends BaseController {
 
                 return Response::json($data);
         }
+
+        /**
+         * The import page
+         *
+         * @return mixed
+         */
+        public function import()
+        {
+                return View::make('admin.import');
+        }
+
+        public function productImport()
+        {
+                if (Input::hasFile('productFile'))
+                {
+                        $file = Input::file('productFile');
+
+                        $validator = Validator::make(
+                                array(
+                                        'fileType' => $file->getMimeType(),
+                                ),
+                                array(
+                                        'fileType' => 'required|string:text/plain|string:text/csv'
+                                )
+                        );
+
+                        if ($validator->fails())
+                        {
+                                return Redirect::back()->with('error', $validator->messages());
+                        } else {
+                                Product::truncate();
+                                ini_set('memory_limit', '512M');
+
+                                $csv = file($file->getRealPath());
+                                $count = 0;
+
+                                foreach ($csv as $row) {
+                                        $data = explode(';', $row);
+
+                                        $product = new Product;
+
+                                        $product->name = $data[0];
+                                        $product->number = $data[3];
+                                        $product->group = $data[4];
+                                        $product->altNumber = $data[5];
+                                        $product->stockCode = $data[7];
+                                        $product->registered_per = $data[8];
+                                        $product->packed_per = $data[9];
+                                        $product->price_per = $data[10];
+                                        $product->refactor = preg_replace("/\,/", ".", $data[12]);
+                                        $product->supplier = $data[13];
+                                        $product->ean = $data[14];
+                                        $product->image = $data[15];
+                                        $product->length = $data[17];
+                                        $product->price = $data[18];
+                                        $product->vat = $data[20];
+                                        $product->brand = $data[22];
+                                        $product->series = $data[23];
+                                        $product->type = $data[24];
+                                        $product->special_price = ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25]));
+                                        $product->action_type = $data[26];
+                                        $product->keywords = $data[27];
+                                        $product->related_products = $data[28];
+
+                                        $product->save();
+
+                                        unset($product);
+                                        $count++;
+                                }
+
+                                return Redirect::back()->with('success', 'Het artikelbestand is geupload. ' . $count .' producten geimporteerd');
+                        }
+                } else
+                        return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+        }
 }
