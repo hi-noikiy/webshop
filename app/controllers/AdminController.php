@@ -88,6 +88,11 @@ class AdminController extends BaseController {
                 return View::make('admin.import');
         }
 
+        /**
+         * Product import handler
+         *
+         * @return mixed
+         */
         public function productImport()
         {
                 if (Input::hasFile('productFile'))
@@ -147,9 +152,80 @@ class AdminController extends BaseController {
                                         $count++;
                                 }
 
-                                return Redirect::back()->with('success', 'Het artikelbestand is geupload. ' . $count .' producten geimporteerd');
+                                return Redirect::to('admin/importsuccess')->with(array('count' => $count, 'type' => 'product'));
                         }
                 } else
                         return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+        }
+
+        /**
+         * This function will handle the discount import
+         *
+         * @return mixed
+         */
+        public function discountImport()
+        {
+                if (Input::hasFile('discountFile'))
+                {
+                        $file = Input::file('discountFile');
+
+                        $validator = Validator::make(
+                                array(
+                                        'fileType' => $file->getMimeType(),
+                                ),
+                                array(
+                                        'fileType' => 'required|string:text/plain|string:text/csv'
+                                )
+                        );
+
+                        if ($validator->fails())
+                        {
+                                return Redirect::back()->with('error', $validator->messages());
+                        } else {
+                                Discount::truncate();
+                                ini_set('memory_limit', '512M');
+
+                                $csv = file($file->getRealPath());
+                                $count = 0;
+
+                                foreach ($csv as $row) {
+                                        $data = explode(';', $row);
+
+                                        $discount = new Discount;
+
+                                        $discount->table = $data[0];
+                                        $discount->User_id = ($data[1] !== "" ? $data[1] : 0);
+                                        $discount->product = (is_numeric($data[2]) ? $data[2] : 0);
+                                        $discount->start_date = $data[3];
+                                        $discount->end_date = $data[4];
+                                        $discount->discount = $data[5];
+                                        $discount->group_desc = $data[6];
+                                        $discount->product_desc = $data[7];
+
+                                        $discount->save();
+
+                                        unset($discount);
+                                        $count++;
+                                }
+
+                                return Redirect::to('admin/importsuccess')->with(array('count' => $count, 'type' => 'discount'));
+                        }
+                } else
+                        return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+        }
+
+        /**
+         * The import was successful :D
+         *
+         * @return mixed
+         */
+        public function importSuccess()
+        {
+                // The type must be set
+                if (Session::has('type'))
+                        return View::make('admin.importsuccess');
+                // Or you will be redirected
+                else
+                        return Redirect::to('admin/import');
         }
 }

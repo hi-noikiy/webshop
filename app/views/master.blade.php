@@ -86,6 +86,9 @@
                                                         <li><a href="/clearance">Opruiming</a></li>
                                                 </ul>
                                         </li>
+                                        @if(Auth::check() && Auth::user()->isAdmin)
+                                                <li class="@if( substr(Route::current()->getUri(), 0, 5) === 'admin' ) active @endif"><a href="/admin">Admin</a></li>
+                                        @endif
                                 </ul>
 
                                 <ul class="nav navbar-nav navbar-right">

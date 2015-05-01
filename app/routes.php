@@ -35,6 +35,7 @@ Route::get('/admin', 'AdminController@overview');                       // Admin
 Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                // Get the server ram load
 Route::get('/admin/CPULoad', 'AdminController@CPULoad');                // Get the server cpu load
 Route::get('/admin/import', 'AdminController@import');                  // The page where the user can upload a CSV file with the products
+Route::get('/admin/importsuccess', 'AdminController@importSuccess');    // Import success page
 
 Route::get('/account', 'AccountController@overview');                              // Account overview
 Route::get('/account/changepassword', 'AccountController@changePassGET');          // Change password page
@@ -52,6 +53,7 @@ Route::post('/cart/update', 'WebshopController@updateCart');                // U
 Route::post('/admin/login', 'WebshopController@adminLoginPOST');            // Handle the admin login
 
 Route::post('/admin/productimport', 'AdminController@productImport');       // Handle the product import
+Route::post('/admin/discountimport', 'AdminController@discountImport');     // Handle the discount import
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
