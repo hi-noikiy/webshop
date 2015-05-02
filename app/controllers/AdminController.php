@@ -229,6 +229,11 @@ class AdminController extends BaseController {
                         return Redirect::to('admin/import');
         }
 
+        /**
+         * Content management page
+         *
+         * @return mixed
+         */
         public function manageContent()
         {
                 $data = Content::all();
@@ -236,6 +241,11 @@ class AdminController extends BaseController {
                 return View::make('admin.managecontent', array('data' => $data));
         }
 
+        /**
+         * Get the content that belongs to the page/field
+         *
+         * @return mixed
+         */
         public function getContent()
         {
                 if(Request::ajax())
@@ -251,6 +261,11 @@ class AdminController extends BaseController {
                         return App::abort(401, 'Not an ajax request!');
         }
 
+        /**
+         * Save the content to the database
+         *
+         * @return mixed
+         */
         public function saveContent()
         {
                 if (Input::has('field') && Input::has('content'))
