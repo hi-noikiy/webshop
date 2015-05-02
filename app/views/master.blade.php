@@ -30,15 +30,21 @@
                                                 </div>
                                                 <div class="modal-body">
                                                         <div class="form-group">
-                                                                <label for="inputUsername" class="col-sm-2 control-label">Login</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputUsername" class="col-sm-4 control-label">Login</label>
+                                                                <div class="col-sm-8">
                                                                         <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{{ Session::get('username') }}}" @endif>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputPassword" class="col-sm-2 control-label">Wachtwoord</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputPassword" class="col-sm-4 control-label">Wachtwoord</label>
+                                                                <div class="col-sm-8">
                                                                         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Wachtwoord" required>
+                                                                </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                                <label for="inputRemember" class="col-sm-4 control-label">Ingelogd blijven?</label>
+                                                                <div class="col-sm-8">
+                                                                        <input name="remember_me" id="inputRemember" class="form-control" type="checkbox" />
                                                                 </div>
                                                         </div>
                                                 </div>

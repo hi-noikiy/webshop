@@ -125,9 +125,7 @@ class WebshopController extends BaseController {
                         foreach(explode(',', $product->related_products) as $related_product)
                                 $related_products[] = Product::where('number', $related_product)->first();
                 } else
-                {
                         $related_products = NULL;
-                }
 
 
                 if (preg_match("/search/", Request::server('HTTP_REFERER')))
@@ -155,16 +153,16 @@ class WebshopController extends BaseController {
 
                 if (Input::has('username') && Input::has('password'))
                 {
-                        if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), true))
+                        if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), (Input::get('remember_me') === "on" ? true : false)))
                                 return Redirect::back()->with('success', 'U bent nu ingelogd');
                 }
 
                 // The input field(s) is/are empty, go back to the previous page with an error message
-                return Redirect::back()->with('error', 'Gebruikersnaam en/of wachtwoord onjuist')->with('username', Input::get('username'));
+                return Redirect::back()->with(array('error' => 'Gebruikersnaam en/of wachtwoord onjuist', 'username' => Input::get('username')));
         }
 
         /**
-         * The user will be redirected to the main page
+         * The user will be redirected to the main page if the logout was successful
          *
          * @return mixed
          */
