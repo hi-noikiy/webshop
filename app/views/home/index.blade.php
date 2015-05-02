@@ -66,11 +66,7 @@
                                         </div>
                                         <div class="panel-body">
                                                 <p>
-                                                        Welkom op de vernieuwde website.<br />
-                                                        De belangrijkste wijziging is onze nieuwe webshop.
-                                                </p>
-                                                <p>
-                                                        Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.
+                                                        {{ $news->content }}
                                                 </p>
                                         </div>
                                 </div>
@@ -83,14 +79,11 @@
                                                         </div>
                                                         <div class="panel-body">
                                                                 <p>
-                                                                        Welkom op de vernieuwde website.<br />
-                                                                        De belangrijkste wijziging is onze nieuwe webshop.
-                                                                </p>
-                                                                <p>
-                                                                        Mocht u een rechtstreekse link gebruiken naar de oude webwinkel dan zal deze nu niet meer werken.
+                                                                        {{ $news->content }}
                                                                 </p>
                                                         </div>
-                                                </div>                                        </div>
+                                                </div>
+                                        </div>
                                         <div class="col-md-4">
                                                 <div class="well well-sm text-center">
                                                         <h3>Klant worden?</h3>

@@ -22,7 +22,9 @@ class HomeController extends BaseController {
          */
         public function home()
         {
-                return View::make('home.index');
+                $news      = Content::where('name', 'home.news')->first();
+
+                return View::make('home.index', array('news' => $news));
         }
 
         /**
