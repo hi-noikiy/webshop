@@ -54,7 +54,11 @@ class HomeController extends BaseController {
          */
         public function downloads()
         {
-                return View::make('home.downloads');
+                $catalogus       = Content::where('name', 'downloads.catalogus')->first();
+                $flyers          = Content::where('name', 'downloads.flyers')->first();
+                $artikel         = Content::where('name', 'downloads.artikel')->first();
+
+                return View::make('home.downloads', array('catalogus' => $catalogus, 'flyers' => $flyers, 'artikelbestand' => $artikel));
         }
 
         /**

@@ -7,9 +7,14 @@
 @section('content')
         @include('admin.nav')
 
-        <a href="/admin/import"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar de import pagina</a>
+        <div class="row">
+                <div class="col-md-12">
+                        <a href="/admin/import"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar de import pagina</a>
 
-        <div class="text-center">
-                <h4>De {{ Session::get('type') }} import is gelukt. Er zijn {{ Session::get('count') }} regels geimporteerd.</h4>
+                        <div class="text-center">
+                                <h4>De {{ Session::get('type') }} import is gelukt. Er zijn {{ Session::get('count') }} regels geimporteerd.</h4>
+                        </div>
+                </div>
         </div>
+
 @stop

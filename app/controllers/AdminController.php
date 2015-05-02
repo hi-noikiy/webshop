@@ -228,4 +228,40 @@ class AdminController extends BaseController {
                 else
                         return Redirect::to('admin/import');
         }
+
+        public function manageContent()
+        {
+                $data = Content::all();
+
+                return View::make('admin.managecontent', array('data' => $data));
+        }
+
+        public function getContent()
+        {
+                if(Request::ajax())
+                {
+                        if(Input::has('page'))
+                        {
+                                $data = Content::where('name', Input::get('page'))->firstOrFail();
+
+                                echo $data->content;
+                        } else
+                                return App::abort(404, 'Missing page varable');
+                } else
+                        return App::abort(401, 'Not an ajax request!');
+        }
+
+        public function saveContent()
+        {
+                if (Input::has('field') && Input::has('content'))
+                {
+                        $content = Input::get('content');
+                        $field = Input::get('field');
+
+                        Content::where('name', $field)->update(array('content' => $content));
+
+                        return Redirect::to('admin/managecontent')->with('success', 'De content is aangepast');
+                } else
+                        return Redirect::back()->with('error', 'Content of Field veld leeg');
+        }
 }
