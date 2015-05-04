@@ -52,9 +52,12 @@ App::error(function(Exception $exception, $code)
 
 	if(!Config::get('app.debug') && $code === 500)
 		return Response::view('errors.500', array(), 500);
+});
 
-        if(!Config::get('app.debug') && $code === 404)
-                return Response::view('errors.404', array(), 404);
+/* Handle 404 errors */
+App::missing(function($exception)
+{
+        return Response::view('errors.404', array(), 404);
 });
 
 /*
