@@ -25,6 +25,7 @@ class HomeController extends BaseController {
                 $news      = Content::where('name', 'home.news')->first();
 
                 return View::make('home.index', array('news' => $news));
+                CRASH
         }
 
         /**

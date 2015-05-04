@@ -1,4 +1,4 @@
-@extends('master')
+@extends('errors.master')
 
 @section('title')
         <h3>Error 404</h3>
@@ -6,6 +6,6 @@
 
 @section('content')
         <div class="alert alert-danger" role="alert">
-                De pagina, {{ Request::path() }}, is niet gevonden op de server.
+                De opgevraagde pagina, {{ $_SERVER['REQUEST_URI'] }}, kan niet worden gevonden.
         </div>
 @stop
