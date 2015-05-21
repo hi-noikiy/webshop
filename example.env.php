@@ -3,6 +3,7 @@
                         'debug_mode'    => false,
                         'secret_key'    => 'Insert secret key here',
                         'cipher'        => MCRYPT_RIJNDAEL_128,
+                        'url'           => 'www.example.com',
                         'mail_host'     => 'Mail host',
                         'mail_address'  => 'Sender address',
                         'mail_name'     => 'Sender name',

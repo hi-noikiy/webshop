@@ -180,7 +180,7 @@
                 </div>
         </div>
 
-        @if ($related_products !== NULL)
+        @if ($related_products[0] !== NULL)
                 <hr />
 
                 <h2>Verwante artikelen</h2>

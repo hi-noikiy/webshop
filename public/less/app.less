@@ -12,18 +12,6 @@
  * CSS Animation definitions
  **/
 
-// Chrome, Safari, Opera animations
-// Hover over the navigation buttons
-@-webkit-keyframes navHover {
-        from {
-                color: white;
-                background-color: @logo-red;
-        }
-        to {
-                color: @logo-red;
-                background-color: white;
-        }
-}
 // Hover over the navigation brand
 @-webkit-keyframes navBrandHover {
         from {
@@ -54,17 +42,6 @@
 }
 
 // Standard syntax
-// Hover over the navigation buttons
-@keyframes navHover {
-        from {
-                color: white;
-                background-color: @logo-red;
-        }
-        to {
-                color: @logo-red;
-                background-color: white;
-        }
-}
 // Hover over the navigation brand
 @keyframes navBrandHover {
         from {
@@ -104,7 +81,7 @@ html, body {
         font-size: 16px;
         letter-spacing: 1px;
         font-weight: 300;
-        font-family: "Dosis",sans-serif;
+        font-family: "Titillium Web",sans-serif;
         overflow-x: hidden;
         background-image: url("../img/star-bg.png");
 
@@ -131,34 +108,6 @@ img {
         vertical-align: middle;
         margin: 0 auto;
         padding: 5px;
-}
-
-.nav .open > a,
-.nav .open > a:hover,
-.nav .open > a:focus {
-        background-color: white;
-        color: @logo-red;
-}
-
-.dropdown-menu {
-        background-color: @logo-red;
-
-        & > li > a {
-                color: white;
-        }
-
-        & > li > a:hover {
-                animation: navHover @transTime;
-                animation-iteration-count: 1;
-                animation-fill-mode: forwards;
-                -webkit-animation: navHover @transTime;
-                -webkit-animation-iteration-count: 1;
-                -webkit-animation-fill-mode: forwards;
-        }
-
-        & > li > a:focus {
-                background-color: @dark-red;
-        }
 }
 
 .footer {
@@ -213,18 +162,12 @@ img {
                 & > li:not(.active) > a {
                         color: white;
                         background-color: @logo-red;
-                        -webkit-transition: @transTime ease-out;
-                        -moz-transition: @transTime ease-out;
-                        -o-transition: @transTime ease-out;
-                        transition: @transTime ease-out;
+                        transition: all @transTime;
 
                         &:hover {
-                                animation: navHover @transTime;
-                                animation-iteration-count: 1;
-                                animation-fill-mode: forwards;
-                                -webkit-animation: navHover @transTime;
-                                -webkit-animation-iteration-count: 1;
-                                -webkit-animation-fill-mode: forwards;
+                            color: @logo-red;
+                            background-color: white;
+                            transition: all @transTime;
                         }
                 }
 
@@ -234,12 +177,42 @@ img {
                         background-color: @dark-red;
                 }
 
-                .open .dropdown-menu {
-                        background-color: @logo-red;
-                        color: white;
-                        border-radius: 0;
+                .open {
+                        .dropdown-menu {
+                                background-color: @logo-red;
+                                color: white;
+                                border-radius: 0;
+                        }
+
+                        & > a,
+                        & > a:hover,
+                        & > a:focus {
+                                background-color: white;
+                                color: @logo-red;
+                        }
                 }
 
+                .dropdown-menu {
+                        background-color: @logo-red;
+
+                        & > li > a {
+                                color: white;
+                                background-color: @logo-red;
+                                transition: all @transTime;
+                                -o-transition: all @transTime;
+                                -moz-transition: all @transTime;
+                                -webkit-transition: all @transTime;
+
+                                &:hover {
+                                        color: @logo-red;
+                                        background-color: white;
+                                        transition: all @transTime;
+                                        -o-transition: all @transTime;
+                                        -moz-transition: all @transTime;
+                                        -webkit-transition: all @transTime;
+                                }
+                        }
+                }
         }
 
         .navbar-toggle {
@@ -267,26 +240,26 @@ img {
         .navbar-form {
                 .search-field {
                         input {
-                                width: 0;
-                                background: transparent;
                                 box-shadow: none;
-                                padding-left: 0;
-                                padding-right: 32px;
-                                -webkit-transition: @transTime ease-out;
-                                -moz-transition: @transTime ease-out;
-                                -o-transition: @transTime ease-out;
-                                transition: @transTime ease-out;
+                                color: white;
+                                width: 180;
+                                background: transparent;
+                                padding-left: 12px;
+                                padding-right: 42px;
+                                transition: all @transTime;
+                                -o-transition: all @transTime;
+                                -moz-transition: all @transTime;
+                                -webkit-transition: all @transTime;
 
                                 &:focus {
+                                        background-color: white;
                                         outline: none;
                                         box-shadow: none;
                                         color: @dark-red;
-                                        animation: navExpandSearch @transTime;
-                                        animation-iteration-count: 1;
-                                        animation-fill-mode: forwards;
-                                        -webkit-animation: navExpandSearch @transTime;
-                                        -webkit-animation-iteration-count: 1;
-                                        -webkit-animation-fill-mode: forwards;
+                                        transition: all @transTime;
+                                        -o-transition: all @transTime;
+                                        -moz-transition: all @transTime;
+                                        -webkit-transition: all @transTime;
                                 }
                         }
 
@@ -302,7 +275,7 @@ img {
 }
 
 .page-header {
-        background: #efefef url("../img/bg-header.png");
+        background: #efefef;
         margin: 0;
 }
 
