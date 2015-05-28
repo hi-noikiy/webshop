@@ -129,29 +129,47 @@ img {
         background-color: @logo-red;
         border: none;
         box-shadow: 0 1px 0 rgba(255,255,255,.1);
-        height: 50px;
+        height: 100px;
         margin: 0;
         text-transform: uppercase;
+
+        .wtg-nav-container {
+                max-width: 1920px;
+        }
 
         .navbar-collapse {
                 border-color: @dark-red;
         }
 
-        .navbar-brand {
-                color: white;
-                background-color: @logo-red;
-                -webkit-transition: @transTime ease-out;
-                -moz-transition: @transTime ease-out;
-                -o-transition: @transTime ease-out;
-                transition: @transTime ease-out;
+        .navbar-header {
+                margin-left: 15px;
 
-                &:hover {
-                        animation: navBrandHover @transTime;
-                        animation-iteration-count: 1;
-                        animation-fill-mode: forwards;
-                        -webkit-animation: navBrandHover @transTime;
-                        -webkit-animation-iteration-count: 1;
-                        -webkit-animation-fill-mode: forwards;
+                .navbar-brand {
+                        height: 100px;
+                        color: white;
+                        padding: 30px 15px;
+                        line-height: 40px;
+                        background-color: @logo-red;
+                        -webkit-transition: @transTime ease-out;
+                        -moz-transition: @transTime ease-out;
+                        -o-transition: @transTime ease-out;
+                        transition: @transTime ease-out;
+
+                        &:hover {
+                                animation: navBrandHover @transTime;
+                                animation-iteration-count: 1;
+                                animation-fill-mode: forwards;
+                                -webkit-animation: navBrandHover @transTime;
+                                -webkit-animation-iteration-count: 1;
+                                -webkit-animation-fill-mode: forwards;
+                        }
+                }
+        }
+
+        #nav-buttons {
+                a {
+                        padding: 30px 15px;
+                        line-height: 40px;
                 }
         }
 
@@ -218,6 +236,9 @@ img {
         .navbar-toggle {
                 border-color: white;
                 background-color: @logo-red;
+                margin-top: 25px;
+                margin-right: 25px;
+                padding: 15px;
 
                 &:hover {
                         border-color: @dark-red;
@@ -237,38 +258,79 @@ img {
                 }
         }
 
-        .navbar-form {
-                .search-field {
-                        input {
-                                box-shadow: none;
-                                color: white;
-                                width: 180;
-                                background: transparent;
-                                padding-left: 12px;
-                                padding-right: 42px;
-                                transition: all @transTime;
-                                -o-transition: all @transTime;
-                                -moz-transition: all @transTime;
-                                -webkit-transition: all @transTime;
+        #nav-utils {
+                margin-right: 15px;
 
-                                &:focus {
-                                        background-color: white;
-                                        outline: none;
+                .navbar-nav {
+                        float: right;
+                }
+
+                .navbar-form {
+                        line-height: 20px;
+                        padding-right: 0;
+                        float: right;
+
+                        .search-field {
+                                input {
+                                        border-radius: 0;
+                                        border: 1px solid white;
                                         box-shadow: none;
-                                        color: @dark-red;
+                                        color: white;
+                                        width: 180;
+                                        background: transparent;
+                                        padding-left: 12px;
+                                        padding-right: 42px;
                                         transition: all @transTime;
                                         -o-transition: all @transTime;
                                         -moz-transition: all @transTime;
                                         -webkit-transition: all @transTime;
+
+                                        &:focus {
+                                                background-color: white;
+                                                outline: none;
+                                                box-shadow: none;
+                                                color: @dark-red;
+                                                transition: all @transTime;
+                                                -o-transition: all @transTime;
+                                                -moz-transition: all @transTime;
+                                                -webkit-transition: all @transTime;
+                                        }
+                                }
+
+                                input + .form-control-feedback {
+                                        color: white;
+                                }
+
+                                input:focus + .form-control-feedback {
+                                        color: @dark-red;
                                 }
                         }
+                }
+        }
+}
 
-                        input + .form-control-feedback {
-                                color: white;
-                        }
+@media only screen and (min-width: 768px) and (max-width: 870px) {
+        .navbar-wtg li a {
+                font-size: 14px;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+        }
+}
 
-                        input:focus + .form-control-feedback {
-                                color: @dark-red;
+@media only screen and (max-width: 767px) {
+        .navbar-wtg  {
+                li a{
+                        padding-top: 15px !important;
+                        padding-bottom: 15px !important;
+                        line-height: 20px !important;
+                        height: inherit;
+                }
+
+                #nav-utils {
+                        margin-right: inherit;
+
+                        .navbar-nav {
+                                float: inherit;
                         }
                 }
         }

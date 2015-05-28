@@ -59,7 +59,7 @@
         @endif
 
         <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
-                <div class="container">
+                <div class="wtg-nav-container">
                         <div class="navbar-header">
                                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                                         <span class="sr-only">Toggle navigation</span>
@@ -74,7 +74,7 @@
 
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="navbar">
-                                <ul class="nav navbar-nav">
+                                <ul class="nav navbar-nav" id="nav-buttons">
                                         <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="/">Home</a></li>
                                         <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' ) active @endif">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
@@ -97,33 +97,37 @@
                                         @endif
                                 </ul>
 
-                                <ul class="nav navbar-nav navbar-right">
-                                        @if(Auth::check())
-                                                <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
-                                                <li class="dropdown">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
-                                                        <ul class="dropdown-menu" role="menu">
-                                                                <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
-                                                                <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
-                                                                <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
-                                                                <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
-                                                                <li class="divider"></li>
-                                                                <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
-                                                        </ul>
-                                                </li>
-                                        @else
-                                                <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
-                                        @endif
-                                </ul>
+                                <div class="navbar-right " id="nav-utils">
+                                    <ul class="nav navbar-nav">
+                                            @if(Auth::check())
+                                                    <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                                                    <li class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
+                                                            <ul class="dropdown-menu" role="menu">
+                                                                    <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
+                                                                    <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
+                                                                    <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                                                    <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
+                                                                    <li class="divider"></li>
+                                                                    <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
+                                                            </ul>
+                                                    </li>
+                                            @else
+                                                    <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                                            @endif
+                                    </ul>
 
-                                <form action="/search" method="GET" class="navbar-form navbar-right hidden-xs" role="search">
-                                        <div class="form-group search-field has-feedback">
-                                                <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
-                                                <i class="glyphicon glyphicon-search form-control-feedback"></i>
-                                        </div>
-                                </form>
+                                    <br />
+
+                                    <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
+                                            <div class="form-group search-field has-feedback">
+                                                    <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
+                                                    <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                            </div>
+                                    </form>
+                                </div>
                         </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
+                </div><!-- /.container-->
         </nav>
 
         <header class="page-header">
