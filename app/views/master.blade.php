@@ -70,8 +70,8 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                 </button>
-                                <a class="navbar-brand" href="/">
-                                        WTG
+                                <a class="navbar-brand visible-xs" href="/">
+                                        <img src="/img/nav-logo.png" alt="Logo">
                                 </a>
                         </div>
 
@@ -133,7 +133,7 @@
                 </div><!-- /.container-->
         </nav>
 
-        <header class="page-header">
+        <header class="page-header hidden-xs">
                 <div class="container">
                         <div class="col-md-4">
                                 <a href="/"><img src="/img/logo.png" alt="Logo"></a>
@@ -158,8 +158,14 @@
 
                 <footer>
                         <div class="text-center">
-                                <div class="glyphicon glyphicon-copyright-mark"></div> Wiringa Technische Groothandel (2014 - 2015) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
-                                <p><small>Alle leveringen geschieden volgens onze algemene verkoopvoorwaarden gedeponeerd ter griffie van de arrondissementsrechtbank te Groningen onder nummer HK-255/93.</small></p>
+                                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                                <p>
+                                    <small>
+                                        Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871. 
+                                        <br />
+                                        Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
+                                    </small>
+                                </p>
                         </div>
 
                         <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
