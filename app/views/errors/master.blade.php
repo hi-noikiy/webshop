@@ -59,7 +59,7 @@
 @endif
 
 <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
-        <div class="container">
+        <div class="wtg-nav-container">
                 <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                                 <span class="sr-only">Toggle navigation</span>
@@ -67,23 +67,23 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">
-                                WTG
+                        <a class="navbar-brand visible-xs" href="/">
+                                <img src="/img/nav-logo.png" alt="Logo">
                         </a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar">
-                        <ul class="nav navbar-nav">
-                                <li><a href="/">Home</a></li>
-                                <li class="dropdown">
+                        <ul class="nav navbar-nav" id="nav-buttons">
+                                <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="/">Home</a></li>
+                                <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' ) active @endif">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
                                                 <li><a href="/about">Over ons</a></li>
                                                 <li><a href="/contact">Contact</a></li>
-                                        </ul>
+                                         </ul>
                                 </li>
-                                <li><a href="/downloads">Downloads</a></li>
+                                <li class="@if( Route::current()->getUri() === 'downloads' ) active @endif"><a href="/downloads">Downloads</a></li>
                                 <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Webshop <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
@@ -93,40 +93,44 @@
                                         </ul>
                                 </li>
                                 @if(Auth::check() && Auth::user()->isAdmin)
-                                        <li><a href="/admin">Admin</a></li>
+                                        <li class="@if( substr(Route::current()->getUri(), 0, 5) === 'admin' ) active @endif"><a href="/admin">Admin</a></li>
                                 @endif
                         </ul>
 
-                        <ul class="nav navbar-nav navbar-right">
-                                @if(Auth::check())
-                                        <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
-                                        <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                        <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
-                                                        <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
-                                                        <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
-                                                        <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
-                                                </ul>
-                                        </li>
-                                @else
-                                        <li><button class="btn navbar-btn btn-wtg" data-toggle="modal" data-target="#loginModal">Login</button></li>
-                                @endif
-                        </ul>
+                        <div class="navbar-right " id="nav-utils">
+                            <ul class="nav navbar-nav">
+                                    @if(Auth::check())
+                                            <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                                            <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                            <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
+                                                            <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
+                                                            <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                                            <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
+                                                    </ul>
+                                            </li>
+                                    @else
+                                            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                                    @endif
+                            </ul>
 
-                        <form action="/search" method="GET" class="navbar-form navbar-right hidden-xs" role="search">
-                                <div class="form-group search-field has-feedback">
-                                        <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken" data-toggle="tooltip" data-placement="bottom" title="Druk op ENTER om te zoeken">
-                                        <i class="glyphicon glyphicon-search form-control-feedback"></i>
-                                </div>
-                        </form>
+                            <br />
+
+                            <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
+                                    <div class="form-group search-field has-feedback">
+                                            <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
+                                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                    </div>
+                            </form>
+                        </div>
                 </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+        </div><!-- /.container-->
 </nav>
 
-<header class="page-header">
+<header class="page-header hidden-xs">
         <div class="container">
                 <div class="col-md-4">
                         <a href="/"><img src="/img/logo.png" alt="Logo"></a>
@@ -151,8 +155,14 @@
 
         <footer>
                 <div class="text-center">
-                        <div class="glyphicon glyphicon-copyright-mark"></div> Wiringa Technische Groothandel (2014 - 2015) | <a href="#">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
-                        <p><small>Alle leveringen geschieden volgens onze algemene verkoopvoorwaarden gedeponeerd ter griffie van de arrondissementsrechtbank te Groningen onder nummer HK-255/93.</small></p>
+                        Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                        <p>
+                            <small>
+                                Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871. 
+                                <br />
+                                Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
+                            </small>
+                        </p>
                 </div>
 
                 <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
