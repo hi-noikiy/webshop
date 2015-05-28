@@ -44,7 +44,7 @@
                                                         <div class="form-group">
                                                                 <label for="inputRemember" class="col-sm-4 control-label">Ingelogd blijven?</label>
                                                                 <div class="col-sm-8">
-                                                                        <input name="remember_me" id="inputRemember" class="form-control" type="checkbox" />
+                                                                        <input name="remember_me" id="inputRemember" type="checkbox" />
                                                                 </div>
                                                         </div>
                                                 </div>
