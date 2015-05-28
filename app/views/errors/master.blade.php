@@ -7,7 +7,7 @@
         @yield('extraCSS')
 
         <style>
-                @import url(http://fonts.googleapis.com/css?family=Dosis:300,400,500,600);
+                @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,300,200,600,700);
                 @import url({{ URL::to('/') }}/css/bootstrap.min.css);
                 @import url({{ URL::to('/') }}/css/app.min.css);
         </style>
