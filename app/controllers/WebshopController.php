@@ -416,39 +416,4 @@ class WebshopController extends BaseController {
                         return Redirect::to('cart/view')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
                 }
         }
-
-        /**
-         * The admin login page
-         *
-         * @return mixed
-         */
-        /**public function adminLoginGET()
-        {
-                if (Auth::check())
-                {
-                        return Redirect::to('admin');
-                } else
-                {
-                        return View::make('admin.login');
-                }
-        }
-
-        /**
-         * The admin login handler
-         *
-         * @return mixed
-         */
-        /**public function adminLoginPOST()
-        {
-                if (Input::has('username') && Input::has('password'))
-                {
-                        if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1, 'isAdmin' => 1)))
-                                return Redirect::back()->with('success', 'U bent nu ingelogd');
-
-                } elseif (Auth::check())
-                        return Redirect::to('account');
-
-                // The input field(s) is/are empty, go back to the previous page with an error message
-                return Redirect::back()->with('error', 'Gebruikersnaam en/of wachtwoord onjuist')->with('username', Input::get('username'));
-        }*/
 }

@@ -50,7 +50,7 @@ App::error(function(Exception $exception, $code)
 {
 	Log::error('Code: ' . $code . ' Exception: ' . $exception);
 
-	$codes = array(400, 404, 500);
+	$codes = array(400, 401, 403, 404, 500);
 
 	if(!Config::get('app.debug') && in_array($code, $codes))
         return Response::view('errors.' . $code , array(), $code);
