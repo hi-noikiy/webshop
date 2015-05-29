@@ -270,23 +270,29 @@ img {
                         .search-field {
                                 input {
                                         border-radius: 0;
-                                        border: 1px solid white;
+                                        border: 0;
+                                        border-bottom: 1px solid white;
                                         box-shadow: none;
                                         color: white;
                                         width: 180;
-                                        background: transparent;
+                                        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUCB1j+A8EAAn7A/0Mu1vnAAAAAElFTkSuQmCC");
+                                        background-repeat: no-repeat;
+                                        background-size: 100% 0%;
+                                        background-position: center bottom;
                                         padding-left: 12px;
                                         padding-right: 42px;
+                                        
                                         transition: all @transTime;
                                         -o-transition: all @transTime;
                                         -moz-transition: all @transTime;
                                         -webkit-transition: all @transTime;
 
                                         &:focus {
-                                                background-color: white;
                                                 outline: none;
                                                 box-shadow: none;
                                                 color: @dark-red;
+                                                background-size: 100% 100%;
+                                                
                                                 transition: all @transTime;
                                                 -o-transition: all @transTime;
                                                 -moz-transition: all @transTime;
