@@ -50,7 +50,7 @@ App::error(function(Exception $exception, $code)
 {
 	Log::error('Code: ' . $code . ' Exception: ' . $exception);
 
-	$codes = array(400, 401, 403, 404, 500);
+	$codes = array(400, 401, 403, 404, 405, 500);
 
 	if(!Config::get('app.debug') && in_array($code, $codes))
         return Response::view('errors.' . $code , array(), $code);
@@ -62,6 +62,11 @@ App::error(function(Illuminate\Database\Eloquent\ModelNotFoundException $excepti
 	return Response::view('errors.404product' , array(), 404);
 });
 
+App::error(function(\Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException $exception) {
+	Log::error('Exception: ' . $exception);
+
+	return Response::view('errors.405', array(), 405);
+});
 
 /*
 |--------------------------------------------------------------------------
