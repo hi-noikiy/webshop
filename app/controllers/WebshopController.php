@@ -44,6 +44,9 @@ class WebshopController extends BaseController {
          */
         public function loginPage()
         {
+                if (Auth::check())
+                        return Redirect::to('account');
+
                 return View::make('webshop.login');
         }
 
@@ -114,8 +117,13 @@ class WebshopController extends BaseController {
          * @param $product_Id
          * @return mixed
          */
-        public function showProduct($product_Id)
+        public function showProduct($product_Id = false)
         {
+                if ($product_Id === false) 
+                    return App::abort(400, 'Missing product number');
+
+                Session::flash('product_id', $product_Id);
+
                 $product                = Product::where('number', $product_Id)->firstOrFail();
                 $discount               = (Auth::check() ? getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
                 $prevPage               = Input::get('ref');
@@ -414,7 +422,7 @@ class WebshopController extends BaseController {
          *
          * @return mixed
          */
-        public function adminLoginGET()
+        /**public function adminLoginGET()
         {
                 if (Auth::check())
                 {
@@ -430,7 +438,7 @@ class WebshopController extends BaseController {
          *
          * @return mixed
          */
-        public function adminLoginPOST()
+        /**public function adminLoginPOST()
         {
                 if (Input::has('username') && Input::has('password'))
                 {
@@ -442,5 +450,5 @@ class WebshopController extends BaseController {
 
                 // The input field(s) is/are empty, go back to the previous page with an error message
                 return Redirect::back()->with('error', 'Gebruikersnaam en/of wachtwoord onjuist')->with('username', Input::get('username'));
-        }
+        }*/
 }

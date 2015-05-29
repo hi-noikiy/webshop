@@ -27,6 +27,7 @@
                 <div class="modal-dialog">
                         <div class="modal-content">
                                 <form action="/login" method="POST" class="form form-horizontal">
+                                        {{ Form::token() }}
                                         <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 <h4 class="modal-title">Login</h4>
@@ -123,6 +124,7 @@
                             <br />
 
                             <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
+                                    {{ Form::token() }}
                                     <div class="form-group search-field has-feedback">
                                             <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
                                             <i class="glyphicon glyphicon-search form-control-feedback"></i>

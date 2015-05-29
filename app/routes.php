@@ -22,14 +22,13 @@ Route::get('/login', 'WebshopController@loginPage');                    // Login
 Route::get('/logout', 'WebshopController@logout');                      // Logout the current user
 Route::get('/forgotpassword', 'WebshopController@forgotPassword');      // Forgot password page
 Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
-Route::get('/product/{product_id}', 'WebshopController@showProduct');   // Product page
+Route::get('/product/{product_id?}', 'WebshopController@showProduct');  // Product page
 Route::get('/search', 'WebshopController@search');                      // Page with the search results
 Route::get('/specials', 'WebshopController@specials');                  // Show only the specials
 Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
 Route::get('/cart/view', 'WebshopController@viewCart');                 // Show the cart
 Route::get('/cart/destroy', 'WebshopController@cartDestroy');           // Remove all items from the cart
-Route::get('/admin/login', 'WebshopController@adminLoginGET');          // Admin login page
-Route::get('/setup', 'WebshopController@setup');                        // REMOVE OR DISABLE THIS ROUTE AFTER SETTING UP THE FIRST ADMIN ACCOUNT!!
+//Route::get('/admin/login', 'WebshopController@adminLoginGET');          // Admin login page
 
 Route::get('/admin', 'AdminController@overview');                       // Admin overview
 Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                // Get the server ram load
@@ -48,11 +47,13 @@ Route::get('/account/discountfile', 'AccountController@discountfile');          
 Route::get('/account/generate_{type}/{method}', 'AccountController@generateFile'); // Discount file generation handler
 
 // POST Requests will be handled here
+Route::when('*', 'csrf', array('post', 'put', 'delete'));
+
 Route::post('/login', 'WebshopController@login');                           // Login handler
 Route::post('/forgotpassword', 'WebshopController@resetPassword');          // Password reset handler
 Route::post('/cart/add', 'WebshopController@addToCart');                    // Add product to cart
 Route::post('/cart/update', 'WebshopController@updateCart');                // Update or remove product from cart
-Route::post('/admin/login', 'WebshopController@adminLoginPOST');            // Handle the admin login
+//Route::post('/admin/login', 'WebshopController@adminLoginPOST');            // Handle the admin login
 
 Route::post('/admin/productimport', 'AdminController@productImport');       // Handle the product import
 Route::post('/admin/discountimport', 'AdminController@discountImport');     // Handle the discount import

@@ -12,6 +12,7 @@
                 <div class="col-md-9">
                         <div class="well">
                                 <form action="/account/changepassword" method="POST" class="form-horizontal">
+                                        {{ Form::token() }}
                                         <div class="form-group">
                                                 <label for="oldPass" class="col-sm-4 control-label">Huidig wachtwoord</label>
                                                 <div class="col-sm-8">

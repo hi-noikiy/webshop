@@ -6,6 +6,6 @@
 
 @section('content')
         <div class="alert alert-danger" role="alert">
-                De opgevraagde pagina, {{ $_SERVER['REQUEST_URI'] }}, kan niet worden gevonden.
+                Er is geen product gevonden met nummer {{{ Session::pull('product_id') }}}
         </div>
 @stop
