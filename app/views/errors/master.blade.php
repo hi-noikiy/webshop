@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <title>WTG</title>
 
         @yield('extraCSS')
@@ -90,7 +90,7 @@
                                 <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Webshop <span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
-                                                <li><a href="/webshop">Bestellen</a></li>
+                                                <li><a href="/webshop">Zoeken</a></li>
                                                 <li><a href="/specials">Acties</a></li>
                                                 <li><a href="/clearance">Opruiming</a></li>
                                         </ul>
