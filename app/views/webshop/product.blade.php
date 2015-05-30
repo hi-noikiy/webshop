@@ -20,10 +20,10 @@
         @if (Auth::check())
                 <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addToCart" aria-hidden="true">
                         <form class="form" action="/cart/add" method="POST">
-
                                 <!-- Non editable form data -->
                                 <input class="hidden" name="product" value="{{ $productData->number }}">
                                 <input class="hidden" name="ref" value="{{ Input::get('ref') }}">
+                                {{ Form::token() }}
 
                                 <div class="modal-dialog">
                                         <div class="modal-content">

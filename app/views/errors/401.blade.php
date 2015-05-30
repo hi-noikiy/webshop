@@ -11,7 +11,8 @@
                 Mogelijke oorzaken zijn:<br />
                 <br />
                 <ul>
-                	<li>Geen administrator</li>
+                        <li>Niet ingelogd</li>
+                        <li>De pagina is nog niet actief</li>
                 </ul>
         </div>
 @stop
