@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration {
 			$table->boolean('active');			// BOOLEAN	 : Active (if this is true, the user is able to login)
 			$table->boolean('isAdmin')->default('0');	// BOOLEAN	 : Is the user an admin or not? (Default = false)
 			$table->string('password');			// VARCHAR()	 : Password
-			$table->mediumText('favorites');		// MEDIUMTEXT	 : A serialized array containing the favorite products from the user
-			$table->mediumText('cart');			// MEDIUMTEXT	 : The cart is saved here between sessions
+			$table->mediumText('favorites')->nullable();		// MEDIUMTEXT	 : A serialized array containing the favorite products from the user
+			$table->mediumText('cart')->nullable();			// MEDIUMTEXT	 : The cart is saved here between sessions
 			$table->rememberToken();
 			$table->timestamps();
 		});
