@@ -41,7 +41,6 @@ class createUser extends Command {
 		$pass 	  = $this->argument('password');
 		$company  = $this->argument('company');
 		$street   = $this->argument('street');
-		$nr		  = $this->argument('house#');
 		$postcode = $this->argument('postcode');
 		$city 	  = $this->argument('city');
 		$email	  = $this->argument('email');
@@ -75,7 +74,6 @@ class createUser extends Command {
 			array('password', 	InputArgument::REQUIRED, '(Required) String'),
 			array('company', 	InputArgument::REQUIRED, '(Required) String'),
 			array('street', 	InputArgument::REQUIRED, '(Required) String'),
-			array('house#', 	InputArgument::REQUIRED, '(Required) String'),
 			array('postcode', 	InputArgument::REQUIRED, '(Required) String'),
 			array('city', 		InputArgument::REQUIRED, '(Required) String'),
 			array('email', 		InputArgument::REQUIRED, '(Required) String'),
