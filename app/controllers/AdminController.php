@@ -287,4 +287,31 @@ class AdminController extends BaseController {
                 } else
                         return Redirect::back()->with('error', 'Content of Field veld leeg');
         }
+
+        /**
+         * Show the generate page
+         *
+         * @return mixed
+         */
+        public function generate()
+        {
+                return View::make('admin.generate');
+        }
+
+        /**
+         * Generate the catalog PDF file
+         *
+         * @return string
+         */
+        public function generateCatalog()
+        { 
+                ini_set('memory_limit', '1G');
+                $productData = DB::table('products')->get();
+
+                File::put(public_path() . "/assets/catalog.html", View::make('templates.catalogus', array('products' => $productData)));
+
+                exec('wkhtmltopdf toc --xsl-style-sheet "' . public_path() . '/assets/tocStyle.xsl" --footer-right [page] "' . public_path() . '/assets/catalog.html" "' . public_path() . '/assets/catalog.pdf" &');
+                
+                return "file made";
+        }
 }

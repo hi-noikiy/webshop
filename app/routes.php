@@ -35,6 +35,8 @@ Route::get('/admin/CPULoad', 'AdminController@CPULoad');                // Get t
 Route::get('/admin/import', 'AdminController@import');                  // The page where the user can upload a CSV file with the products
 Route::get('/admin/importsuccess', 'AdminController@importSuccess');    // Import success page
 Route::get('/admin/managecontent', 'AdminController@manageContent');    // Content manager
+Route::get('/admin/generate', 'AdminController@generate');				// Generate stuffs
+Route::get('/admin/generateCatalog', 'AdminController@generateCatalog');// Generate catalog
 Route::get('/admin/getContent', 'AdminController@getContent');          // Get the content for a field
 
 Route::get('/account', 'AccountController@overview');                              // Account overview

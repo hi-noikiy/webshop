@@ -3,6 +3,6 @@
         <li @if( Route::current()->getUri() === 'admin/import') class="active" @endif><a href="/admin/import">Importeren</a></li>
         <li @if( Route::current()->getUri() === 'admin/manageusers') class="active" @endif><a href="/admin/manageusers">Gebruikers beheren</a></li>
         <li @if( Route::current()->getUri() === 'admin/carousel') class="active" @endif><a href="/admin/carousel">Carousel</a></li>
-        <li @if( Route::current()->getUri() === 'admin/pricelist') class="active" @endif><a href="/admin/pricelist">Prijslijst debiteur</a></li>
+        <li @if( Route::current()->getUri() === 'admin/generate') class="active" @endif><a href="/admin/generate">Genereren</a></li>
         <li @if( Route::current()->getUri() === 'admin/managecontent') class="active" @endif><a href="/admin/managecontent">Inhoud aanpassen</a></li>
 </ul>
