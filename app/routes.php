@@ -65,10 +65,6 @@ Route::post('/account/removeAddress', 'AccountController@removeAddress');   // R
 Route::post('/account/modFav', 'AccountController@modFav');                 // Change the favorites
 Route::post('/account/isFav', 'AccountController@isFav');                   // Check the product array
 
-Route::get('/phpinfo', function() {
-        echo ini_get('memory_limit');
-        ini_set('memory_limit', '1G');
-        echo ini_get('memory_limit');
-        die;
+/*Route::get('/phpinfo', function() {
         phpinfo();
-});
+});*/
