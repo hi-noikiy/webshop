@@ -311,8 +311,8 @@ class AdminController extends BaseController {
 
                 File::put(public_path() . "/assets/catalog.html", View::make('templates.catalogus', array('products' => $productData)));
 
-                exec('wkhtmltopdf toc --xsl-style-sheet "' . public_path() . '/assets/tocStyle.xsl" --footer-right [page] "' . public_path() . '/assets/catalog.html" "' . public_path() . '/assets/catalog.pdf" &');
+                exec('wkhtmltopdf -q toc --xsl-style-sheet "' . public_path() . '/assets/tocStyle.xsl" --footer-right [page] "' . public_path() . '/assets/catalog.html" "' . public_path() . '/assets/catalog.pdf"');
                 
-                return "file made";
+                return Redirect::intended('/assets/catalog.pdf');
         }
 }
