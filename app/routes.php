@@ -66,5 +66,9 @@ Route::post('/account/modFav', 'AccountController@modFav');                 // C
 Route::post('/account/isFav', 'AccountController@isFav');                   // Check the product array
 
 Route::get('/phpinfo', function() {
+        echo ini_get('memory_limit');
+        ini_set('memory_limit', '1G');
+        echo ini_get('memory_limit');
+        die;
         phpinfo();
 });
