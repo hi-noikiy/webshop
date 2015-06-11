@@ -97,6 +97,8 @@ class AdminController extends BaseController {
         {
                 if (Input::hasFile('productFile'))
                 {
+                        ini_set('memory_limit', '1024M');
+
                         $file = Input::file('productFile');
 
                         $validator = Validator::make(
@@ -115,7 +117,6 @@ class AdminController extends BaseController {
                                 $startTime = microtime(true);
 
                                 Product::truncate();
-                                ini_set('memory_limit', '512M');
 
                                 $csv = file($file->getRealPath());
 
@@ -170,6 +171,8 @@ class AdminController extends BaseController {
         {
                 if (Input::hasFile('discountFile'))
                 {
+                        ini_set('memory_limit', '1024M');
+
                         $file = Input::file('discountFile');
 
                         $validator = Validator::make(
@@ -188,8 +191,6 @@ class AdminController extends BaseController {
                                 $startTime = microtime(true);
 
                                 Discount::truncate();
-
-                                ini_set('memory_limit', '512M');
 
                                 $csv = file($file->getRealPath());
                                 
