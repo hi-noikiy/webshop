@@ -18,15 +18,15 @@ In order to learn the Laravel framework, I am trying to rewrite the website/webs
 
 * `cd laravel-wtg && composer update` To download the neccesary Laravel components.
 
-* Rename 'example.env.php' to either:
+* Rename '.env.example' to either:
 
-    * `env.local.php` for local development
+    * `.env.local` for local development
     
-    * `env.staging.php` for staging - **NOTE: edit** `bootstrap/start.php` **and set the hostnames for staging and production to the appropriate values**
+    * `.env.staging` for staging - **NOTE: edit** `bootstrap/start.php` **and set the hostnames for staging and production to the appropriate values**
     
-    * `.env.php` or `.env.production.php` for production **NOTE: Laravel will default to** `.env.php` **when it doesn't match any hostname in** `bootstrap/start.php`
+    * `.env` or `.env.production` for production **NOTE: Laravel will default to** `.env` **when it doesn't match any hostname in** `bootstrap/start.php`
     
-* Set the correct values in the .env.php files (mail/db/etc.)
+* Set the correct values in the .env files (mail/db/etc.)
 
 * Run 'php artisan migrate' to initialize the database
 
