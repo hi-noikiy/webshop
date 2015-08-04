@@ -21,13 +21,27 @@
         	font-weight: bold;
         }
 
-        h4, h6,
-        .type-wrapper b {
-        	margin: 0px auto;
+        h4, h6, 
+        b, p {
+        	margin: 0 auto;
         }
 
-        b {
-        	font-size: 8pt;
+        h6.index_name {
+        	position: relative;
+        	right: 10000px;
+        	margin: 0;
+        	padding: 0;
+        	font-size: 0pt;
+        	top: -15px;
+        }
+
+        p.group {
+        	font-size: 11pt;
+        }
+
+        p.series,
+        p.type {
+        	font-size: 10pt;
         }
 
         img {
@@ -41,14 +55,13 @@
         }
 
         table {
-        	margin-bottom: 20px !important;
+        	margin-bottom: 10px !important;
         }
 
         tr,
-        .type-wrapper,
-        .series-wrapper {
-			page-break-inside: avoid; 
-		}
+        .type-wrapper {
+			page-break-inside: avoid;
+        }
 
 		.group-wrapper {
 			page-break-after: always;
@@ -61,12 +74,7 @@
         th, td {
         	padding: 0 8px !important;
         	font-size: 7pt;
-        }
-
-        ul {
-        	list-style: none;
-        	columns: 2;
-        	-webkit-columns: 2;
+        	white-space: nowrap;
         }
 
         a {
@@ -80,18 +88,8 @@
 
         td:nth-child(2),
         th:nth-child(2) {
-        	width: 65%;
+        	width: 63%;
         }
-
-        /*td:nth-child(3),
-        th:nth-child(3) {
-        	width: 1%;
-        }
-
-        td:nth-child(3),
-        th:nth-child(3) {
-        	width: 2%;
-        }*/
 
         td:nth-child(3),
         th:nth-child(3) {
@@ -100,7 +98,7 @@
 
         td:nth-child(4),
         th:nth-child(4) {
-        	width: 10%;
+        	width: 12%;
         }
 
         td:nth-child(5),
@@ -122,42 +120,31 @@
 
 	@if($lastgroup === '')
 		<div class="group-wrapper">
-			<center><h4> {!! $product->catalog_group !!} </h4></center>
+			<center><p class="group"><b>{!! $product->catalog_group !!}</b></p></center>
 	@elseif($product->catalog_group !== $lastgroup && $lastgroup !== '')
-		<?php $lastserie = ''; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="group-wrapper">
-			<center><h4> {!! $product->catalog_group !!} </h4></center>
-	@endif
-
-	@if($lastserie === '')
-		<div class="series-wrapper">
-			<center><h6> {!! $product->series !!} </h6></center>
-	@elseif($product->series !== $lastserie && $lastserie !== '')
-		<?php $lastype = ''; ?>
+		<?php $lastserie = $lastype = ''; ?>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="series-wrapper">
-			<center><h6>{!! $product->series !!} </h6></center>
+		<div class="group-wrapper">
+			<center><p class="group"><b>{!! $product->catalog_group !!}</b></p></center>
 	@endif
 
 	@if($lastype === '')
 		<div class="type-wrapper">
-			<center><b>{!! $product->type !!}</b></center>
+			<center>
+				@if($product->series !== $lastserie)
+					<p class="series"><b>{!! $product->series !!}</b></p>
+				@endif
+				<p class="type"><b>{!! ucfirst($product->type) !!}</b> <h6 class="index_name">{!! ucfirst($product->catalog_index) !!}</h6></p>
+			</center>			
 			<div class="row">
 				<div class="col-xs-2 product-image">
 					@if ($product->image !== 'geenafbeelding.jpg')
-						<center><img src="../../public/img/products/{!! $product->image !!}"></center>
+						<center><img src="http://wiringa.nl/img/shopimg/{!! $product->image !!}"></center>
 					@endif
 				</div>
 				<div class="col-xs-10">
@@ -180,12 +167,18 @@
 			</div>
 		</div>
 		<div class="type-wrapper">
-			<center><b>{!! $product->type !!}</b></center>
+			<center>
+				@if($product->series !== $lastserie)
+					<p class="series"><b>{!! $product->series !!}</b></p>
+				@endif
+				<p class="type"><b>{!! ucfirst($product->type) !!}</b> <h6 class="index_name">{!! ucfirst($product->catalog_index) !!}</h6></p>
+			</center>
 			<div class="row">
 				<div class="col-xs-2 product-image">
 					@if ($product->image !== 'geenafbeelding.jpg')
-						<center><img src="../../public/img/products/{!! $product->image !!}"></center>
-					@endif				</div>
+						<center><img src="http://wiringa.nl/img/shopimg/{!! $product->image !!}"></center>
+					@endif
+				</div>
 				<div class="col-xs-10">
 					<table class="table table-striped">
 						<thead>
@@ -216,9 +209,8 @@
 		$lastgroup	= $product->catalog_group;
 	?>
 @endforeach
-							</tbody>
-						</table>
-					</div>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

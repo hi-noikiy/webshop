@@ -138,6 +138,7 @@ class AdminController extends Controller {
                                         DB::connection()->disableQueryLog();
 
                                         foreach ($csv as $row) {
+                                                $row  = preg_replace("/\r\n/", "", $row);
                                                 $data = explode(';', $row);
 
                                                 DB::table('products')->insert(array(
@@ -164,6 +165,7 @@ class AdminController extends Controller {
                                                                 'keywords'         => $data[27],
                                                                 'related_products' => $data[28],
                                                                 'catalog_group'    => $data[29],
+                                                                'catalog_index'    => $data[30],
                                                         ));
                                         }
                                 });
@@ -322,18 +324,20 @@ class AdminController extends Controller {
         public function generateCatalog()
         { 
                 ini_set('memory_limit', '1G');
-                $footer = "Telefoon: (050) 544 55 66  -  E-Mail: verkoop@wiringa.nl  -  Website: wiringa.nl";
+                $footer = "Telefoon: (050) 544 55 66  -  E-Mail: verkoop@wiringa.nl  -  Website: wiringa.nl  -  Augustus 2015";
                 $productData = DB::table('products')
                                     ->orderBy('catalog_group', 'asc')
-                                    ->orderBy('series', 'asc')
+                                    ->orderBy('group', 'asc')
                                     ->orderBy('type', 'asc')
+                                    ->orderBy('number', 'asc')
                                     ->whereNotIn('action_type', ['Opruiming', 'Actie'])
+                                    ->where('catalog_index', '!=', '')
                                     ->get();
 
                 File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
 
                 // $ wkhtmltopdf -q --footer-right [page] path-to-html-page toc --xsl-style-sheet path-to-toc-style-sheet path-to-pdf-save-location
-                exec('wkhtmltopdf -B 15mm --footer-center "' . $footer . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" "' . public_path() . '/dl/catalog.pdf"');
+                exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
                 
                 return Redirect::intended('/dl/catalog.pdf');
         }

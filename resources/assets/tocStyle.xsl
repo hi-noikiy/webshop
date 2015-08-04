@@ -13,17 +13,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style>
           body {
-            width: 50%;
+            width: 75%;
             margin: 0 auto;
             font-family: 'Titillium Web', sans-serif;
           }
 
           h1 {
             text-align: center;
-            font-size: 15px;
+            font-size: 9pt;
           }
 
           div {
+            height: 20px;
+            font-size: 8pt;
             border-bottom: 1px dashed rgb(200,200,200);
           }
           
@@ -33,10 +35,16 @@
 
           li {
             list-style: none;
+            page-break-inside: avoid; 
           }
           
           ul {
-            font-size: 12px;
+            font-size: 8pt;
+          }
+
+          .toc-title {
+            margin: 2px 0;
+            font-weight: bold;
           }
 
           ul ul {font-size: 80%; }
@@ -46,48 +54,40 @@
         </style>
       </head>
       <body>
-        <h1>Inhoudsopgave</h1>
-        <ul><xsl:apply-templates select="outline:item/outline:item"/></ul>
+        <p><b>Index</b></p>
+        <ul>
+        <xsl:variable name="sorted">
+          <xsl:for-each select="outline:item/outline:item">
+            <xsl:sort select="@title" />
+            <xsl:copy-of select="." />
+          </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:for-each select="$sorted/*">
+          <xsl:if test="@title!=''">
+            <li>
+              <xsl:if test="substring(./@title,1,1) != substring(preceding-sibling::*[1]/@title,1,1)">
+                <p class="toc-title"><xsl:value-of select="substring(./@title,1,1)" /></p>
+              </xsl:if>
+
+              <div>
+                <a>
+                  <xsl:if test="@link">
+                    <xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute>
+                  </xsl:if>
+                  <xsl:if test="@backLink">
+                    <xsl:attribute name="name"><xsl:value-of select="@backLink"/></xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="@title" />
+                </a>
+                <span> <xsl:value-of select="@page" /> </span>
+              </div>
+            </li>
+          </xsl:if>
+        </xsl:for-each>
+        </ul>
       </body>
     </html>
   </xsl:template>
 
-  <xsl:template match="outline:item">
-    <xsl:variable name="currentletter" select="''" />
-    <xsl:variable name="lastletter" select="''" />
-
-    <xsl:if test="name(../..) = 'outline'">
-      <xsl:variable name="currentletter" select="substring(./@title,1,1)" />
-    </xsl:if>
-
-    <xsl:if test="not(lastletter = currentletter) and name(../..) = 'outline'">
-      <p><xsl:value-of select="currentletter" /></p>
-    </xsl:if>
-
-    <li>
-      <xsl:if test="@title!=''">
-        <div>
-          <a>
-            <xsl:if test="@link">
-              <xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@backLink">
-              <xsl:attribute name="name"><xsl:value-of select="@backLink"/></xsl:attribute>
-            </xsl:if>
-            <xsl:value-of select="@title" /> 
-          </a>
-          <span> <xsl:value-of select="@page" /> </span>
-        </div>
-      </xsl:if>
-
-      <xsl:if test="name(../..) = 'outline'">
-        <xsl:variable name="lastletter" select="currentletter" />
-      </xsl:if>
-
-      <ul>
-        <xsl:comment>added to prevent self-closing tags in QtXmlPatterns</xsl:comment>
-        <xsl:apply-templates select="outline:item"/>
-      </ul>
-    </li>
-  </xsl:template>
 </xsl:stylesheet>
