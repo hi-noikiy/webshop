@@ -23,7 +23,7 @@
                                                         <div class="input-group">
                                                                 <span class="input-group-btn">
                                                                         <span class="btn btn-primary btn-file">
-                                                                                Bladeren&hellip; <input type="file" name="image">
+                                                                                Bladeren&hellip; <input type="file" name="image" required>
                                                                         </span>
                                                                 </span>
                                                                 <input type="text" class="form-control" readonly id="fileName">
@@ -74,7 +74,7 @@
                                                 <h3>{{{ $slide['Title'] }}}</h3>
                                                 <p>{{{ $slide['Caption'] }}}</p>
                                                 <p>
-                                                        <form action="/admin/changeSlideOrder/{{{ $slide['Id'] }}}" method="POST" role="form">
+                                                        <form action="/admin/changeSlideOrder/{{{ $slide['id'] }}}" method="POST" role="form">
                                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                                 <div class="input-group">
                                                                         <span class="input-group-btn">
@@ -85,7 +85,7 @@
                                                                 </div>
                                                         </form>
                                                 </p>
-                                                <p><a href="/admin/removeCarouselSlide/{{{ $slide['Id'] }}}" class="btn btn-danger btn-block" role="button">Remove from carousel</a></p>
+                                                <p><a href="/admin/removeCarouselSlide/{{{ $slide['id'] }}}" class="btn btn-danger btn-block" role="button">Remove from carousel</a></p>
                                         </div>
                                 </div>
                         </div>

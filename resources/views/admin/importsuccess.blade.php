@@ -7,6 +7,8 @@
 @section('content')
         @include('admin.nav')
 
+        <br />
+
         <div class="row">
                 <div class="col-md-12">
                         <a href="/admin/import"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar de import pagina</a>

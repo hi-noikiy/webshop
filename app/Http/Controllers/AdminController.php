@@ -337,16 +337,80 @@ class AdminController extends Controller {
 
                 File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
 
-                // $ wkhtmltopdf -q --footer-right [page] path-to-html-page toc --xsl-style-sheet path-to-toc-style-sheet path-to-pdf-save-location
                 exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
                 
                 return Redirect::intended('/dl/catalog.pdf');
         }
 
+        /**
+         * Carousel manager
+         *
+         * @return mixed
+         */
         public function carousel()
         {
                 $carouselData = Carousel::orderBy('Order')->get();
 
                 return view('admin.carousel')->with(['carouselData' => $carouselData, 'status' => 'ok']);
+        }
+
+        /**
+         * Add a carousel slide
+         *
+         * @return mixed
+         */
+        public function addSlide()
+        {
+                if (Input::has('title') && Input::has('caption') && Input::hasFile('image'))
+                {
+
+                        $image   = Input::file('image');
+                        $title   = Input::get('title');
+                        $caption = Input::get('caption');
+
+                        $validator = Validator::make(
+                                array(
+                                        'image' => $image,
+                                ),
+                                array(
+                                        'image' => 'required|image'
+                                )
+                        );
+
+                        if ($validator->fails())
+                        {
+                                return Redirect::back()->with('error', $validator->messages());
+                        } else
+                        {
+                                $slide = new Carousel;
+
+                                $slide->Image   = $image;
+                                $slide->Title   = $title;
+                                $slide->Caption = $caption;
+                                $slide->Order   = Carousel::count();
+
+                                $slide->save();
+
+                                return Redirect::back()->with('success', "De slide is toegevoegd aan de carousel");
+                        }
+                } else
+                        return Redirect::back()->with('error', "Een of meer velden zijn niet ingevuld");
+        }
+
+        /**
+         * Remove a slide from the carousel
+         *
+         * @var integer
+         * @return mixed
+         */
+        public function removeSlide($id)
+        {
+                if (isset($id) && Carousel::where('id', $id)->count() === 1)
+                {
+                        Carousel::destroy($id);
+
+                        return Redirect::back()->with('success', "De slide is verwijderd uit de carousel");
+                } else
+                        return Redirect::back()->with('error', "De slide met id $id bestaat niet");
         }
 }

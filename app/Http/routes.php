@@ -29,16 +29,18 @@ Route::get('/clearance', 'WebshopController@clearance');                // Show 
 Route::get('/cart/view', 'WebshopController@viewCart');                 // Show the cart
 Route::get('/cart/destroy', 'WebshopController@cartDestroy');           // Remove all items from the cart
 
-Route::get('/admin', 'AdminController@overview');                       // Admin overview
-Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                // Get the server ram load
-Route::get('/admin/CPULoad', 'AdminController@CPULoad');                // Get the server cpu load
-Route::get('/admin/import', 'AdminController@import');                  // The page where the user can upload a CSV file with the products
-Route::get('/admin/importsuccess', 'AdminController@importSuccess');    // Import success page
-Route::get('/admin/managecontent', 'AdminController@contentManager');   // Content manager
-Route::get('/admin/generate', 'AdminController@generate');				// Generate stuffs
-Route::get('/admin/carousel', 'AdminController@carousel');				// Carousel manager
+Route::get('/admin', 'AdminController@overview');                       		// Admin overview
+Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                		// Get the server ram load
+Route::get('/admin/CPULoad', 'AdminController@CPULoad');                		// Get the server cpu load
+Route::get('/admin/import', 'AdminController@import');                  		// The page where the user can upload a CSV file with the products
+Route::get('/admin/importsuccess', 'AdminController@importSuccess');    		// Import success page
+Route::get('/admin/managecontent', 'AdminController@contentManager');   		// Content manager
+Route::get('/admin/generate', 'AdminController@generate');						// Generate stuffs
+Route::get('/admin/carousel', 'AdminController@carousel');						// Carousel manager
 //Route::get('/admin/generateCatalog', 'AdminController@generateCatalog');// Generate catalog
-Route::get('/admin/getContent', 'AdminController@getContent');          // Get the content for a field
+Route::get('/admin/getContent', 'AdminController@getContent');          		// Get the content for a field
+Route::get('/admin/removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
+
 
 Route::get('/account', 'AccountController@overview');                              // Account overview
 Route::get('/account/changepassword', 'AccountController@changePassGET');          // Change password page
@@ -56,10 +58,11 @@ Route::post('/forgotpassword', 'WebshopController@resetPassword');          // P
 Route::post('/cart/add', 'WebshopController@addToCart');                    // Add product to cart
 Route::post('/cart/update', 'WebshopController@updateCart');                // Update or remove product from cart
 
-Route::post('/admin/productimport', 'AdminController@productImport');       // Handle the product import
-Route::post('/admin/discountimport', 'AdminController@discountImport');     // Handle the discount import
-Route::post('/admin/saveContent', 'AdminController@saveContent');           // Save the page content
-Route::post('/admin/generate', 'AdminController@generateCatalog');			// Generate the catalog
+Route::post('/admin/productimport', 'AdminController@productImport');       	// Handle the product import
+Route::post('/admin/discountimport', 'AdminController@discountImport');     	// Handle the discount import
+Route::post('/admin/saveContent', 'AdminController@saveContent');           	// Save the page content
+Route::post('/admin/generate', 'AdminController@generateCatalog');				// Generate the catalog
+Route::post('/admin/addCarouselSlide', 'AdminController@addSlide');				// Try to add a carousel slide
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
