@@ -22,45 +22,6 @@
         <![endif]-->
 </head>
 <body>
-@if(!Auth::check())
-        <div class="modal fade" id="loginModal">
-                <div class="modal-dialog">
-                        <div class="modal-content">
-                                <form action="/login" method="POST" class="form form-horizontal">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title">Login</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                                <div class="form-group">
-                                                        <label for="inputUsername" class="col-sm-4 control-label">Login</label>
-                                                        <div class="col-sm-8">
-                                                                <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{{ Session::get('username') }}}" @endif>
-                                                        </div>
-                                                </div>
-                                                <div class="form-group">
-                                                        <label for="inputPassword" class="col-sm-4 control-label">Wachtwoord</label>
-                                                        <div class="col-sm-8">
-                                                                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Wachtwoord" required>
-                                                        </div>
-                                                </div>
-                                                <div class="form-group">
-                                                        <label for="inputRemember" class="col-sm-4 control-label">Ingelogd blijven?</label>
-                                                        <div class="col-sm-8">
-                                                                <input name="remember_me" id="inputRemember" class="form-control" type="checkbox" />
-                                                        </div>
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
-                                                <button type="submit" class="btn btn-primary">Login</button>
-                                        </div>
-                                </form>
-                        </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-@endif
 
 <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
         <div class="wtg-nav-container">
@@ -117,7 +78,7 @@
                                                     </ul>
                                             </li>
                                     @else
-                                            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                                            <li><a href="/#loginModal">Login</a></li>
                                     @endif
                             </ul>
 
@@ -173,6 +134,11 @@
                 <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
                 <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
                 <script src="/js/jquery.toaster.js"></script>
+                <script type="text/javascript">
+                        $("#searchInput").on('focus', function() {
+                                window.location.href = '/webshop';
+                        });
+                </script>
         </footer>
 </div>
 </body>

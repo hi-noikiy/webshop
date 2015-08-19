@@ -9,50 +9,25 @@
                 <div class="col-lg-5">
                         <div id="slideshow" class="carousel slide">
                                 <ol class="carousel-indicators">
-                                        <li data-target="#slideshow" data-slide-to="0" class="active"></li>
-                                        <li data-target="#slideshow" data-slide-to="1" class=""></li>
-                                        <li data-target="#slideshow" data-slide-to="2" class=""></li>
-                                        <li data-target="#slideshow" data-slide-to="3" class=""></li>
-                                        <li data-target="#slideshow" data-slide-to="4" class=""></li>
+                                        @for($i=0; $i < count($carouselSlides); $i++)
+                                                <li data-target="#slideshow" data-slide-to="{{{ $i }}}" class="{{{ ($i === 0 ? 'active' : '') }}}"></li>
+                                        @endfor
                                 </ol>
-                                <div class="carousel-inner">
-                                        <div class="item active">
-                                                <img src="/img/carousel/profactie.jpg" alt="profactie.jpg">
-                                                <div class="carousel-caption">
-                                                        <h3>Viega Profipress actiepakket</h3>
-                                                        <p>Viega Profipress actiepakket voor een scherpe prijs!!!</p>
-                                                </div>
-                                        </div>
-                                        <div class="item">
-                                                <img src="/img/carousel/prestactie.jpg" alt="prestactie.jpg">
-                                                <div class="carousel-caption">
-                                                        <h3>Viega Prestabo actiepakket</h3>
-                                                        <p>Viega Prestabo actiepakket voor een scherpe prijs!!!</p>
-                                                </div>
-                                        </div>
-                                        <div class="item">
-                                                <img src="/img/carousel/182150050.jpg" alt="182150050.jpg">
-                                                <div class="carousel-caption">
-                                                        <h3>Blucher afvoerputten</h3>
-                                                        <p>Blucher vloerputten programma</p>
-                                                </div>
-                                        </div>
-                                        <div class="item">
-                                                <img src="/img/carousel/ra280326.jpg" alt="ra280326.jpg">
-                                                <div class="carousel-caption">
-                                                        <h3>Raminex terugstroombeveiligingen</h3>
-                                                        <p>Kogelkraan met keerklep in easy service (ES) uitvoering.</p>
-                                                </div>
-                                        </div>
-                                        <div class="item">
-                                                <img src="/img/carousel/bu400480100.jpg" alt="bu400480100.jpg">
-                                                <div class="carousel-caption">
-                                                        <h3>EcoFlo</h3>
-                                                        <p>Tapwater opwarmen via het rookgaskanaal. Nieuw van Burgerhout.</p>
-                                                </div>
-                                        </div>
 
+                                <div class="carousel-inner">
+                                        <?php $count = 1; ?>
+                                        @foreach ($carouselSlides as $slide)
+                                                <div class="item {{{ ($count === 1 ? 'active' : '') }}}">
+                                                    <img src="/img/carousel/{{{ $slide['Image'] }}}" alt="{{{ $slide['Image'] }}}" style="height: 300px">
+                                                    <div class="carousel-caption">
+                                                        <h3>{{{ $slide['Title'] }}}</h3>
+                                                        <p>{{{ $slide['Caption'] }}}</p>
+                                                    </div>
+                                                </div>
+                                                <?php $count++; ?>
+                                        @endforeach
                                 </div>
+
                                 <a class="carousel-control left" href="#slideshow" data-slide="prev"><span class="icon-prev"></span></a>
                                 <a class="carousel-control right" href="#slideshow" data-slide="next"><span class="icon-next"></span></a>
                         </div>

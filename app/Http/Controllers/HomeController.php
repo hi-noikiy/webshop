@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Content;
+use App\Carousel;
 
 class HomeController extends Controller {
 
@@ -25,9 +26,10 @@ class HomeController extends Controller {
          */
         public function home()
         {
-                $news = Content::where('name', 'home.news')->first();
+                $news           = Content::where('name', 'home.news')->first();
+                $carouselSlides = Carousel::orderBy('Order')->get();
 
-                return view('home.index', array('news' => $news));
+                return view('home.index')->with(['news' => $news, 'carouselSlides' => $carouselSlides]);
         }
 
         /**

@@ -11,7 +11,8 @@
                 <div class="col-md-12">
                         <h4>Catalogus genereren</h4>
 
-                        <form action="/admin/generateCatalog" method="GET" class="form">
+                        <form action="/admin/generateCatalog" method="POST" class="form">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <button type="submit" class="btn btn-primary">Genereren</button>
                         </form>
 

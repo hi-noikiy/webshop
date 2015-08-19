@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Discount;
 use App\Content;
+use App\Carousel;
 
 use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request;
 
@@ -260,7 +261,7 @@ class AdminController extends Controller {
          *
          * @return mixed
          */
-        public function manageContent()
+        public function contentManager()
         {
                 $data = Content::all();
 
@@ -322,7 +323,7 @@ class AdminController extends Controller {
          * @return string
          */
         public function generateCatalog()
-        { 
+        {
                 ini_set('memory_limit', '1G');
                 $footer = "Telefoon: (050) 544 55 66  -  E-Mail: verkoop@wiringa.nl  -  Website: wiringa.nl  -  Augustus 2015";
                 $productData = DB::table('products')
@@ -340,5 +341,12 @@ class AdminController extends Controller {
                 exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
                 
                 return Redirect::intended('/dl/catalog.pdf');
+        }
+
+        public function carousel()
+        {
+                $carouselData = Carousel::orderBy('Order')->get();
+
+                return view('admin.carousel')->with(['carouselData' => $carouselData, 'status' => 'ok']);
         }
 }

@@ -34,9 +34,10 @@ Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                // Get t
 Route::get('/admin/CPULoad', 'AdminController@CPULoad');                // Get the server cpu load
 Route::get('/admin/import', 'AdminController@import');                  // The page where the user can upload a CSV file with the products
 Route::get('/admin/importsuccess', 'AdminController@importSuccess');    // Import success page
-Route::get('/admin/managecontent', 'AdminController@manageContent');    // Content manager
+Route::get('/admin/managecontent', 'AdminController@contentManager');   // Content manager
 Route::get('/admin/generate', 'AdminController@generate');				// Generate stuffs
-Route::get('/admin/generateCatalog', 'AdminController@generateCatalog');// Generate catalog
+Route::get('/admin/carousel', 'AdminController@carousel');				// Carousel manager
+//Route::get('/admin/generateCatalog', 'AdminController@generateCatalog');// Generate catalog
 Route::get('/admin/getContent', 'AdminController@getContent');          // Get the content for a field
 
 Route::get('/account', 'AccountController@overview');                              // Account overview
@@ -58,6 +59,7 @@ Route::post('/cart/update', 'WebshopController@updateCart');                // U
 Route::post('/admin/productimport', 'AdminController@productImport');       // Handle the product import
 Route::post('/admin/discountimport', 'AdminController@discountImport');     // Handle the discount import
 Route::post('/admin/saveContent', 'AdminController@saveContent');           // Save the page content
+Route::post('/admin/generate', 'AdminController@generateCatalog');			// Generate the catalog
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database
