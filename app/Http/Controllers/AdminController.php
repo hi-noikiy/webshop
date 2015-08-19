@@ -263,9 +263,9 @@ class AdminController extends Controller {
          */
         public function contentManager()
         {
-                $data = Content::all();
+                $data = Content::where('visible', '1')->get();
 
-                return view('admin.managecontent', array('data' => $data));
+                return view('admin.managecontent')->with(['data' => $data]);
         }
 
         /**
@@ -314,7 +314,9 @@ class AdminController extends Controller {
          */
         public function generate()
         {
-                return view('admin.generate');
+                $content = DB::table('text')->where('name', 'catalog.footer')->first();
+
+                return view('admin.generate')->with(['currentFooter' => $content->content]);
         }
 
         /**
@@ -324,8 +326,22 @@ class AdminController extends Controller {
          */
         public function generateCatalog()
         {
+
+                if (Input::get('footer') !== "")
+                {
+                        $footer = Content::where('name', 'catalog.footer');
+
+                        $footer->content = Input::get('footer');
+
+                        $footer->save();
+
+                        unset($footer);
+                }
+
                 ini_set('memory_limit', '1G');
-                $footer = "Telefoon: (050) 544 55 66  -  E-Mail: verkoop@wiringa.nl  -  Website: wiringa.nl  -  Augustus 2015";
+
+                $footer = Content::where('name', 'catalog.footer')->get();
+
                 $productData = DB::table('products')
                                     ->orderBy('catalog_group', 'asc')
                                     ->orderBy('group', 'asc')
