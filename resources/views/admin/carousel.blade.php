@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('title')
-        <h3>Admin <small>content genereren</small></h3>
+        <h3>Admin <small>carousel manager</small></h3>
 @stop
 
 @section('content')
