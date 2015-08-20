@@ -11,6 +11,20 @@
 |
 */
 
+Route::get('/test', function() {
+	header( 'Content-type: text/html; charset=utf-8' );
+	header("Content-Encoding: none");
+	$x = 1;
+
+	while ($x < 10) {
+	    echo $x."<br />";
+	    ob_flush();
+	    flush();
+	    sleep(1);
+	    ++$x;
+	}
+});
+
 // GET Requests will be handled here
 Route::get('/', 'HomeController@home');                                 // Homepage
 Route::get('/about', 'HomeController@about');                           // About us
@@ -58,11 +72,12 @@ Route::post('/forgotpassword', 'WebshopController@resetPassword');          // P
 Route::post('/cart/add', 'WebshopController@addToCart');                    // Add product to cart
 Route::post('/cart/update', 'WebshopController@updateCart');                // Update or remove product from cart
 
-Route::post('/admin/productimport', 'AdminController@productImport');       	// Handle the product import
-Route::post('/admin/discountimport', 'AdminController@discountImport');     	// Handle the discount import
-Route::post('/admin/saveContent', 'AdminController@saveContent');           	// Save the page content
-Route::post('/admin/generate', 'AdminController@generateCatalog');				// Generate the catalog
-Route::post('/admin/addCarouselSlide', 'AdminController@addSlide');				// Try to add a carousel slide
+Route::post('/admin/productimport', 'AdminController@productImport');       // Handle the product import
+Route::post('/admin/discountimport', 'AdminController@discountImport');     // Handle the discount import
+Route::post('/admin/saveContent', 'AdminController@saveContent');           // Save the page content
+Route::post('/admin/generate', 'AdminController@generateCatalog');			// Generate the catalog
+Route::post('/admin/addCarouselSlide', 'AdminController@addSlide');			// Try to add a carousel slide
+Route::post('/admin/editCarouselSlide/{id}', 'AdminController@editSlide');	// Edit the slide order
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database

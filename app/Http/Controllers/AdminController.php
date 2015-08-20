@@ -6,7 +6,7 @@ use App\Discount;
 use App\Content;
 use App\Carousel;
 
-use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request;
+use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage;
 
 class AdminController extends Controller {
 
@@ -326,7 +326,6 @@ class AdminController extends Controller {
          */
         public function generateCatalog()
         {
-
                 if (Input::get('footer') !== "")
                 {
                         $footer = Content::where('name', 'catalog.footer');
@@ -400,12 +399,14 @@ class AdminController extends Controller {
                         {
                                 $slide = new Carousel;
 
-                                $slide->Image   = $image;
+                                $slide->Image   = $image->getClientOriginalName();
                                 $slide->Title   = $title;
                                 $slide->Caption = $caption;
                                 $slide->Order   = Carousel::count();
 
                                 $slide->save();
+
+                                Input::file('image')->move(public_path() . "/img/carousel", $image->getClientOriginalName());
 
                                 return Redirect::back()->with('success', "De slide is toegevoegd aan de carousel");
                         }
@@ -423,9 +424,39 @@ class AdminController extends Controller {
         {
                 if (isset($id) && Carousel::where('id', $id)->count() === 1)
                 {
+                        $slide = Carousel::find($id);
+
+                        if (Storage::disk('local')->exists('/public/img/carousel/' . $slide->Image))
+                                Storage::disk('local')->delete('/public/img/carousel/' . $slide->Image);
+
                         Carousel::destroy($id);
 
                         return Redirect::back()->with('success', "De slide is verwijderd uit de carousel");
+                } else
+                        return Redirect::back()->with('error', "De slide met id $id bestaat niet");
+        }
+
+        /**
+         * Edit the slide order number
+         *
+         * @var integer
+         * @return mixed
+         */
+        public function editSlide($id)
+        {
+                if (isset($id) && Carousel::where('id', $id)->count() === 1)
+                {
+                        if (Input::has('order') && is_numeric(Input::get('order')))
+                        {
+                                $slide = Carousel::find($id);
+
+                                $slide->Order = Input::get('order');
+
+                                $slide->save();
+
+                                return Redirect::back()->with('success', "Het slide nummer is aangepast");
+                        } else
+                                return Redirect::back()->with('error', 'Er is een ongeldig slide nummer opgegeven');
                 } else
                         return Redirect::back()->with('error', "De slide met id $id bestaat niet");
         }

@@ -74,13 +74,13 @@
                                                 <h3>{{{ $slide['Title'] }}}</h3>
                                                 <p>{{{ $slide['Caption'] }}}</p>
                                                 <p>
-                                                        <form action="/admin/changeSlideOrder/{{{ $slide['id'] }}}" method="POST" role="form">
+                                                        <form action="/admin/editCarouselSlide/{{{ $slide['id'] }}}" method="POST" role="form">
                                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                                 <div class="input-group">
                                                                         <span class="input-group-btn">
                                                                                 <button class="btn btn-primary" type="submit">Wijzigen</button>
                                                                         </span>
-                                                                        <input type="text" name="order" value="{{{ $slide['Order'] }}}" class="form-control" placeholder="Slide nummer" aria-describedby="descr">
+                                                                        <input type="number" name="order" value="{{{ $slide['Order'] }}}" class="form-control" placeholder="Slide nummer" aria-describedby="descr" required>
                                                                         <span class="input-group-addon" id="descr">Slide nr</span>
                                                                 </div>
                                                         </form>
