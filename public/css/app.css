@@ -259,6 +259,7 @@ img {
 .page-header {
   background: rgba(239,239,239,0.8);
   margin: 0;
+  border-bottom: 0;
 }
 .page-header h3 {
   font-weight: 300;
