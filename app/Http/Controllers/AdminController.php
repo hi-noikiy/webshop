@@ -112,7 +112,8 @@ class AdminController extends Controller {
         {
                 if (Input::hasFile('productFile'))
                 {
-                        ini_set('memory_limit', '1024M');
+                        \Debugbar::disable();
+                        ini_set('memory_limit', '1G');
 
                         $file = Input::file('productFile');
 
@@ -129,14 +130,29 @@ class AdminController extends Controller {
                         {
                                 return Redirect::back()->with('error', $validator->messages());
                         } else {
+                                // This loop is used to send the first 4096 bytes for the output buffering to work
+                                echo "<!--";
+                                for ($i=0; $i < 4089; $i++) { 
+                                        echo "X";
+                                }
+                                echo "-->";
+
+                                echo "Preparing database transaction.... <br />";
+                                echo "[";
+
                                 $startTime = microtime(true);
 
                                 Product::truncate();
 
-                                $csv = file($file->getRealPath());
+                                $csv       = file($file->getRealPath());
+                                $lineCount = count($csv);
 
-                                DB::transaction(function() use ($csv) {
+                                DB::beginTransaction();
+
+                                //DB::transaction(function() use ($csv) {
                                         DB::connection()->disableQueryLog();
+
+                                        $line = $lastPercent = 0;
 
                                         foreach ($csv as $row) {
                                                 $row  = preg_replace("/\r\n/", "", $row);
@@ -168,13 +184,39 @@ class AdminController extends Controller {
                                                                 'catalog_group'    => $data[29],
                                                                 'catalog_index'    => $data[30],
                                                         ));
+
+                                                $line++;
+                                                $percentage  = round(($line / $lineCount) * 100);
+                                                
+                                                if ($percentage !== $lastPercent)
+                                                {
+                                                        echo "#";
+                                                        ob_flush();
+                                                        flush();
+                                                }
+
+                                                $lastPercent = $percentage;
                                         }
-                                });
+                                //});
+                                echo "] <br />";
+
+                                ob_flush();
+                                flush();
+
+                                sleep(1);
 
                                 DB::commit();
 
+                                sleep(1);
+
+                                echo "Committing data...<br />";
+
+                                ob_flush();
+                                flush();
+
                                 $endTime = round(microtime(true) - $startTime, 4);
-                                return Redirect::to('admin/importsuccess')->with(array('count' => count($csv), 'type' => 'product', 'time' => $endTime));
+
+                                return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
                         }
                 } else
                         return Redirect::back()->with('error', 'Geen bestand geselecteerd');
@@ -206,13 +248,26 @@ class AdminController extends Controller {
                         {
                                 return Redirect::back()->with('error', $validator->messages());
                         } else {
+                                // This loop is used to send the first 4096 bytes for the output buffering to work
+                                echo "<!--";
+                                for ($i=0; $i < 4089; $i++) { 
+                                        echo "X";
+                                }
+                                echo "-->";
+
+                                echo "Preparing database transaction.... <br />";
+                                echo "[";
+
                                 $startTime = microtime(true);
 
                                 Discount::truncate();
 
-                                $csv = file($file->getRealPath());
-                                
-                                DB::transaction(function() use ($csv) {
+                                $csv       = file($file->getRealPath());
+                                $lineCount = count($csv);
+
+                                DB::beginTransaction();
+
+                                //DB::transaction(function() use ($csv) {
                                         DB::connection()->disableQueryLog();
 
                                         foreach ($csv as $row) {
@@ -228,10 +283,36 @@ class AdminController extends Controller {
                                                                 'group_desc'    => $data[6],
                                                                 'product_desc'  => $data[7],
                                                         ));
+                                                
+                                                $line++;
+                                                
+                                                $percentage  = round(($line / $lineCount) * 100);
+                                                
+                                                if ($percentage !== $lastPercent)
+                                                {
+                                                        echo "#";
+                                                        ob_flush();
+                                                        flush();
+                                                }
+
+                                                $lastPercent = $percentage;
                                         }
-                                });
+                                //});
+                                echo "] <br />";
+
+                                ob_flush();
+                                flush();
+
+                                sleep(1);
 
                                 DB::commit();
+
+                                echo "Committing data...<br />";
+
+                                ob_flush();
+                                flush();
+
+                                sleep(1);
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
@@ -248,6 +329,8 @@ class AdminController extends Controller {
          */
         public function importSuccess()
         {
+                // Disable the debugbar or it will overload the memory
+                \Debugbar::disable();
                 // The type must be set
                 if (Session::has('type'))
                         return view('admin.importsuccess');
