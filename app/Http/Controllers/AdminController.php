@@ -207,12 +207,12 @@ class AdminController extends Controller {
 
                                 DB::commit();
 
-                                sleep(1);
-
                                 echo "Committing data...<br />";
 
                                 ob_flush();
                                 flush();
+
+                                sleep(1);
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
