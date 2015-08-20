@@ -138,7 +138,7 @@ class AdminController extends Controller {
                                 echo "-->";
 
                                 echo "Preparing database transaction.... <br />";
-                                echo "[";
+                                echo "[" . "<div style=' position: absolute; top: 26px; left:  821px;'>]</div>";
 
                                 $startTime = microtime(true);
 
@@ -191,6 +191,7 @@ class AdminController extends Controller {
                                                 if ($percentage !== $lastPercent)
                                                 {
                                                         echo "#";
+                                                        echo "<div style='position: absolute; top: 45px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
                                                         ob_flush();
                                                         flush();
                                                 }
@@ -198,7 +199,7 @@ class AdminController extends Controller {
                                                 $lastPercent = $percentage;
                                         }
                                 //});
-                                echo "] <br />";
+                                echo "<br /><br />";
 
                                 ob_flush();
                                 flush();
@@ -256,7 +257,7 @@ class AdminController extends Controller {
                                 echo "-->";
 
                                 echo "Preparing database transaction.... <br />";
-                                echo "[";
+                                echo "[" . "<div style=' position: absolute; top: 26px; left:  821px;'>]</div>";
 
                                 $startTime = microtime(true);
 
@@ -298,7 +299,7 @@ class AdminController extends Controller {
                                                 $lastPercent = $percentage;
                                         }
                                 //});
-                                echo "] <br />";
+                                echo "<br />";
 
                                 ob_flush();
                                 flush();
