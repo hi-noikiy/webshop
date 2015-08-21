@@ -7,7 +7,8 @@
 @section('content')
         <?php $total = 0; ?>
         @if(Cart::count() > 0)
-                <table class="table table-striped">
+                <!-- Desktop display -->
+                <table class="table table-striped hidden-xs hidden-sm">
                         <thead>
                                 <th>Product nummer</th>
                                 <th>Naam</th>
@@ -72,6 +73,82 @@
                                 </tr>
                         </tbody>
                 </table>
+
+
+                <!-- Mobile display -->
+                <div class="hidden-md hidden-lg">
+                        @foreach ($cart as $item)
+
+                                <?php
+                                        $rowid          = $item->rowid;
+                                        $artNr          = $item->id;
+                                        $qty            = $item->qty;
+                                        $name           = $item->name;
+                                        $korting        = $item->options->korting;
+                                        $brutoPrice     = number_format($item->price, 2, ".", "");
+
+                                if ($korting === 'Actie') {
+                                        $nettoPrice     = number_format($item->price, 2, ".", "");
+                                } else {
+                                        $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
+                                }
+
+                                        $total          += (double) ($nettoPrice * $qty);
+                                ?>
+
+                                <form action="/cart/update" method="POST">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
+
+                                        <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                        <a href="/product/{{ $artNr }}" class="panel-heading-link">{{ $name }}</a>
+                                                </div>
+                                                <table class="table">
+                                                        <tbody>
+                                                                <tr>
+                                                                        <td><b>Product nummer</b></td>
+                                                                        <td>{{ $artNr }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Bruto prijs</b></td>
+                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $brutoPrice }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Korting</b></td>
+                                                                        <td>{{ ($korting === "Actie" ? $korting : $korting . "%") }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Netto prijs</b></td>
+                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $nettoPrice }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Aantal</b></td>
+                                                                        <td>
+                                                                                <div class="input-group">
+                                                                                        <input type="text" class="form-control" placeholder="{{ $qty }}" name="qty" value="{{ $qty }}">
+                                                                                        <span class="input-group-btn">
+                                                                                                <button type="submit" class="btn btn-primary" id="addToCart">Wijzigen</button>
+                                                                                        </span>
+                                                                                </div>
+                                                                        </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Netto subtotaal</b></td>
+                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $qty, 2, ".", "") }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td><b>Verwijderen</b></td>
+                                                                        <td>
+                                                                                <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                                                        </td>
+                                                                </tr>
+                                                        </tbody>
+                                                </table>
+                                        </div>
+                                </form>
+                        @endforeach
+                </div>
 
                 <p>* Actieproducten zijn altijd netto en worden aangeduid met een groene regel.</p>
 
@@ -194,6 +271,15 @@
         @else
                 <div class="alert alert-warning">Uw winkelwagen is nog leeg.</div>
         @endif
+@stop
+
+@section('extraCSS')
+        <style type="text/css">
+                .panel-heading-link,
+                .panel-heading-link:focus {
+                        color: white;
+                }
+        </style>
 @stop
 
 @section('extraJS')
