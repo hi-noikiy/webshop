@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Product;
 
-use DB, Cart, Auth, Input, Session, Request, Redirect;
+use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App;
 
 class WebshopController extends Controller {
 
@@ -324,10 +324,10 @@ class WebshopController extends Controller {
 
                 if (!$validator->fails())
                 {
-                        App::error(function(ModelNotFoundException $e) use ($number)
+                        /*App::error(function(ModelNotFoundException $e) use ($number)
                         {
                                 return Redirect::back()->with('error', 'Geen product gevonden met nummer: ' . $number);
-                        });
+                        });*/
 
                         $product = Product::where('number', $number)->firstOrFail();
 
