@@ -11,7 +11,7 @@
 
         <hr />
 
-        <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+        <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                         <label for="productFile" class="col-sm-2 control-label">Bestand</label>
@@ -19,7 +19,7 @@
                                 <div class="input-group">
                                         <span class="input-group-btn">
                                                 <span class="btn btn-primary btn-file">
-                                                        Bladeren&hellip; <input type="file" name="productFile">
+                                                        Bladeren&hellip; <input type="file" name="productFile" accept=".csv">
                                                 </span>
                                         </span>
                                         <input type="text" class="form-control" readonly id="fileName">
@@ -45,7 +45,7 @@
                                 <div class="input-group">
                                         <span class="input-group-btn">
                                                 <span class="btn btn-primary btn-file">
-                                                        Bladeren&hellip; <input type="file" name="discountFile">
+                                                        Bladeren&hellip; <input type="file" name="discountFile" accept=".csv">
                                                 </span>
                                         </span>
                                         <input type="text" class="form-control" readonly id="fileName">
