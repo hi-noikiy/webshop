@@ -70,10 +70,13 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                         <div class="row">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Annuleren</button>
                                                                 </div>
-                                                                <div class="col-lg-6">
+
+                                                                <br class="hidden-md hidden-lg" />
+
+                                                                <div class="col-md-6">
                                                                         <div class="input-group">
                                                                                 <input type="text" class="form-control" placeholder="Aantal" id="qty" name="qty">
                                                                                 <span class="input-group-btn">

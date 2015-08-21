@@ -80,12 +80,12 @@
         <table class="table table-striped">
                 <thead>
                         <tr>
-                                <th></th>
-                                <th>Artikelnummer</th>
+                                <th class="hidden-xs"></th>
+                                <th class="hidden-xs">Artikelnummer</th>
                                 <th>Omschrijving</th>
                                 @if(Auth::check())
                                         <th>Bruto prijs</th>
-                                        <th>Korting</th>
+                                        <th class="hidden-xs">Korting</th>
                                         <th>Netto prijs</th>
                                 @endif
                         </tr>
@@ -104,12 +104,12 @@
                                 @endif
 
                                 <tr>
-                                        <td class="product-thumbnail"><img src="/img/product/{{ $product->image }}" alt="{{ $product->image }}"></td>
-                                        <td>{{ $product->number }}</td>
+                                        <td class="product-thumbnail hidden-xs"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                                        <td class="hidden-xs">{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
                                                 <td>&euro;{{ $price }}</td>
-                                                <td>{{ $discount }}%</td>
+                                                <td class="hidden-xs">{{ $discount }}%</td>
                                                 <td>&euro;{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</td>
                                         @endif
                                 </tr>
