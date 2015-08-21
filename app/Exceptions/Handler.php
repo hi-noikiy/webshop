@@ -36,11 +36,17 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+		$exceptionClass = get_class($e);
+
+		if ($exceptionClass === "Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException")
+			return Redirect::back();
+		elseif ($exceptionClass === "Illuminate\Session\TokenMismatchException")
+			return Redirect::to('/')->with('error', "Uw sessie is verlopen, log opnieuw in en probeer het opnieuw");
+
 		if ($this->isHttpException($e))
 		{
 			return $this->renderHttpException($e);
-		}
-		else
+		} else
 		{
 			return parent::render($request, $e);
 		}
