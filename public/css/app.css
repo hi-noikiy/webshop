@@ -192,7 +192,6 @@ img {
 }
 .navbar-wtg #nav-utils {
   margin-right: 15px;
-  width: 280px;
 }
 .navbar-wtg #nav-utils .navbar-nav {
   float: right;
@@ -201,6 +200,7 @@ img {
   line-height: 20px;
   padding-right: 0;
   float: right;
+  clear:both;
 }
 .navbar-wtg #nav-utils .navbar-form .search-field input {
   border-radius: 0;
@@ -212,7 +212,7 @@ img {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   color: white;
-  width: 180;
+  width: 180px;
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUCB1j+A8EAAn7A/0Mu1vnAAAAAElFTkSuQmCC");
   background-repeat: no-repeat;
   background-size: 100% 0;
