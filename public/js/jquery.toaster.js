@@ -97,8 +97,8 @@
                                 'position'    : 'absolute',
                                 'bottom'      : '20px',
                                 'left'        : '50%',
-                                'margin-left' : '-250px',
-                                'width'       : '500px',
+                                'margin-left' : '-45%',
+                                'width'       : '90%',
                                 'zIndex'      : 50000
                         }
                 },
