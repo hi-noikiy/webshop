@@ -19,7 +19,7 @@
                                 <div class="form-group">
                                         <label for="footer" class="col-sm-2 control-label">Pagina footer</label>
                                         <div class="col-sm-10">
-                                                <input class="form-control" placeholder="Pagina footer" type="text" value="{{{ $currentFooter }}}" name="footer" maxlength="300">
+                                                <input class="form-control" placeholder="Pagina footer" type="text" value="{{ $currentFooter }}" name="footer" maxlength="300">
                                         </div>
                                 </div>
 
