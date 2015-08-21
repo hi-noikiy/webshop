@@ -428,7 +428,7 @@ class AdminController extends Controller {
 
                 ini_set('memory_limit', '1G');
 
-                $footer = Content::where('name', 'catalog.footer')->get();
+                $footer = DB::table('text')->where('name', 'catalog.footer')->first();
 
                 $productData = DB::table('products')
                                     ->orderBy('catalog_group', 'asc')
@@ -441,7 +441,7 @@ class AdminController extends Controller {
 
                 File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
 
-                exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
+                exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer->content . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
                 
                 return Redirect::intended('/dl/catalog.pdf');
         }
