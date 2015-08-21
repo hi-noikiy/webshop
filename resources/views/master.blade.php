@@ -12,7 +12,7 @@
         <style>
                 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,300,200,600,700);
                 @import url({{ URL::to('/') }}/css/bootstrap.min.css);
-                @import url({{ URL::to('/') }}/css/app.min.css);
+                @import url({{ URL::to('/') }}/css/app.css);
         </style>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
