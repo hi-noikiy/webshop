@@ -7,7 +7,7 @@
 @section('content')
         <div class="row">
                 <div class="col-lg-5">
-                        <div id="slideshow" class="carousel slide">
+                        <div id="slideshow" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
                                         @for($i=0; $i < count($carouselSlides); $i++)
                                                 <li data-target="#slideshow" data-slide-to="{{{ $i }}}" class="{{{ ($i === 0 ? 'active' : '') }}}"></li>
