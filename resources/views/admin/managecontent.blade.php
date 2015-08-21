@@ -35,13 +35,9 @@
                                 <label for="field" class="col-sm-2 control-label">Inhoud: </label>
 
                                 <div class="col-sm-10">
-                                        <textarea name="content" id="content-textarea" rows="30" class="form-control"></textarea>
+                                        <textarea name="content" id="editor" rows="30" class="form-control"></textarea>
                                 </div>
                         </div>
-                </div>
-
-                <div id="step-3" style="display: none;">
-                        <h3>3. Inhoud opslaan</h3>
 
                         <hr />
 
@@ -51,6 +47,9 @@
 @stop
 
 @section('extraJS')
+        <script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/js/ckeditor/adapters/jquery.js"></script>
+
         <script type="text/javascript">
                 $('#field-selector').change(function() {
                         $.ajax({
@@ -58,14 +57,12 @@
                                 data: {page: this.value},
                                 dataType: 'text',
                                 success: function(data) {
-                                        $('#content-textarea').val(data);
+                                        $('#editor').val(data);
                                         $('#step-2').show();
                                 }
                         });
                 });
 
-                $('#step-2 textarea').keyup(function() {
-                        $('#step-3').show();
-                });
+                $('#editor').ckeditor();
         </script>
 @stop
