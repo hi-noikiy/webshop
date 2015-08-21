@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Product;
+use App\User;
 
 use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App;
 
@@ -295,7 +296,10 @@ class WebshopController extends Controller {
          */
         public function viewCart()
         {
-                $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
+                if (Auth::check())
+                        $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
+                else
+                        $addresses = [];
 
                 return view('webshop.cart', array('cart' => Cart::content(), 'addresses' => $addresses));
         }
@@ -342,6 +346,12 @@ class WebshopController extends Controller {
                                         )
                                 )
                         );
+
+                        $user = User::find(Auth::user()->id);
+
+                        $user->cart = serialize(Cart::content());
+
+                        $user->save();
 
                         if ($ref)
                                 return Redirect::to($ref)->with('success', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
