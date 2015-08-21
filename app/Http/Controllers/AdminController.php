@@ -137,8 +137,9 @@ class AdminController extends Controller {
                                 }
                                 echo "-->";
 
+                                echo "<h1>Product import</h1>";
                                 echo "Preparing database transaction.... <br />";
-                                echo "[" . "<div style=' position: absolute; top: 26px; left:  821px;'>]</div>";
+                                echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
 
                                 $startTime = microtime(true);
 
@@ -191,7 +192,7 @@ class AdminController extends Controller {
                                                 if ($percentage !== $lastPercent)
                                                 {
                                                         echo "#";
-                                                        echo "<div style='position: absolute; top: 45px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
                                                         ob_flush();
                                                         flush();
                                                 }
@@ -256,8 +257,9 @@ class AdminController extends Controller {
                                 }
                                 echo "-->";
 
+                                echo "<h1>Korting import</h1>";
                                 echo "Preparing database transaction.... <br />";
-                                echo "[" . "<div style=' position: absolute; top: 26px; left:  821px;'>]</div>";
+                                echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
 
                                 $startTime = microtime(true);
 
@@ -270,6 +272,8 @@ class AdminController extends Controller {
 
                                 //DB::transaction(function() use ($csv) {
                                         DB::connection()->disableQueryLog();
+
+                                        $line = $lastPercent = 0;
 
                                         foreach ($csv as $row) {
                                                 $data = explode(';', $row);
@@ -292,6 +296,7 @@ class AdminController extends Controller {
                                                 if ($percentage !== $lastPercent)
                                                 {
                                                         echo "#";
+                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
                                                         ob_flush();
                                                         flush();
                                                 }
@@ -299,7 +304,7 @@ class AdminController extends Controller {
                                                 $lastPercent = $percentage;
                                         }
                                 //});
-                                echo "<br />";
+                                echo "<br /><br />";
 
                                 ob_flush();
                                 flush();
