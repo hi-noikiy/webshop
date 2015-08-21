@@ -192,6 +192,7 @@ img {
 }
 .navbar-wtg #nav-utils {
   margin-right: 15px;
+  width: 280px;
 }
 .navbar-wtg #nav-utils .navbar-nav {
   float: right;
