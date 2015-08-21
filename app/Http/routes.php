@@ -11,20 +11,6 @@
 |
 */
 
-Route::get('/test', function() {
-	header( 'Content-type: text/html; charset=utf-8' );
-	header("Content-Encoding: none");
-	$x = 1;
-
-	while ($x < 10) {
-	    echo $x."<br />";
-	    ob_flush();
-	    flush();
-	    sleep(1);
-	    ++$x;
-	}
-});
-
 // GET Requests will be handled here
 Route::get('/', 'HomeController@home');                                 // Homepage
 Route::get('/about', 'HomeController@about');                           // About us
@@ -51,10 +37,8 @@ Route::get('/admin/importsuccess', 'AdminController@importSuccess');    		// Imp
 Route::get('/admin/managecontent', 'AdminController@contentManager');   		// Content manager
 Route::get('/admin/generate', 'AdminController@generate');						// Generate stuffs
 Route::get('/admin/carousel', 'AdminController@carousel');						// Carousel manager
-//Route::get('/admin/generateCatalog', 'AdminController@generateCatalog');// Generate catalog
 Route::get('/admin/getContent', 'AdminController@getContent');          		// Get the content for a field
 Route::get('/admin/removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
-
 
 Route::get('/account', 'AccountController@overview');                              // Account overview
 Route::get('/account/changepassword', 'AccountController@changePassGET');          // Change password page
