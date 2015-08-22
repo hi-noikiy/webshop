@@ -299,7 +299,7 @@ class WebshopController extends Controller {
                 if (Auth::check())
                         $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
                 else
-                        $addresses = [];
+                        return Redirect::to('/#loginModal');
 
                 return view('webshop.cart', array('cart' => Cart::content(), 'addresses' => $addresses));
         }
