@@ -192,7 +192,7 @@
                         <tbody>
                                 @foreach($related_products as $relatedProduct)
                                         <tr>
-                                                <td class="product-thumbnail"><img src="/img/product/{{ $relatedProduct->image }}"></td>
+                                                <td class="product-thumbnail"><img src="/img/products/{{ $relatedProduct->image }}"></td>
                                                 <td>
                                                         <a href="/product/{{ $relatedProduct->number }}?ref=/product/{{ $productData->number }}">{{ $relatedProduct->name }}</a>
                                                 </td>
