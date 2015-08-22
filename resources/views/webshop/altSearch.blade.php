@@ -25,7 +25,7 @@
                                 <?php $price = number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
 
                                 <tr>
-                                        <td class="product-thumbnail"><img src="/img/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                                        <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td>{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
