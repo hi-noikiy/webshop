@@ -7,77 +7,7 @@
 @section('content')
         <?php $total = 0; ?>
         @if(Cart::count() > 0)
-                <!-- Desktop display -->
-                <table class="table table-striped hidden-xs hidden-sm hidden-md hidden-lg">
-                        <thead>
-                                <th>Product nummer</th>
-                                <th>Naam</th>
-                                <th>Bruto prijs</th>
-                                <th>Korting</th>
-                                <th>Netto prijs</th>
-                                <th>Aantal</th>
-                                <th>Netto subtotaal</th>
-                                <th>Update/Verwijder</th>
-                        </thead>
-                        <tbody>
-                                @foreach ($cart as $item)
-
-                                        <?php
-                                                $rowid 		= $item->rowid;
-                                                $artNr 		= $item->id;
-                                                $qty 		= $item->qty;
-                                                $name 		= $item->name;
-                                                $korting 	= $item->options->korting;
-                                                $brutoPrice     = number_format($item->price, 2, ".", "");
-
-                                        if ($korting === 'Actie') {
-                                                $nettoPrice 	= number_format($item->price, 2, ".", "");
-                                        } else {
-                                                $nettoPrice 	= number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
-                                        }
-
-                                                $total 		+= (double) ($nettoPrice * $qty);
-                                        ?>
-
-                                        <form action="/cart/update" method="POST">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="rowId" value="{{ $rowid }}">
-                                                <input type="hidden" name="productId" value="{{ $artNr }}">
-                                                <tr {{ ($korting === "Actie" ? "class='success'" : "") }}>
-                                                        <td>{{ $artNr }}</td>
-                                                        <td><a href="/product/{{ $artNr }}">{{ $name }}</a></td>
-                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $brutoPrice }}</td>
-                                                        <td>{{ ($korting === "Actie" ? $korting : $korting . "%") }}</td>
-                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $nettoPrice }}</td>
-                                                        <td class="col-sm-1"><input class="form-control" name="qty" value="{{ $qty }}"></td>
-                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $qty, 2, ".", "") }}</td>
-                                                        <td>
-                                                                <div class="btn-group">
-                                                                        <button type="submit" name="edit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
-                                                                        <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                                                                </div>
-                                                        </td>
-                                                </tr>
-                                        </form>
-                                @endforeach
-
-                                <hr />
-
-                                <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><b>Netto totaal:</b></td>
-                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($total, 2, ".", "") }}</td>
-                                        <td></td>
-                                </tr>
-                        </tbody>
-                </table>
-
-
-                <!-- Mobile display -->
+                <!-- Mobile friendly display -->
                 <div class="row">
                         @foreach ($cart as $item)
 
@@ -183,10 +113,11 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                         <div class="row">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-xs-6">
                                                                         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Annuleren</button>
                                                                 </div>
-                                                                <div class="col-lg-6">
+
+                                                                <div class="col-xs-6">
                                                                         <button class="btn btn-success btn-block" type="submit" id="finishOrderButton" disabled="disabled">Bestellen</button>
                                                                 </div>
                                                         </div>
