@@ -8,7 +8,7 @@
         <?php $total = 0; ?>
         @if(Cart::count() > 0)
                 <!-- Desktop display -->
-                <table class="table table-striped hidden-xs hidden-sm">
+                <table class="table table-striped hidden-xs hidden-sm hidden-md hidden-lg">
                         <thead>
                                 <th>Product nummer</th>
                                 <th>Naam</th>
@@ -40,7 +40,9 @@
                                         ?>
 
                                         <form action="/cart/update" method="POST">
-                                                <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="rowId" value="{{ $rowid }}">
+                                                <input type="hidden" name="productId" value="{{ $artNr }}">
                                                 <tr {{ ($korting === "Actie" ? "class='success'" : "") }}>
                                                         <td>{{ $artNr }}</td>
                                                         <td><a href="/product/{{ $artNr }}">{{ $name }}</a></td>
@@ -76,14 +78,14 @@
 
 
                 <!-- Mobile display -->
-                <div class="hidden-md hidden-lg">
+                <div class="row">
                         @foreach ($cart as $item)
 
                                 <?php
                                         $rowid          = $item->rowid;
                                         $artNr          = $item->id;
                                         $qty            = $item->qty;
-                                        $name           = $item->name;
+                                        $name           = (strlen($item->name) > 50 ? substr($item->name, 0, 47) . "..." : $item->name);
                                         $korting        = $item->options->korting;
                                         $brutoPrice     = number_format($item->price, 2, ".", "");
 
@@ -96,12 +98,15 @@
                                         $total          += (double) ($nettoPrice * $qty);
                                 ?>
 
-                                <form action="/cart/update" method="POST">
+                                <form action="/cart/update" method="POST" class="col-sm-4">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
 
                                         <div class="panel panel-primary">
                                                 <div class="panel-heading">
+                                                        <div class="pull-right">
+                                                                <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                                        </div>
                                                         <a href="/product/{{ $artNr }}" class="panel-heading-link">{{ $name }}</a>
                                                 </div>
                                                 <table class="table">
@@ -111,24 +116,12 @@
                                                                         <td>{{ $artNr }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                        <td><b>Bruto prijs</b></td>
-                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $brutoPrice }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><b>Korting</b></td>
-                                                                        <td>{{ ($korting === "Actie" ? $korting : $korting . "%") }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><b>Netto prijs</b></td>
-                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ $nettoPrice }}</td>
-                                                                </tr>
-                                                                <tr>
                                                                         <td><b>Aantal</b></td>
-                                                                        <td>
+                                                                        <td class="col-xs-6">
                                                                                 <div class="input-group">
                                                                                         <input type="text" class="form-control" placeholder="{{ $qty }}" name="qty" value="{{ $qty }}">
                                                                                         <span class="input-group-btn">
-                                                                                                <button type="submit" class="btn btn-primary" id="addToCart">Wijzigen</button>
+                                                                                                <button type="submit" class="btn btn-primary" name="edit">Wijzigen</button>
                                                                                         </span>
                                                                                 </div>
                                                                         </td>
@@ -137,12 +130,6 @@
                                                                         <td><b>Netto subtotaal</b></td>
                                                                         <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $qty, 2, ".", "") }}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                        <td><b>Verwijderen</b></td>
-                                                                        <td>
-                                                                                <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                                                                        </td>
-                                                                </tr>
                                                         </tbody>
                                                 </table>
                                         </div>
@@ -150,7 +137,7 @@
                         @endforeach
                 </div>
 
-                <p>* Actieproducten zijn altijd netto en worden aangeduid met een groene regel.</p>
+                <hr />
 
                 <div class="btn-group pull-right">
                         <a class="btn btn-primary" href="{{ (Session::has('continueShopping') ? Session::get('continueShopping') : '/webshop') }}">Verder winkelen</a>
@@ -160,6 +147,7 @@
                 <a class="btn btn-danger" href="/cart/destroy">Winkelwagen legen</a>
 
                 <form action="/mail/order" method="POST">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="text" class="hidden" value="true" name="sent">
                         <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="finishOrder" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -210,6 +198,7 @@
 
                 <div class="modal fade" id="addAddressDialog" tabindex="-2" role="dialog" aria-labelledby="addAddress" aria-hidden="true">
                         <form class="form-horizontal" action="/account/addAddress" method="POST" role="form">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                                 <div class="modal-header">
@@ -276,8 +265,12 @@
 @section('extraCSS')
         <style type="text/css">
                 .panel-heading-link,
-                .panel-heading-link:focus {
+                .panel-heading-link:hover {
                         color: white;
+                }
+
+                .panel-heading {
+                        min-height: 65px !important;
                 }
         </style>
 @stop
