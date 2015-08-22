@@ -195,6 +195,13 @@
                                         }, function() {
                                                 $('#searchInput').blur();
                                         });
+
+                                        if (location.hash == '#loginModal')
+                                            $('#loginModal').modal('show')
+                                });
+
+                                $('#loginModal').on('shown.bs.modal', function () {
+                                  $('#inputUsername').focus()
                                 });
                         </script>
                 </footer>
