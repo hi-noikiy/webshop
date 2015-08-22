@@ -44,19 +44,6 @@ class WebshopController extends Controller {
         }
 
         /**
-         * The login page for mobile users
-         *
-         * @return mixed
-         */
-        public function loginPage()
-        {
-                if (Auth::check())
-                        return Redirect::to('account');
-
-                return view('webshop.login');
-        }
-
-        /**
          * The search page
          *
          * @return mixed
@@ -162,13 +149,25 @@ class WebshopController extends Controller {
          */
         public function login()
         {
+                // Check if the user is already logged in
                 if (Auth::check())
                         return Redirect::to('account');
 
+                // Is all the data entered
                 if (Input::has('username') && Input::has('password'))
                 {
+                        // Try to log the user in
                         if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), (Input::get('remember_me') === "on" ? true : false)))
+                        {
+                                if (Auth::user()->cart !== false) {
+                                        foreach (unserialize(Auth::user()->cart) as $item) {
+                                                // Restore the user's cart
+                                                Cart::add($item);
+                                        }
+                                }
+
                                 return Redirect::back()->with('success', 'U bent nu ingelogd');
+                        }
                 }
 
                 // The input field(s) is/are empty, go back to the previous page with an error message
@@ -184,6 +183,7 @@ class WebshopController extends Controller {
         {
                 if (Auth::check())
                 {
+                        Cart::destroy();
                         Auth::logout();
 
                         return Redirect::to('/')->with('success', 'U bent nu uitgelogd');
@@ -328,29 +328,29 @@ class WebshopController extends Controller {
 
                 if (!$validator->fails())
                 {
-                        /*App::error(function(ModelNotFoundException $e) use ($number)
-                        {
-                                return Redirect::back()->with('error', 'Geen product gevonden met nummer: ' . $number);
-                        });*/
+                        // Load the product data
+                        $product     = Product::where('number', $number)->firstOrFail();
+                        // Load the user cart data
+                        $cartArray   = unserialize(Auth::user()->cart);
 
-                        $product = Product::where('number', $number)->firstOrFail();
+                        // Add the product data to the cart data
+                        $cartArray[$number] = 
+                        $productData = array(
+                                                'id' => $product->number,
+                                                'name' => $product->name,
+                                                'qty' => $qty,
+                                                'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                                                'options' => array(
+                                                        'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                                )
+                                        );
 
-                        Cart::add(
-                                array(
-                                        'id' => $product->number,
-                                        'name' => $product->name,
-                                        'qty' => $qty,
-                                        'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
-                                        'options' => array(
-                                                'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
-                                        )
-                                )
-                        );
+                        // Add the product to the cart
+                        Cart::add($productData);
 
+                        // Save the updated array to the database
                         $user = User::find(Auth::user()->id);
-
-                        $user->cart = serialize(Cart::content());
-
+                        $user->cart = serialize($cartArray);
                         $user->save();
 
                         if ($ref)
@@ -369,6 +369,7 @@ class WebshopController extends Controller {
         {
                 $rowId   = Input::get('rowId');
                 $qty     = Input::get('qty');
+                $artNr   = Input::get('productId');
 
                 $validator = Validator::make(
                         array(
@@ -385,11 +386,31 @@ class WebshopController extends Controller {
                 {
                         if (Input::get('edit') === "")
                         {
+                                // Load the user cart data
+                                $cartArray   = unserialize(Auth::user()->cart);
+
+                                $cartArray[$artNr]['qty'] = $qty;
+
+                                // Save the updated array to the database
+                                $user = User::find(Auth::user()->id);
+                                $user->cart = serialize($cartArray);
+                                $user->save();
+
                                 Cart::update($rowId, array('qty' => $qty));
 
                                 return Redirect::to('cart/view')->with('success', 'Uw winkelwagen is geupdatet');
                         } elseif (Input::get('remove') === "")
                         {
+                                // Load the user cart data
+                                $cartArray   = unserialize(Auth::user()->cart);
+
+                                unset($cartArray[$artNr]);
+
+                                // Save the updated array to the database
+                                $user = User::find(Auth::user()->id);
+                                $user->cart = serialize($cartArray);
+                                $user->save();
+
                                 Cart::remove($rowId);
 
                                 return Redirect::to('cart/view')->with('success', 'Het product is verwijderd');
@@ -422,7 +443,7 @@ class WebshopController extends Controller {
                 if (!Cart::destroy())
                 {
                         $user = User::find(Auth::user()->id);
-                        $user->cart = '';
+                        $user->cart = NULL;
                         $user->save();
 
                         return Redirect::to('/')->with('success', 'Uw winkelwagen is geleegd');
