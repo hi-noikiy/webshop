@@ -3,8 +3,10 @@
 use App\Http\Controllers\Controller;
 
 use App\Address;
+use App\Order;
+use App\User;
 
-use DB, Auth, Redirect, Input, Request, Validator;
+use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response;
 
 class AccountController extends Controller {
 
@@ -43,7 +45,7 @@ class AccountController extends Controller {
          */
         public function overview()
         {
-                $orderCount = DB::table('orders')->where('User_id', Auth::user()->login)->count();
+                $orderCount = Order::where('User_id', Auth::user()->login)->count();
 
                 return view('account.overview', array('orderCount' => $orderCount));
         }
@@ -188,7 +190,7 @@ class AccountController extends Controller {
                         }
                 } else
                 {
-                        return Redirect::back()->with('error', 'Geen AJAX verzoek!');
+                        return Redirect::back()->with('error', 'Geen toegang!');
                 }
         }
 
@@ -228,7 +230,7 @@ class AccountController extends Controller {
                         }
                 } else
                 {
-                        return Redirect::back()->with('error', 'Geen AJAX verzoek!');
+                        return Redirect::back()->with('error', 'Geen toegang!');
                 }
         }
 
@@ -239,7 +241,7 @@ class AccountController extends Controller {
          */
         public function orderhistory()
         {
-                $orderList = DB::table('orders')->where('User_id', Auth::user()->login)->get();
+                $orderList = Order::where('User_id', Auth::user()->login)->get();
 
                 return view('account.orderhistory', array('orderlist' => $orderList));
         }
@@ -251,7 +253,7 @@ class AccountController extends Controller {
          */
         public function addresslist()
         {
-                $addressList = DB::table('addresses')->where('User_id', Auth::user()->id)->get();
+                $addressList = Address::where('User_id', Auth::user()->id)->get();
 
                 return view('account.addresslist', array('addresslist' => $addressList));
         }
@@ -312,7 +314,7 @@ class AccountController extends Controller {
                                 $msg = '';
 
                                 foreach($messages->all() as $key => $message)
-                                        $msg .= ucfirst($message) . "<br />";
+                                        $msg .= ucfirst($message) . "\r\n";
 
                                 return Redirect::back()->with('error', $msg);
                         }
@@ -376,10 +378,10 @@ class AccountController extends Controller {
                                 $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
 
                                 // Remove the file when finished
-                                App::finish(function($request, $response) use ($filename)
+                                /*App::finish(function($request, $response) use ($filename)
                                 {
                                         unlink($filename);
-                                });
+                                });*/
 
                                 File::put($filename, AccountController::discountICC());
 
