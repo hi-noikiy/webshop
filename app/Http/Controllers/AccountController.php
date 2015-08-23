@@ -32,10 +32,7 @@ class AccountController extends Controller {
          */
         public function __construct()
         {
-                $this->beforeFilter('auth');
-
-                if (!Auth::check())
-                        return Redirect::to('login');
+                $this->middleware('auth');
         }
 
         /**
