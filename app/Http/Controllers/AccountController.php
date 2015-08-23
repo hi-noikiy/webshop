@@ -6,7 +6,7 @@ use App\Address;
 use App\Order;
 use App\User;
 
-use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response;
+use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session;
 
 class AccountController extends Controller {
 
@@ -374,24 +374,21 @@ class AccountController extends Controller {
                                 // Create a filesystem link to the temp file
                                 $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
 
-                                // Remove the file when finished
-                                /*App::finish(function($request, $response) use ($filename)
-                                {
-                                        unlink($filename);
-                                });*/
+                                // Store the path in flash data so the middleware can delete the file afterwards
+                                Session::flash('file.download', $filename);
 
+                                // File the file with discount data
                                 File::put($filename, AccountController::discountICC());
 
-                                return Response::download($filename);
+                                // Return the data as a downloadable file: 'WTG-Kortingen-99999-01.01.2015.txt'
+                                return Response::download($filename, 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt');
 
                         } elseif ($method === 'mail')
                         {
                                 $filename = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
 
-                                App::finish(function($request, $response) use ($filename)
-                                {
-                                        unlink($filename);
-                                });
+                                // Store the path in flash data so the middleware can delete the file afterwards
+                                Session::flash('file.download', $filename);
 
                                 File::put($filename, AccountController::discountICC());
 
@@ -401,14 +398,12 @@ class AccountController extends Controller {
 
                                         $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
 
-                                        $message->attach($filename);
+                                        $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt']);
                                 });
 
                                 return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
                         } else
-                        {
                                 return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
-                        }
                 } elseif ($type === 'csv')
                 {
                         if ($method === 'download')
@@ -416,24 +411,19 @@ class AccountController extends Controller {
                                 // Create a filesystem link to the temp file
                                 $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
 
-                                // Remove the file when finished
-                                App::finish(function($request, $response) use ($filename)
-                                {
-                                        unlink($filename);
-                                });
+                                // Store the path in flash data so the middleware can delete the file afterwards
+                                Session::flash('file.download', $filename);
 
                                 File::put($filename, AccountController::discountCSV());
 
-                                return Response::download($filename);
+                                return Response::download($filename, 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv');
 
                         } elseif ($method === 'mail')
                         {
                                 $filename = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
 
-                                App::finish(function($request, $response) use ($filename)
-                                {
-                                        unlink($filename);
-                                });
+                                // Store the path in flash data so the middleware can delete the file afterwards
+                                Session::flash('file.download', $filename);
 
                                 File::put($filename, AccountController::discountCSV());
 
@@ -443,18 +433,14 @@ class AccountController extends Controller {
 
                                         $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
 
-                                        $message->attach($filename);
+                                        $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv']);
                                 });
 
                                 return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
                         } else
-                        {
                                 return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
-                        }
                 } else
-                {
                         return Redirect::to('account/discountfile')->with('error', 'Ongeldig bestands type');
-                }
         }
 
         /**

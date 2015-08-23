@@ -1,5 +1,6 @@
 <?php namespace App\Http\Middleware;
-use Closure;
+
+use Closure, Session;
 use Illuminate\Contracts\Routing\TerminableMiddleware;
 
 class RemoveTempFile implements TerminableMiddleware {
@@ -11,7 +12,9 @@ class RemoveTempFile implements TerminableMiddleware {
 
     public function terminate($request, $response)
     {
-        dd($response);
+        $file = Session::pull('file.download', null);
+        if ($file)
+        	unlink($file);
     }
 
 }

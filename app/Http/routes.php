@@ -40,13 +40,16 @@ Route::get('/admin/carousel', 'AdminController@carousel');						// Carousel mana
 Route::get('/admin/getContent', 'AdminController@getContent');          		// Get the content for a field
 Route::get('/admin/removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
 
-Route::get('/account', 'AccountController@overview');                              // Account overview
-Route::get('/account/changepassword', 'AccountController@changePassGET');          // Change password page
-Route::get('/account/favorites', 'AccountController@favorites');                   // Favorites
-Route::get('/account/orderhistory', 'AccountController@orderhistory');             // Order history
-Route::get('/account/addresslist', 'AccountController@addresslist');               // Addresslist
-Route::get('/account/discountfile', 'AccountController@discountfile');             // ICC/CSV Discount generation page
-Route::get('/account/generate_{type}/{method}', 'AccountController@generateFile'); // Discount file generation handler
+Route::get('/account', 'AccountController@overview');                           // Account overview
+Route::get('/account/changepassword', 'AccountController@changePassGET');       // Change password page
+Route::get('/account/favorites', 'AccountController@favorites');                // Favorites
+Route::get('/account/orderhistory', 'AccountController@orderhistory');          // Order history
+Route::get('/account/addresslist', 'AccountController@addresslist');            // Addresslist
+Route::get('/account/discountfile', 'AccountController@discountfile');          // ICC/CSV Discount generation page
+Route::get('/account/generate_{type}/{method}', [
+			'middleware' => 'RemoveTempFile', 									// Middleware to remove the temp css/icc file after download
+			'uses' => 'AccountController@generateFile'							// Discount file generation handler
+		]); 								
 
 // POST Requests will be handled here
 Route::when('*', 'csrf', array('post', 'put', 'delete'));
