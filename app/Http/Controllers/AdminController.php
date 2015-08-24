@@ -107,7 +107,6 @@ class AdminController extends Controller {
         {
                 if (Input::hasFile('productFile'))
                 {
-                        \Debugbar::disable();
                         ini_set('memory_limit', '1G');
 
                         $file = Input::file('productFile');
@@ -125,6 +124,7 @@ class AdminController extends Controller {
                         {
                                 return Redirect::back()->with('error', $validator->messages());
                         } else {
+                                \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
                                 for ($i=0; $i < 4089; $i++) { 
@@ -228,7 +228,7 @@ class AdminController extends Controller {
         {
                 if (Input::hasFile('discountFile'))
                 {
-                        ini_set('memory_limit', '1024M');
+                        ini_set('memory_limit', '1G');
 
                         $file = Input::file('discountFile');
 
@@ -245,6 +245,7 @@ class AdminController extends Controller {
                         {
                                 return Redirect::back()->with('error', $validator->messages());
                         } else {
+                                \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
                                 for ($i=0; $i < 4089; $i++) { 
