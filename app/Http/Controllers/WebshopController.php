@@ -159,7 +159,7 @@ class WebshopController extends Controller {
                         // Try to log the user in
                         if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), (Input::get('remember_me') === "on" ? true : false)))
                         {
-                                if (Auth::user()->cart !== false) {
+                                if (Auth::user()->cart) {
                                         foreach (unserialize(Auth::user()->cart) as $item) {
                                                 // Restore the user's cart
                                                 Cart::add($item);

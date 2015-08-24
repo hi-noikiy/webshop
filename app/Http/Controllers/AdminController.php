@@ -29,12 +29,7 @@ class AdminController extends Controller {
          */
         public function __construct()
         {
-                $this->beforeFilter('auth');
-
-                if (!Auth::check())
-                        return App::abort(401, 'Niet ingelogd');
-                if (!Auth::user()->isAdmin)
-                        return App::abort(403, 'Geen admin account');
+                $this->middleware('auth.admin');
         }
 
         /**
