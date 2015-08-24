@@ -351,15 +351,12 @@ class AdminController extends Controller {
                         {
                                 if ($fileMime === "application/zip")
                                 {
-                                        // Move the zip file to the temp storage
-                                        $file->move(storage_path() . "/uploads/", $fileName);
-
                                         // Unzip the files to the product image folder
-                                        \Zipper::make(storage_path() . "/uploads/" . $fileName)->extractTo(public_path() . "/img/products");
+                                        \Zipper::make($file->getRealPath())->extractTo(public_path() . "/img/products");
 
                                         // This is used to count the number of files in the zip
                                         $zip   = new \ZipArchive;
-                                        $zip->open(storage_path() . "/uploads/" . $fileName);
+                                        $zip->open($file->getRealPath());
                                         $count = $zip->numFiles;
                                 } else
                                 {
