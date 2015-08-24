@@ -40,7 +40,7 @@
         <form action="/admin/discountimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
-                        <label for="productFile" class="col-sm-2 control-label">Bestand</label>
+                        <label for="discountFile" class="col-sm-2 control-label">Bestand</label>
                         <div class="col-sm-10">
                                 <div class="input-group">
                                         <span class="input-group-btn">
@@ -55,6 +55,32 @@
 
                 <span class="help-block col-sm-offset-2">CSV, max. {{ ini_get('upload_max_filesize') }}</span>
                 <button type="submit" class="btn btn-success col-sm-offset-2">Kortingsbestand uploaden</button>
+        </form>
+
+        <hr />
+
+        <h3>Afbeeldingen</h3>
+
+        <hr />
+
+        <form action="/admin/imageimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                        <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
+                        <div class="col-sm-10">
+                                <div class="input-group">
+                                        <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                        Bladeren&hellip; <input type="file" name="imageFile" accept=".zip,image/*">
+                                                </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly id="fileName">
+                                </div>
+                        </div>
+                </div>
+
+                <span class="help-block col-sm-offset-2">ZIP, max. {{ ini_get('upload_max_filesize') }}</span>
+                <button type="submit" class="btn btn-success col-sm-offset-2">Afbeeldingen uploaden</button>
         </form>
 @stop
 

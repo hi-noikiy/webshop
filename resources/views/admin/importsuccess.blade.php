@@ -14,7 +14,7 @@
                         <a href="/admin/import"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar de import pagina</a>
 
                         <div class="text-center">
-                                <h4>De {{ Session::get('type') }} import is gelukt. Er zijn {{ Session::get('count') }} regels geimporteerd in {{ Session::get('time') }} seconden.</h4>
+                                <h4>De {{ Session::get('type') }} import is gelukt. Er {{ (Session::get('count') === 1 ? 'is' : 'zijn') }} {{ Session::get('count') }} regel{{ (Session::get('count') === 1 ? '' : 's') }} geimporteerd in {{ Session::get('time') }} seconden.</h4>
                         </div>
                 </div>
         </div>

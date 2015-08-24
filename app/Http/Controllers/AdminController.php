@@ -121,9 +121,9 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                        {
                                 return Redirect::back()->with('error', $validator->messages());
-                        } else {
+                        else 
+                        {
                                 \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
@@ -145,56 +145,55 @@ class AdminController extends Controller {
 
                                 DB::beginTransaction();
 
-                                //DB::transaction(function() use ($csv) {
-                                        DB::connection()->disableQueryLog();
+                                DB::connection()->disableQueryLog();
 
-                                        $line = $lastPercent = 0;
+                                $line = $lastPercent = 0;
 
-                                        foreach ($csv as $row) {
-                                                $row  = preg_replace("/\r\n/", "", $row);
-                                                $data = explode(';', $row);
+                                foreach ($csv as $row) {
+                                        $row  = preg_replace("/\r\n/", "", $row);
+                                        $data = explode(';', $row);
 
-                                                DB::table('products')->insert(array(
-                                                                'name'             => $data[0],
-                                                                'number'           => $data[3],
-                                                                'group'            => $data[4],
-                                                                'altNumber'        => $data[5],
-                                                                'stockCode'        => $data[7],
-                                                                'registered_per'   => $data[8],
-                                                                'packed_per'       => $data[9],
-                                                                'price_per'        => $data[10],
-                                                                'refactor'         => preg_replace("/\,/", ".", $data[12]),
-                                                                'supplier'         => $data[13],
-                                                                'ean'              => $data[14],
-                                                                'image'            => $data[15],
-                                                                'length'           => $data[17],
-                                                                'price'            => $data[18],
-                                                                'vat'              => $data[20],
-                                                                'brand'            => $data[22],
-                                                                'series'           => $data[23],
-                                                                'type'             => $data[24],
-                                                                'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
-                                                                'action_type'      => $data[26],
-                                                                'keywords'         => $data[27],
-                                                                'related_products' => $data[28],
-                                                                'catalog_group'    => $data[29],
-                                                                'catalog_index'    => $data[30],
-                                                        ));
+                                        DB::table('products')->insert(array(
+                                                        'name'             => $data[0],
+                                                        'number'           => $data[3],
+                                                        'group'            => $data[4],
+                                                        'altNumber'        => $data[5],
+                                                        'stockCode'        => $data[7],
+                                                        'registered_per'   => $data[8],
+                                                        'packed_per'       => $data[9],
+                                                        'price_per'        => $data[10],
+                                                        'refactor'         => preg_replace("/\,/", ".", $data[12]),
+                                                        'supplier'         => $data[13],
+                                                        'ean'              => $data[14],
+                                                        'image'            => $data[15],
+                                                        'length'           => $data[17],
+                                                        'price'            => $data[18],
+                                                        'vat'              => $data[20],
+                                                        'brand'            => $data[22],
+                                                        'series'           => $data[23],
+                                                        'type'             => $data[24],
+                                                        'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
+                                                        'action_type'      => $data[26],
+                                                        'keywords'         => $data[27],
+                                                        'related_products' => $data[28],
+                                                        'catalog_group'    => $data[29],
+                                                        'catalog_index'    => $data[30],
+                                                ));
 
-                                                $line++;
-                                                $percentage  = round(($line / $lineCount) * 100);
-                                                
-                                                if ($percentage !== $lastPercent)
-                                                {
-                                                        echo "#";
-                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                                        ob_flush();
-                                                        flush();
-                                                }
-
-                                                $lastPercent = $percentage;
+                                        $line++;
+                                        $percentage  = round(($line / $lineCount) * 100);
+                                        
+                                        if ($percentage !== $lastPercent)
+                                        {
+                                                echo "#";
+                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                ob_flush();
+                                                flush();
                                         }
-                                //});
+
+                                        $lastPercent = $percentage;
+                                }
+
                                 echo "<br /><br />";
 
                                 ob_flush();
@@ -242,9 +241,9 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                        {
                                 return Redirect::back()->with('error', $validator->messages());
-                        } else {
+                        else 
+                        {
                                 \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
@@ -266,40 +265,39 @@ class AdminController extends Controller {
 
                                 DB::beginTransaction();
 
-                                //DB::transaction(function() use ($csv) {
-                                        DB::connection()->disableQueryLog();
+                                DB::connection()->disableQueryLog();
 
-                                        $line = $lastPercent = 0;
+                                $line = $lastPercent = 0;
 
-                                        foreach ($csv as $row) {
-                                                $data = explode(';', $row);
+                                foreach ($csv as $row) {
+                                        $data = explode(';', $row);
 
-                                                DB::table('discounts')->insert(array(
-                                                                'table'         => $data[0],
-                                                                'User_id'       => ($data[1] !== "" ? $data[1] : 0),
-                                                                'product'       => (is_numeric($data[2]) ? $data[2] : 0),
-                                                                'start_date'    => $data[3],
-                                                                'end_date'      => $data[4],
-                                                                'discount'      => $data[5],
-                                                                'group_desc'    => $data[6],
-                                                                'product_desc'  => $data[7],
-                                                        ));
-                                                
-                                                $line++;
-                                                
-                                                $percentage  = round(($line / $lineCount) * 100);
-                                                
-                                                if ($percentage !== $lastPercent)
-                                                {
-                                                        echo "#";
-                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                                        ob_flush();
-                                                        flush();
-                                                }
-
-                                                $lastPercent = $percentage;
+                                        DB::table('discounts')->insert(array(
+                                                        'table'         => $data[0],
+                                                        'User_id'       => ($data[1] !== "" ? $data[1] : 0),
+                                                        'product'       => (is_numeric($data[2]) ? $data[2] : 0),
+                                                        'start_date'    => $data[3],
+                                                        'end_date'      => $data[4],
+                                                        'discount'      => $data[5],
+                                                        'group_desc'    => $data[6],
+                                                        'product_desc'  => $data[7],
+                                                ));
+                                        
+                                        $line++;
+                                        
+                                        $percentage  = round(($line / $lineCount) * 100);
+                                        
+                                        if ($percentage !== $lastPercent)
+                                        {
+                                                echo "#";
+                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                ob_flush();
+                                                flush();
                                         }
-                                //});
+
+                                        $lastPercent = $percentage;
+                                }
+
                                 echo "<br /><br />";
 
                                 ob_flush();
@@ -318,10 +316,65 @@ class AdminController extends Controller {
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
-                                return Redirect::to('admin/importsuccess')->with(array('count' => count($csv), 'time' => $endTime, 'type' => 'discount'));
+                                return Redirect::to('admin/importsuccess')->with(array('count' => count($csv), 'time' => $endTime, 'type' => 'korting'));
                         }
                 } else
                         return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+        }
+
+        /**
+         * This function will handle the image import
+         *
+         * @return mixed
+         */
+        public function imageImport()
+        {
+                if (Input::hasFile('imageFile') && Input::file('imageFile')->isValid())
+                {
+                        $file      = Input::file('imageFile');
+                        $fileName  = $file->getClientOriginalName();
+                        $fileMime  = $file->getMimeType();
+                        $startTime = microtime(true);
+
+                        $validator = Validator::make(
+                                array(
+                                        'fileType' => $file,
+                                ),
+                                array(
+                                        'fileType' => 'required|mimes:zip,jpg,png,gif,jpeg'
+                                )
+                        );
+
+                        if ($validator->fails())
+                                return Redirect::back()->with('error', 'Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
+                        else 
+                        {
+                                if ($fileMime === "application/zip")
+                                {
+                                        // Move the zip file to the temp storage
+                                        $file->move(storage_path() . "/uploads/", $fileName);
+
+                                        // Unzip the files to the product image folder
+                                        \Zipper::make(storage_path() . "/uploads/" . $fileName)->extractTo(public_path() . "/img/products");
+
+                                        // This is used to count the number of files in the zip
+                                        $zip   = new \ZipArchive;
+                                        $zip->open(storage_path() . "/uploads/" . $fileName);
+                                        $count = $zip->numFiles;
+                                } else
+                                {
+                                        // If it's an image file, move it directly to the product image folder
+                                        $file->move(public_path() . "/img/products", $fileName);
+
+                                        $count = 1;
+                                }
+
+                                $endTime = round(microtime(true) - $startTime, 4);
+
+                                return Redirect::to('/admin/importsuccess')->with(array('count' => $count, 'time' => $endTime, 'type' => 'afbeelding'));
+                        }
+
+                }
         }
 
         /**
