@@ -79,7 +79,7 @@
                         </div>
                 </div>
 
-                <span class="help-block col-sm-offset-2">ZIP, max. {{ ini_get('upload_max_filesize') }}</span>
+                <span class="help-block col-sm-offset-2">ZIP/Afbeelding, max. {{ ini_get('upload_max_filesize') }}</span>
                 <button type="submit" class="btn btn-success col-sm-offset-2">Afbeeldingen uploaden</button>
         </form>
 @stop
