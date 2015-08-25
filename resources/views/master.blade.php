@@ -104,8 +104,8 @@
                                 <div class="navbar-right " id="nav-utils">
                                     <ul class="nav navbar-nav">
                                             @if(Auth::check())
-                                                    <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
-                                                    <li class="dropdown">
+                                                    <li class="@if( Route::current()->getUri() === 'cart' ) active @endif"><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                                                    <li class="dropdown @if( substr(Route::current()->getUri(), 0, 7) === 'account' ) active @endif">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
                                                             <ul class="dropdown-menu" role="menu">
                                                                     <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>

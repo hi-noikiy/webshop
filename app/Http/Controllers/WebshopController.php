@@ -356,7 +356,7 @@ class WebshopController extends Controller {
                         if ($ref)
                                 return Redirect::to($ref)->with('success', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
                         else
-                                return Redirect::to('cart/view');
+                                return Redirect::to('cart');
                 }
         }
 
@@ -398,7 +398,7 @@ class WebshopController extends Controller {
 
                                 Cart::update($rowId, array('qty' => $qty));
 
-                                return Redirect::to('cart/view')->with('success', 'Uw winkelwagen is geupdatet');
+                                return Redirect::to('cart')->with('success', 'Uw winkelwagen is geupdatet');
                         } elseif (Input::get('remove') === "")
                         {
                                 // Load the user cart data
@@ -413,10 +413,10 @@ class WebshopController extends Controller {
 
                                 Cart::remove($rowId);
 
-                                return Redirect::to('cart/view')->with('success', 'Het product is verwijderd');
+                                return Redirect::to('cart')->with('success', 'Het product is verwijderd');
                         } else
                         {
-                                return Redirect::to('cart/view')->with('error', 'Er is een fout opgetreden');
+                                return Redirect::to('cart')->with('error', 'Er is een fout opgetreden');
                         }
                 } else
                 {
@@ -427,7 +427,7 @@ class WebshopController extends Controller {
                         foreach($messages->all() as $key => $message)
                                 $msg .= ucfirst($message) . "<br />";
 
-                        return Redirect::to('cart/view')->with('error', $msg);
+                        return Redirect::to('cart')->with('error', $msg);
                 }
         }
 
@@ -449,7 +449,7 @@ class WebshopController extends Controller {
                         return Redirect::to('/')->with('success', 'Uw winkelwagen is geleegd');
                 } else
                 {
-                        return Redirect::to('cart/view')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
+                        return Redirect::to('cart')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
                 }
         }
 }

@@ -65,7 +65,7 @@
                         <div class="navbar-right " id="nav-utils">
                             <ul class="nav navbar-nav">
                                     @if(Auth::check())
-                                            <li><a href="/cart/view" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                                            <li><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
                                             <li class="dropdown">
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
                                                     <ul class="dropdown-menu" role="menu">

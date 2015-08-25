@@ -26,7 +26,7 @@ Route::get('/product/{product_id?}', 'WebshopController@showProduct');  // Produ
 Route::get('/search', 'WebshopController@search');                      // Page with the search results
 Route::get('/specials', 'WebshopController@specials');                  // Show only the specials
 Route::get('/clearance', 'WebshopController@clearance');                // Show only the clearance products
-Route::get('/cart/view', 'WebshopController@viewCart');                 // Show the cart
+Route::get('/cart', 'WebshopController@viewCart');               		// Show the cart
 Route::get('/cart/destroy', 'WebshopController@cartDestroy');           // Remove all items from the cart
 
 Route::get('/admin', 'AdminController@overview');                       		// Admin overview
