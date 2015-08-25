@@ -398,6 +398,8 @@ class AccountController extends Controller {
 
                                         $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
 
+                                        $message->subject('WTG Webshop ICC kortingen');
+
                                         $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt']);
                                 });
 
@@ -432,6 +434,8 @@ class AccountController extends Controller {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
                                         $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+
+                                        $message->subject('WTG Webshop CSV kortingen');
 
                                         $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv']);
                                 });

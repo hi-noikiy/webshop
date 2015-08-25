@@ -43,6 +43,66 @@ class WebshopController extends Controller {
                 return view('webshop.main', $data);
         }
 
+        public function register()
+        {
+                if (Auth::check())
+                        return Redirect::to('/account');
+
+                $data = array();
+
+                if (Session::has('registrationData'))
+                        $data = Session::get('registrationData');
+
+                return view('webshop.register', $data);
+        }
+
+        public function register_check()
+        {
+                $data['corContactName'] = Input::get('corContactName');
+                $data['corName']        = Input::get('corName');
+                $data['corAddress']     = Input::get('corAddress');
+                $data['corPostcode']    = Input::get('corPostcode');
+                $data['corCity']        = Input::get('corCity');
+                $data['corContactPhone']= Input::get('corContactPhone');
+                $data['corPhone']       = Input::get('corPhone');
+                $data['corFax']         = (Input::get('corFax') !== false ? Input::get('corFax') : "");
+                $data['corEmail']       = Input::get('corEmail');
+                $data['corSite']        = (Input::get('corSite') !== false ? Input::get('corSite') : "");
+
+                $data['corIsDel']       = Input::get('corIsDel');
+
+                $data['delAddress']     = ($data['corIsDel'] ? $data['corAddress'] : Input::get('delAddress'));
+                $data['delPostcode']    = ($data['corIsDel'] ? $data['corPostcode'] : Input::get('delPostcode'));
+                $data['delCity']        = ($data['corIsDel'] ? $data['corCity'] : Input::get('delCity'));
+                $data['delPhone']       = ($data['corIsDel'] ? $data['corPhone'] : Input::get('delPhone'));
+                $data['delFax']         = ($data['corIsDel'] ? $data['corFax'] : (Input::get('delFax') !== false ? Input::get('delFax') : ""));
+
+                $data['betIBAN']        = Input::get('betIBAN');
+                $data['betKvK']         = Input::get('betKvK');
+                $data['betBTW']         = Input::get('betBTW');
+
+                $data['digFactuur']     = Input::get('digFactuur');
+                $data['digOrder']       = Input::get('digOrder');
+                $data['digArtikel']     = Input::get('digArtikel');
+
+                Session::flash('registrationData', $data);
+
+                if (!$data['corContactName'] || !$data['corName'] || !$data['corAddress'] || !$data['corPostcode'] || !$data['corCity'] || !$data['corPhone'] || !$data['corEmail'] || !$data['delAddress'] || !$data['delPostcode'] || !$data['delCity'] || !$data['delPhone'] || !$data['betIBAN'] /*|| !$data['betBIC']*/ || !$data['betKvK'] || !$data['betBTW']) {
+                        return Redirect::back()->with('error', 'Niet alle vereiste velden zijn ingevuld');
+                } else {
+                        \Mail::send('email.registration', $data, function($message)
+                                {
+                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+
+                                        $message->subject('Webshop registratie');
+                                });
+
+                        return view('webshop.registerSent');
+                }
+        }
+
         /**
          * The search page
          *

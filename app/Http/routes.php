@@ -18,8 +18,8 @@ Route::get('/contact', 'HomeController@contact');                       // Conta
 Route::get('/downloads', 'HomeController@downloads');                   // Downloads
 Route::get('/licenses', 'HomeController@licenses');                     // Licenses
 
-//Route::get('/login', 'WebshopController@loginPage');                    // Login page
 Route::get('/logout', 'WebshopController@logout');                      // Logout the current user
+Route::get('/register', 'WebshopController@register');					// Show the register page
 Route::get('/forgotpassword', 'WebshopController@forgotPassword');      // Forgot password page
 Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
 Route::get('/product/{product_id?}', 'WebshopController@showProduct');  // Product page
@@ -55,6 +55,7 @@ Route::get('/account/generate_{type}/{method}', [
 Route::when('*', 'csrf', array('post', 'put', 'delete'));
 
 Route::post('/login', 'WebshopController@login');                           // Login handler
+Route::post('/register', 'WebshopController@register_check');				// Validate the registration reguest
 Route::post('/forgotpassword', 'WebshopController@resetPassword');          // Password reset handler
 Route::post('/cart/add', 'WebshopController@addToCart');                    // Add product to cart
 Route::post('/cart/update', 'WebshopController@updateCart');                // Update or remove product from cart
