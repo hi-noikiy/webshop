@@ -6,7 +6,7 @@ use App\Address;
 use App\Order;
 use App\User;
 
-use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session;
+use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session, Mail;
 
 class AccountController extends Controller {
 
