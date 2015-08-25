@@ -99,8 +99,16 @@ class WebshopController extends Controller {
                                         $message->subject('Webshop registratie');
                                 });
 
-                        return view('webshop.registerSent');
+                        return Redirect::to('/registrationSent');
                 }
+        }
+
+        public function registerSent()
+        {
+                if (Auth::check());
+                        return Redirect::to('/account');
+
+                return view('webshop.registerSent');
         }
 
         /**

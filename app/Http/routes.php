@@ -20,6 +20,7 @@ Route::get('/licenses', 'HomeController@licenses');                     // Licen
 
 Route::get('/logout', 'WebshopController@logout');                      // Logout the current user
 Route::get('/register', 'WebshopController@register');					// Show the register page
+Route::get('/registrationSent', 'WebshopController@registerSent');		// Show the register page
 Route::get('/forgotpassword', 'WebshopController@forgotPassword');      // Forgot password page
 Route::get('/webshop', 'WebshopController@main');                       // Main webshop page
 Route::get('/product/{product_id?}', 'WebshopController@showProduct');  // Product page
