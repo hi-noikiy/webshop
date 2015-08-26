@@ -16,13 +16,13 @@ In order to learn the Laravel framework, I am trying to rewrite the website/webs
 
 * Clone this repository `git clone https://github.com/DuckThom/laravel-wtg.git`
 
-* `cd laravel-wtg && composer update` To download the neccesary Laravel components.
+* `cd laravel-wtg && composer update` (`composer install` will install the module versions I'm currently using, `update` will download the latest modules) To download the neccesary Laravel components.
 
 * Rename '.env.example' to either:
 
     * `.env.local` for local development
     
-    * `.env.staging` for staging - **NOTE: edit** `bootstrap/start.php` **and set the hostnames for staging and production to the appropriate values**
+    * `.env.staging` for staging
     
     * `.env` or `.env.production` for production **NOTE: Laravel will default to** `.env` **when it doesn't match any hostname in** `bootstrap/start.php`
     
