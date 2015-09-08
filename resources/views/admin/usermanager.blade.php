@@ -12,6 +12,25 @@
         <br />
 
         <form action="/admin/updateUser" method="POST" class="form form-horizontal">
+
+                <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                                <div class="modal-content">
+                                        <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Gebruiker verwijderen</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                                <p>U staat op het punt om gebruiker <span id="userID"></span> te verwijderen.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger" name="delete">Verwijderen</button>
+                                        </div>
+                                </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <div class="form-group">
@@ -61,7 +80,7 @@
                 </div>
                 <div class="form-group">
                         <div class="col-sm-2">
-                                <button type="submit" class="btn btn-block btn-lg btn-danger" name="delete">Verwijderen</button>
+                                <button class="btn btn-block btn-lg btn-danger" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
                         </div>
                         <div class="col-sm-10">
                                 <button type="submit" class="btn btn-block btn-lg btn-success" name="update">Toevoegen/wijzigen</button>
@@ -74,6 +93,7 @@
         <script type="text/javascript">
                 $('#inputUserId').keyup(function() {
                 var value = $(this).val();
+                $('#userID').html(value);
 
                 if (value = $(this).val())
                 {
