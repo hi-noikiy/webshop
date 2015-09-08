@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group">
                         <div class="col-sm-2">
-                                <button class="btn btn-block btn-lg btn-danger" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
+                                <button class="btn btn-block btn-lg btn-danger" disabled="disabled" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
                         </div>
                         <div class="col-sm-10">
                                 <button type="submit" class="btn btn-block btn-lg btn-success" name="update">Toevoegen/wijzigen</button>
@@ -92,36 +92,40 @@
 @section('extraJS')
         <script type="text/javascript">
                 $('#inputUserId').keyup(function() {
-                var value = $(this).val();
-                $('#userID').html(value);
+                        var value = $(this).val();
+                        $('#userID').html(value);
 
-                if (value = $(this).val())
-                {
-                        $.ajax({
-                                url: "/admin/getUserData",
-                                type: "GET",
-                                dataType: "json",
-                                data: {id: value},
-                                success: function(data) {
-                                        if (value == $('#inputUserId').val() && data != null) {
-                                                $('#inputUserName').attr('value', data['company']);
-                                                $('#inputUserEmail').attr('value', data['email']);
-                                                $('#inputUserStreet').attr('value', data['street']);
-                                                $('#inputUserPostcode').attr('value', data['postcode']);
-                                                $('#inputUserCity').attr('value', data['city']);
-                                                $('#inputUserActive').val(data['active']);
+                        if (value = $(this).val())
+                        {
+                                $.ajax({
+                                        url: "/admin/getUserData",
+                                        type: "GET",
+                                        dataType: "json",
+                                        data: {id: value},
+                                        success: function(data) {
+                                                if (value == $('#inputUserId').val() && data != null) {
+                                                        $('#inputUserName').attr('value', data['company']);
+                                                        $('#inputUserEmail').attr('value', data['email']);
+                                                        $('#inputUserStreet').attr('value', data['street']);
+                                                        $('#inputUserPostcode').attr('value', data['postcode']);
+                                                        $('#inputUserCity').attr('value', data['city']);
+                                                        $('#inputUserActive').val(data['active']);
+
+                                                        $('.btn-danger').removeAttr('disabled');
+                                                }
+                                        },
+                                        error: function(data) {
+                                                $('#inputUserName').attr('value', '');
+                                                $('#inputUserEmail').attr('value', '');
+                                                $('#inputUserStreet').attr('value', '');
+                                                $('#inputUserPostcode').attr('value', '');
+                                                $('#inputUserCity').attr('value', '');
+                                                $('#inputUserActive').val(0);
+
+                                                $('.btn-danger').attr('disabled', 'disabled');
                                         }
-                                },
-                                error: function(data) {
-                                        $('#inputUserName').attr('value', '');
-                                        $('#inputUserEmail').attr('value', '');
-                                        $('#inputUserStreet').attr('value', '');
-                                        $('#inputUserPostcode').attr('value', '');
-                                        $('#inputUserCity').attr('value', '');
-                                        $('#inputUserActive').val(0);
-                                }
-                        });
-                }
-        });
+                                });
+                        }
+                });
         </script>
 @stop
