@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group">
                         <div class="col-sm-2">
-                                <button class="btn btn-block btn-lg btn-danger" disabled="disabled" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
+                                <button type="button" class="btn btn-block btn-lg btn-danger" disabled="disabled" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
                         </div>
                         <div class="col-sm-10">
                                 <button type="submit" class="btn btn-block btn-lg btn-success" name="update">Toevoegen/wijzigen</button>
