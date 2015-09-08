@@ -40,6 +40,9 @@ Route::get('/admin/generate', 'AdminController@generate');						// Generate stuf
 Route::get('/admin/carousel', 'AdminController@carousel');						// Carousel manager
 Route::get('/admin/getContent', 'AdminController@getContent');          		// Get the content for a field
 Route::get('/admin/removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
+Route::get('/admin/usermanager', 'AdminController@userManager');				// Simple user manager
+Route::get('/admin/getUserData', 'AdminController@getUserData');				// Get the requested user's info
+Route::get('/admin/userAdded', 'AdminController@userAdded');					// The user added page
 
 Route::get('/account', 'AccountController@overview');                           // Account overview
 Route::get('/account/changepassword', 'AccountController@changePassGET');       // Change password page
@@ -68,6 +71,7 @@ Route::post('/admin/saveContent', 'AdminController@saveContent');           // S
 Route::post('/admin/generate', 'AdminController@generateCatalog');			// Generate the catalog
 Route::post('/admin/addCarouselSlide', 'AdminController@addSlide');			// Try to add a carousel slide
 Route::post('/admin/editCarouselSlide/{id}', 'AdminController@editSlide');	// Edit the slide order
+Route::post('/admin/updateUser', 'AdminController@updateUser');				// Update/add the user
 
 Route::post('/account/changepassword', 'AccountController@changePassPOST'); // Handle the change password request
 Route::post('/account/addAddress', 'AccountController@addAddress');         // Add address to the database

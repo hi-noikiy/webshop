@@ -5,8 +5,9 @@ use App\Product;
 use App\Discount;
 use App\Content;
 use App\Carousel;
+use App\User;
 
-use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage;
+use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash;
 
 class AdminController extends Controller {
 
@@ -594,5 +595,104 @@ class AdminController extends Controller {
                                 return Redirect::back()->with('error', 'Er is een ongeldig slide nummer opgegeven');
                 } else
                         return Redirect::back()->with('error', "De slide met id $id bestaat niet");
+        }
+
+        /**
+         * Show the user manager
+         *
+         * @return mixed
+         */
+        public function userManager()
+        {
+            return view('admin.usermanager');
+        }
+
+        /**
+         * Get some user details
+         *
+         * @return json
+         */
+        public function getUserData() 
+        {
+            if (Request::ajax())
+            {
+                if (Input::has('id'))
+                {
+                    $userdata = User::where('login', Input::get('id'))->firstOrFail();
+
+                    return Response::json($userdata);
+                } else
+                    return App::abort(400);
+            } else
+                return App::abort(405);
+        }
+
+        /**
+         * Add/update a user
+         *
+         * @return mixed
+         */
+        public function updateUser()
+        {
+            if (Input::has('login') && Input::has('name') && Input::has('email') && Input::has('street') && Input::has('postcode') && Input::has('city') && Input::has('active'))
+            {
+                if (Input::get('delete') === '')
+                {
+                    $user = User::where('login', Input::get('login'));
+
+                    $user->delete();
+
+                    return Redirect::back()->with(['success' => 'De gebruiker is succesvol verwijderd']);
+                } elseif (Input::get('update') === '')
+                {
+                    if (User::where('login', Input::get('login'))->count() === 1)
+                    { // The user exists...
+                        $user = User::where('login', Input::get('login'))->first();
+
+                        $user->company  = Input::get('name');
+                        $user->email    = Input::get('email');
+                        $user->street   = Input::get('street');
+                        $user->postcode = Input::get('postcode');
+                        $user->city     = Input::get('city');
+                        $user->active   = Input::get('active');
+
+                        $user->save();
+
+                        return Redirect::back()->with(['success' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
+                    } else
+                    { // The user does not exist...
+                        $pass = mt_rand(100000, 999999);
+                        $user = new User;
+
+                        $user->login    = Input::get('login');
+                        $user->company  = Input::get('name');
+                        $user->email    = Input::get('email');
+                        $user->street   = Input::get('street');
+                        $user->postcode = Input::get('postcode');
+                        $user->city     = Input::get('city');
+                        $user->active   = Input::get('active');
+                        $user->password = Hash::make($pass);
+
+                        $user->save();
+
+                        Session::flash('password', $pass);
+                        Session::flash('input', Input::all());
+
+                        return Redirect::to('admin/userAdded');
+                    }
+                } else
+                    return Redirect::back()->with('error', 'Geen actie opgegeven (toevoegen of verwijderen)');
+            } else 
+                return Redirect::back()->with('error', 'Niet alle vereiste velden zijn ingevuld');
+        }
+
+        /**
+         * Show the user added page
+         *
+         * @return mixed
+         */
+        public function userAdded()
+        {
+            return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::pull('input')]);
         }
 }
