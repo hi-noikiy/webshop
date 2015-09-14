@@ -4,16 +4,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <title>WTG</title>
 
         @yield('extraCSS')
 
-        <style>
-                @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,300,200,600,700);
-                @import url({{ URL::to('/') }}/css/bootstrap.min.css);
-                @import url({{ URL::to('/') }}/css/app.css);
-        </style>
+        <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.min.css">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -163,7 +159,7 @@
                                 Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                                 <p>
                                     <small>
-                                        Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871. 
+                                        Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
                                         <br />
                                         Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
                                     </small>
@@ -177,6 +173,10 @@
                         @yield('extraJS')
 
                         <script type="text/javascript">
+                                // Set the useragent in a data attribute in the html tag
+                                var doc = document.documentElement;
+                                doc.setAttribute('data-useragent', navigator.userAgent);
+
                                 @if(Session::has('error'))
                                         var msg = '{{ Session::get('error') }}';
                                         $.toaster({ priority : 'danger', title : 'Error', message : msg, timeout : 3000 });
@@ -197,11 +197,11 @@
                                         });
 
                                         if (location.hash == '#loginModal')
-                                            $('#loginModal').modal('show')
+                                                $('#loginModal').modal('show');
                                 });
 
                                 $('#loginModal').on('shown.bs.modal', function () {
-                                  $('#inputUsername').focus()
+                                        $('#inputUsername').focus();
                                 });
                         </script>
                 </footer>
