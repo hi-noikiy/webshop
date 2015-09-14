@@ -29,45 +29,35 @@
                                         <div class="modal-content">
                                                 <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">Product toevoegen aan de winkelwagen</h4>
+                                                        <h4 class="modal-title">Toevoegen aan de winkelwagen</h4>
                                                 </div>
-                                                <div class="modal-body">
-                                                        <table class="table">
-                                                                <tbody>
+                                                <table class="table">
+                                                        <tbody>
+                                                                <tr>
+                                                                        <td><b>Product nummer</b></td>
+                                                                        <td>{{ $productData->number }}</td>
+                                                                </tr>
+                                                                @if (!$action)
                                                                         <tr>
-                                                                                <td><b>Product nummer</b></td>
-                                                                                <td>{{ $productData->number }}</td>
+                                                                                <td><b>Bruto prijs per {{ strtolower($prijs_per_str) }}</b></td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price, 2, ".", "") }}</span></td>
                                                                         </tr>
                                                                         <tr>
-                                                                                <td><b>Naam</b></td>
-                                                                                <td>{{ $productData->name }}</td>
+                                                                                <td><b>Korting</b></td>
+                                                                                <td><span>{{ $discount }}</span>%</td>
                                                                         </tr>
                                                                         <tr>
-                                                                                <td><b>Voorraad</b></td>
-                                                                                <td>{{ stockCode($productData->stockCode) }}</td>
+                                                                                <td><b>Netto prijs per {{ strtolower($prijs_per_str) }}</b></td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</span></td>
                                                                         </tr>
-                                                                        @if (!$action)
-                                                                                <tr>
-                                                                                        <td><b>Bruto prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                        <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price, 2, ".", "") }}</span></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                        <td><b>Netto prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                        <td><span class="glyphicon glyphicon-euro"></span> <span>{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</span></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                        <td><b>Korting</b></td>
-                                                                                        <td><span>{{ $discount }}</span>%</td>
-                                                                                </tr>
-                                                                        @else
-                                                                                <tr>
-                                                                                        <td><b>Actie prijs per {{ strtolower($prijs_per_str) }}</b></td>
-                                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($price, 2, ".", "") }}</td>
-                                                                                </tr>
-                                                                        @endif
-                                                                </tbody>
-                                                        </table>
-                                                </div>
+                                                                @else
+                                                                        <tr>
+                                                                                <td><b>Actie prijs per {{ strtolower($prijs_per_str) }}</b></td>
+                                                                                <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($price, 2, ".", "") }}</td>
+                                                                        </tr>
+                                                                @endif
+                                                        </tbody>
+                                                </table>
                                                 <div class="modal-footer">
                                                         <div class="row">
                                                                 <div class="col-md-6">

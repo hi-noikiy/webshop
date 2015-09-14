@@ -19,11 +19,10 @@
                                         $korting        = $item->options->korting;
                                         $brutoPrice     = number_format($item->price, 2, ".", "");
 
-                                if ($korting === 'Actie') {
-                                        $nettoPrice     = number_format($item->price, 2, ".", "");
-                                } else {
-                                        $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
-                                }
+                                        if ($korting === 'Actie')
+                                                $nettoPrice     = number_format($item->price, 2, ".", "");
+                                        else
+                                                $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
 
                                         $total          += (double) ($nettoPrice * $qty);
                                 ?>
@@ -51,7 +50,7 @@
                                                                                 <div class="input-group">
                                                                                         <input type="text" class="form-control" placeholder="{{ $qty }}" name="qty" value="{{ $qty }}">
                                                                                         <span class="input-group-btn">
-                                                                                                <button type="submit" class="btn btn-primary" name="edit">Wijzigen</button>
+                                                                                                <button type="submit" class="btn btn-primary" name="edit"><i class="fa fa-pencil"></i></button>
                                                                                         </span>
                                                                                 </div>
                                                                         </td>
@@ -69,17 +68,29 @@
 
                 <hr />
 
-                <div class="btn-group pull-right">
-                        <a class="btn btn-primary" href="{{ (Session::has('continueShopping') ? Session::get('continueShopping') : '/webshop') }}">Verder winkelen</a>
-                        <button data-target="#confirmDialog" data-toggle="modal" class="btn btn-success">Bestelling afronden <span class="glyphicon glyphicon-arrow-right"></span></button>
+                <div class="row">
+                        <div class="col-sm-4">
+                                <a class="btn btn-danger btn-block btn-lg" href="/cart/destroy">Winkelwagen legen</a>
+                        </div>
+
+                        <br class="visible-xs" />
+
+                        <div class="col-sm-4">
+                                <a class="btn btn-primary btn-block btn-lg" href="{{ (Session::has('continueShopping') ? Session::get('continueShopping') : '/webshop') }}">Verder winkelen</a>
+                        </div>
+
+                        <br class="visible-xs" />
+
+                        <div class="col-sm-4">
+                                <button data-target="#confirmDialog" data-toggle="modal" class="btn btn-success btn-block btn-lg">Bestelling afronden <span class="glyphicon glyphicon-arrow-right"></span></button>
+                        </div>
                 </div>
 
-                <a class="btn btn-danger" href="/cart/destroy">Winkelwagen legen</a>
+                <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="finishOrder" aria-hidden="true">
+                        <form action="/cart/order" method="POST">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="text" class="hidden" value="true" name="sent">
 
-                <form action="/mail/order" method="POST">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="text" class="hidden" value="true" name="sent">
-                        <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="finishOrder" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                                 <div class="modal-header">
@@ -88,7 +99,8 @@
                                                 </div>
                                                 <div class="modal-body">
                                                         <p>
-                                                                Aantal producten: {{ Cart::count() }}<Br />
+                                                                Aantal unieke producten: {{ Cart::count(false) }}<br />
+                                                                Aantal losse producten: {{ Cart::count(false) }}<br />
                                                                 Netto totaal: </b><span class="glyphicon glyphicon-euro"></span> {{ number_format($total, 2) }}<br />
                                                         </p>
 
@@ -138,38 +150,38 @@
                                                 </div>
                                                 <div class="modal-body">
                                                         <div class="form-group">
-                                                                <label for="inputName" class="col-sm-2 control-label">Naam*</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputName" class="col-sm-3 hidden-xs control-label">Naam*</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="name" class="form-control" id="inputName" placeholder="Naam" maxlength="100" required>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputStraat" class="col-sm-2 control-label">Straat + Huisnr*</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Straat + Huisnr*</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="street" class="form-control" id="inputStraat" placeholder="Straat + Huisnr" maxlength="50" required>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputPostcode" class="col-sm-2 control-label">Postcode*</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputPostcode" class="col-sm-3 hidden-xs control-label">Postcode*</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="postcode" class="form-control" id="inputPostcode" placeholder="Postcode (XXXX YY)" maxlength="7" required>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputStraat" class="col-sm-2 control-label">Plaats*</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Plaats*</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="city" class="form-control" id="inputPlaats" placeholder="Plaats" maxlength="30" required>
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputStraat" class="col-sm-2 control-label">Telefoon</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Telefoon</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="telephone" class="form-control" id="inputTelefoon" placeholder="Telefoon" maxlength="15">
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputStraat" class="col-sm-2 control-label">Mobiel</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Mobiel</label>
+                                                                <div class="col-xs-12 col-sm-9">
                                                                         <input type="text" name="mobile" class="form-control" id="inputMobile" placeholder="Mobiel" maxlength="15">
                                                                 </div>
                                                         </div>
@@ -179,6 +191,9 @@
                                                                 <div class="col-sm-6">
                                                                         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Annuleren</button>
                                                                 </div>
+
+                                                                <br class="visible-xs" />
+
                                                                 <div class="col-sm-6">
                                                                         <button type="submit" class="btn btn-success btn-block">Toevoegen</button>
                                                                 </div>
@@ -208,12 +223,18 @@
 
 @section('extraJS')
         <script type="text/javascript">
-                $('#addressId').change(function() {
-                        if ($(this).val() === "-2" || $(this).val() >= 0) {
-                                $("#finishOrderButton").removeAttr("disabled");
-                        } else if ($(this).val() === "-3") {
-                                $("#confirmDialog").modal('hide');
+                $("#confirmDialog").on('hidden.bs.modal', function(e) {
+                        if ($('#addressId').val() === "-3") {
+                                $('#addressId').val('-1');
                                 $("#addAddressDialog").modal('show');
+                        }
+                })
+
+                $('#addressId').change(function() {
+                        if ($('#addressId').val() === "-2" || $('#addressId').val() >= 0) {
+                                $("#finishOrderButton").removeAttr("disabled");
+                        } else if ($('#addressId').val() === "-3") {
+                                $("#confirmDialog").modal('hide');
                         } else {
                                 $("#finishOrderButton").attr("disabled", "disabled");
                         }
