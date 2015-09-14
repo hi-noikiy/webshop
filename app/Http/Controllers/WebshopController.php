@@ -536,7 +536,7 @@ class WebshopController extends Controller {
                         {
                                 if (Input::get('addressId') === '-2')
                                 {
-                                        $address = new stdClass();
+                                        $address = new \stdClass();
 
                                         $address->name       = '';
                                     	$address->street     = 'Wordt gehaald';
