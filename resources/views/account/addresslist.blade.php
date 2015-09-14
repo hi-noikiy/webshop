@@ -16,38 +16,38 @@
                                         </div>
                                         <div class="modal-body">
                                                 <div class="form-group">
-                                                        <label for="inputName" class="col-sm-2 control-label">Naam*</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputName" class="col-sm-3 hidden-xs control-label">Naam*</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="name" class="form-control" id="inputName" placeholder="Naam" maxlength="100" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Straat + Huisnr*</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Straat + Huisnr*</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="street" class="form-control" id="inputStraat" placeholder="Straat + Huisnr" maxlength="50" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputPostcode" class="col-sm-2 control-label">Postcode*</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputPostcode" class="col-sm-3 hidden-xs control-label">Postcode*</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="postcode" class="form-control" id="inputPostcode" placeholder="Postcode (XXXX YY)" maxlength="7" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Plaats*</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Plaats*</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="city" class="form-control" id="inputPlaats" placeholder="Plaats" maxlength="30" required>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Telefoon</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Telefoon</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="telephone" class="form-control" id="inputTelefoon" placeholder="Telefoon" maxlength="15">
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="inputStraat" class="col-sm-2 control-label">Mobiel</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="inputStraat" class="col-sm-3 hidden-xs control-label">Mobiel</label>
+                                                        <div class="col-xs-12 col-sm-9">
                                                                 <input type="text" name="mobile" class="form-control" id="inputMobile" placeholder="Mobiel" maxlength="15">
                                                         </div>
                                                 </div>
@@ -57,6 +57,9 @@
                                                         <div class="col-sm-6">
                                                                 <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Annuleren</button>
                                                         </div>
+
+                                                        <br class="visible-xs" />
+
                                                         <div class="col-sm-6">
                                                                 <button type="submit" class="btn btn-success btn-block">Toevoegen</button>
                                                         </div>

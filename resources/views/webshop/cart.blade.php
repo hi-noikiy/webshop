@@ -50,7 +50,7 @@
                                                                                 <div class="input-group">
                                                                                         <input type="text" class="form-control" placeholder="{{ $qty }}" name="qty" value="{{ $qty }}">
                                                                                         <span class="input-group-btn">
-                                                                                                <button type="submit" class="btn btn-primary" name="edit"><i class="fa fa-pencil"></i></button>
+                                                                                                <button type="submit" class="btn btn-primary" name="edit"><span class="glyphicon glyphicon-pencil"></span></button>
                                                                                         </span>
                                                                                 </div>
                                                                         </td>
@@ -100,7 +100,7 @@
                                                 <div class="modal-body">
                                                         <p>
                                                                 Aantal unieke producten: {{ Cart::count(false) }}<br />
-                                                                Aantal losse producten: {{ Cart::count(false) }}<br />
+                                                                Aantal losse producten: {{ Cart::count() }}<br />
                                                                 Netto totaal: </b><span class="glyphicon glyphicon-euro"></span> {{ number_format($total, 2) }}<br />
                                                         </p>
 

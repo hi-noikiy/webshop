@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Product;
 use App\User;
+use App\Address;
 
 use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App;
 
@@ -118,11 +119,11 @@ class WebshopController extends Controller {
          */
         public function search()
         {
-                $startTime = microtime(true);
-                $str = Input::get('q');
-                $inputBrand = Input::get('brand');
-                $inputSerie = Input::get('serie');
-                $inputType = Input::get('type');
+                $startTime      = microtime(true);
+                $str            = Input::get('q');
+                $inputBrand     = Input::get('brand');
+                $inputSerie     = Input::get('serie');
+                $inputType      = Input::get('type');
 
                 $query = DB::table('products')
                         ->orWhere('name', 'LIKE', $str)
@@ -180,7 +181,7 @@ class WebshopController extends Controller {
          */
         public function showProduct($product_Id = false)
         {
-                if ($product_Id === false) 
+                if ($product_Id === false)
                     return App::abort(400, 'Missing product number');
 
                 Session::flash('product_id', $product_Id);
@@ -365,7 +366,7 @@ class WebshopController extends Controller {
         public function viewCart()
         {
                 if (Auth::check())
-                        $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
+                        $addresses = DB::table('addresses')->where('User_id', Auth::user()->id)->get();
                 else
                         return Redirect::to('/#loginModal');
 
@@ -402,12 +403,12 @@ class WebshopController extends Controller {
                         $cartArray   = unserialize(Auth::user()->cart);
 
                         // Add the product data to the cart data
-                        $cartArray[$number] = 
+                        $cartArray[$number] =
                         $productData = array(
-                                                'id' => $product->number,
-                                                'name' => $product->name,
-                                                'qty' => $qty,
-                                                'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                                                'id'      => $product->number,
+                                                'name'    => $product->name,
+                                                'qty'     => $qty,
+                                                'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
                                                 'options' => array(
                                                         'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
                                                 )
@@ -519,5 +520,53 @@ class WebshopController extends Controller {
                 {
                         return Redirect::to('cart')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
                 }
+        }
+
+        public function order()
+        {
+                if (Cart::count(false) !== 0)
+                {
+                        if (Input::has('addressId'))
+                        {
+                                if (Input::get('addressId') === '-2')
+                                {
+                                        $address = new stdClass();
+
+                                        $address->name       = '';
+                                    	$address->street     = 'Wordt gehaald';
+                                    	$address->postcode   = '';
+                                        $address->city       = '';
+                                    	$address->telephone  = '';
+                                    	$address->mobile     = '';
+                                } else if (Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first())
+                                        $address = Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first();
+                                else
+                                        return Redirect::to('/cart')->with('error', 'Het opgegeven adres hoort niet bij uw account');
+
+                                $data['address'] = $address;
+                                $data['cart']    = Cart::content();
+                                $data['comment'] = (Input::has('comment') ? Input::get('comment') : false);
+
+                                \Mail::send('email.order', $data, function($message)
+                                {
+                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                                        $message->to('thomas.wiringa@gmail.com'/*verkoop@wiringa.nl*/);
+
+                                        $message->subject('Webshop order');
+                                });
+
+                                Cart::destroy();
+
+                                return Redirect::to('/cart/order/finished');
+                        } else
+                                return Redirect::to('/cart')->with('error', 'Geen adres opgegeven');
+                } else
+                        return Redirect::to('/')->with('error', 'Er zitten geen producten in uw winkelwagen!');
+        }
+
+        public function orderFinished()
+        {
+
         }
 }
