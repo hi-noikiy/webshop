@@ -523,6 +523,11 @@ class WebshopController extends Controller {
                 }
         }
 
+        /**
+         * Mail the order to the company
+         *
+         * @return mixed
+         */
         public function order()
         {
                 if (Cart::count(false) !== 0)
@@ -575,6 +580,11 @@ class WebshopController extends Controller {
                         return Redirect::to('/')->with('error', 'Er zitten geen producten in uw winkelwagen!');
         }
 
+        /**
+         * Show the order finished screen
+         *
+         * @return mixed
+         */
         public function orderFinished()
         {
                 if (Session::pull('order'))
