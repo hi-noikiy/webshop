@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Product;
 use App\User;
 use App\Address;
+use App\Order;
 
 use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App;
 
@@ -556,6 +557,15 @@ class WebshopController extends Controller {
                                         $message->subject('Webshop order');
                                 });
 
+                                $order = new Order();
+
+                                $order->products = serialize(Cart::content());
+                                $order->User_id  = Auth::user()->id;
+
+                                $order->save();
+
+                                Session::flash('order', true);
+
                                 Cart::destroy();
 
                                 return Redirect::to('/cart/order/finished');
@@ -567,6 +577,9 @@ class WebshopController extends Controller {
 
         public function orderFinished()
         {
-
+                if (Session::pull('order'))
+                        return view('webshop.finishedOrder');
+                else
+                        return Redirect::to('/');
         }
 }
