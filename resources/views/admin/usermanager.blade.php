@@ -31,7 +31,7 @@
                         </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
 
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
 
                 <div class="form-group">
                         <label for="login" class="col-sm-2 control-label">Debiteurnummer</label>

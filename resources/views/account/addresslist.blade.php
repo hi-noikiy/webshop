@@ -7,7 +7,7 @@
 @section('content')
         <div class="modal fade" id="addAddressDialog" tabindex="-1" role="dialog" aria-labelledby="addAddress" aria-hidden="true">
                 <form class="form-horizontal" action="/account/addAddress" method="POST" role="form">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        {!! csrf_field() !!}
                         <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                         <div class="modal-header">

@@ -12,7 +12,7 @@
         <hr />
 
         <form action="/admin/saveContent" method="POST" class="form-horizontal">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
                 <div class="form-group">
                         <label for="field" class="col-sm-2 control-label">Velden: </label>
 

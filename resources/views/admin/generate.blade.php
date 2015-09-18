@@ -14,7 +14,7 @@
         <div class="row">
                 <div class="col-md-12">
                         <form action="/admin/generateCatalog" method="POST" class="form form-horizontal">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                {!! csrf_field() !!}
 
                                 <div class="form-group">
                                         <label for="footer" class="col-sm-2 control-label">Pagina footer</label>

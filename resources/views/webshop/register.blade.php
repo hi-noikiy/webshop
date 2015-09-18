@@ -9,7 +9,7 @@
                 <div class="col-md-offset-2 col-md-8">
                         <div class="well">
                                 <form action="/register" method="POST" role="form">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        {!! csrf_field() !!}
                                 
                                         <h3>Correspondentie gegevens</h3>
                                         <small>Velden gemarkeerd met een * zijn verplicht</small>

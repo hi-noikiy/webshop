@@ -23,7 +23,7 @@
                                 <!-- Non editable form data -->
                                 <input class="hidden" name="product" value="{{ $productData->number }}">
                                 <input class="hidden" name="ref" value="{{ Input::get('ref') }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                {!! csrf_field() !!}
 
                                 <div class="modal-dialog">
                                         <div class="modal-content">

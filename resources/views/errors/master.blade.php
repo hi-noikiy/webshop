@@ -85,7 +85,7 @@
                             <br />
 
                             <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    {!! csrf_field() !!}
                                     <div class="form-group search-field has-feedback">
                                             <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
                                             <i class="glyphicon glyphicon-search form-control-feedback"></i>

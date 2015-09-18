@@ -12,7 +12,7 @@
         <hr />
 
         <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
                 <div class="form-group">
                         <label for="productFile" class="col-sm-2 control-label">Bestand</label>
                         <div class="col-sm-10">
@@ -38,7 +38,7 @@
         <hr />
 
         <form action="/admin/discountimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
                 <div class="form-group">
                         <label for="discountFile" class="col-sm-2 control-label">Bestand</label>
                         <div class="col-sm-10">
@@ -64,7 +64,7 @@
         <hr />
 
         <form action="/admin/imageimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
                 <div class="form-group">
                         <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
                         <div class="col-sm-10">

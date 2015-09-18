@@ -28,7 +28,7 @@
                                 ?>
 
                                 <form action="/cart/update" method="POST" class="col-sm-4">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        {!! csrf_field() !!}
                                         <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
 
                                         <div class="panel panel-primary">
@@ -88,7 +88,7 @@
 
                 <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="finishOrder" aria-hidden="true">
                         <form action="/cart/order" method="POST">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                {!! csrf_field() !!}
                                 <input type="text" class="hidden" value="true" name="sent">
 
                                 <div class="modal-dialog modal-lg">
@@ -141,7 +141,7 @@
 
                 <div class="modal fade" id="addAddressDialog" tabindex="-2" role="dialog" aria-labelledby="addAddress" aria-hidden="true">
                         <form class="form-horizontal" action="/account/addAddress" method="POST" role="form">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                {!! csrf_field() !!}
                                 <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                                 <div class="modal-header">

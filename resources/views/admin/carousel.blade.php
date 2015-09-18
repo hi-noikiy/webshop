@@ -16,7 +16,7 @@
                         </div>
                         <div class="modal-body">
                                 <form action="/admin/addCarouselSlide" method="POST" enctype="multipart/form-data" class="form form-horizontal">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        {!! csrf_field() !!}
                                         <div class="form-group">
                                                 <label for="image" class="col-sm-2 control-label">Afbeelding</label>
                                                 <div class="col-sm-10">
@@ -75,7 +75,7 @@
                                                 <p>{{{ $slide['Caption'] }}}</p>
                                                 <p>
                                                         <form action="/admin/editCarouselSlide/{{{ $slide['id'] }}}" method="POST" role="form">
-                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                {!! csrf_field() !!}
                                                                 <div class="input-group">
                                                                         <span class="input-group-btn">
                                                                                 <button class="btn btn-primary" type="submit">Wijzigen</button>
