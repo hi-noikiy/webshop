@@ -5,60 +5,61 @@
 
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
+@navbar-bg: #c2272d;
 
 @-webkit-keyframes navBrandHover {
 	from {
-		color:white;
-		background-color:#c2272d;
-		font-size:18px;
+		color: white;
+		background-color: @navbar-bg;
+		font-size: 18px;
 	}
 	to {
-		color:#c2272d;
-		background-color:white;
-		font-size:22px;
+		color: @navbar-bg;
+		background-color: white;
+		font-size: 22px;
 	}
 }
 
 @-webkit-keyframes navExpandSearch {
 	from {
-		width:0;
-		background:transparent;
-		padding-left:0;
-		padding-right:32px;
+		width: 0;
+		background: transparent;
+		padding-left: 0;
+		padding-right: 32px;
 	}
 	to {
-		width:181px;
-		background-color:white;
-		padding-left:12px;
-		padding-right:42px;
+		width: 181px;
+		background-color: white;
+		padding-left: 12px;
+		padding-right: 42px;
 	}
 }
 
 @keyframes navBrandHover {
 	from {
-		color:white;
-		background-color:#c2272d;
-		font-size:18px;
+		color: white;
+		background-color: @navbar-bg;
+		font-size: 18px;
 	}
 	to {
-		color:#c2272d;
-		background-color:white;
-		font-size:22px;
+		color: @navbar-bg;
+		background-color: white;
+		font-size: 22px;
 	}
 }
 
 @keyframes navExpandSearch {
 	from {
-		width:0;
-		background:transparent;
-		padding-left:0;
-		padding-right:32px;
+		width: 0;
+		background: transparent;
+		padding-left: 0;
+		padding-right: 32px;
 	}
 	to {
-		width:181px;
-		background-color:white;
-		padding-left:12px;
-		padding-right:42px;
+		width: 181px;
+		background-color: white;
+		padding-left: 12px;
+		padding-right: 42px;
 	}
 }
 
@@ -129,7 +130,7 @@ img {
 }
 
 .navbar-wtg {
-	background-color: #c2272d;
+	background-color: @navbar-bg;
 	border: none;
 	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -175,7 +176,7 @@ img {
 
 		& > li:not(.active) > a {
 			color: white;
-			background-color: #c2272d;
+			background-color: @navbar-bg;
 			transition: all 150ms;
 			-moz-transition: all 150ms;
 			-ms-transition: all 150ms;
@@ -183,7 +184,7 @@ img {
 			-webkit-transition: all 150ms;
 
 			&:hover {
-				color: #c2272d;
+				color: @navbar-bg;
 				background-color: white;
 				transition: all 150ms;
 				-moz-transition: all 150ms;
@@ -201,7 +202,7 @@ img {
 
 		.open  {
 			.dropdown-menu {
-				background-color: #c2272d;
+				background-color: @navbar-bg;
 				color: white;
 				border-radius: 0;
 				-moz-border-radius: 0;
@@ -212,16 +213,16 @@ img {
 			& > a:hover,
 			& > a:focus {
 				background-color: white;
-				color: #c2272d;
+				color: @navbar-bg;
 			}
 		}
 
 		.dropdown-menu {
-			background-color: #c2272d;
+			background-color: @navbar-bg;
 
 			& > li > a {
 				color: white;
-				background-color: #c2272d;
+				background-color: @navbar-bg;
 				line-height: 20px !important;
 				padding-top: 15px !important;
 				padding-bottom: 15px !important;
@@ -233,7 +234,7 @@ img {
 				-webkit-transition: all 150ms;
 
 				&:hover {
-					color: #c2272d;
+					color: @navbar-bg;
 					background-color: white;
 					transition: all 150ms;
 					-moz-transition: all 150ms;
@@ -247,7 +248,7 @@ img {
 
 	.navbar-toggle {
 		border-color: white;
-		background-color: #c2272d;
+		background-color: @navbar-bg;
 		margin-top: 25px;
 		margin-right: 25px;
 		padding: 15px;
@@ -440,7 +441,7 @@ img {
 .btn-wtg {
 	border-color: #ccc;
 	color: white;
-	background-color: #c2272d;
+	background-color: @navbar-bg;
 
 	&:hover,
 	&:focus {
