@@ -23,28 +23,30 @@
                         <div class="modal-dialog">
                                 <div class="modal-content">
                                         <form action="/login" method="POST" class="form form-horizontal">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
                                                 <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                         <h4 class="modal-title">Login</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                         <div class="form-group">
-                                                                <label for="inputUsername" class="col-sm-4 control-label">Login</label>
+                                                                <label for="username" class="col-sm-4 control-label">Login</label>
                                                                 <div class="col-sm-8">
-                                                                        <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Login" required @if(Session::has('username')) value="{{{ Session::get('username') }}}" @endif>
+                                                                        <input type="text" name="username" class="form-control" placeholder="Login" required value="{{ old('username') }}">
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                                <label for="inputPassword" class="col-sm-4 control-label">Wachtwoord</label>
+                                                                <label for="password" class="col-sm-4 control-label">Wachtwoord</label>
                                                                 <div class="col-sm-8">
-                                                                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Wachtwoord" required>
+                                                                        <input type="password" name="password" class="form-control" placeholder="Wachtwoord" aria-describedby="forgotPassword" required>
+                                                                        <span id="forgotPassword" class="help-block"><a href="/password/email">Wachtwoord vergeten?</a></span>
                                                                 </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                                <label for="inputRemember" class="col-sm-4 control-label">Ingelogd blijven?</label>
-                                                                <div class="col-sm-8">
-                                                                        <input name="remember_me" id="inputRemember" type="checkbox" />
+                                                        <div class="checkbox">
+                                                                <div class="col-sm-offset-4 col-sm-8">
+                                                                        <label>
+                                                                                <input name="remember_me" type="checkbox"> Ingelogd blijven?
+                                                                        </label>
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -120,7 +122,7 @@
                                     <br />
 
                                     <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            {!! csrf_field() !!}
                                             <div class="form-group search-field has-feedback">
                                                     <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
                                                     <i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -150,6 +152,20 @@
                         </div>
                 </div>
 
+                @if ($errors->has())
+                        <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                        {{ $error }}<br>
+                                @endforeach
+                        </div>
+                @endif
+
+                @if (Session::has('status'))
+                        <div class="alert alert-success">
+                                {{ Session::get('status') }}<br>
+                        </div>
+                @endif
+
                 @yield('content')
 
                 <hr />
@@ -168,7 +184,6 @@
 
                         <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
                         <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
-                        <script src="/js/jquery.toaster.js"></script>
 
                         @yield('extraJS')
 
@@ -176,16 +191,6 @@
                                 // Set the useragent in a data attribute in the html tag
                                 var doc = document.documentElement;
                                 doc.setAttribute('data-useragent', navigator.userAgent);
-
-                                @if(Session::has('error'))
-                                        var msg = '{{ Session::get('error') }}';
-                                        $.toaster({ priority : 'danger', title : 'Error', message : msg, timeout : 3000 });
-                                @endif
-
-                                @if(Session::has('success'))
-                                        var msg = '{{ Session::get('success') }}';
-                                        $.toaster({ priority : 'success', title : 'Succes', message : msg, timeout : 3000 });
-                                @endif
 
                                 $(function () {
                                         $('[data-toggle="tooltip"]').tooltip();
@@ -201,7 +206,7 @@
                                 });
 
                                 $('#loginModal').on('shown.bs.modal', function () {
-                                        $('#inputUsername').focus();
+                                        $('input[name=username]').focus();
                                 });
                         </script>
                 </footer>
