@@ -24,30 +24,30 @@ class AdminController extends Controller {
         */
 
         /**
-         * This will check if the user is logged in.
-         * If the user is not logged in then they will be redirected to the login page
-         * as they are not allowed to access this Controller without admin authentication.
-         */
+        * This will check if the user is logged in.
+        * If the user is not logged in then they will be redirected to the login page
+        * as they are not allowed to access this Controller without admin authentication.
+        */
         public function __construct()
         {
                 $this->middleware('auth.admin');
         }
 
         /**
-         * The admin overview page
-         *
-         * @return mixed
-         */
+        * The admin overview page
+        *
+        * @return mixed
+        */
         public function overview()
         {
                 return view('admin.overview');
         }
 
         /**
-         * Return the CPU load
-         *
-         * @return string
-         */
+        * Return the CPU load
+        *
+        * @return string
+        */
         public function CPULoad()
         {
                 if (Request::ajax())
@@ -64,14 +64,14 @@ class AdminController extends Controller {
 
                         return Response::json($data);
                 } else
-                        return Redirect::back();
+                return Redirect::back();
         }
 
         /**
-         * Return the RAM usage
-         *
-         * @return string
-         */
+        * Return the RAM usage
+        *
+        * @return string
+        */
         public function RAMLoad()
         {
                 if (Request::ajax())
@@ -86,24 +86,24 @@ class AdminController extends Controller {
 
                         return Response::json($data);
                 } else
-                        return Redirect::back();
+                return Redirect::back();
         }
 
         /**
-         * The import page
-         *
-         * @return mixed
-         */
+        * The import page
+        *
+        * @return mixed
+        */
         public function import()
         {
                 return view('admin.import');
         }
 
         /**
-         * Product import handler
-         *
-         * @return mixed
-         */
+        * Product import handler
+        *
+        * @return mixed
+        */
         public function productImport()
         {
                 if (Input::hasFile('productFile'))
@@ -113,117 +113,117 @@ class AdminController extends Controller {
                         $file = Input::file('productFile');
 
                         $validator = Validator::make(
-                                array(
-                                        'fileType' => $file->getMimeType(),
-                                ),
-                                array(
-                                        'fileType' => 'required|string:text/plain|string:text/csv'
-                                )
-                        );
+                        array(
+                                'fileType' => $file->getMimeType(),
+                        ),
+                        array(
+                                'fileType' => 'required|string:text/plain|string:text/csv'
+                        )
+                );
 
-                        if ($validator->fails())
-                                return Redirect::back()->withErrors( $validator->errors());
-                        else
-                        {
-                                \Debugbar::disable();
-                                // This loop is used to send the first 4096 bytes for the output buffering to work
-                                echo "<!--";
-                                for ($i=0; $i < 4089; $i++) {
-                                        echo "X";
-                                }
-                                echo "-->";
-
-                                echo "<h1>Product import</h1>";
-                                echo "Preparing database transaction.... <br />";
-                                echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
-
-                                $startTime = microtime(true);
-
-                                Product::truncate();
-
-                                $csv       = file($file->getRealPath());
-                                $lineCount = count($csv);
-
-                                DB::beginTransaction();
-
-                                DB::connection()->disableQueryLog();
-
-                                $line = $lastPercent = 0;
-
-                                foreach ($csv as $row) {
-                                        $row  = preg_replace("/\r\n/", "", $row);
-                                        $data = explode(';', $row);
-
-                                        DB::table('products')->insert(array(
-                                                        'name'             => $data[0],
-                                                        'number'           => $data[3],
-                                                        'group'            => $data[4],
-                                                        'altNumber'        => $data[5],
-                                                        'stockCode'        => $data[7],
-                                                        'registered_per'   => $data[8],
-                                                        'packed_per'       => $data[9],
-                                                        'price_per'        => $data[10],
-                                                        'refactor'         => preg_replace("/\,/", ".", $data[12]),
-                                                        'supplier'         => $data[13],
-                                                        'ean'              => $data[14],
-                                                        'image'            => $data[15],
-                                                        'length'           => $data[17],
-                                                        'price'            => $data[18],
-                                                        'vat'              => $data[20],
-                                                        'brand'            => $data[22],
-                                                        'series'           => $data[23],
-                                                        'type'             => $data[24],
-                                                        'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
-                                                        'action_type'      => $data[26],
-                                                        'keywords'         => $data[27],
-                                                        'related_products' => $data[28],
-                                                        'catalog_group'    => $data[29],
-                                                        'catalog_index'    => $data[30],
-                                                ));
-
-                                        $line++;
-                                        $percentage  = round(($line / $lineCount) * 100);
-
-                                        if ($percentage !== $lastPercent)
-                                        {
-                                                echo "#";
-                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                                ob_flush();
-                                                flush();
-                                        }
-
-                                        $lastPercent = $percentage;
-                                }
-
-                                echo "<br /><br />";
-
-                                ob_flush();
-                                flush();
-
-                                sleep(1);
-
-                                DB::commit();
-
-                                echo "Committing data...<br />";
-
-                                ob_flush();
-                                flush();
-
-                                sleep(1);
-
-                                $endTime = round(microtime(true) - $startTime, 4);
-
-                                return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
+                if ($validator->fails())
+                return Redirect::back()->withErrors( $validator->errors());
+                else
+                {
+                        \Debugbar::disable();
+                        // This loop is used to send the first 4096 bytes for the output buffering to work
+                        echo "<!--";
+                        for ($i=0; $i < 4089; $i++) {
+                                echo "X";
                         }
-                } else
-                        return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
+                        echo "-->";
+
+                        echo "<h1>Product import</h1>";
+                        echo "Preparing database transaction.... <br />";
+                        echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
+
+                        $startTime = microtime(true);
+
+                        Product::truncate();
+
+                        $csv       = file($file->getRealPath());
+                        $lineCount = count($csv);
+
+                        DB::beginTransaction();
+
+                        DB::connection()->disableQueryLog();
+
+                        $line = $lastPercent = 0;
+
+                        foreach ($csv as $row) {
+                                $row  = preg_replace("/\r\n/", "", $row);
+                                $data = explode(';', $row);
+
+                                DB::table('products')->insert(array(
+                                        'name'             => $data[0],
+                                        'number'           => $data[3],
+                                        'group'            => $data[4],
+                                        'altNumber'        => $data[5],
+                                        'stockCode'        => $data[7],
+                                        'registered_per'   => $data[8],
+                                        'packed_per'       => $data[9],
+                                        'price_per'        => $data[10],
+                                        'refactor'         => preg_replace("/\,/", ".", $data[12]),
+                                        'supplier'         => $data[13],
+                                        'ean'              => $data[14],
+                                        'image'            => $data[15],
+                                        'length'           => $data[17],
+                                        'price'            => $data[18],
+                                        'vat'              => $data[20],
+                                        'brand'            => $data[22],
+                                        'series'           => $data[23],
+                                        'type'             => $data[24],
+                                        'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
+                                        'action_type'      => $data[26],
+                                        'keywords'         => $data[27],
+                                        'related_products' => $data[28],
+                                        'catalog_group'    => $data[29],
+                                        'catalog_index'    => $data[30],
+                                ));
+
+                                $line++;
+                                $percentage  = round(($line / $lineCount) * 100);
+
+                                if ($percentage !== $lastPercent)
+                                {
+                                        echo "#";
+                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                        ob_flush();
+                                        flush();
+                                }
+
+                                $lastPercent = $percentage;
+                        }
+
+                        echo "<br /><br />";
+
+                        ob_flush();
+                        flush();
+
+                        sleep(1);
+
+                        DB::commit();
+
+                        echo "Committing data...<br />";
+
+                        ob_flush();
+                        flush();
+
+                        sleep(1);
+
+                        $endTime = round(microtime(true) - $startTime, 4);
+
+                        return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
+                }
+        } else
+                return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
         }
 
         /**
-         * This function will handle the discount import
-         *
-         * @return mixed
-         */
+        * This function will handle the discount import
+        *
+        * @return mixed
+        */
         public function discountImport()
         {
                 if (Input::hasFile('discountFile'))
@@ -274,15 +274,15 @@ class AdminController extends Controller {
                                         $data = explode(';', $row);
 
                                         DB::table('discounts')->insert(array(
-                                                        'table'         => $data[0],
-                                                        'User_id'       => ($data[1] !== "" ? $data[1] : 0),
-                                                        'product'       => (is_numeric($data[2]) ? $data[2] : 0),
-                                                        'start_date'    => $data[3],
-                                                        'end_date'      => $data[4],
-                                                        'discount'      => $data[5],
-                                                        'group_desc'    => $data[6],
-                                                        'product_desc'  => $data[7],
-                                                ));
+                                                'table'         => $data[0],
+                                                'User_id'       => ($data[1] !== "" ? $data[1] : 0),
+                                                'product'       => (is_numeric($data[2]) ? $data[2] : 0),
+                                                'start_date'    => $data[3],
+                                                'end_date'      => $data[4],
+                                                'discount'      => $data[5],
+                                                'group_desc'    => $data[6],
+                                                'product_desc'  => $data[7],
+                                        ));
 
                                         $line++;
 
@@ -324,10 +324,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * This function will handle the image import
-         *
-         * @return mixed
-         */
+        * This function will handle the image import
+        *
+        * @return mixed
+        */
         public function imageImport()
         {
                 if (Input::hasFile('imageFile') && Input::file('imageFile')->isValid())
@@ -376,27 +376,27 @@ class AdminController extends Controller {
         }
 
         /**
-         * The import was successful :D
-         *
-         * @return mixed
-         */
+        * The import was successful :D
+        *
+        * @return mixed
+        */
         public function importSuccess()
         {
                 // Disable the debugbar or it will overload the memory
                 \Debugbar::disable();
                 // The type must be set
                 if (Session::has('type'))
-                        return view('admin.importsuccess');
+                return view('admin.importsuccess');
                 // Or you will be redirected
                 else
-                        return Redirect::to('admin/import');
+                return Redirect::to('admin/import');
         }
 
         /**
-         * Content management page
-         *
-         * @return mixed
-         */
+        * Content management page
+        *
+        * @return mixed
+        */
         public function contentManager()
         {
                 $data = Content::where('visible', '1')->get();
@@ -405,10 +405,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Get the content that belongs to the page/field
-         *
-         * @return mixed
-         */
+        * Get the content that belongs to the page/field
+        *
+        * @return mixed
+        */
         public function getContent()
         {
                 if(Request::ajax())
@@ -425,10 +425,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Save the content to the database
-         *
-         * @return mixed
-         */
+        * Save the content to the database
+        *
+        * @return mixed
+        */
         public function saveContent()
         {
                 if (Input::has('field') && Input::has('content'))
@@ -444,10 +444,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Show the generate page
-         *
-         * @return mixed
-         */
+        * Show the generate page
+        *
+        * @return mixed
+        */
         public function generate()
         {
                 $content = DB::table('text')->where('name', 'catalog.footer')->first();
@@ -456,10 +456,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Generate the catalog PDF file
-         *
-         * @return string
-         */
+        * Generate the catalog PDF file
+        *
+        * @return string
+        */
         public function generateCatalog()
         {
                 if (Input::get('footer') !== "")
@@ -478,13 +478,13 @@ class AdminController extends Controller {
                 $footer = DB::table('text')->where('name', 'catalog.footer')->first();
 
                 $productData = DB::table('products')
-                                    ->orderBy('catalog_group', 'asc')
-                                    ->orderBy('group', 'asc')
-                                    ->orderBy('type', 'asc')
-                                    ->orderBy('number', 'asc')
-                                    ->whereNotIn('action_type', ['Opruiming', 'Actie'])
-                                    ->where('catalog_index', '!=', '')
-                                    ->get();
+                        ->orderBy('catalog_group', 'asc')
+                        ->orderBy('group', 'asc')
+                        ->orderBy('type', 'asc')
+                        ->orderBy('number', 'asc')
+                        ->whereNotIn('action_type', ['Opruiming', 'Actie'])
+                        ->where('catalog_index', '!=', '')
+                        ->get();
 
                 File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
 
@@ -494,10 +494,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Carousel manager
-         *
-         * @return mixed
-         */
+        * Carousel manager
+        *
+        * @return mixed
+        */
         public function carousel()
         {
                 $carouselData = Carousel::orderBy('Order')->get();
@@ -506,10 +506,10 @@ class AdminController extends Controller {
         }
 
         /**
-         * Add a carousel slide
-         *
-         * @return mixed
-         */
+        * Add a carousel slide
+        *
+        * @return mixed
+        */
         public function addSlide()
         {
                 if (Input::has('title') && Input::has('caption') && Input::hasFile('image'))
@@ -529,9 +529,8 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                        {
                                 return Redirect::back()->withErrors( $validator->errors());
-                        } else
+                        else
                         {
                                 $slide = new Carousel;
 
@@ -551,11 +550,11 @@ class AdminController extends Controller {
         }
 
         /**
-         * Remove a slide from the carousel
-         *
-         * @var integer
-         * @return mixed
-         */
+        * Remove a slide from the carousel
+        *
+        * @var integer
+        * @return mixed
+        */
         public function removeSlide($id)
         {
                 if (isset($id) && Carousel::where('id', $id)->count() === 1)
@@ -573,11 +572,11 @@ class AdminController extends Controller {
         }
 
         /**
-         * Edit the slide order number
-         *
-         * @var integer
-         * @return mixed
-         */
+        * Edit the slide order number
+        *
+        * @var integer
+        * @return mixed
+        */
         public function editSlide($id)
         {
                 if (isset($id) && Carousel::where('id', $id)->count() === 1)
@@ -598,101 +597,112 @@ class AdminController extends Controller {
         }
 
         /**
-         * Show the user manager
-         *
-         * @return mixed
-         */
+        * Show the user manager
+        *
+        * @return mixed
+        */
         public function userManager()
         {
-            return view('admin.usermanager');
+                return view('admin.usermanager');
         }
 
         /**
-         * Get some user details
-         *
-         * @return json
-         */
+        * Get some user details
+        *
+        * @return json
+        */
         public function getUserData()
         {
-            if (Request::ajax())
-            {
-                if (Input::has('id'))
+                if (Request::ajax())
                 {
-                    $userdata = User::where('login', Input::get('id'))->firstOrFail();
+                        if (Input::has('id'))
+                        {
+                                $userdata = User::where('login', Input::get('id'))->firstOrFail();
 
-                    return Response::json($userdata);
+                                return Response::json($userdata);
+                        } else
+                                return App::abort(400);
                 } else
-                    return App::abort(400);
-            } else
-                return App::abort(405);
+                        return App::abort(405);
         }
 
         /**
-         * Add/update a user
-         *
-         * @return mixed
-         */
+        * Add/update a user
+        *
+        * @return mixed
+        */
         public function updateUser()
         {
-            if (Input::has('login') && Input::has('name') && Input::has('email') && Input::has('street') && Input::has('postcode') && Input::has('city') && Input::has('active'))
-            {
-                if (Input::get('delete') === '')
+                $validator = Validator::make(Input::all(), [
+                                'login'    => 'required|digits_between:10000,99999',
+                                'name'     => 'required|string',
+                                'email'    => 'required|email',
+                                'street'   => 'required',
+                                'postcode' => 'required',
+                                'city'     => 'required',
+                                'active'   => 'required',
+                        ]);
+
+
+                if (!$validator->fails())
                 {
-                    $user = User::where('login', Input::get('login'));
+                        if (Input::get('delete') === '')
+                        {
+                                $user = User::where('login', Input::get('login'));
 
-                    $user->delete();
+                                $user->delete();
 
-                    return Redirect::back()->with(['status' => 'De gebruiker is succesvol verwijderd']);
-                } elseif (Input::get('update') === '')
-                {
-                    if (User::where('login', Input::get('login'))->count() === 1)
-                    { // The user exists...
-                        $user = User::where('login', Input::get('login'))->first();
+                                return Redirect::back()->with(['status' => 'De gebruiker is succesvol verwijderd']);
+                        } elseif (Input::get('update') === '')
+                        {
+                                if (User::where('login', Input::get('login'))->count() === 1)
+                                { // The user exists...
+                                        $user = User::where('login', Input::get('login'))->first();
 
-                        $user->company  = Input::get('name');
-                        $user->email    = Input::get('email');
-                        $user->street   = Input::get('street');
-                        $user->postcode = Input::get('postcode');
-                        $user->city     = Input::get('city');
-                        $user->active   = Input::get('active');
+                                        $user->company  = Input::get('name');
+                                        $user->email    = Input::get('email');
+                                        $user->street   = Input::get('street');
+                                        $user->postcode = Input::get('postcode');
+                                        $user->city     = Input::get('city');
+                                        $user->active   = Input::get('active');
 
-                        $user->save();
+                                        $user->save();
 
-                        return Redirect::back()->with(['status' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
-                    } else
-                    { // The user does not exist...
-                        $pass = mt_rand(100000, 999999);
-                        $user = new User;
+                                        return Redirect::back()->with(['status' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
+                                } else
+                                { // The user does not exist...
+                                        $pass = mt_rand(100000, 999999);
+                                        $user = new User;
 
-                        $user->login    = Input::get('login');
-                        $user->company  = Input::get('name');
-                        $user->email    = Input::get('email');
-                        $user->street   = Input::get('street');
-                        $user->postcode = Input::get('postcode');
-                        $user->city     = Input::get('city');
-                        $user->active   = Input::get('active');
-                        $user->password = Hash::make($pass);
+                                        $user->login    = Input::get('login');
+                                        $user->company  = Input::get('name');
+                                        $user->email    = Input::get('email');
+                                        $user->street   = Input::get('street');
+                                        $user->postcode = Input::get('postcode');
+                                        $user->city     = Input::get('city');
+                                        $user->active   = Input::get('active');
+                                        $user->password = Hash::make($pass);
 
-                        $user->save();
+                                        $user->save();
 
-                        Session::flash('password', $pass);
-                        Session::flash('input', Input::all());
+                                        Session::flash('password', $pass);
+                                        Session::flash('input', Input::all());
 
-                        return Redirect::to('admin/userAdded');
-                    }
+                                        return Redirect::to('admin/userAdded');
+                                }
+                        } else
+                                return Redirect::back()->withErrors( 'Geen actie opgegeven (toevoegen of verwijderen)');
                 } else
-                    return Redirect::back()->withErrors( 'Geen actie opgegeven (toevoegen of verwijderen)');
-            } else
-                return Redirect::back()->withErrors( 'Niet alle vereiste velden zijn ingevuld');
+                        return Redirect::back()->withErrors($validator->errors());
         }
 
         /**
-         * Show the user added page
-         *
-         * @return mixed
-         */
+        * Show the user added page
+        *
+        * @return mixed
+        */
         public function userAdded()
         {
-            return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::pull('input')]);
+                return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::pull('input')]);
         }
 }
