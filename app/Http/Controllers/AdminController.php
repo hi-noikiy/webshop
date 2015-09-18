@@ -122,7 +122,7 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                                return Redirect::back()->with('error', $validator->messages());
+                                return Redirect::back()->withErrors( $validator->errors());
                         else 
                         {
                                 \Debugbar::disable();
@@ -216,7 +216,7 @@ class AdminController extends Controller {
                                 return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
                         }
                 } else
-                        return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+                        return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
         }
 
         /**
@@ -242,7 +242,7 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                                return Redirect::back()->with('error', $validator->messages());
+                                return Redirect::back()->withErrors( $validator->errors());
                         else 
                         {
                                 \Debugbar::disable();
@@ -320,7 +320,7 @@ class AdminController extends Controller {
                                 return Redirect::to('admin/importsuccess')->with(array('count' => count($csv), 'time' => $endTime, 'type' => 'korting'));
                         }
                 } else
-                        return Redirect::back()->with('error', 'Geen bestand geselecteerd');
+                        return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
         }
 
         /**
@@ -347,7 +347,7 @@ class AdminController extends Controller {
                         );
 
                         if ($validator->fails())
-                                return Redirect::back()->with('error', 'Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
+                                return Redirect::back()->withErrors( 'Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
                         else 
                         {
                                 if ($fileMime === "application/zip")
@@ -438,9 +438,9 @@ class AdminController extends Controller {
 
                         Content::where('name', $field)->update(array('content' => $content));
 
-                        return Redirect::to('admin/managecontent')->with('success', 'De content is aangepast');
+                        return Redirect::to('admin/managecontent')->with('status', 'De content is aangepast');
                 } else
-                        return Redirect::back()->with('error', 'Content of Field veld leeg');
+                        return Redirect::back()->withErrors( 'Content of Field veld leeg');
         }
 
         /**
@@ -530,7 +530,7 @@ class AdminController extends Controller {
 
                         if ($validator->fails())
                         {
-                                return Redirect::back()->with('error', $validator->messages());
+                                return Redirect::back()->withErrors( $validator->errors());
                         } else
                         {
                                 $slide = new Carousel;
@@ -544,10 +544,10 @@ class AdminController extends Controller {
 
                                 Input::file('image')->move(public_path() . "/img/carousel", $image->getClientOriginalName());
 
-                                return Redirect::back()->with('success', "De slide is toegevoegd aan de carousel");
+                                return Redirect::back()->with('status', "De slide is toegevoegd aan de carousel");
                         }
                 } else
-                        return Redirect::back()->with('error', "Een of meer velden zijn niet ingevuld");
+                        return Redirect::back()->withErrors( "Een of meer velden zijn niet ingevuld");
         }
 
         /**
@@ -567,9 +567,9 @@ class AdminController extends Controller {
 
                         Carousel::destroy($id);
 
-                        return Redirect::back()->with('success', "De slide is verwijderd uit de carousel");
+                        return Redirect::back()->with('status', "De slide is verwijderd uit de carousel");
                 } else
-                        return Redirect::back()->with('error', "De slide met id $id bestaat niet");
+                        return Redirect::back()->withErrors( "De slide met id $id bestaat niet");
         }
 
         /**
@@ -590,11 +590,11 @@ class AdminController extends Controller {
 
                                 $slide->save();
 
-                                return Redirect::back()->with('success', "Het slide nummer is aangepast");
+                                return Redirect::back()->with('status', "Het slide nummer is aangepast");
                         } else
-                                return Redirect::back()->with('error', 'Er is een ongeldig slide nummer opgegeven');
+                                return Redirect::back()->withErrors( 'Er is een ongeldig slide nummer opgegeven');
                 } else
-                        return Redirect::back()->with('error', "De slide met id $id bestaat niet");
+                        return Redirect::back()->withErrors( "De slide met id $id bestaat niet");
         }
 
         /**
@@ -681,9 +681,9 @@ class AdminController extends Controller {
                         return Redirect::to('admin/userAdded');
                     }
                 } else
-                    return Redirect::back()->with('error', 'Geen actie opgegeven (toevoegen of verwijderen)');
+                    return Redirect::back()->withErrors( 'Geen actie opgegeven (toevoegen of verwijderen)');
             } else 
-                return Redirect::back()->with('error', 'Niet alle vereiste velden zijn ingevuld');
+                return Redirect::back()->withErrors( 'Niet alle vereiste velden zijn ingevuld');
         }
 
         /**

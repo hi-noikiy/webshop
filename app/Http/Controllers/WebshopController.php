@@ -265,12 +265,15 @@ class WebshopController extends Controller {
                                         }
                                 }
 
-                                return Redirect::back()->with('success', 'U bent nu ingelogd');
+                                return Redirect::back()->with('status', 'U bent nu ingelogd');
                         }
                 }
 
                 // The input field(s) is/are empty, go back to the previous page with an error message
-                return Redirect::back()->with(array('error' => 'Gebruikersnaam en/of wachtwoord onjuist', 'username' => Input::get('username')));
+                //return Redirect::back()->with(array('error' => , 'username' => Input::get('username')));
+                return Redirect::back()
+                        ->withErrors('Gebruikersnaam en/of wachtwoord onjuist')
+                        ->withInput(Input::except('password'));
         }
 
         /**
@@ -285,11 +288,9 @@ class WebshopController extends Controller {
                         Cart::destroy();
                         Auth::logout();
 
-                        return Redirect::to('/')->with('success', 'U bent nu uitgelogd');
+                        return Redirect::to('/')->with('status', 'U bent nu uitgelogd');
                 } else
-                {
-                        return Redirect::to('/')->with('error', 'Geen gebruiker ingelogd');
-                }
+                        return Redirect::to('/')->withErrors( 'Geen gebruiker ingelogd');
         }
 
         /**
@@ -500,7 +501,7 @@ class WebshopController extends Controller {
 
                                 Cart::update($rowId, array('qty' => $qty));
 
-                                return Redirect::to('cart')->with('success', 'Uw winkelwagen is geupdatet');
+                                return Redirect::to('cart')->with('status', 'Uw winkelwagen is geupdatet');
                         } elseif (Input::get('remove') === "")
                         {
                                 // Load the user cart data
@@ -515,21 +516,19 @@ class WebshopController extends Controller {
 
                                 Cart::remove($rowId);
 
-                                return Redirect::to('cart')->with('success', 'Het product is verwijderd');
+                                return Redirect::to('cart')->with('status', 'Het product is verwijderd');
                         } else
-                        {
-                                return Redirect::to('cart')->with('error', 'Er is een fout opgetreden');
-                        }
+                                return Redirect::to('cart')->withErrors( 'Er is een fout opgetreden');
                 } else
                 {
-                        $messages = $validator->messages();
+                        $messages = $validator->errors();
                         $msg = '';
 
                         // Put all the messages in one variable
                         foreach($messages->all() as $key => $message)
                                 $msg .= ucfirst($message) . "<br />";
 
-                        return Redirect::to('cart')->with('error', $msg);
+                        return Redirect::to('cart')->withErrors( $msg);
                 }
         }
 
@@ -548,10 +547,10 @@ class WebshopController extends Controller {
                         $user->cart = NULL;
                         $user->save();
 
-                        return Redirect::to('/')->with('success', 'Uw winkelwagen is geleegd');
+                        return Redirect::to('/')->with('status', 'Uw winkelwagen is geleegd');
                 } else
                 {
-                        return Redirect::to('cart')->with('error', 'Er is een fout opgetreden tijden het legen van de winkelwagen');
+                        return Redirect::to('cart')->withErrors( 'Er is een fout opgetreden tijden het legen van de winkelwagen');
                 }
         }
 
@@ -576,10 +575,11 @@ class WebshopController extends Controller {
                                         $address->city       = '';
                                     	$address->telephone  = '';
                                     	$address->mobile     = '';
+
                                 } else if (Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first())
                                         $address = Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first();
                                 else
-                                        return Redirect::to('/cart')->with('error', 'Het opgegeven adres hoort niet bij uw account');
+                                        return Redirect::to('/cart')->withErrors( 'Het opgegeven adres hoort niet bij uw account');
 
                                 $data['address'] = $address;
                                 $data['cart']    = Cart::content();
@@ -607,9 +607,9 @@ class WebshopController extends Controller {
 
                                 return Redirect::to('/cart/order/finished');
                         } else
-                                return Redirect::to('/cart')->with('error', 'Geen adres opgegeven');
+                                return Redirect::to('/cart')->withErrors( 'Geen adres opgegeven');
                 } else
-                        return Redirect::to('/')->with('error', 'Er zitten geen producten in uw winkelwagen!');
+                        return Redirect::to('/')->withErrors( 'Er zitten geen producten in uw winkelwagen!');
         }
 
         /**

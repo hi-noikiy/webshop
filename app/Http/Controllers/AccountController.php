@@ -76,19 +76,19 @@ class AccountController extends Controller {
 
                                         $user->save();
 
-                                        return Redirect::to('account')->with('success', 'Uw wachtwoord is gewijzigd');
+                                        return Redirect::to('account')->with('status', 'Uw wachtwoord is gewijzigd');
                                 } else
                                 {
-                                        return Redirect::to('account/changepassword')->with('error', 'De nieuwe wachtwoorden komen niet overeen');
+                                        return Redirect::to('account/changepassword')->withErrors( 'De nieuwe wachtwoorden komen niet overeen');
                                 }
                         } else
                         {
                                 Log::warning('User: ' . Auth::user()->login . ' tried to change password but entered the wrong password.');
-                                return Redirect::to('account/changepassword')->with('error', 'Het oude wachtwoord is onjuist!');
+                                return Redirect::to('account/changepassword')->withErrors( 'Het oude wachtwoord is onjuist!');
                         }
                 } else
                 {
-                        return Redirect::to('account/changepassword')->with('error', 'Niet alle velden zijn ingevuld');
+                        return Redirect::to('account/changepassword')->withErrors( 'Niet alle velden zijn ingevuld');
                 }
         }
 
@@ -187,7 +187,7 @@ class AccountController extends Controller {
                         }
                 } else
                 {
-                        return Redirect::back()->with('error', 'Geen toegang!');
+                        return Redirect::back()->withErrors( 'Geen toegang!');
                 }
         }
 
@@ -227,7 +227,7 @@ class AccountController extends Controller {
                         }
                 } else
                 {
-                        return Redirect::back()->with('error', 'Geen toegang!');
+                        return Redirect::back()->withErrors( 'Geen toegang!');
                 }
         }
 
@@ -304,21 +304,21 @@ class AccountController extends Controller {
 
                                 $address->save();
 
-                                return Redirect::back()->with('success', 'Het adres is toegevoegd');
+                                return Redirect::back()->with('status', 'Het adres is toegevoegd');
                         } else
                         {
-                                $messages = $validator->messages();
+                                $messages = $validator->errors();
                                 $msg = '';
 
                                 foreach($messages->all() as $key => $message)
                                         $msg .= ucfirst($message) . "\r\n";
 
-                                return Redirect::back()->with('error', $msg);
+                                return Redirect::back()->withErrors( $msg);
                         }
 
                 } else
                 {
-                        return Redirect::back()->with('error', 'Een of meer vereiste velden zijn leeg');
+                        return Redirect::back()->withErrors( 'Een of meer vereiste velden zijn leeg');
                 }
         }
 
@@ -337,14 +337,14 @@ class AccountController extends Controller {
                         {
                                 $address->delete();
 
-                                return Redirect::to('account/addresslist')->with('success', 'Het adres is verwijderd');
+                                return Redirect::to('account/addresslist')->with('status', 'Het adres is verwijderd');
                         } else
                         {
-                                return Redirect::to('account/addresslist')->with('error', 'Het adres bestaat niet of behoort niet bij uw account');
+                                return Redirect::to('account/addresslist')->withErrors( 'Het adres bestaat niet of behoort niet bij uw account');
                         }
                 } else
                 {
-                        return Redirect::to('account/addresslist')->with('error', 'Geen adres id aangegeven');
+                        return Redirect::to('account/addresslist')->withErrors( 'Geen adres id aangegeven');
                 }
         }
 
@@ -403,9 +403,9 @@ class AccountController extends Controller {
                                         $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt']);
                                 });
 
-                                return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                                return Redirect::to('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
                         } else
-                                return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
+                                return Redirect::to('account/discountfile')->withErrors( 'Geen verzendmethode opgegeven');
                 } elseif ($type === 'csv')
                 {
                         if ($method === 'download')
@@ -440,11 +440,11 @@ class AccountController extends Controller {
                                         $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv']);
                                 });
 
-                                return Redirect::to('account/discountfile')->with('success', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                                return Redirect::to('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
                         } else
-                                return Redirect::to('account/discountfile')->with('error', 'Geen verzendmethode opgegeven');
+                                return Redirect::to('account/discountfile')->withErrors( 'Geen verzendmethode opgegeven');
                 } else
-                        return Redirect::to('account/discountfile')->with('error', 'Ongeldig bestands type');
+                        return Redirect::to('account/discountfile')->withErrors( 'Ongeldig bestands type');
         }
 
         /**
