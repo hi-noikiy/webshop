@@ -10,12 +10,12 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $middleware = [
-		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-		'Illuminate\Cookie\Middleware\EncryptCookies',
-		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-		'Illuminate\Session\Middleware\StartSession',
-		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		'App\Http\Middleware\VerifyCsrfToken',
+		\Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+	        \App\Http\Middleware\EncryptCookies::class,
+	        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+	        \Illuminate\Session\Middleware\StartSession::class,
+	        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+	        \App\Http\Middleware\VerifyCsrfToken::class,
 	];
 
 	/**
@@ -24,11 +24,11 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => 'App\Http\Middleware\Authenticate',
-		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-		'auth.admin' => 'App\Http\Middleware\AuthenticateAdmin',
-		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
-		'RemoveTempFile' => 'App\Http\Middleware\RemoveTempFile'
+		'auth' => \App\Http\Middleware\Authenticate::class,
+		'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+		'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
+		'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+		'RemoveTempFile' => \App\Http\Middleware\RemoveTempFile::class,
 	];
 
 }
