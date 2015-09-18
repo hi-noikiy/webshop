@@ -123,12 +123,12 @@ class AdminController extends Controller {
 
                         if ($validator->fails())
                                 return Redirect::back()->withErrors( $validator->errors());
-                        else 
+                        else
                         {
                                 \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
-                                for ($i=0; $i < 4089; $i++) { 
+                                for ($i=0; $i < 4089; $i++) {
                                         echo "X";
                                 }
                                 echo "-->";
@@ -183,7 +183,7 @@ class AdminController extends Controller {
 
                                         $line++;
                                         $percentage  = round(($line / $lineCount) * 100);
-                                        
+
                                         if ($percentage !== $lastPercent)
                                         {
                                                 echo "#";
@@ -243,12 +243,12 @@ class AdminController extends Controller {
 
                         if ($validator->fails())
                                 return Redirect::back()->withErrors( $validator->errors());
-                        else 
+                        else
                         {
                                 \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
-                                for ($i=0; $i < 4089; $i++) { 
+                                for ($i=0; $i < 4089; $i++) {
                                         echo "X";
                                 }
                                 echo "-->";
@@ -283,11 +283,11 @@ class AdminController extends Controller {
                                                         'group_desc'    => $data[6],
                                                         'product_desc'  => $data[7],
                                                 ));
-                                        
+
                                         $line++;
-                                        
+
                                         $percentage  = round(($line / $lineCount) * 100);
-                                        
+
                                         if ($percentage !== $lastPercent)
                                         {
                                                 echo "#";
@@ -348,7 +348,7 @@ class AdminController extends Controller {
 
                         if ($validator->fails())
                                 return Redirect::back()->withErrors( 'Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
-                        else 
+                        else
                         {
                                 if ($fileMime === "application/zip")
                                 {
@@ -489,7 +489,7 @@ class AdminController extends Controller {
                 File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
 
                 exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer->content . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/catalog.pdf"');
-                
+
                 return Redirect::intended('/dl/catalog.pdf');
         }
 
@@ -612,7 +612,7 @@ class AdminController extends Controller {
          *
          * @return json
          */
-        public function getUserData() 
+        public function getUserData()
         {
             if (Request::ajax())
             {
@@ -642,7 +642,7 @@ class AdminController extends Controller {
 
                     $user->delete();
 
-                    return Redirect::back()->with(['success' => 'De gebruiker is succesvol verwijderd']);
+                    return Redirect::back()->with(['status' => 'De gebruiker is succesvol verwijderd']);
                 } elseif (Input::get('update') === '')
                 {
                     if (User::where('login', Input::get('login'))->count() === 1)
@@ -658,7 +658,7 @@ class AdminController extends Controller {
 
                         $user->save();
 
-                        return Redirect::back()->with(['success' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
+                        return Redirect::back()->with(['status' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
                     } else
                     { // The user does not exist...
                         $pass = mt_rand(100000, 999999);
@@ -682,7 +682,7 @@ class AdminController extends Controller {
                     }
                 } else
                     return Redirect::back()->withErrors( 'Geen actie opgegeven (toevoegen of verwijderen)');
-            } else 
+            } else
                 return Redirect::back()->withErrors( 'Niet alle vereiste velden zijn ingevuld');
         }
 
