@@ -60,49 +60,79 @@ class WebshopController extends Controller {
 
         public function register_check()
         {
-                $data['corContactName'] = Input::get('corContactName');
-                $data['corName']        = Input::get('corName');
-                $data['corAddress']     = Input::get('corAddress');
-                $data['corPostcode']    = Input::get('corPostcode');
-                $data['corCity']        = Input::get('corCity');
-                $data['corContactPhone']= Input::get('corContactPhone');
-                $data['corPhone']       = Input::get('corPhone');
-                $data['corFax']         = (Input::get('corFax') !== false ? Input::get('corFax') : "");
-                $data['corEmail']       = Input::get('corEmail');
-                $data['corSite']        = (Input::get('corSite') !== false ? Input::get('corSite') : "");
+                $validator = Validator::make(Input::all(), [
+                                'corContactName'        => 'required',
+                                'corName'               => 'required',
+                                'corAddress'            => 'required',
+                                'corPostcode'           => 'required',
+                                'corCity'               => 'required',
+                                'corPhone'              => 'required',
+                                'corEmail'              => 'required|email',
+                                'corSite'               => 'url',
 
-                $data['corIsDel']       = Input::get('corIsDel');
+                                'delAddress'            => 'required',
+                                'delPostcode'           => 'required',
+                                'delCity'               => 'required',
+                                'delPhone'              => 'required',
 
-                $data['delAddress']     = ($data['corIsDel'] ? $data['corAddress'] : Input::get('delAddress'));
-                $data['delPostcode']    = ($data['corIsDel'] ? $data['corPostcode'] : Input::get('delPostcode'));
-                $data['delCity']        = ($data['corIsDel'] ? $data['corCity'] : Input::get('delCity'));
-                $data['delPhone']       = ($data['corIsDel'] ? $data['corPhone'] : Input::get('delPhone'));
-                $data['delFax']         = ($data['corIsDel'] ? $data['corFax'] : (Input::get('delFax') !== false ? Input::get('delFax') : ""));
+                                'betIBAN'               => 'required',
+                                'betKvK'                => 'required',
+                                'betBTW'                => 'required',
 
-                $data['betIBAN']        = Input::get('betIBAN');
-                $data['betKvK']         = Input::get('betKvK');
-                $data['betBTW']         = Input::get('betBTW');
+                                'digFactuur'            => 'required|email',
+                                'digOrder'              => 'required',
+                                'digArtikel'            => 'required',
+                        ]);
 
-                $data['digFactuur']     = Input::get('digFactuur');
-                $data['digOrder']       = Input::get('digOrder');
-                $data['digArtikel']     = Input::get('digArtikel');
+                if (!$validator->fails())
+                        {
+                        $data['corContactName'] = Input::get('corContactName');
+                        $data['corName']        = Input::get('corName');
+                        $data['corAddress']     = Input::get('corAddress');
+                        $data['corPostcode']    = Input::get('corPostcode');
+                        $data['corCity']        = Input::get('corCity');
+                        $data['corContactPhone']= Input::get('corContactPhone');
+                        $data['corPhone']       = Input::get('corPhone');
+                        $data['corFax']         = (Input::get('corFax') !== false ? Input::get('corFax') : "");
+                        $data['corEmail']       = Input::get('corEmail');
+                        $data['corSite']        = (Input::get('corSite') !== false ? Input::get('corSite') : "");
 
-                Session::flash('registrationData', $data);
+                        $data['corIsDel']       = Input::get('corIsDel');
 
-                if (!$data['corContactName'] || !$data['corName'] || !$data['corAddress'] || !$data['corPostcode'] || !$data['corCity'] || !$data['corPhone'] || !$data['corEmail'] || !$data['delAddress'] || !$data['delPostcode'] || !$data['delCity'] || !$data['delPhone'] || !$data['betIBAN'] /*|| !$data['betBIC']*/ || !$data['betKvK'] || !$data['betBTW']) {
-                        return Redirect::back()->with('error', 'Niet alle vereiste velden zijn ingevuld');
-                } else {
-                        \Mail::send('email.registration', $data, function($message)
-                                {
-                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+                        $data['delAddress']     = ($data['corIsDel'] ? $data['corAddress'] : Input::get('delAddress'));
+                        $data['delPostcode']    = ($data['corIsDel'] ? $data['corPostcode'] : Input::get('delPostcode'));
+                        $data['delCity']        = ($data['corIsDel'] ? $data['corCity'] : Input::get('delCity'));
+                        $data['delPhone']       = ($data['corIsDel'] ? $data['corPhone'] : Input::get('delPhone'));
+                        $data['delFax']         = ($data['corIsDel'] ? $data['corFax'] : (Input::get('delFax') !== false ? Input::get('delFax') : ""));
 
-                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+                        $data['betIBAN']        = Input::get('betIBAN');
+                        $data['betKvK']         = Input::get('betKvK');
+                        $data['betBTW']         = Input::get('betBTW');
 
-                                        $message->subject('Webshop registratie');
-                                });
+                        $data['digFactuur']     = Input::get('digFactuur');
+                        $data['digOrder']       = Input::get('digOrder');
+                        $data['digArtikel']     = Input::get('digArtikel');
 
-                        return Redirect::to('/registrationSent');
-                }
+                        Session::flash('registrationData', $data);
+
+                        if (!$data['corContactName'] || !$data['corName'] || !$data['corAddress'] || !$data['corPostcode'] || !$data['corCity'] || !$data['corPhone'] || !$data['corEmail'] || !$data['delAddress'] || !$data['delPostcode'] || !$data['delCity'] || !$data['delPhone'] || !$data['betIBAN'] /*|| !$data['betBIC']*/ || !$data['betKvK'] || !$data['betBTW']) {
+                                return Redirect::back()->withErrors( 'Niet alle vereiste velden zijn ingevuld');
+                        } else {
+                                \Mail::send('email.registration', $data, function($message)
+                                        {
+                                                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                                                $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+
+                                                $message->subject('Webshop registratie');
+                                        });
+
+                                return Redirect::to('/registrationSent');
+                        }
+                } else
+                        return Redirect::back()
+                                ->withErrors($validator->errors())
+                                ->withInput(Input::all());
         }
 
         public function registerSent()
@@ -192,10 +222,9 @@ class WebshopController extends Controller {
                 $prevPage               = Input::get('ref');
 
                 if ($product->related_products)
-                {
                         foreach(explode(',', $product->related_products) as $related_product)
                                 $related_products[] = Product::where('number', $related_product)->first();
-                } else
+                else
                         $related_products = NULL;
 
 
@@ -424,9 +453,12 @@ class WebshopController extends Controller {
                         $user->save();
 
                         if ($ref)
-                                return Redirect::to($ref)->with('success', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
+                                return Redirect::to($ref)->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
                         else
                                 return Redirect::to('cart');
+                } else {
+                        return Redirect::back()
+                                ->withErrors($validator->errors());
                 }
         }
 
