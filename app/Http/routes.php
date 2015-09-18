@@ -17,6 +17,8 @@ Route::get('/about', 'HomeController@about');                           	// Abou
 Route::get('/contact', 'HomeController@contact');                       	// Contact
 Route::get('/downloads', 'HomeController@downloads');                   	// Downloads
 Route::get('/licenses', 'HomeController@licenses');                     	// Licenses
+Route::get('/password/email', 'Auth\PasswordController@getEmail');		// Forgot password page
+Route::get('/password/reset/{token}', 'Auth\PasswordController@getReset');
 
 Route::get('/logout', 'WebshopController@logout');                      	// Logout the current user
 Route::get('/register', 'WebshopController@register');				// Show the register page
@@ -65,6 +67,9 @@ Route::post('/forgotpassword', 'WebshopController@resetPassword');          	// 
 Route::post('/cart/add', 'WebshopController@addToCart');                    	// Add product to cart
 Route::post('/cart/update', 'WebshopController@updateCart');                	// Update or remove product from cart
 Route::post('/cart/order', 'WebshopController@order');				// Send the order
+
+Route::post('password/email', 'Auth\PasswordController@postEmail');		// Reset password handler
+Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::post('/admin/productimport', 'AdminController@productImport');       	// Handle the product import
 Route::post('/admin/discountimport', 'AdminController@discountImport');     	// Handle the discount import
