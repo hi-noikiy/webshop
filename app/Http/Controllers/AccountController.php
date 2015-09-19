@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-
 use App\Address;
 use App\Order;
 use App\User;
