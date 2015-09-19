@@ -71,9 +71,6 @@ body {
 	font-weight: 300;
 	font-family: "Titillium Web",sans-serif;
 	overflow-x: hidden;
-	background: url("../img/site-bg.jpg");
-	background-size: cover;
-	background-repeat: no-repeat;
 
 	& > .container {
 		padding-bottom: 20px;
@@ -83,6 +80,18 @@ body {
 		border-radius: 0 0 10px 10px;
 		-moz-border-radius: 0 0 10px 10px;
 		-webkit-border-radius: 0 0 10px 10px;
+	}
+
+	& > .background {
+		background: url("../img/site-bg.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: -1;
 	}
 }
 
