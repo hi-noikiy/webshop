@@ -182,7 +182,7 @@
                                 </p>
                         </div>
 
-                        <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
+                        <script src="{{ URL::to('/') }}/js/jquery.min.js"></script>
                         <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
 
                         @yield('extraJS')

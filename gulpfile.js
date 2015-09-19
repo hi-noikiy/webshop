@@ -11,6 +11,11 @@ var elixir = require('laravel-elixir');
  |
  */
 
+var paths = {
+        'bower': './resources/assets/bower/',
+}
+
 elixir(function(mix) {
-    mix.less('app.less');
+        mix.copy(paths.bower + 'bootstrap/dist/js/bootstrap.min.js', 'public/js/bootstrap.min.js');
+        mix.copy(paths.bower + 'jquery/dist/jquery.min.js', 'public/js/jquery.min.js');
 });
