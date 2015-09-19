@@ -18,6 +18,8 @@
         <![endif]-->
 </head>
 <body>
+        <div class="background"></div>
+
         @if(!Auth::check())
                 <div class="modal fade" id="loginModal">
                         <div class="modal-dialog">
