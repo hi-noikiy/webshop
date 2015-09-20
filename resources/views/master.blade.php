@@ -163,7 +163,7 @@
                 @endif
 
                 @if (Session::has('status'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success" id="statusmessage">
                                 {{ Session::get('status') }}<br>
                         </div>
                 @endif
@@ -210,6 +210,10 @@
                                 $('#loginModal').on('shown.bs.modal', function () {
                                         $('input[name=username]').focus();
                                 });
+
+                                setTimeout(function() {
+                                        $('#statusmessage').slideUp();
+                                }, 5000);
                         </script>
                 </footer>
         </div>
