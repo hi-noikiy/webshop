@@ -227,7 +227,7 @@ class WebshopController extends Controller {
                         $related_products = NULL;
 
 
-                if (preg_match("/search/", Request::server('HTTP_REFERER')))
+                if (preg_match("/(search|clearance|specials)/", Request::server('HTTP_REFERER')))
                         Session::put('continueShopping', Request::server('HTTP_REFERER'));
 
                 return view('webshop.product', array(
@@ -456,10 +456,9 @@ class WebshopController extends Controller {
                                 return Redirect::to($ref)->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
                         else
                                 return Redirect::to('cart');
-                } else {
+                } else
                         return Redirect::back()
                                 ->withErrors($validator->errors());
-                }
         }
 
         /**
