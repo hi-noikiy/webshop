@@ -203,7 +203,7 @@
 
 @section('extraJS')
         <script type="text/javascript">
-                $('.changeFav').hover( // The button on the product page
+                $('#changeFav').hover( // The button on the product page
                         function() {   // Runs when the mouse enters the button
                                 var artNr = $('#changeFav').data("id");
 
@@ -211,7 +211,7 @@
                                         url: "/account/isFav",
                                         type: "POST",
                                         dataType: "text",
-                                        data: {product : artNr},
+                                        data: {product : artNr, _token : '{!! csrf_token() !!}' },
                                         success: function (data) {
                                                 if (data === 'IN_ARRAY') {
                                                         $("#defaultFav").hide();
@@ -226,6 +226,9 @@
                                                 } else if (data === 'ERROR') {
                                                         alert("Something went wrong");
                                                 }
+                                        },
+                                        done: function(data) {
+                                                console.log(data);
                                         }
                                 });
                         }, function() { // Runs when the mouse leaves the button
@@ -244,7 +247,7 @@
                                 url: "/account/modFav",
                                 type: "POST",
                                 dataType: "text",
-                                data: {product : artNr},
+                                data: {product : artNr, _token : '{!! csrf_token() !!}' },
                                 success: function (data) {
                                         if (data === 'SUCCESS') {
                                                 $("#removeFav").hide();

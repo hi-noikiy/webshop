@@ -85,9 +85,7 @@ class AccountController extends Controller {
                                 return Redirect::to('account/changepassword')->withErrors( 'Het oude wachtwoord is onjuist!');
                         }
                 } else
-                {
                         return Redirect::to('account/changepassword')->withErrors( 'Niet alle velden zijn ingevuld');
-                }
         }
 
         /**
@@ -179,14 +177,9 @@ class AccountController extends Controller {
                                         exit();
                                 }
                         } else
-                        {
-                                echo 'FAILED';
-                                exit();
-                        }
+                                return 'FAILED';
                 } else
-                {
                         return Redirect::back()->withErrors( 'Geen toegang!');
-                }
         }
 
         /**
@@ -210,19 +203,11 @@ class AccountController extends Controller {
                                 $currentFavorites = unserialize(Auth::user()->favorites);
 
                                 if (in_array($product, $currentFavorites))
-                                {
-                                        echo 'IN_ARRAY';
-                                        exit();
-                                } else
-                                {
-                                        echo 'NOT_IN_ARRAY';
-                                        exit();
-                                }
+                                        return 'IN_ARRAY';
+                                else
+                                        return 'NOT_IN_ARRAY';
                         } else
-                        {
-                                echo 'FAILED';
-                                exit();
-                        }
+                                return 'FAILED';
                 } else
                         return Redirect::back()->withErrors( 'Geen toegang!');
         }
