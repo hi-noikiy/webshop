@@ -548,9 +548,33 @@ class WebshopController extends Controller {
 
                         return Redirect::to('/')->with('status', 'Uw winkelwagen is geleegd');
                 } else
-                {
                         return Redirect::to('cart')->withErrors( 'Er is een fout opgetreden tijden het legen van de winkelwagen');
+        }
+
+        public function reorder($orderId)
+        {
+                $order = Order::where('User_id', Auth::user()->login)->where('id', $orderId)->firstOrFail();
+
+                $order = unserialize($order->products);
+
+                foreach ($order as $item)
+                {
+                        $product     = Product::where('number', $item['id'])->firstOrFail();
+                        $productData = array(
+                                        'id'      => $product->number,
+                                        'name'    => $product->name,
+                                        'qty'     => $item['qty'],
+                                        'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                                        'options' => array(
+                                                'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                        )
+                                );
+
+                        // Add the product to the cart
+                        Cart::add($productData);
                 }
+
+                return Redirect::to('cart')->with('status', 'De order producten zijn in uw winkelmandje geplaatst.');
         }
 
         /**
@@ -593,10 +617,21 @@ class WebshopController extends Controller {
                                         $message->subject('Webshop order');
                                 });
 
+                                $items = [];
+
+                                foreach (Cart::content() as $item)
+                                {
+                                        $items[] = [
+                                                        'id' => $item->id,
+                                                        'name' => $item->name,
+                                                        'qty' => $item->qty
+                                                ];
+                                }
+
                                 $order = new Order();
 
-                                $order->products = serialize(Cart::content());
-                                $order->User_id  = Auth::user()->id;
+                                $order->products = serialize($items);
+                                $order->User_id  = Auth::user()->login;
 
                                 $order->save();
 

@@ -224,9 +224,7 @@ class AccountController extends Controller {
                                 exit();
                         }
                 } else
-                {
                         return Redirect::back()->withErrors( 'Geen toegang!');
-                }
         }
 
         /**
@@ -236,7 +234,7 @@ class AccountController extends Controller {
          */
         public function orderhistory()
         {
-                $orderList = Order::where('User_id', Auth::user()->login)->get();
+                $orderList = Order::where('User_id', Auth::user()->login)->orderBy('created_at', 'desc')->get();
 
                 return view('account.orderhistory', array('orderlist' => $orderList));
         }

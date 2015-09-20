@@ -28,20 +28,23 @@
                                                                 <div class="panel-body">
                                                                         <table class="table table-striped">
                                                                                 <thead>
-                                                                                <th>Product nummer</th>
-                                                                                <th>Naam</th>
-                                                                                <th>Aantal</th>
+                                                                                        <tr>
+                                                                                                <th>Product nummer</th>
+                                                                                                <th>Naam</th>
+                                                                                                <th>Aantal</th>
+                                                                                        </tr>
                                                                                 </thead>
                                                                                 <tbody>
                                                                                         @foreach ($orderarray as $product)
                                                                                                 <tr>
-                                                                                                        <td>{{ $product->id }}</td>
-                                                                                                        <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
-                                                                                                        <td>{{ $product->qty }}</td>
+                                                                                                        <td>{{ $product['id'] }}</td>
+                                                                                                        <td><a href="/product/{{ $product['id'] }}">{{ $product['name'] }}</a></td>
+                                                                                                        <td>{{ $product['qty'] }}</td>
                                                                                                 </tr>
                                                                                         @endforeach
                                                                                 </tbody>
                                                                         </table>
+                                                                        <a href="/reorder/{{ $order->id }}" class="btn btn-primary">Opnieuw bestellen</a>
                                                                 </div>
                                                         </div>
                                                 </div>
