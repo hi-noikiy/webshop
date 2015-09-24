@@ -64,6 +64,9 @@
                                 <div class="col-sm-6">
                                         <button onclick="window.history.go(-1);" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar vorige pagina</button>
                                 </div>
+
+                                <br class="visible-xs" />
+
                                 <div class="col-sm-6">
                                         <button class="btn btn-primary pull-right btn-block" onclick="wtg.quickSearch();">Zoeken</button>
                                 </div>
