@@ -71,11 +71,6 @@
                                         <button class="btn btn-primary pull-right btn-block" onclick="wtg.quickSearch();">Zoeken</button>
                                 </div>
                         </div>
-
-                        <!-- Hidden on load, will show after a dropdown option has changed -->
-                        <div class="row text-center" id="searchLoading" style="display: none;">
-                                <img src="/img/loading.gif" width="70px">
-                        </div>
                 </div>
         </div>
 
