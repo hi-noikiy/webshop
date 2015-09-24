@@ -19,4 +19,5 @@ elixir(function(mix) {
         mix.copy(paths.bower + 'bootstrap/fonts', 'public/fonts');
         mix.copy(paths.bower + 'bootstrap/dist/js/bootstrap.min.js', 'public/js/bootstrap.min.js');
         mix.copy(paths.bower + 'jquery/dist/jquery.min.js', 'public/js/jquery.min.js');
+        mix.copy(paths.bower + 'jquery/dist/jquery.min.map', 'public/js/jquery.min.map');
 });

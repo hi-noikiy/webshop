@@ -14,7 +14,7 @@
                                 Wij hebben <b>geen</b> particuliere verkoop.
                         </p>
 
-                        <img src="/img/site-bg.jpg">
+                        <img src="/img/site-bg.jpg" class="col-xs-12" style="max-height: inherit;">
                 </div>
         </div>
 @stop
