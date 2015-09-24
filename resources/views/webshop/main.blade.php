@@ -61,9 +61,9 @@
                                         <div class="col-md-12">
                                                 <div class="input-group">
                                                         <input id="quickSearchInput" class="form-control" name="q" placeholder="Zoeken" type="text">
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-primary">Zoeken</button>
-						</span>
+        						<span class="input-group-btn">
+        							<button type="submit" class="btn btn-primary">Zoeken</button>
+        						</span>
                                                 </div>
                                         </div>
                                 </div>
