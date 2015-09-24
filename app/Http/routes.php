@@ -17,6 +17,7 @@ Route::get('/about', 'HomeController@about');                           	// Abou
 Route::get('/contact', 'HomeController@contact');                       	// Contact
 Route::get('/downloads', 'HomeController@downloads');                   	// Downloads
 Route::get('/licenses', 'HomeController@licenses');                     	// Licenses
+Route::get('/assortment', 'HomeController@assortment');                         // Assortment
 Route::get('/password/email', 'Auth\PasswordController@getEmail');		// Forgot password page
 Route::get('/password/reset/{token}', 'Auth\PasswordController@getReset');
 

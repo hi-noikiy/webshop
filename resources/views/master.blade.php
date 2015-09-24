@@ -78,11 +78,12 @@
                         <div class="collapse navbar-collapse" id="navbar">
                                 <ul class="nav navbar-nav" id="nav-buttons">
                                         <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="/">Home</a></li>
-                                        <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' ) active @endif">
+                                        <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' || Route::current()->getUri() === 'assortment' ) active @endif">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
                                                 <ul class="dropdown-menu" role="menu">
-                                                        <li><a href="/about">Over ons</a></li>
+                                                        <li><a href="/about">Het bedrijf</a></li>
                                                         <li><a href="/contact">Contact</a></li>
+                                                        <li><a href="/assortment">Assortiment</a></li>
                                                  </ul>
                                         </li>
                                         <li class="@if( Route::current()->getUri() === 'downloads' ) active @endif"><a href="/downloads">Downloads</a></li>

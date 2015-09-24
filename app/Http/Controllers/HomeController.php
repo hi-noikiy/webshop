@@ -39,9 +39,19 @@ class HomeController extends Controller {
          */
         public function about()
         {
+                return view('home.about');
+        }
+
+        /**
+         * About us
+         *
+         * @return mixed
+         */
+        public function assortment()
+        {
                 $manufacturers = json_decode(file_get_contents(public_path() . "/json/manufacturers.json"));
 
-                return view('home.about', array('manufacturers' => $manufacturers));
+                return view('home.assortment', array('manufacturers' => $manufacturers));
         }
 
         /**
