@@ -633,7 +633,7 @@ class AdminController extends Controller {
         public function updateUser()
         {
                 $validator = Validator::make(Input::all(), [
-                                'login'    => 'required|digits_between:10000,99999',
+                                'login'    => 'required|integer|between:10000,99999',
                                 'name'     => 'required|string',
                                 'email'    => 'required|email',
                                 'street'   => 'required',
@@ -692,7 +692,9 @@ class AdminController extends Controller {
                         } else
                                 return Redirect::back()->withErrors( 'Geen actie opgegeven (toevoegen of verwijderen)');
                 } else
-                        return Redirect::back()->withErrors($validator->errors());
+                        return Redirect::back()
+                                ->withErrors($validator->errors())
+                                ->withInput(Input::all());
         }
 
         /**
@@ -702,6 +704,9 @@ class AdminController extends Controller {
         */
         public function userAdded()
         {
-                return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::pull('input')]);
+                if (Session::has('password') && Session::has('input'))
+                        return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
+                else
+                        return Redirect::to('admin/usermanager');
         }
 }

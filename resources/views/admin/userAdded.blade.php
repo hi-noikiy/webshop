@@ -11,16 +11,16 @@
 
         <div class="row">
                 <div class="col-md-12">
-                        <a href="/admin/usermanager"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar de gebruikers beheer pagina</a>
+                        <div class="col-md-8 col-md-offset-2">
+                                <h4>De gebruiker is aangemaakt met de volgende gegevens:</h4>
 
-                        <div class="text-center">
-                                De gebruiker is aangemaakt met de volgende gegevens: <br />
-
-                                <ul>
-                                        @foreach($input as $field)
-                                                <li>{{ $field }}</li>
-                                        @endforeach
-                                        <li>Wachtwoord: {{ $password }}</li>
+                                <ul class="list-group">
+                                        <li class="list-group-item">Login: {{ $input['login'] }}</li>
+                                        <li class="list-group-item">Naam: {{ $input['name'] }}</li>
+                                        <li class="list-group-item">Straat: {{ $input['street'] }}</li>
+                                        <li class="list-group-item">Postcode: {{ $input['postcode'] }}</li>
+                                        <li class="list-group-item">Plaats: {{ $input['city'] }}</li>
+                                        <li class="list-group-item"><b>Wachtwoord: {{ $password }}</b></li>
                                 </ul>
                         </div>
                 </div>

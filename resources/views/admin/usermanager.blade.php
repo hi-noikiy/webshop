@@ -36,37 +36,37 @@
                 <div class="form-group">
                         <label for="login" class="col-sm-2 control-label">Debiteurnummer</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="Inlognaam" type="text" name="login" id="inputUserId" required="" autocomplete="off">
+                                <input class="form-control" placeholder="Inlognaam" type="number" name="login" id="inputUserId" value="{{ old('login') }}" required="" autocomplete="off">
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">Naam bedrijf</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="Naam bedrijf" type="text" name="name" id="inputUserName" required="">
+                                <input class="form-control" placeholder="Naam bedrijf" type="text" name="name" id="inputUserName" value="{{ old('name') }}" required="">
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">E-Mail</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="E-Mail" type="text" name="email" id="inputUserEmail" required="">
+                                <input class="form-control" placeholder="E-Mail" type="text" name="email" id="inputUserEmail" value="{{ old('email') }}" required="">
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">Straat</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="Straat" type="text" name="street" id="inputUserStreet" required="">
+                                <input class="form-control" placeholder="Straat" type="text" name="street" id="inputUserStreet" value="{{ old('street') }}" required="">
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">Postcode</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="Postcode" type="text" name="postcode" id="inputUserPostcode" required="">
+                                <input class="form-control" placeholder="Postcode" type="text" name="postcode" id="inputUserPostcode" value="{{ old('postcode') }}" required="">
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">Plaats</label>
                         <div class="col-sm-10">
-                                <input class="form-control" placeholder="Plaats" type="text" name="city" id="inputUserCity" required="">
+                                <input class="form-control" placeholder="Plaats" type="text" name="city" id="inputUserCity" value="{{ old('city') }}" required="">
                         </div>
                 </div>
                 <div class="form-group">
