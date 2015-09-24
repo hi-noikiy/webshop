@@ -102,6 +102,33 @@ return [
 	|
 	*/
 
-	'attributes' => []
+	'attributes' => [
+                        'login'          => 'Login naam',
+                        'street'         => 'Straat',
+                        'city'           => 'Plaats',
+                        'corContactName' => 'Naam contactpersoon',
+                        'corName'        => 'Naam bedrijf',
+                        'corAddress'     => 'Adres & huisnr',
+                        'corPostcode'    => 'Postcode',
+                        'corCity'        => 'Plaats',
+                        'corContactPhone'=> 'Telefoon contactpersoon',
+                        'corPhone'       => 'Telefoon bedrijf',
+                        'corFax'         => 'Fax',
+                        'corEmail'       => 'E-mail adres',
+                        'corSite'        => 'Website',
+
+                        'delAddress'     => 'Adres & huisnr',
+                        'delPostcode'    => 'Postcode',
+                        'delCity'        => 'Plaats',
+                        'delPhone'       => 'Telefoon bedrijf',
+                        'delFax'         => 'Fax',
+
+                        'betIBAN'        => 'IBAN',
+                        'betKvK'         => 'KvK',
+                        'betBTW'         => 'BTW',
+
+                        'digFactuur'     => 'Digitale factuur e-mail adres',
+                        'digOrder'       => 'Digitale order',
+                ]
 
 ];
