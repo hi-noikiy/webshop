@@ -68,11 +68,6 @@
                                         </div>
                                 </div>
                         </form>
-
-                        <!-- Hidden on load, will show after a dropdown option has changed -->
-                        <div class="row text-center" id="searchLoading" style="display: none;">
-                                <img src="/img/loading.gif" width="70px">
-                        </div>
                 </div>
         </div>
 @stop
