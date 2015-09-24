@@ -34,7 +34,7 @@
                                                         <div class="form-group">
                                                                 <label for="username" class="col-sm-4 control-label">Login</label>
                                                                 <div class="col-sm-8">
-                                                                        <input type="text" name="username" class="form-control" placeholder="Login" required value="{{ old('username') }}">
+                                                                        <input type="text" name="username" class="form-control" placeholder="Login" autocomplete="off" required value="{{ old('username') }}">
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
