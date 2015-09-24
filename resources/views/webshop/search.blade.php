@@ -67,7 +67,7 @@
                                 <div class="col-xs-6">
                                         <button class="btn btn-primary pull-right btn-block" onclick="wtg.quickSearch();">Zoeken</button>
                                 </div>
-                        </div>                        
+                        </div>
 
                         <!-- Hidden on load, will show after a dropdown option has changed -->
                         <div class="row text-center" id="searchLoading" style="display: none;">
@@ -80,11 +80,11 @@
         <table class="table table-striped">
                 <thead>
                         <tr>
-                                <th class="hidden-xs"></th>
+                                <th></th>
                                 <th class="hidden-xs">Artikelnummer</th>
                                 <th>Omschrijving</th>
                                 @if(Auth::check())
-                                        <th>Bruto prijs</th>
+                                        <th class="hidden-xs">Bruto prijs</th>
                                         <th class="hidden-xs">Korting</th>
                                         <th>Netto prijs</th>
                                 @endif
@@ -104,11 +104,11 @@
                                 @endif
 
                                 <tr>
-                                        <td class="product-thumbnail hidden-xs"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                                        <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td class="hidden-xs">{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
-                                                <td>&euro;{{ $price }}</td>
+                                                <td class="hidden-xs">&euro;{{ $price }}</td>
                                                 <td class="hidden-xs">{{ $discount }}%</td>
                                                 <td>&euro;{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</td>
                                         @endif

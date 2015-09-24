@@ -12,7 +12,7 @@
         <table class="table table-striped">
                 <thead>
                         <tr>
-                                <th class="hidden-xs"></th>
+                                <th></th>
                                 <th class="hidden-xs">Artikelnummer</th>
                                 <th>Omschrijving</th>
                                 @if(Auth::check())
@@ -25,7 +25,7 @@
                                 <?php $price = number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
 
                                 <tr>
-                                        <td class="hidden-xs product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                                        <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td class="hidden-xs">{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
