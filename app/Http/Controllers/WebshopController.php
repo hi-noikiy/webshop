@@ -78,13 +78,11 @@ class WebshopController extends Controller {
                                 'betKvK'                => 'required',
                                 'betBTW'                => 'required',
 
-                                'digFactuur'            => 'required|email',
-                                'digOrder'              => 'required',
-                                'digArtikel'            => 'required',
+                                'digFactuur'            => 'email',
                         ]);
 
                 if (!$validator->fails())
-                        {
+                {
                         $data['corContactName'] = Input::get('corContactName');
                         $data['corName']        = Input::get('corName');
                         $data['corAddress']     = Input::get('corAddress');
