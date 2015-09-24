@@ -19,7 +19,7 @@ Route::get('/downloads', 'HomeController@downloads');                   	// Down
 Route::get('/licenses', 'HomeController@licenses');                     	// Licenses
 Route::get('/assortment', 'HomeController@assortment');                         // Assortment
 Route::get('/password/email', 'Auth\PasswordController@getEmail');		// Forgot password page
-Route::get('/password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::get('/password/reset/{token}', 'Auth\PasswordController@getReset');	// Password reset page
 
 Route::get('/logout', 'WebshopController@logout');                      	// Logout the current user
 Route::get('/register', 'WebshopController@register');				// Show the register page
@@ -33,6 +33,7 @@ Route::get('/clearance', 'WebshopController@clearance');                	// Show
 Route::get('/cart', 'WebshopController@viewCart');               		// Show the cart
 Route::get('/cart/destroy', 'WebshopController@cartDestroy');           	// Remove all items from the cart
 Route::get('/cart/order/finished', 'WebshopController@orderFinished');		// Show the order finished page
+Route::get('/reorder/{order_id}', 'WebshopController@reorder');			// Add the items from a previous order to the cart again
 
 Route::get('/admin', 'AdminController@overview');                       	// Admin overview
 Route::get('/admin/RAMLoad', 'AdminController@RAMLoad');                	// Get the server ram load

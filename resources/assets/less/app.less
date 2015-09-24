@@ -1,6 +1,6 @@
 // out: ../../../public/css/app.min.css, sourcemap: true, compress: true
 
-@import "bootstrap/bootstrap";
+@import "../bower/bootstrap/less/bootstrap";
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,300,200,600,700);
 
 @btn-font-weight: 300;
@@ -65,15 +65,12 @@
 
 html ,
 body {
-	height: 100%;
+	min-height: 100%;
 	font-size: 16px;
 	letter-spacing: 1px;
 	font-weight: 300;
 	font-family: "Titillium Web",sans-serif;
 	overflow-x: hidden;
-	background: url("../img/site-bg.jpg");
-	background-size: cover;
-	background-repeat: no-repeat;
 
 	& > .container {
 		padding-bottom: 20px;
@@ -84,6 +81,18 @@ body {
 		-moz-border-radius: 0 0 10px 10px;
 		-webkit-border-radius: 0 0 10px 10px;
 	}
+
+	& > .background {
+		background: url("../img/site-bg.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: -1;
+	}
 }
 
 html:not([data-useragent*="MSIE"]) .ie-only {
@@ -92,6 +101,15 @@ html:not([data-useragent*="MSIE"]) .ie-only {
 
 html[data-useragent~="MSIE"] .ie-only {
 	display: block !important;
+}
+
+.help-block a {
+	color: gray;
+	font-size: 14px;
+
+	&:hover {
+		color: gray;
+	}
 }
 
 .panel {

@@ -18,6 +18,8 @@
         <![endif]-->
 </head>
 <body>
+        <div class="background"></div>
+
         @if(!Auth::check())
                 <div class="modal fade" id="loginModal">
                         <div class="modal-dialog">
@@ -162,7 +164,7 @@
                 @endif
 
                 @if (Session::has('status'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success" id="statusmessage">
                                 {{ Session::get('status') }}<br>
                         </div>
                 @endif
@@ -183,7 +185,7 @@
                                 </p>
                         </div>
 
-                        <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
+                        <script src="{{ URL::to('/') }}/js/jquery.min.js"></script>
                         <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
 
                         @yield('extraJS')
@@ -209,6 +211,10 @@
                                 $('#loginModal').on('shown.bs.modal', function () {
                                         $('input[name=username]').focus();
                                 });
+
+                                setTimeout(function() {
+                                        $('#statusmessage').slideUp();
+                                }, 5000);
                         </script>
                 </footer>
         </div>

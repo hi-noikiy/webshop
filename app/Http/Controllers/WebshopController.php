@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Product;
@@ -228,7 +227,7 @@ class WebshopController extends Controller {
                         $related_products = NULL;
 
 
-                if (preg_match("/search/", Request::server('HTTP_REFERER')))
+                if (preg_match("/(search|clearance|specials)/", Request::server('HTTP_REFERER')))
                         Session::put('continueShopping', Request::server('HTTP_REFERER'));
 
                 return view('webshop.product', array(
@@ -457,10 +456,9 @@ class WebshopController extends Controller {
                                 return Redirect::to($ref)->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
                         else
                                 return Redirect::to('cart');
-                } else {
+                } else
                         return Redirect::back()
                                 ->withErrors($validator->errors());
-                }
         }
 
         /**
@@ -549,9 +547,33 @@ class WebshopController extends Controller {
 
                         return Redirect::to('/')->with('status', 'Uw winkelwagen is geleegd');
                 } else
-                {
                         return Redirect::to('cart')->withErrors( 'Er is een fout opgetreden tijden het legen van de winkelwagen');
+        }
+
+        public function reorder($orderId)
+        {
+                $order = Order::where('User_id', Auth::user()->login)->where('id', $orderId)->firstOrFail();
+
+                $order = unserialize($order->products);
+
+                foreach ($order as $item)
+                {
+                        $product     = Product::where('number', $item['id'])->firstOrFail();
+                        $productData = array(
+                                        'id'      => $product->number,
+                                        'name'    => $product->name,
+                                        'qty'     => $item['qty'],
+                                        'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                                        'options' => array(
+                                                'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                        )
+                                );
+
+                        // Add the product to the cart
+                        Cart::add($productData);
                 }
+
+                return Redirect::to('cart')->with('status', 'De order producten zijn in uw winkelmandje geplaatst.');
         }
 
         /**
@@ -594,10 +616,21 @@ class WebshopController extends Controller {
                                         $message->subject('Webshop order');
                                 });
 
+                                $items = [];
+
+                                foreach (Cart::content() as $item)
+                                {
+                                        $items[] = [
+                                                        'id' => $item->id,
+                                                        'name' => $item->name,
+                                                        'qty' => $item->qty
+                                                ];
+                                }
+
                                 $order = new Order();
 
-                                $order->products = serialize(Cart::content());
-                                $order->User_id  = Auth::user()->id;
+                                $order->products = serialize($items);
+                                $order->User_id  = Auth::user()->login;
 
                                 $order->save();
 
