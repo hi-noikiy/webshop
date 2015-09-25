@@ -127,8 +127,8 @@
                                     <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
                                             {!! csrf_field() !!}
                                             <div class="form-group search-field has-feedback">
-                                                    <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" class="form-control" placeholder="Zoeken">
-                                                    <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                                    <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" required="" class="form-control" placeholder="Zoeken">
+                                                    <button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-search form-control-feedback"></i></button>
                                             </div>
                                     </form>
                                 </div>
