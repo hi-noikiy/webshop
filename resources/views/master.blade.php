@@ -200,8 +200,6 @@
 
                                         $('.search-field').hover(function() {
                                                 $('#searchInput').focus();
-                                        }, function() {
-                                                $('#searchInput').blur();
                                         });
 
                                         if (location.hash == '#loginModal')
