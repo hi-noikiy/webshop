@@ -21,7 +21,7 @@
                                                 <div class="form-group">
                                                         <label class="col-sm-2 control-label">Merk</label>
                                                         <div class="col-sm-10">
-                                                                <select onchange="window.history.go(-1);" name="brand" class="form-control">
+                                                                <select onchange="wtg.quickSearch();" name="brand" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($brands as $brand)
                                                                                 <option @if(Input::get('brand') === $brand) selected @endif value="{{ $brand }}">{{ $brand }}</option>
@@ -34,7 +34,7 @@
                                                 <div class="form-group">
                                                         <label class="col-sm-2 control-label">Serie</label>
                                                         <div class="col-sm-10">
-                                                                <select onchange="window.history.go(-1);" name="serie" class="form-control">
+                                                                <select onchange="wtg.quickSearch();" name="serie" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($series as $serie)
                                                                                 <option @if(Input::get('serie') === $serie) selected @endif value="{{ $serie }}">{{ $serie }}</option>
@@ -47,7 +47,7 @@
                                                 <div class="form-group">
                                                         <label class="col-sm-2 control-label">Type</label>
                                                         <div class="col-sm-10">
-                                                                <select onchange="window.history.go(-1);" name="type" class="form-control">
+                                                                <select onchange="wtg.quickSearch();" name="type" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($types as $type)
                                                                                 <option @if(Input::get('type') === $type) selected @endif value="{{ $type }}">{{ $type }}</option>
