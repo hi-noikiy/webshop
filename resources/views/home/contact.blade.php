@@ -30,7 +30,7 @@
                         <tr>
                                 <td><b>Adres:</b></td>
                                 <td>Bovenstreek 1</td>
-                                <td>Groningen</td>
+                                <td>9731 DH Groningen</td>
                         </tr>
                 </tbody>
         </table>
