@@ -24,7 +24,7 @@
                         @foreach($results as $product)
                                 <?php $price = number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
 
-                                <tr>
+                                <tr class="success">
                                         <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td class="hidden-xs">{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>

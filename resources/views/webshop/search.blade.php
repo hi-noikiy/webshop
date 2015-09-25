@@ -101,13 +101,13 @@
                                         <?php $discount = 0; ?>
                                 @endif
 
-                                <tr>
+                                <tr {{ ($discount === '0' ? 'class=success' : '') }}>
                                         <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                         <td class="hidden-xs">{{ $product->number }}</td>
                                         <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                         @if(Auth::check())
                                                 <td class="hidden-xs">&euro;{{ $price }}</td>
-                                                <td class="hidden-xs">{{ $discount }}%</td>
+                                                <td class="hidden-xs">{{ ($discount === '0' ? 'Actie' : $discount . '%') }}</td>
                                                 <td>&euro;{{ number_format($price * ((100-$discount) / 100), 2, ".", "") }}</td>
                                         @endif
                                 </tr>
