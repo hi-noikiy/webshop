@@ -64,12 +64,12 @@
                                 type: "GET",
                                 dataType: "json",
                                 success: function(data) {
-                                        var free    = data.free;
-                                        var total   = data.total;
-                                        var used    = total - free;
-                                        var width   = (used / total) * 100;
+                                        var freePercentage      = data.freePercentage;
+                                        var free                = data.free;
+                                        var total               = data.total;
+                                        var used                = total - free;
 
-                                        $("#progress-bar-ram").width(width + '%');
+                                        $("#progress-bar-ram").width(freePercentage + '%');
                                         $("#progress-bar-ram").prop('aria-valuenow', used);
                                         $("#progress-bar-ram").prop('aria-valuemax', total);
 

@@ -77,12 +77,15 @@ class AdminController extends Controller {
                 {
                         $total 	= preg_replace("/\D/", "", exec("grep 'MemTotal' /proc/meminfo"));
                         $free	= preg_replace("/\D/", "", exec("grep 'MemFree' /proc/meminfo"));
-                        $buffer	= preg_replace("/\D/", "", exec("grep 'Buffers' /proc/meminfo"));
-                        $cached	= preg_replace("/\D/", "", exec("grep 'Cached' /proc/meminfo"));
+                        //$buffer	= preg_replace("/\D/", "", exec("grep 'Buffers' /proc/meminfo"));
+                        //$cached	= preg_replace("/\D/", "", exec("grep 'Cached' /proc/meminfo"));
+
+                        $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'")
 
                         $data 	= array(
-                                'total' => $total,
-                                'free' 	=> $free - $buffer + $cached
+                                'total'          => $total,
+                                'freePercentage' => $freePercentage,
+                                'free' 	         => $free
                         );
 
                         return Response::json($data);
