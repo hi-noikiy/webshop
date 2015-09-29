@@ -63,7 +63,7 @@ class AdminController extends Controller {
 
                         return Response::json($data);
                 } else
-                return Redirect::back();
+                        return Redirect::back();
         }
 
         /**
@@ -90,7 +90,7 @@ class AdminController extends Controller {
 
                         return Response::json($data);
                 } else
-                return Redirect::back();
+                        return Redirect::back();
         }
 
         /**
@@ -126,7 +126,7 @@ class AdminController extends Controller {
                 );
 
                 if ($validator->fails())
-                return Redirect::back()->withErrors( $validator->errors());
+                        return Redirect::back()->withErrors( $validator->errors());
                 else
                 {
                         \Debugbar::disable();
@@ -375,8 +375,8 @@ class AdminController extends Controller {
 
                                 return Redirect::to('/admin/importsuccess')->with(array('count' => $count, 'time' => $endTime, 'type' => 'afbeelding'));
                         }
-
-                }
+                } else
+                        return Redirect::back()->withErrors('Geen bestand geselecteerd of de afbeelding is ongeldig');
         }
 
         /**
