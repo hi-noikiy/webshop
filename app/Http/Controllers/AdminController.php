@@ -80,7 +80,7 @@ class AdminController extends Controller {
                         //$buffer	= preg_replace("/\D/", "", exec("grep 'Buffers' /proc/meminfo"));
                         //$cached	= preg_replace("/\D/", "", exec("grep 'Cached' /proc/meminfo"));
 
-                        $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'")
+                        $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
 
                         $data 	= array(
                                 'total'          => $total,
