@@ -231,7 +231,7 @@ class AccountController extends Controller {
          */
         public function addresslist()
         {
-                $addressList = Address::where('User_id', Auth::user()->id)->get();
+                $addressList = Address::where('User_id', Auth::user()->login)->get();
 
                 return view('account.addresslist', array('addresslist' => $addressList));
         }
@@ -281,7 +281,7 @@ class AccountController extends Controller {
                                 $address->city          = $city;
                                 $address->telephone     = $telephone;
                                 $address->mobile        = $mobile;
-                                $address->User_id       = Auth::user()->id;
+                                $address->User_id       = Auth::user()->login;
 
                                 $address->save();
 
