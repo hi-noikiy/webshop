@@ -53,8 +53,8 @@
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                                                         <button type="submit" class="btn btn-primary">Login</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                                                 </div>
                                         </form>
                                 </div><!-- /.modal-content -->
