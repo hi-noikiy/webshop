@@ -10,7 +10,7 @@
                         @include('account.sidebar')
                 </div>
                 <div class="col-md-9">
-                        @if(!$orderlist)
+                        @if(count($orderlist) === 0)
                                 <div class="alert alert-warning text-center">U hebt nog geen orders geplaatst.</div>
                         @else
                                 <div class="panel-group" id="accordion">
