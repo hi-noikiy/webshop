@@ -30,8 +30,8 @@
                                                                         <tr>
                                                                                 <th>Product nummer</th>
                                                                                 <th>Naam</th>
-                                                                                <th>Bruto prijs</th>
-                                                                                <th>Korting</th>
+                                                                                <th class="hidden-xs">Bruto prijs</th>
+                                                                                <th class="hidden-xs">Korting</th>
                                                                                 <th>Netto prijs</th>
                                                                                 <th>Verwijderen</th>
                                                                         </tr>
@@ -61,8 +61,8 @@
                                                                                         <tr>
                                                                                                 <td>{{ $product->number }}</td>
                                                                                                 <td><a href="{{ "/product/" . $product->number }}">{{ $product->name }}</a></td>
-                                                                                                <td style="white-space: nowrap;"><span class="glyphicon glyphicon-euro"></span> {{ number_format($brutoprice, 2, ".", "") }}</td>
-                                                                                                <td>{{ ($product->special_price !== '0.00' ? 'Actie' : $discount . '%') }}</td>
+                                                                                                <td class="hidden-xs" style="white-space: nowrap;"><span class="glyphicon glyphicon-euro"></span> {{ number_format($brutoprice, 2, ".", "") }}</td>
+                                                                                                <td class="hidden-xs">{{ ($product->special_price !== '0.00' ? 'Actie' : $discount . '%') }}</td>
                                                                                                 <td style="white-space: nowrap;"><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoprice, 2, ".", "") }}</td>
                                                                                                 <td><button id="changeFav" class="btn btn-danger" title="Verwijder dit product van uw favorieten" data-id="{{ $product->number }}" data-refresh="true"><span class="glyphicon glyphicon-remove"></span></button></td>
                                                                                         </tr>
