@@ -445,7 +445,7 @@ class AccountController extends Controller {
                 $empty2 = '               ';
                 $date = date('Ymd');
                 $version = '1.1  ';
-                $name = Auth::user()->name;
+                $name = Auth::user()->company;
 
                 /*
                  * Used in the rows containing the discounts
