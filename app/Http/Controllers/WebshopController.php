@@ -629,7 +629,7 @@ class WebshopController extends Controller {
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                        if (Auth::user()->login === 99999)
+                                        if (Auth::user()->login === "99999")
                                                 $message->to('gfw@wiringa.nl');
                                         else
                                                 $message->to('verkoop@wiringa.nl');
