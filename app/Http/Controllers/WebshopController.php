@@ -35,13 +35,27 @@ class WebshopController extends Controller {
                 $series         = DB::table('products')->select('series')->distinct()->get();
                 $types          = DB::table('products')->select('type')->distinct()->get();
 
-                $data           = array(
-                        'brands'        => $brands,
-                        'series'        => $series,
-                        'types'         => $types
-                );
+                // Sort the object arrays
+                usort($brands, function($a, $b)
+                {
+                        return strcmp(strtolower($a->brand), strtolower($b->brand));
+                });
 
-                return view('webshop.main', $data);
+                usort($series, function($a, $b)
+                {
+                        return strcmp(strtolower($a->series), strtolower($b->series));
+                });
+
+                usort($types, function($a, $b)
+                {
+                        return strcmp(strtolower($a->type), strtolower($b->type));
+                });
+
+                return view('webshop.main', [
+                                'brands'        => $brands,
+                                'series'        => $series,
+                                'types'         => $types,
+                        ]);
         }
 
         public function register()
@@ -189,6 +203,11 @@ class WebshopController extends Controller {
                         $types[] = $product->type;
                 }
 
+                // Sort the arrays (Case Insensitive)
+                sort($brands);
+                sort($series);
+                sort($types);
+
                 // Return the search view with the fetched data
                 return view('webshop.search', array(
                                 'results'       => $results,
@@ -204,6 +223,7 @@ class WebshopController extends Controller {
          * The product page
          * Will throw 404 error when no product matches the product id
          *
+         * @throws HTTP 404 Not Found
          * @param $product_Id
          * @return mixed
          */
