@@ -198,9 +198,9 @@
                                 $(function () {
                                         $('[data-toggle="tooltip"]').tooltip();
 
-                                        $('.search-field').hover(function() {
-                                                $('#searchInput').focus();
-                                        });
+                                        //$('.search-field').hover(function() {
+                                        //        $('#searchInput').focus();
+                                        //});
 
                                         if (location.hash == '#loginModal')
                                                 $('#loginModal').modal('show');
