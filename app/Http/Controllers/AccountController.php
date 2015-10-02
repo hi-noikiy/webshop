@@ -377,7 +377,7 @@ class AccountController extends Controller {
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+                                        $message->to(Auth::user()->email);
 
                                         $message->subject('WTG Webshop ICC kortingen');
 
@@ -392,7 +392,7 @@ class AccountController extends Controller {
                         if ($method === 'download')
                         {
                                 // Create a filesystem link to the temp file
-                                $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
+                                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
 
                                 // Store the path in flash data so the middleware can delete the file afterwards
                                 Session::flash('file.download', $filename);
@@ -414,7 +414,7 @@ class AccountController extends Controller {
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                        $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+                                        $message->to(Auth::user()->email);
 
                                         $message->subject('WTG Webshop CSV kortingen');
 

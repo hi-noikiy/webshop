@@ -119,7 +119,7 @@ class WebshopController extends Controller {
                                         {
                                                 $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                                $message->to('thomas.wiringa@gmail.com'/*Auth::user()->email*/);
+                                                $message->to('verkoop@wiringa.nl');
 
                                                 $message->subject('Webshop registratie');
                                         });
@@ -609,7 +609,7 @@ class WebshopController extends Controller {
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                        $message->to('thomas.wiringa@gmail.com'/*verkoop@wiringa.nl*/);
+                                        $message->to('verkoop@wiringa.nl');
 
                                         $message->subject('Webshop order');
                                 });
