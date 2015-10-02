@@ -659,6 +659,10 @@ class WebshopController extends Controller {
 
                                 Cart::destroy();
 
+                                $user = User::find(Auth::user()->id);
+                                $user->cart = "a:0:{}";
+                                $user->save();
+
                                 return Redirect::to('/cart/order/finished');
                         } else
                                 return Redirect::to('/cart')->withErrors( 'Geen adres opgegeven');
