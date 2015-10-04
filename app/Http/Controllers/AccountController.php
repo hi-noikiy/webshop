@@ -361,8 +361,8 @@ class AccountController extends Controller {
                                 // File the file with discount data
                                 File::put($filename, AccountController::discountICC());
 
-                                // Return the data as a downloadable file: 'WTG-Kortingen-99999-01.01.2015.txt'
-                                return Response::download($filename, 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt');
+                                // Return the data as a downloadable file: 'icc_data.txt'
+                                return Response::download($filename, 'icc_data' . Auth::user()->login . '.txt');
 
                         } elseif ($method === 'mail')
                         {
@@ -381,7 +381,7 @@ class AccountController extends Controller {
 
                                         $message->subject('WTG Webshop ICC kortingen');
 
-                                        $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-ICC.txt']);
+                                        $message->attach($filename, ['as' => 'icc_data' . Auth::user()->login . '.txt']);
                                 });
 
                                 return Redirect::to('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
@@ -399,7 +399,7 @@ class AccountController extends Controller {
 
                                 File::put($filename, AccountController::discountCSV());
 
-                                return Response::download($filename, 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv');
+                                return Response::download($filename, 'icc_data' . Auth::user()->login . '.csv');
 
                         } elseif ($method === 'mail')
                         {
@@ -418,12 +418,12 @@ class AccountController extends Controller {
 
                                         $message->subject('WTG Webshop CSV kortingen');
 
-                                        $message->attach($filename, ['as' => 'WTG-Kortingen-' . Auth::user()->login . '-CSV.csv']);
+                                        $message->attach($filename, ['as' => 'icc_data' . Auth::user()->login . '.csv']);
                                 });
 
                                 return Redirect::to('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
                         } else
-                                return Redirect::to('account/discountfile')->withErrors( 'Geen verzendmethode opgegeven');
+                                return Redirect::to('account/discountfile')->withErrors('Geen verzendmethode opgegeven');
                 } else
                         return Redirect::to('account/discountfile')->withErrors( 'Ongeldig bestands type');
         }
