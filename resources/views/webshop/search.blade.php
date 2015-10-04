@@ -96,18 +96,19 @@
                         <tbody>
                                 <?php $discounts = (Auth::check() ? getProductDiscount(Auth::user()->login) : ''); ?>
                                 @foreach($results as $product)
-                                        @if(isset($discounts[$product->number]))
-                                                <?php $discount = $discounts[$product->number]; ?>
-                                        @elseif(isset($discounts[$product->group]))
-                                                <?php $discount = $discounts[$product->group]; ?>
-                                        @else
-                                                <?php $discount = 0; ?>
-                                        @endif
-
                                         @if($product->special_price === '0.00')
+                                                @if(isset($discounts[$product->number]))
+                                                        <?php $discount = $discounts[$product->number]; ?>
+                                                @elseif(isset($discounts[$product->group]))
+                                                        <?php $discount = $discounts[$product->group]; ?>
+                                                @else
+                                                        <?php $discount = 0; ?>
+                                                @endif
+
                                                 <?php $brutoprice 	= (double) number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
                                                 <?php $nettoprice 	= (double) number_format($brutoprice * ((100-$discount) / 100), 2, ".", ""); ?>
                                         @else
+                                                <?php $discount         = 0; ?>
                                                 <?php $brutoprice 	= (double) number_format($product->special_price, 2, ".", ""); ?>
                                                 <?php $nettoprice 	= (double) $brutoprice; ?>
                                         @endif
@@ -118,7 +119,7 @@
                                                 <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
                                                 @if(Auth::check())
                                                         <td class="hidden-xs">&euro;{{ number_format($brutoprice, 2, ".", "") }}</td>
-                                                        <td class="hidden-xs">{{ ($discount === '0' ? 'Actie' : $discount . '%') }}</td>
+                                                        <td class="hidden-xs">{{ ($discount === 0 ? 'Actie' : $discount . '%') }}</td>
                                                         <td>&euro;{{ number_format($nettoprice, 2, ".", "") }}</td>
                                                 @endif
                                         </tr>
