@@ -312,21 +312,17 @@ class AccountController extends Controller {
         {
                 if (Input::has('id'))
                 {
-                        $address = Address::find(Input::get('id'));
+                        $address = Address::where(['id' => Input::get('id'), 'User_id' => Auth::user()->login])->first();
 
-                        if (!empty($address) && $address->User_id === Auth::user()->login)
+                        if (!empty($address))
                         {
                                 $address->delete();
 
                                 return Redirect::to('account/addresslist')->with('status', 'Het adres is verwijderd');
                         } else
-                        {
-                                return Redirect::to('account/addresslist')->withErrors( 'Het adres bestaat niet of behoort niet bij uw account');
-                        }
+                                return Redirect::to('account/addresslist')->withErrors('Het adres bestaat niet of behoort niet bij uw account');
                 } else
-                {
-                        return Redirect::to('account/addresslist')->withErrors( 'Geen adres id aangegeven');
-                }
+                        return Redirect::to('account/addresslist')->withErrors('Geen adres id aangegeven');
         }
 
         /**

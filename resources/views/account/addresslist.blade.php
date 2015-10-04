@@ -97,6 +97,7 @@
                                                         <td>{{{ $address->mobile }}}</td>
                                                         <td>
                                                                 <form action="/account/removeAddress" method="POST">
+                                                                        {!! csrf_field() !!}
                                                                         <input class="hidden" value="{{{ $address->id }}}" name="id">
                                                                         <button type="submit" class="btn btn-danger">
                                                                                 <span class="glyphicon glyphicon-remove"></span>
