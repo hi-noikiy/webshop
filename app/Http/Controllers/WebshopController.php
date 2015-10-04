@@ -168,10 +168,10 @@ class WebshopController extends Controller {
                 $inputType      = Input::get('type');
 
                 $query = DB::table('products')
-                        ->orWhere('name', 'LIKE', $str)
-                        ->orWhere('number', 'LIKE', $str)
-                        ->orWhere('group', 'LIKE', $str)
-                        ->orWhere('altNumber', 'LIKE', $str);
+                        ->orWhere('name', 'LIKE', '%' . $str . '%')
+                        ->orWhere('number', 'LIKE', '%' . $str . '%')
+                        ->orWhere('group', 'LIKE', '%' . $str . '%')
+                        ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
 
                 $query->orWhere(function($subQuery)
                 {
