@@ -312,7 +312,7 @@ class AccountController extends Controller {
         {
                 if (Input::has('id'))
                 {
-                        $address = Address::where(['id' => Input::get('id'), 'User_id' => Auth::user()->login])->first();
+                        $address = Address::where('id', Input::get('id'))->where('User_id', Auth::user()->login)->firstOrFail();
 
                         if (!empty($address))
                         {
