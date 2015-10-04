@@ -175,7 +175,7 @@
 
                 <footer>
                         <div class="text-center">
-                                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                                 <p>
                                     <small>
                                         Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
