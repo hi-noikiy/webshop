@@ -96,15 +96,15 @@
                         <tbody>
                                 <?php $discounts = (Auth::check() ? getProductDiscount(Auth::user()->login) : ''); ?>
                                 @foreach($results as $product)
-                                        @if($product->special_price === '0.00')
-                                                @if(isset($discounts[$product->number]))
-                                                        <?php $discount = $discounts[$product->number]; ?>
-                                                @elseif(isset($discounts[$product->group]))
-                                                        <?php $discount = $discounts[$product->group]; ?>
-                                                @else
-                                                        <?php $discount = 0; ?>
-                                                @endif
+                                        @if(isset($discounts[$product->number]))
+                                                <?php $discount = $discounts[$product->number]; ?>
+                                        @elseif(isset($discounts[$product->group]))
+                                                <?php $discount = $discounts[$product->group]; ?>
+                                        @else
+                                                <?php $discount = 0; ?>
+                                        @endif
 
+                                        @if($product->special_price === '0.00')
                                                 <?php $brutoprice 	= (double) number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""); ?>
                                                 <?php $nettoprice 	= (double) number_format($brutoprice * ((100-$discount) / 100), 2, ".", ""); ?>
                                         @else
