@@ -616,8 +616,8 @@ class WebshopController extends Controller {
                                     	$address->telephone  = '';
                                     	$address->mobile     = '';
 
-                                } else if (Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first())
-                                        $address = Address::where(['id' => Input::get('addressId'), 'User_id' => Auth::user()->id])->first();
+                                } else if (Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->login)->first())
+                                        $address = Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->login)->first();
                                 else
                                         return Redirect::to('/cart')->withErrors( 'Het opgegeven adres hoort niet bij uw account');
 
