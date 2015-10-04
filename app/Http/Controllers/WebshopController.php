@@ -414,7 +414,7 @@ class WebshopController extends Controller {
         public function viewCart()
         {
                 if (Auth::check())
-                        $addresses = DB::table('addresses')->where('User_id', Auth::user()->id)->get();
+                        $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
                 else
                         return Redirect::to('/#loginModal');
 
