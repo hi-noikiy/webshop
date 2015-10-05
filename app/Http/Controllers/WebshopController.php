@@ -168,10 +168,10 @@ class WebshopController extends Controller {
                 $inputType      = Input::get('type');
 
                 $query = DB::table('products')
-                        ->orWhere('name', 'LIKE', '%' . $str . '%')
-                        ->orWhere('number', 'LIKE', '%' . $str . '%')
-                        ->orWhere('group', 'LIKE', '%' . $str . '%')
-                        ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
+                        ->orWhere('name', 'LIKE', $str)
+                        ->orWhere('number', 'LIKE', $str)
+                        ->orWhere('group', 'LIKE', $str)
+                        ->orWhere('altNumber', 'LIKE', $str);
 
                 $query->orWhere(function($subQuery)
                 {
@@ -181,9 +181,9 @@ class WebshopController extends Controller {
                         }
                 });
 
-                if (Input::has('brand')) $query = $query->where('brand', $inputBrand);
-                if (Input::has('serie')) $query = $query->where('series', $inputSerie);
-                if (Input::has('type'))  $query = $query->where('type', $inputType);
+                if (Input::has('brand')) $query->where('brand', $inputBrand);
+                if (Input::has('serie')) $query->where('series', $inputSerie);
+                if (Input::has('type')) $query->where('type', $inputType);
 
                 // Get all the results to filter the brands, series and types from it
                 $allResults = $query->orderBy('number', 'asc')->get();
