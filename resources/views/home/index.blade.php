@@ -52,7 +52,7 @@
                         @else
                                 <div class="row">
                                         <div class="col-md-8">
-                                                <div class="panel panel-default">
+                                                <div class="panel panel-primary">
                                                         <div class="panel-heading">
                                                                 <h3 class="panel-title">Nieuws</h3>
                                                         </div>
