@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+        <loc>http://wiringa.nl/</loc>
+</url>
+<url>
+        <loc>http://www.wiringa.nl/about</loc>
+        <image:image>
+                <image:loc>http://www.wiringa.nl/img/site-bg.jpg</image:loc>
+                <image:caption>Het bedrijf</image:caption>
+        </image:image>
+</url>
+<url>
+        <loc>http://www.wiringa.nl/contact</loc>
+</url>
+<url>
+        <loc>http://www.wiringa.nl/assortment</loc>
+</url>
+<url>
+        <loc>http://www.wiringa.nl/downloads</loc>
+</url>
+<url>
+        <loc>http://www.wiringa.nl/webshop</loc>
+</url>
+</urlset>
