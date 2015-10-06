@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>WTG</title>
+        <title>WTG {{ isset($pagetitle) ? " | " . $pagetitle : '' }}</title>
 
         @yield('extraCSS')
 
@@ -124,7 +124,7 @@
                         Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.me" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                         <p>
                             <small>
-                                Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871. 
+                                Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
                                 <br />
                                 Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
                             </small>

@@ -1,4 +1,4 @@
-@extends('errors.master')
+@extends('errors.master', ['pagetitle' => 'Error / Sessie verlopen'])
 
 @section('title')
         <h3>Error: Sessie verlopen</h3>

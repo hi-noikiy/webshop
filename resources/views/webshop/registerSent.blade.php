@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Webshop / Registratie verstuurd'])
 
 @section('title')
         <h3>Bedankt voor uw registratie!</h3>

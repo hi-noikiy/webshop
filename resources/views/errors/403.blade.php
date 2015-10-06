@@ -1,4 +1,4 @@
-@extends('errors.master')
+@extends('errors.master', ['pagetitle' => 'Error / 403'])
 
 @section('title')
         <h3>Error 403: Forbidden</h3>

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Importeren'])
 
 @section('title')
         <h3>Admin <small>bestanden importeren</small></h3>

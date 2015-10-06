@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Webshop / Zoeken'])
 
 @section('title')
         <h3>{{ $title }}</h3>

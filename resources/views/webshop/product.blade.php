@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Webshop / Product ' . $productData->number])
 
 @section('title')
         <h3>{{ $productData->name }}</h3>

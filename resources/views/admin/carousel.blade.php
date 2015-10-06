@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Carousel'])
 
 @section('title')
         <h3>Admin <small>carousel manager</small></h3>
@@ -45,7 +45,7 @@
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                                         <button type="submit" class="btn btn-primary">Toevoegen</button>
                                 </form>
-                        </div>                  
+                        </div>
                 </div>
         </div>
 </div>

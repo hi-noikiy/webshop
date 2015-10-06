@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Importeren geslaagd'])
 
 @section('title')
         <h3>Admin <small>importeren geslaagd</small></h3>

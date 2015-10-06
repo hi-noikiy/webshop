@@ -1,4 +1,4 @@
-@extends('errors.master')
+@extends('errors.master', ['pagetitle' => 'Error / 500'])
 
 @section('title')
         <h3>Error 500: Internal Server Error</h3>

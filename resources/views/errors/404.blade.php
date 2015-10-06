@@ -1,4 +1,4 @@
-@extends('errors.master')
+@extends('errors.master', ['pagetitle' => 'Error / 404'])
 
 @section('title')
         <h3>Error 404: Not Found</h3>

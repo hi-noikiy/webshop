@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Home'])
 
 @section('title')
         <h1>Welkom op de website van Wiringa Technische Groothandel</h1>

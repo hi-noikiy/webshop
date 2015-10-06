@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Account / Overzicht'])
 
 @section('title')
         <h3>Account <small>overzicht</small></h3>

@@ -1,7 +1,7 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Inhoud aanpassen'])
 
 @section('title')
-        <h3>Admin <small>content manager</small></h3>
+        <h3>Admin <small>inhoud aanpassen</small></h3>
 @stop
 
 @section('content')

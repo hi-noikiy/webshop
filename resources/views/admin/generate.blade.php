@@ -1,7 +1,7 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Catalogus'])
 
 @section('title')
-        <h3>Admin <small>content genereren</small></h3>
+        <h3>Admin <small>catalogus genereren</small></h3>
 @stop
 
 @section('content')

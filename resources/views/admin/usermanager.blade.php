@@ -1,7 +1,7 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Admin / Gebruikers beheer'])
 
 @section('title')
-        <h3>Admin <small>user manager</small></h3>
+        <h3>Admin <small>gebruikers beheer</small></h3>
 @stop
 
 @section('content')

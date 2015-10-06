@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Account / Wachtwoord wijzigen'])
 
 @section('title')
         <h3>Account <small>wachtwoord wijzigen</small></h3>

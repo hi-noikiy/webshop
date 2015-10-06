@@ -1,4 +1,4 @@
-@extends('errors.master')
+@extends('errors.master', ['pagetitle' => 'Error / 400'])
 
 @section('title')
         <h3>Error 400: Bad Request</h3>

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('master', ['pagetitle' => 'Webshop / Winkelwagen'])
 
 @section('title')
         <h3>Winkelwagen</h3>
