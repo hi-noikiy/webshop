@@ -113,7 +113,7 @@
                                                 <?php $nettoprice 	= (double) $brutoprice; ?>
                                         @endif
 
-                                        <tr {{ ($discount === 0 ? 'class=success' : '') }}>
+                                        <tr {{ ($product->special_price !== '0.00' ? 'class=success' : '') }}>
                                                 <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                                                 <td class="hidden-xs">{{ $product->number }}</td>
                                                 <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
