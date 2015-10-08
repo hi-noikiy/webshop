@@ -143,75 +143,88 @@ class AdminController extends Controller {
 
                         $startTime = microtime(true);
 
-                        Product::truncate();
-
                         $csv       = file($file->getRealPath());
                         $lineCount = count($csv);
 
                         DB::beginTransaction();
 
-                        DB::connection()->disableQueryLog();
+                        try {
+                                // Truncate the products table
+                                (new Product)->newQuery()->delete();
 
-                        $line = $lastPercent = 0;
+                                DB::connection()->disableQueryLog();
 
-                        foreach ($csv as $row) {
-                                $row  = preg_replace("/\r\n/", "", $row);
-                                $data = explode(';', $row);
+                                $line = $lastPercent = 0;
 
-                                DB::table('products')->insert(array(
-                                        'name'             => $data[0],
-                                        'number'           => $data[3],
-                                        'group'            => $data[4],
-                                        'altNumber'        => $data[5],
-                                        'stockCode'        => $data[7],
-                                        'registered_per'   => $data[8],
-                                        'packed_per'       => $data[9],
-                                        'price_per'        => $data[10],
-                                        'refactor'         => preg_replace("/\,/", ".", $data[12]),
-                                        'supplier'         => $data[13],
-                                        'ean'              => $data[14],
-                                        'image'            => $data[15],
-                                        'length'           => $data[17],
-                                        'price'            => $data[18],
-                                        'vat'              => $data[20],
-                                        'brand'            => $data[22],
-                                        'series'           => $data[23],
-                                        'type'             => $data[24],
-                                        'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
-                                        'action_type'      => $data[26],
-                                        'keywords'         => $data[27],
-                                        'related_products' => $data[28],
-                                        'catalog_group'    => $data[29],
-                                        'catalog_index'    => $data[30],
-                                ));
+                                foreach ($csv as $row) {
+                                        $row  = preg_replace("/\r\n/", "", $row);
+                                        $data = explode(';', $row);
 
-                                $line++;
-                                $percentage  = round(($line / $lineCount) * 100);
+                                        DB::table('products')->insert(array(
+                                                'name'             => $data[0],
+                                                'number'           => $data[3],
+                                                'group'            => $data[4],
+                                                'altNumber'        => $data[5],
+                                                'stockCode'        => $data[7],
+                                                'registered_per'   => $data[8],
+                                                'packed_per'       => $data[9],
+                                                'price_per'        => $data[10],
+                                                'refactor'         => preg_replace("/\,/", ".", $data[12]),
+                                                'supplier'         => $data[13],
+                                                'ean'              => $data[14],
+                                                'image'            => $data[15],
+                                                'length'           => $data[17],
+                                                'price'            => $data[18],
+                                                'vat'              => $data[20],
+                                                'brand'            => $data[22],
+                                                'series'           => $data[23],
+                                                'type'             => $data[24],
+                                                'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
+                                                'action_type'      => $data[26],
+                                                'keywords'         => $data[27],
+                                                'related_products' => $data[28],
+                                                'catalog_group'    => $data[29],
+                                                'catalog_index'    => $data[30],
+                                        ));
 
-                                if ($percentage !== $lastPercent)
-                                {
-                                        echo "#";
-                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                        ob_flush();
-                                        flush();
+                                        $line++;
+                                        $percentage  = round(($line / $lineCount) * 100);
+
+                                        if ($percentage !== $lastPercent)
+                                        {
+                                                echo "#";
+                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                ob_flush();
+                                                flush();
+                                        }
+
+                                        $lastPercent = $percentage;
                                 }
 
-                                $lastPercent = $percentage;
+                                echo "<br /><br />";
+
+                                ob_flush();
+                                flush();
+
+                                sleep(1);
+
+                                echo "Committing data...<br />";
+
+                                ob_flush();
+                                flush();
+
+                                DB::commit();
+                        } catch (\Exception $e) {
+                                echo "<br /><br />";
+                                echo "An error has occurred, the database will be rolled back to it's previous state...<br />";
+
+                                ob_flush();
+                                flush();
+
+                                DB::rollback();
+
+                                return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->errorInfo[2]);
                         }
-
-                        echo "<br /><br />";
-
-                        ob_flush();
-                        flush();
-
-                        sleep(1);
-
-                        DB::commit();
-
-                        echo "Committing data...<br />";
-
-                        ob_flush();
-                        flush();
 
                         sleep(1);
 
@@ -263,59 +276,72 @@ class AdminController extends Controller {
 
                                 $startTime = microtime(true);
 
-                                Discount::truncate();
-
                                 $csv       = file($file->getRealPath());
                                 $lineCount = count($csv);
 
                                 DB::beginTransaction();
 
-                                DB::connection()->disableQueryLog();
+                                try {
+                                        // Truncate the discount table
+                                        (new Discount)->newQuery()->delete();
 
-                                $line = $lastPercent = 0;
+                                        DB::connection()->disableQueryLog();
 
-                                foreach ($csv as $row) {
-                                        $data = explode(';', $row);
+                                        $line = $lastPercent = 0;
 
-                                        DB::table('discounts')->insert(array(
-                                                'table'         => $data[0],
-                                                'User_id'       => ($data[1] !== "" ? $data[1] : 0),
-                                                'product'       => (is_numeric($data[2]) ? $data[2] : 0),
-                                                'start_date'    => $data[3],
-                                                'end_date'      => $data[4],
-                                                'discount'      => $data[5],
-                                                'group_desc'    => $data[6],
-                                                'product_desc'  => $data[7],
-                                        ));
+                                        foreach ($csv as $row) {
+                                                $data = explode(';', $row);
 
-                                        $line++;
+                                                DB::table('discounts')->insert(array(
+                                                        'table'         => $data[0],
+                                                        'User_id'       => ($data[1] !== "" ? $data[1] : 0),
+                                                        'product'       => (is_numeric($data[2]) ? $data[2] : 0),
+                                                        'start_date'    => $data[3],
+                                                        'end_date'      => $data[4],
+                                                        'discount'      => $data[5],
+                                                        'group_desc'    => $data[6],
+                                                        'product_desc'  => $data[7],
+                                                ));
 
-                                        $percentage  = round(($line / $lineCount) * 100);
+                                                $line++;
 
-                                        if ($percentage !== $lastPercent)
-                                        {
-                                                echo "#";
-                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                                ob_flush();
-                                                flush();
+                                                $percentage  = round(($line / $lineCount) * 100);
+
+                                                if ($percentage !== $lastPercent)
+                                                {
+                                                        echo "#";
+                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                        ob_flush();
+                                                        flush();
+                                                }
+
+                                                $lastPercent = $percentage;
                                         }
 
-                                        $lastPercent = $percentage;
+                                        echo "<br /><br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        sleep(1);
+
+                                        echo "Committing data...<br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        DB::commit();
+                                } catch (\Exception $e) {
+                                        echo "<br /><br />";
+                                        echo "An error has occurred, the database will be rolled back to it's previous state...<br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        DB::rollback();
+
+                                        return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->errorInfo[2]);
                                 }
-
-                                echo "<br /><br />";
-
-                                ob_flush();
-                                flush();
-
-                                sleep(1);
-
-                                DB::commit();
-
-                                echo "Committing data...<br />";
-
-                                ob_flush();
-                                flush();
 
                                 sleep(1);
 
