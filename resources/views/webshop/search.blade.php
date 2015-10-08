@@ -13,10 +13,31 @@
                 <div class="alert alert-success" role="alert">
                         {{ $results->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
                 </div>
+
+                <div class="panel panel-primary visible-xs">
+                        <div class="panel-heading">
+                                <h4 class="panel-title text-center">
+                                        Zoeken
+                                </h4>
+                        </div>
+                        <div class="panel-body">
+                                <form action="/search" method="GET" class="form col-xs-12" role="search">
+                                        {!! csrf_field() !!}
+                                        <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Zoeken" value="{{ Input::get('q') }}" name="q" required="">
+                                                <span class="input-group-btn">
+                                                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                                                </span>
+                                        </div>
+                                </form>
+                        </div>
+                </div>
+
+
                 <div class="panel panel-default">
                         <div class="panel-heading">
                                 <h4 class="panel-title text-center">
-                                        Geavanceerd zoeken
+                                        Filter resultaten
                                 </h4>
                         </div>
                         <div class="panel-body">
@@ -65,17 +86,7 @@
                                         <input name="q" type="hidden" value="{{ Input::get('q') }}">
                                 </form>
 
-                                <div class="row">
-                                        <div class="col-sm-6">
-                                                <button onclick="window.history.go(-1);" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar vorige pagina</button>
-                                        </div>
-
-                                        <br class="visible-xs" />
-
-                                        <div class="col-sm-6">
-                                                <button class="btn btn-primary pull-right btn-block" onclick="wtg.quickSearch();">Zoeken</button>
-                                        </div>
-                                </div>
+                                <a href="/webshop" class="btn btn-default col-sm-4"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar zoek pagina</a>
                         </div>
                 </div>
 
