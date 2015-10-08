@@ -1,6 +1,6 @@
 <?php namespace App\Exceptions;
 
-use Exception, Redirect;
+use Exception, Redirect, App;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler {
@@ -31,25 +31,19 @@ class Handler extends ExceptionHandler {
 	 * Render an exception into an HTTP response.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Exception  $e
+	 * @param  \Exception $e
 	 * @return \Illuminate\Http\Response
 	 */
 	public function render($request, Exception $e)
 	{
-		$exceptionClass = get_class($e);
-
-		if ($exceptionClass === "Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException")
-			return Redirect::back();
-		elseif ($exceptionClass === "Illuminate\Session\TokenMismatchException")
-			return Redirect::to('/')->with('error', "Uw sessie is verlopen, log opnieuw in en probeer het opnieuw");
-
-		if ($this->isHttpException($e))
-		{
+		if (get_class($e) === "Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException")
+			return App::abort(404);
+		elseif (get_class($e) === "Illuminate\Session\TokenMismatchException")
+			return Redirect::to('/')->withErrors("Uw sessie is verlopen, log opnieuw in en probeer het opnieuw");
+		elseif ($this->isHttpException($e))
 			return $this->renderHttpException($e);
-		} else
-		{
+		else
 			return parent::render($request, $e);
-		}
 	}
 
 }
