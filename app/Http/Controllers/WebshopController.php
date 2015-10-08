@@ -168,22 +168,22 @@ class WebshopController extends Controller {
                 $inputType      = Input::get('type');
 
                 $query = DB::table('products')
-                        ->orWhere('name', 'LIKE', $str)
-                        ->orWhere('number', 'LIKE', $str)
-                        ->orWhere('group', 'LIKE', $str)
-                        ->orWhere('altNumber', 'LIKE', $str);
+                        //->orWhere('name', 'LIKE', '%' . $str . '%')  This was causing issues with the the function on line 176
+                        ->orWhere('number', 'LIKE', '%' . $str . '%')
+                        ->orWhere('group', 'LIKE', '%' . $str . '%')
+                        ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
 
-                $query->orWhere(function($subQuery)
+                $query->orWhere(function($query)
                 {
                         foreach (explode(' ', Input::get('q')) as $word) {
                                 // Split the input so the order of the search query doesn't matter
-                                $subQuery->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
+                                $query->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
                         }
                 });
 
-                if (Input::has('brand')) $query->where('brand', $inputBrand);
-                if (Input::has('serie')) $query->where('series', $inputSerie);
-                if (Input::has('type')) $query->where('type', $inputType);
+                if (Input::has('brand')) $query->where('brand', '=', $inputBrand);
+                if (Input::has('serie')) $query->where('series', '=', $inputSerie);
+                if (Input::has('type')) $query->where('type', '=', $inputType);
 
                 // Get all the results to filter the brands, series and types from it
                 $allResults = $query->orderBy('number', 'asc')->get();
