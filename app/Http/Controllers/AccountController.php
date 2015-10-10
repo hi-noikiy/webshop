@@ -42,7 +42,7 @@ class AccountController extends Controller {
         {
                 $orderCount = Order::where('User_id', Auth::user()->login)->count();
 
-                return view('account.overview', array('orderCount' => $orderCount));
+                return view('account.overview', ['orderCount' => $orderCount]);
         }
 
         /**
@@ -63,7 +63,7 @@ class AccountController extends Controller {
                         $newPass        = Input::get('newPass');
                         $newPassVerify  = Input::get('newPassVerify');
 
-                        if (Auth::validate(array('login' => Auth::user()->login, 'password' => $oldPass)))
+                        if (Auth::validate(['login' => Auth::user()->login, 'password' => $oldPass]))
                         {
                                 if ($newPass === $newPassVerify)
                                 {
@@ -97,8 +97,8 @@ class AccountController extends Controller {
         public function favorites()
         {
                 $favoritesArray = unserialize(Auth::user()->favorites);
-                $seriesData     = array();
-                $productGroup   = array();
+                $seriesData     = [];
+                $productGroup   = [];
 
                 // Get the product data
                 $productData    = DB::table('products')->whereIn('number', $favoritesArray)->get();
@@ -119,11 +119,11 @@ class AccountController extends Controller {
                         }
                 }
 
-                return view('account.favorites', array(
+                return view('account.favorites', [
                                 'favorites'     => $productData,
                                 'discounts'     => getProductDiscount(Auth::user()->login),
                                 'groupData'     => $productGroup
-                        )
+                        ]
                 );
         }
 
@@ -140,8 +140,8 @@ class AccountController extends Controller {
                         $product = Input::get('product');
 
                         $validator = Validator::make(
-                                array('product' => $product),
-                                array('product' => array('required', 'digits:7'))
+                                ['product' => $product],
+                                ['product' => 'required|digits:7']
                         );
 
                         if (!$validator->fails())
@@ -194,8 +194,8 @@ class AccountController extends Controller {
                         $product = Input::get('product');
 
                         $validator = Validator::make(
-                                array('product' => $product),
-                                array('product' => array('required', 'digits:7'))
+                                ['product' => $product],
+                                ['product' => 'required|digits:7']
                         );
 
                         if (!$validator->fails())
@@ -221,7 +221,7 @@ class AccountController extends Controller {
         {
                 $orderList = Order::where('User_id', Auth::user()->login)->orderBy('created_at', 'desc')->get();
 
-                return view('account.orderhistory', array('orderlist' => $orderList));
+                return view('account.orderhistory', ['orderlist' => $orderList]);
         }
 
         /**
@@ -233,7 +233,7 @@ class AccountController extends Controller {
         {
                 $addressList = Address::where('User_id', Auth::user()->login)->get();
 
-                return view('account.addresslist', array('addresslist' => $addressList));
+                return view('account.addresslist', ['addresslist' => $addressList]);
         }
 
         /**
@@ -252,23 +252,22 @@ class AccountController extends Controller {
                         $telephone      = (Input::has('telephone') ? Input::get('telephone') : '');
                         $mobile         = (Input::has('mobile') ? Input::get('mobile') : '');
 
-                        $validator = Validator::make(
-                                array(
+                        $validator = Validator::make([
                                         'name'          => $name,
                                         'street'        => $street,
                                         'postcode'      => $postcode,
                                         'city'          => $city,
                                         'telephone'     => $telephone,
                                         'mobile'        => $mobile
-                                ),
-                                array(
+                                ],
+                                [
                                         'name'          => 'required',
-                                        'street'        => array('required', 'regex:/^[a-zA-Z0-9\s]+$/'),
-                                        'postcode'      => array('required', 'regex:/^[a-zA-Z0-9\s]+$/', 'between:6,8'),
-                                        'city'          => array('required', 'regex:/^[a-zA-Z\s]+$/'),
-                                        'telephone'     => array('regex:/^[0-9\s\-]+$/'),
-                                        'mobile'        => array('regex:/^[0-9\s\-]+$/')
-                                )
+                                        'street'        => 'required|regex:/^[a-zA-Z0-9\s]+$/',
+                                        'postcode'      => 'required|regex:/^[a-zA-Z0-9\s]+$/|between:6,8',
+                                        'city'          => 'required|regex:/^[a-zA-Z\s]+$/',
+                                        'telephone'     => 'regex:/^[0-9\s\-]+$/',
+                                        'mobile'        => 'regex:/^[0-9\s\-]+$/'
+                                ]
                         );
 
                         if (!$validator->fails())
@@ -369,7 +368,7 @@ class AccountController extends Controller {
 
                                 File::put($filename, AccountController::discountICC());
 
-                                Mail::send('email.discountfile', array(), function($message) use ($filename)
+                                Mail::send('email.discountfile', [], function($message) use ($filename)
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
@@ -406,7 +405,7 @@ class AccountController extends Controller {
 
                                 File::put($filename, AccountController::discountCSV());
 
-                                Mail::send('email.discountfile', array(), function($message) use ($filename)
+                                Mail::send('email.discountfile', [], function($message) use ($filename)
                                 {
                                         $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 

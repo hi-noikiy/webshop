@@ -50,7 +50,7 @@ class HomeController extends Controller {
         {
                 $manufacturers = json_decode(file_get_contents(public_path() . "/json/manufacturers.json"));
 
-                return view('home.assortment', array('manufacturers' => $manufacturers));
+                return view('home.assortment', ['manufacturers' => $manufacturers]);
         }
 
         /**
@@ -74,7 +74,7 @@ class HomeController extends Controller {
                 $flyers          = Content::where('name', 'downloads.flyers')->first();
                 $artikel         = Content::where('name', 'downloads.artikel')->first();
 
-                return view('home.downloads', array('catalogus' => $catalogus, 'flyers' => $flyers, 'artikelbestand' => $artikel));
+                return view('home.downloads', ['catalogus' => $catalogus, 'flyers' => $flyers, 'artikelbestand' => $artikel]);
         }
 
         /**

@@ -63,7 +63,7 @@ class WebshopController extends Controller {
                 if (Auth::check())
                         return Redirect::to('/account');
 
-                $data = array();
+                $data = [];
 
                 if (Session::has('registrationData'))
                         $data = Session::get('registrationData');
@@ -194,7 +194,7 @@ class WebshopController extends Controller {
                 // Initialize $brands, $series, $types as array
                 $brands =
                 $series =
-                $types = array();
+                $types = [];
 
                 // Get the brands, series and types from the search results
                 foreach ($allResults as $product) {
@@ -209,13 +209,13 @@ class WebshopController extends Controller {
                 sort($types);
 
                 // Return the search view with the fetched data
-                return view('webshop.search', array(
+                return view('webshop.search', [
                                 'results'       => $results,
                                 'brands'        => array_unique($brands),
                                 'series'        => array_unique($series),
                                 'types'         => array_unique($types),
                                 'scriptTime'    => round(microtime(true) - $startTime, 4)
-                        )
+                        ]
                 );
         }
 
@@ -248,12 +248,12 @@ class WebshopController extends Controller {
                 if (preg_match("/(search|clearance|specials)/", Request::server('HTTP_REFERER')))
                         Session::put('continueShopping', Request::server('HTTP_REFERER'));
 
-                return view('webshop.product', array(
+                return view('webshop.product', [
                                 'productData'           => $product,
                                 'discount'              => $discount,
                                 'related_products'      => $related_products,
                                 'prevPage'              => $prevPage
-                        )
+                        ]
                 );
         }
 
@@ -273,7 +273,7 @@ class WebshopController extends Controller {
                 if (Input::has('username') && Input::has('password'))
                 {
                         // Try to log the user in
-                        if (Auth::attempt(array('login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1), (Input::get('remember_me') === "on" ? true : false)))
+                        if (Auth::attempt(['login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1], (Input::get('remember_me') === "on" ? true : false)))
                         {
                                 if (Auth::user()->cart) {
                                         foreach (unserialize(Auth::user()->cart) as $item) {
@@ -287,7 +287,6 @@ class WebshopController extends Controller {
                 }
 
                 // The input field(s) is/are empty, go back to the previous page with an error message
-                //return Redirect::back()->with(array('error' => , 'username' => Input::get('username')));
                 return Redirect::back()
                         ->withErrors('Gebruikersnaam en/of wachtwoord onjuist')
                         ->withInput(Input::except('password'));
@@ -337,7 +336,7 @@ class WebshopController extends Controller {
                 // Initialize $brands, $series, $types as array
                 $brands =
                 $series =
-                $types = array();
+                $types = [];
 
                 // Get the brands, series and types from the search results
                 foreach ($allResults as $product) {
@@ -347,14 +346,14 @@ class WebshopController extends Controller {
                 }
 
                 // Return the search view with the fetched data
-                return view('webshop.altSearch', array(
+                return view('webshop.altSearch', [
                                 'results'       => $results,
                                 'title'         => 'Acties',
                                 'brands'        => array_unique($brands),
                                 'series'        => array_unique($series),
                                 'types'         => array_unique($types),
                                 'scriptTime'    => round(microtime(true) - $startTime, 4)
-                        )
+                        ]
                 );
         }
 
@@ -385,7 +384,7 @@ class WebshopController extends Controller {
                 // Initialize $brands, $series, $types as array
                 $brands =
                 $series =
-                $types = array();
+                $types = [];
 
                 // Get the brands, series and types from the search results
                 foreach ($allResults as $product) {
@@ -395,14 +394,14 @@ class WebshopController extends Controller {
                 }
 
                 // Return the search view with the fetched data
-                return view('webshop.altSearch', array(
+                return view('webshop.altSearch', [
                                 'results'       => $results,
                                 'title'         => 'Opruiming',
                                 'brands'        => array_unique($brands),
                                 'series'        => array_unique($series),
                                 'types'         => array_unique($types),
                                 'scriptTime'    => round(microtime(true) - $startTime, 4)
-                        )
+                        ]
                 );
         }
 
@@ -418,7 +417,7 @@ class WebshopController extends Controller {
                 else
                         return Redirect::to('/#loginModal');
 
-                return view('webshop.cart', array('cart' => Cart::content(), 'addresses' => $addresses));
+                return view('webshop.cart', ['cart' => Cart::content(), 'addresses' => $addresses]);
         }
 
         /**
@@ -432,15 +431,14 @@ class WebshopController extends Controller {
                 $qty     = Input::get('qty');
                 $ref     = Input::get('ref');
 
-                $validator = Validator::make(
-                        array(
+                $validator = Validator::make([
                                 'product'       => $number,
                                 'qty'           => $qty
-                        ),
-                        array(
-                                'product'       => array('required', 'digits:7'),
-                                'qty'           => array('required', 'numeric')
-                        )
+                        ],
+                        [
+                                'product'       => 'required|digits:7',
+                                'qty'           => 'required|numeric'
+                        ]
                 );
 
                 if (!$validator->fails())
@@ -452,15 +450,15 @@ class WebshopController extends Controller {
 
                         // Add the product data to the cart data
                         $cartArray[$number] =
-                        $productData = array(
+                        $productData = [
                                                 'id'      => $product->number,
                                                 'name'    => $product->name,
                                                 'qty'     => $qty,
                                                 'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
-                                                'options' => array(
+                                                'options' => [
                                                         'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
-                                                )
-                                        );
+                                                ]
+                                        ];
 
                         // Add the product to the cart
                         Cart::add($productData);
@@ -490,15 +488,14 @@ class WebshopController extends Controller {
                 $qty     = Input::get('qty');
                 $artNr   = Input::get('productId');
 
-                $validator = Validator::make(
-                        array(
+                $validator = Validator::make([
                                 'rowId'         => $rowId,
                                 'qty'           => $qty
-                        ),
-                        array(
-                                'rowId'         => array('required'),
-                                'qty'           => array('required', 'numeric')
-                        )
+                        ],
+                        [
+                                'rowId'         => 'required',
+                                'qty'           => 'required|numeric'
+                        ]
                 );
 
                 if (!$validator->fails())
@@ -515,7 +512,7 @@ class WebshopController extends Controller {
                                 $user->cart = serialize($cartArray);
                                 $user->save();
 
-                                Cart::update($rowId, array('qty' => $qty));
+                                Cart::update($rowId, ['qty' => $qty]);
 
                                 return Redirect::to('cart')->with('status', 'Uw winkelwagen is geupdatet');
                         } elseif (Input::get('remove') === "")
@@ -577,15 +574,15 @@ class WebshopController extends Controller {
                 foreach ($order as $item)
                 {
                         $product     = Product::where('number', $item['id'])->firstOrFail();
-                        $productData = array(
+                        $productData = [
                                         'id'      => $product->number,
                                         'name'    => $product->name,
                                         'qty'     => $item['qty'],
                                         'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
-                                        'options' => array(
+                                        'options' => [
                                                 'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
-                                        )
-                                );
+                                        ]
+                                ];
 
                         // Add the product to the cart
                         Cart::add($productData);

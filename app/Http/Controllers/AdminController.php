@@ -56,10 +56,10 @@ class AdminController extends Controller {
                         $load   = array_slice(explode(' ', str_replace(',', '', $uptime)), -3);
                         $max    = exec('grep "model name" /proc/cpuinfo | wc -l');
 
-                        $data   = array(
+                        $data   = [
                                 'load'  => $load[0],
                                 'max'   => $max,
-                        );
+                        ];
 
                         return Response::json($data);
                 } else
@@ -82,11 +82,11 @@ class AdminController extends Controller {
 
                         $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
 
-                        $data 	= array(
+                        $data 	= [
                                 'total'          => $total,
                                 'freePercentage' => $freePercentage,
                                 'free' 	         => $free
-                        );
+                        ];
 
                         return Response::json($data);
                 } else
@@ -117,123 +117,119 @@ class AdminController extends Controller {
                         $file = Input::file('productFile');
 
                         $validator = Validator::make(
-                        array(
-                                'fileType' => $file->getMimeType(),
-                        ),
-                        array(
-                                'fileType' => 'required|string:text/plain|string:text/csv'
-                        )
-                );
+                                ['fileType' => $file->getMimeType()],
+                                ['fileType' => 'required|string:text/plain|string:text/csv']
+                        );
 
-                if ($validator->fails())
-                        return Redirect::back()->withErrors( $validator->errors());
-                else
-                {
-                        \Debugbar::disable();
-                        // This loop is used to send the first 4096 bytes for the output buffering to work
-                        echo "<!--";
-                        for ($i=0; $i < 4089; $i++) {
-                                echo "X";
-                        }
-                        echo "-->";
+                        if ($validator->fails())
+                                return Redirect::back()->withErrors( $validator->errors());
+                        else
+                        {
+                                \Debugbar::disable();
+                                // This loop is used to send the first 4096 bytes for the output buffering to work
+                                echo "<!--";
+                                for ($i=0; $i < 4089; $i++) {
+                                        echo "X";
+                                }
+                                echo "-->";
 
-                        echo "<h1>Product import</h1>";
-                        echo "Preparing database transaction.... <br />";
-                        echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
+                                echo "<h1>Product import</h1>";
+                                echo "Preparing database transaction.... <br />";
+                                echo "[" . "<div style=' position: absolute; top: 84px; left:  821px;'>]</div>";
 
-                        $startTime = microtime(true);
+                                $startTime = microtime(true);
 
-                        $csv       = file($file->getRealPath());
-                        $lineCount = count($csv);
+                                $csv       = file($file->getRealPath());
+                                $lineCount = count($csv);
 
-                        DB::beginTransaction();
+                                DB::beginTransaction();
 
-                        try {
-                                // Truncate the products table
-                                (new Product)->newQuery()->delete();
+                                try {
+                                        // Truncate the products table
+                                        (new Product)->newQuery()->delete();
 
-                                DB::connection()->disableQueryLog();
+                                        DB::connection()->disableQueryLog();
 
-                                $line = $lastPercent = 0;
+                                        $line = $lastPercent = 0;
 
-                                foreach ($csv as $row) {
-                                        $row  = preg_replace("/\r\n/", "", $row);
-                                        $data = explode(';', $row);
+                                        foreach ($csv as $row) {
+                                                $row  = preg_replace("/\r\n/", "", $row);
+                                                $data = explode(';', $row);
 
-                                        DB::table('products')->insert(array(
-                                                'name'             => $data[0],
-                                                'number'           => $data[3],
-                                                'group'            => $data[4],
-                                                'altNumber'        => $data[5],
-                                                'stockCode'        => $data[7],
-                                                'registered_per'   => $data[8],
-                                                'packed_per'       => $data[9],
-                                                'price_per'        => $data[10],
-                                                'refactor'         => preg_replace("/\,/", ".", $data[12]),
-                                                'supplier'         => $data[13],
-                                                'ean'              => $data[14],
-                                                'image'            => $data[15],
-                                                'length'           => $data[17],
-                                                'price'            => $data[18],
-                                                'vat'              => $data[20],
-                                                'brand'            => $data[22],
-                                                'series'           => $data[23],
-                                                'type'             => $data[24],
-                                                'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
-                                                'action_type'      => $data[26],
-                                                'keywords'         => $data[27],
-                                                'related_products' => $data[28],
-                                                'catalog_group'    => $data[29],
-                                                'catalog_index'    => $data[30],
-                                        ));
+                                                DB::table('products')->insert([
+                                                        'name'             => $data[0],
+                                                        'number'           => $data[3],
+                                                        'group'            => $data[4],
+                                                        'altNumber'        => $data[5],
+                                                        'stockCode'        => $data[7],
+                                                        'registered_per'   => $data[8],
+                                                        'packed_per'       => $data[9],
+                                                        'price_per'        => $data[10],
+                                                        'refactor'         => preg_replace("/\,/", ".", $data[12]),
+                                                        'supplier'         => $data[13],
+                                                        'ean'              => $data[14],
+                                                        'image'            => $data[15],
+                                                        'length'           => $data[17],
+                                                        'price'            => $data[18],
+                                                        'vat'              => $data[20],
+                                                        'brand'            => $data[22],
+                                                        'series'           => $data[23],
+                                                        'type'             => $data[24],
+                                                        'special_price'    => ($data[25] === "" ? "0.00" : preg_replace("/\,/", ".", $data[25])),
+                                                        'action_type'      => $data[26],
+                                                        'keywords'         => $data[27],
+                                                        'related_products' => $data[28],
+                                                        'catalog_group'    => $data[29],
+                                                        'catalog_index'    => $data[30],
+                                                ]);
 
-                                        $line++;
-                                        $percentage  = round(($line / $lineCount) * 100);
+                                                $line++;
+                                                $percentage  = round(($line / $lineCount) * 100);
 
-                                        if ($percentage !== $lastPercent)
-                                        {
-                                                echo "#";
-                                                echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
-                                                ob_flush();
-                                                flush();
+                                                if ($percentage !== $lastPercent)
+                                                {
+                                                        echo "#";
+                                                        echo "<div style='position: absolute; top: 105px; left: 424px;width: 30px;background:white;'>$percentage%</div>";
+                                                        ob_flush();
+                                                        flush();
+                                                }
+
+                                                $lastPercent = $percentage;
                                         }
 
-                                        $lastPercent = $percentage;
+                                        echo "<br /><br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        sleep(1);
+
+                                        echo "Committing data...<br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        DB::commit();
+                                } catch (\Exception $e) {
+                                        echo "<br /><br />";
+                                        echo "An error has occurred, the database will be rolled back to it's previous state...<br />";
+
+                                        ob_flush();
+                                        flush();
+
+                                        DB::rollback();
+
+                                        return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->getMessage());
                                 }
-
-                                echo "<br /><br />";
-
-                                ob_flush();
-                                flush();
 
                                 sleep(1);
 
-                                echo "Committing data...<br />";
+                                $endTime = round(microtime(true) - $startTime, 4);
 
-                                ob_flush();
-                                flush();
-
-                                DB::commit();
-                        } catch (\Exception $e) {
-                                echo "<br /><br />";
-                                echo "An error has occurred, the database will be rolled back to it's previous state...<br />";
-
-                                ob_flush();
-                                flush();
-
-                                DB::rollback();
-
-                                return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->getMessage());
+                                return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
                         }
-
-                        sleep(1);
-
-                        $endTime = round(microtime(true) - $startTime, 4);
-
-                        return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
-                }
-        } else
-                return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
+                } else
+                        return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
         }
 
         /**
@@ -250,12 +246,8 @@ class AdminController extends Controller {
                         $file = Input::file('discountFile');
 
                         $validator = Validator::make(
-                                array(
-                                        'fileType' => $file->getMimeType(),
-                                ),
-                                array(
-                                        'fileType' => 'required|string:text/plain|string:text/csv'
-                                )
+                                ['fileType' => $file->getMimeType()],
+                                ['fileType' => 'required|string:text/plain|string:text/csv']
                         );
 
                         if ($validator->fails())
@@ -292,7 +284,7 @@ class AdminController extends Controller {
                                         foreach ($csv as $row) {
                                                 $data = explode(';', $row);
 
-                                                DB::table('discounts')->insert(array(
+                                                DB::table('discounts')->insert([
                                                         'table'         => $data[0],
                                                         'User_id'       => ($data[1] !== "" ? $data[1] : 0),
                                                         'product'       => (is_numeric($data[2]) ? $data[2] : 0),
@@ -301,7 +293,7 @@ class AdminController extends Controller {
                                                         'discount'      => $data[5],
                                                         'group_desc'    => $data[6],
                                                         'product_desc'  => $data[7],
-                                                ));
+                                                ]);
 
                                                 $line++;
 
@@ -347,7 +339,7 @@ class AdminController extends Controller {
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
-                                return Redirect::to('admin/importsuccess')->with(array('count' => count($csv), 'time' => $endTime, 'type' => 'korting'));
+                                return Redirect::to('admin/importsuccess')->with(['count' => count($csv), 'time' => $endTime, 'type' => 'korting']);
                         }
                 } else
                         return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
@@ -368,12 +360,8 @@ class AdminController extends Controller {
                         $startTime = microtime(true);
 
                         $validator = Validator::make(
-                                array(
-                                        'fileType' => $file,
-                                ),
-                                array(
-                                        'fileType' => 'required|mimes:zip,jpg,png,gif,jpeg'
-                                )
+                                ['fileType' => $file],
+                                ['fileType' => 'required|mimes:zip,jpg,png,gif,jpeg']
                         );
 
                         if ($validator->fails())
@@ -399,7 +387,7 @@ class AdminController extends Controller {
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
-                                return Redirect::to('/admin/importsuccess')->with(array('count' => $count, 'time' => $endTime, 'type' => 'afbeelding'));
+                                return Redirect::to('/admin/importsuccess')->with(['count' => $count, 'time' => $endTime, 'type' => 'afbeelding']);
                         }
                 } else
                         return Redirect::back()->withErrors('Geen bestand geselecteerd of de afbeelding is ongeldig');
@@ -466,7 +454,7 @@ class AdminController extends Controller {
                         $content = Input::get('content');
                         $field = Input::get('field');
 
-                        Content::where('name', $field)->update(array('content' => $content));
+                        Content::where('name', $field)->update(['content' => $content]);
 
                         return Redirect::to('admin/managecontent')->with('status', 'De content is aangepast');
                 } else
@@ -516,7 +504,7 @@ class AdminController extends Controller {
                         ->where('catalog_index', '!=', '')
                         ->get();
 
-                File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', array('products' => $productData)));
+                File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', ['products' => $productData]));
 
                 exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer->content . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/Wiringa\ Catalogus.pdf"');
 
@@ -550,12 +538,8 @@ class AdminController extends Controller {
                         $caption = Input::get('caption');
 
                         $validator = Validator::make(
-                                array(
-                                        'image' => $image,
-                                ),
-                                array(
-                                        'image' => 'required|image'
-                                )
+                                ['image' => $image],
+                                ['image' => 'required|image']
                         );
 
                         if ($validator->fails())
