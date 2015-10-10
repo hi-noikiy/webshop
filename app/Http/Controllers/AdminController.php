@@ -223,7 +223,7 @@ class AdminController extends Controller {
 
                                 DB::rollback();
 
-                                return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->errorInfo[2]);
+                                return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->getMessage());
                         }
 
                         sleep(1);
@@ -340,7 +340,7 @@ class AdminController extends Controller {
 
                                         DB::rollback();
 
-                                        return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->errorInfo[2]);
+                                        return Redirect::back()->withErrors("Er is een fout opgetreden, de database is niet aangepast: " . $e->getMessage());
                                 }
 
                                 sleep(1);
