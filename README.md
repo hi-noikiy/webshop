@@ -6,9 +6,7 @@
 
 [Laravel](http://laravel.com/) implementation of the wiringa.nl webshop.
 
-The webshop is currently written with CodeIgniter by me.
-
-In order to learn the Laravel framework, I am trying to rewrite the website/webshop in Laravel.
+This webshop is currently live on [wiringa.nl](http://wiringa.nl)
 
 ## Installation
 
@@ -38,7 +36,7 @@ Documentation for the entire framework can be found on the [Laravel website](htt
 
 ### Contributing to this project
 
-**All pull requests will be rejected!**
+**All pull requests will be rejected**
 [DuckThom](https://github.com/DuckThom) is the only contributor for this project.
 
 ### Other licenses
@@ -52,5 +50,3 @@ The LaravelShoppingcart by Crinsane license can be found [here](https://github.c
 The Twitter Bootstrap license can be found [here](https://github.com/twbs/bootstrap/blob/master/LICENSE)
 
 The jQuery license can be found [here](https://jquery.org/license/)
-
-The jQuery Toaster license can be found [here](https://github.com/scottoffen/jquery.toaster/blob/master/LICENSE)
