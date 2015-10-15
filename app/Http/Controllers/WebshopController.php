@@ -431,7 +431,6 @@ class WebshopController extends Controller {
         {
                 $number  = Input::get('product');
                 $qty     = Input::get('qty');
-                $ref     = Input::get('ref');
 
                 $validator = Validator::make([
                                 'product'       => $number,
@@ -470,8 +469,8 @@ class WebshopController extends Controller {
                         $user->cart = serialize($cartArray);
                         $user->save();
 
-                        if ($ref)
-                                return Redirect::to($ref)->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
+                        if (Session::has('continueShopping'))
+                                return Redirect::to(Session::get('continueShopping'))->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
                         else
                                 return Redirect::to('cart');
                 } else
