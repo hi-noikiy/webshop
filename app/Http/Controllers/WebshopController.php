@@ -126,20 +126,16 @@ class WebshopController extends Controller {
 
                         Session::flash('registrationData', $data);
 
-                        if (!$data['corContactName'] || !$data['corName'] || !$data['corAddress'] || !$data['corPostcode'] || !$data['corCity'] || !$data['corPhone'] || !$data['corEmail'] || !$data['delAddress'] || !$data['delPostcode'] || !$data['delCity'] || !$data['delPhone'] || !$data['betIBAN'] /*|| !$data['betBIC']*/ || !$data['betKvK'] || !$data['betBTW']) {
-                                return Redirect::back()->withErrors( 'Niet alle vereiste velden zijn ingevuld');
-                        } else {
-                                \Mail::send('email.registration', $data, function($message)
-                                        {
-                                                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+                        \Mail::send('email.registration', $data, function($message)
+                                {
+                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                                $message->to('verkoop@wiringa.nl');
+                                        $message->to('verkoop@wiringa.nl');
 
-                                                $message->subject('Webshop registratie');
-                                        });
+                                        $message->subject('Webshop registratie');
+                                });
 
-                                return Redirect::to('/registrationSent');
-                        }
+                        return Redirect::to('/register/sent');
                 } else
                         return Redirect::back()
                                 ->withErrors($validator->errors())
@@ -168,7 +164,6 @@ class WebshopController extends Controller {
                 $inputType      = Input::get('type');
 
                 $query = DB::table('products')
-                        //->orWhere('name', 'LIKE', '%' . $str . '%')  This was causing issues with the the function on line 176
                         ->orWhere('number', 'LIKE', '%' . $str . '%')
                         ->orWhere('group', 'LIKE', '%' . $str . '%')
                         ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
