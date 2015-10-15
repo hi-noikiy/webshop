@@ -232,7 +232,7 @@ class WebshopController extends Controller {
         public function showProduct($product_Id = false)
         {
                 if ($product_Id === false)
-                    return App::abort(400, 'Missing product number');
+                        return App::abort(404);
 
                 Session::flash('product_id', $product_Id);
 
