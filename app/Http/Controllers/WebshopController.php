@@ -144,7 +144,7 @@ class WebshopController extends Controller {
 
         public function registerSent()
         {
-                if (Auth::check());
+                if (Auth::check())
                         return Redirect::to('/account');
 
                 return view('webshop.registerSent');
@@ -159,26 +159,33 @@ class WebshopController extends Controller {
         {
                 $startTime      = microtime(true);
                 $str            = Input::get('q');
-                $inputBrand     = Input::get('brand');
-                $inputSerie     = Input::get('serie');
-                $inputType      = Input::get('type');
 
-                $query = DB::table('products')
-                        ->orWhere('number', 'LIKE', '%' . $str . '%')
-                        ->orWhere('group', 'LIKE', '%' . $str . '%')
-                        ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
+                $query = DB::table('products');
 
-                $query->orWhere(function($query)
+                $query->where(function($query)
                 {
-                        foreach (explode(' ', Input::get('q')) as $word) {
-                                // Split the input so the order of the search query doesn't matter
-                                $query->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
-                        }
+                        if (Input::has('brand')) $query->where('brand', Input::get('brand'));
+                        if (Input::has('serie')) $query->where('series', Input::get('serie'));
+                        if (Input::has('type')) $query->where('type', Input::get('type'));
                 });
 
-                if (Input::has('brand')) $query->where('brand', '=', $inputBrand);
-                if (Input::has('serie')) $query->where('series', '=', $inputSerie);
-                if (Input::has('type')) $query->where('type', '=', $inputType);
+                if (Input::has('q'))
+                {
+                        $query->where(function($query) use ($str)
+                        {
+                                $query->orWhere('number', 'LIKE', '%' . $str . '%')
+                                      ->orWhere('group', 'LIKE', '%' . $str . '%')
+                                      ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
+
+                                $query->orWhere(function($query)
+                                {
+                                        foreach (explode(' ', Input::get('q')) as $word) {
+                                                // Split the input so the order of the search query doesn't matter
+                                                $query->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
+                                        }
+                                });
+                        });
+                }
 
                 // Get all the results to filter the brands, series and types from it
                 $allResults = $query->orderBy('number', 'asc')->get();
