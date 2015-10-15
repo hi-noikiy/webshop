@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('test', function() {
-	dd(Cart::destroy());
-});
-
 // GET Requests will be handled here
 Route::get('/', 'HomeController@home');                                 	// Homepage
 Route::get('about', 'HomeController@about');                           	        // About us
