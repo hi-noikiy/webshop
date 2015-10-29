@@ -12,12 +12,24 @@ var elixir = require('laravel-elixir');
  */
 
 var paths = {
-        'bower': './resources/assets/bower/',
+        'bowerAsset': './resources/assets/bower',
+        'jsAsset': './public/js',
+        'cssAsset': './public/css',
+        'fontAsset': './public/build/fonts'
 }
 
 elixir(function(mix) {
-        mix.copy(paths.bower + 'bootstrap/fonts', 'public/fonts');
-        mix.copy(paths.bower + 'bootstrap/dist/js/bootstrap.min.js', 'public/js/bootstrap.min.js');
-        mix.copy(paths.bower + 'jquery/dist/jquery.min.js', 'public/js/jquery.min.js');
-        mix.copy(paths.bower + 'jquery/dist/jquery.min.map', 'public/js/jquery.min.map');
+        mix.copy(paths.bowerAsset + '/bootstrap/fonts', paths.fontAsset);
+        mix.copy(paths.bowerAsset + '/bootstrap/dist/js/bootstrap.min.js', paths.jsAsset + '/bootstrap.min.js');
+        mix.copy(paths.bowerAsset + '/jquery/dist/jquery.min.js', paths.jsAsset + '/jquery.min.js');
+
+	mix.less([
+                "app.less"
+        ]);
+
+	mix.version([
+                'css/app.css',
+                'js/jquery.min.js',
+                'js/bootstrap.min.js'
+        ]);
 });

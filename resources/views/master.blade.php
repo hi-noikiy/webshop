@@ -12,7 +12,7 @@
 
         @yield('extraCSS')
 
-        <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.min.css">
+        <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -199,8 +199,8 @@
                                 </p>
                         </div>
 
-                        <script src="{{ URL::to('/') }}/js/jquery.min.js"></script>
-                        <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
+                        <script src="{{ elixir('js/jquery.min.js') }}"></script>
+                        <script src="{{ elixir('js/bootstrap.min.js') }}"></script>
 
                         @yield('extraJS')
 
