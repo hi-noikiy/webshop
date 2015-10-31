@@ -12,7 +12,7 @@
 
         @yield('extraCSS')
 
-        <link rel="stylesheet" href="{{ URL::to('/') }}/css/app.min.css">
+        <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -21,59 +21,59 @@
         <![endif]-->
 
         <script>
-                // Google Analytics
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        // Google Analytics
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-                ga('create', 'UA-41373177-1', 'auto');
-                ga('send', 'pageview');
+        ga('create', 'UA-41373177-1', 'auto');
+        ga('send', 'pageview');
         </script>
 </head>
 <body>
         <div class="background"></div>
 
         @if(!Auth::check())
-                <div class="modal fade" id="loginModal">
-                        <div class="modal-dialog">
-                                <div class="modal-content">
-                                        <form action="/login" method="POST" class="form form-horizontal">
-                                                {!! csrf_field() !!}
-                                                <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Login</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                        <div class="form-group">
-                                                                <label for="username" class="col-sm-4 control-label">Login</label>
-                                                                <div class="col-sm-8">
-                                                                        <input type="text" name="username" class="form-control" placeholder="Login" autocomplete="off" required value="{{ old('username') }}">
-                                                                </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                                <label for="password" class="col-sm-4 control-label">Wachtwoord</label>
-                                                                <div class="col-sm-8">
-                                                                        <input type="password" name="password" class="form-control" placeholder="Wachtwoord" aria-describedby="forgotPassword" required>
-                                                                        <span id="forgotPassword" class="help-block"><a href="/password/email">Wachtwoord vergeten?</a></span>
-                                                                </div>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                                <div class="col-sm-offset-4 col-sm-8">
-                                                                        <label>
-                                                                                <input name="remember_me" type="checkbox"> Ingelogd blijven?
-                                                                        </label>
-                                                                </div>
+        <div class="modal fade" id="loginModal">
+                <div class="modal-dialog">
+                        <div class="modal-content">
+                                <form action="/login" method="POST" class="form form-horizontal">
+                                        {!! csrf_field() !!}
+                                        <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Login</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="form-group">
+                                                        <label for="username" class="col-sm-4 control-label">Login</label>
+                                                        <div class="col-sm-8">
+                                                                <input type="text" name="username" class="form-control" placeholder="Login" autocomplete="off" required value="{{ old('username') }}">
                                                         </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">Login</button>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
+                                                <div class="form-group">
+                                                        <label for="password" class="col-sm-4 control-label">Wachtwoord</label>
+                                                        <div class="col-sm-8">
+                                                                <input type="password" name="password" class="form-control" placeholder="Wachtwoord" aria-describedby="forgotPassword" required>
+                                                                <span id="forgotPassword" class="help-block"><a href="/password/email">Wachtwoord vergeten?</a></span>
+                                                        </div>
                                                 </div>
-                                        </form>
-                                </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                                                <div class="checkbox">
+                                                        <div class="col-sm-offset-4 col-sm-8">
+                                                                <label>
+                                                                        <input name="remember_me" type="checkbox"> Ingelogd blijven?
+                                                                </label>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Login</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
+                                        </div>
+                                </form>
+                        </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         @endif
 
         <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
@@ -100,7 +100,7 @@
                                                         <li><a href="/about">Het bedrijf</a></li>
                                                         <li><a href="/contact">Contact</a></li>
                                                         <li><a href="/assortment">Assortiment</a></li>
-                                                 </ul>
+                                                </ul>
                                         </li>
                                         <li class="@if( Route::current()->getUri() === 'downloads' ) active @endif"><a href="/downloads">Downloads</a></li>
                                         <li class="dropdown">
@@ -117,34 +117,34 @@
                                 </ul>
 
                                 <div class="navbar-right " id="nav-utils">
-                                    <ul class="nav navbar-nav">
-                                            @if(Auth::check())
-                                                    <li class="@if( Route::current()->getUri() === 'cart' ) active @endif"><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
-                                                    <li class="dropdown @if( substr(Route::current()->getUri(), 0, 7) === 'account' ) active @endif">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                                    <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
-                                                                    <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
-                                                                    <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
-                                                                    <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
-                                                                    <li class="divider"></li>
-                                                                    <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
-                                                            </ul>
-                                                    </li>
-                                            @else
-                                                    <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
-                                            @endif
-                                    </ul>
+                                        <ul class="nav navbar-nav">
+                                                @if(Auth::check())
+                                                        <li class="@if( Route::current()->getUri() === 'cart' ) active @endif"><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                                                        <li class="dropdown @if( substr(Route::current()->getUri(), 0, 7) === 'account' ) active @endif">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                        <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
+                                                                        <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
+                                                                        <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                                                        <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
+                                                                        <li class="divider"></li>
+                                                                        <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
+                                                                </ul>
+                                                        </li>
+                                                @else
+                                                        <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                                                @endif
+                                        </ul>
 
-                                    <br />
+                                        <br />
 
-                                    <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
-                                            {!! csrf_field() !!}
-                                            <div class="form-group search-field has-feedback">
-                                                    <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" required="" class="form-control" placeholder="Zoeken">
-                                                    <button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-search form-control-feedback"></i></button>
-                                            </div>
-                                    </form>
+                                        <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
+                                                {!! csrf_field() !!}
+                                                <div class="form-group search-field has-feedback">
+                                                        <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" required="" class="form-control" placeholder="Zoeken">
+                                                        <button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-search form-control-feedback"></i></button>
+                                                </div>
+                                        </form>
                                 </div>
                         </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-->
@@ -172,14 +172,14 @@
                 @if ($errors->has())
                         <div class="alert alert-danger">
                                 @foreach ($errors->all() as $error)
-                                        {{ $error }}<br>
+                                        {{ $error }}<br />
                                 @endforeach
                         </div>
                 @endif
 
                 @if (Session::has('status'))
                         <div class="alert alert-success" id="statusmessage">
-                                {{ Session::get('status') }}<br>
+                                {{ Session::get('status') }}<br />
                         </div>
                 @endif
 
@@ -191,16 +191,16 @@
                         <div class="text-center">
                                 Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                                 <p>
-                                    <small>
-                                        Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
-                                        <br />
-                                        Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
-                                    </small>
+                                        <small>
+                                                Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
+                                                <br />
+                                                Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
+                                        </small>
                                 </p>
                         </div>
 
-                        <script src="{{ URL::to('/') }}/js/jquery.min.js"></script>
-                        <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
+                        <script src="{{ elixir('js/jquery.min.js') }}"></script>
+                        <script src="{{ elixir('js/bootstrap.min.js') }}"></script>
 
                         @yield('extraJS')
 
@@ -212,12 +212,8 @@
                                 $(function () {
                                         $('[data-toggle="tooltip"]').tooltip();
 
-                                        //$('.search-field').hover(function() {
-                                        //        $('#searchInput').focus();
-                                        //});
-
                                         if (location.hash == '#loginModal')
-                                                $('#loginModal').modal('show');
+                                        $('#loginModal').modal('show');
                                 });
 
                                 $('#loginModal').on('shown.bs.modal', function () {

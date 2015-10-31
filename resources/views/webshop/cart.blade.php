@@ -27,7 +27,7 @@
                                         $total          += (double) ($nettoPrice * $qty);
                                 ?>
 
-                                <form action="/cart/update" method="POST" class="col-sm-4">
+                                <form action="/cart/update" method="POST" class="col-md-4 col-sm-6">
                                         {!! csrf_field() !!}
                                         <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
 

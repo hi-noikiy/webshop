@@ -9,11 +9,7 @@
 
         @yield('extraCSS')
 
-        <style>
-                @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,300,200,600,700);
-                @import url({{ URL::to('/') }}/css/bootstrap.min.css);
-                @import url({{ URL::to('/') }}/css/app.css);
-        </style>
+        <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -131,9 +127,9 @@
                         </p>
                 </div>
 
-                <script src="{{ URL::to('/') }}/js/jquery-2.1.3.min.js"></script>
-                <script src="{{ URL::to('/') }}/js/bootstrap.min.js"></script>
-                <script src="/js/jquery.toaster.js"></script>
+                <script src="{{ elixir('js/jquery.min.js') }}"></script>
+                <script src="{{ elixir('js/bootstrap.min.js') }}"></script>
+                
                 <script type="text/javascript">
                         $("#searchInput").on('focus', function() {
                                 window.location.href = '/webshop';
