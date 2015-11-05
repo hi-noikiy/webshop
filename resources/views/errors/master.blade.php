@@ -9,6 +9,7 @@
 
         @yield('extraCSS')
 
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -129,7 +130,7 @@
 
                 <script src="{{ elixir('js/jquery.min.js') }}"></script>
                 <script src="{{ elixir('js/bootstrap.min.js') }}"></script>
-                
+
                 <script type="text/javascript">
                         $("#searchInput").on('focus', function() {
                                 window.location.href = '/webshop';
