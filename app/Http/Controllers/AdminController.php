@@ -394,6 +394,43 @@ class AdminController extends Controller {
         }
 
         /**
+        * This function will handle the image import
+        *
+        * @return mixed
+        */
+        public function downloadImport()
+        {
+                if (Input::hasFile('imageFile') && Input::file('imageFile')->isValid())
+                {
+                        $file      = Input::file('imageFile');
+                        $fileName  = $file->getClientOriginalName();
+                        $fileMime  = $file->getMimeType();
+                        $startTime = microtime(true);
+
+                        $validator = Validator::make(
+                                ['fileType' => $file],
+                                ['fileType' => 'required|mimes:zip']
+                        );
+
+                        if ($validator->fails())
+                                return Redirect::back()->withErrors( 'Geen geldig bestand geuploaded. Het bestand mag alleen een Zip bestand zijn');
+                        else
+                        {
+
+                                // If it's an image file, move it directly to the product image folder
+                                $file->move(public_path() . "/dl", $fileName);
+
+                                $count = 1;
+
+                                $endTime = round(microtime(true) - $startTime, 4);
+
+                                return Redirect::to('/admin/importsuccess')->with(['count' => $count, 'time' => $endTime, 'type' => 'download']);
+                        }
+                } else
+                        return Redirect::back()->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
+        }
+
+        /**
         * The import was successful :D
         *
         * @return mixed

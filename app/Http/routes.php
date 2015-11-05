@@ -76,6 +76,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::post('admin/productimport', 'AdminController@productImport');       	// Handle the product import
 Route::post('admin/discountimport', 'AdminController@discountImport');     	// Handle the discount import
 Route::post('admin/imageimport', 'AdminController@imageImport');     		// Handle the image import
+Route::post('admin/downloadimport', 'AdminController@downloadImport');     	// Handle the download file import
 Route::post('admin/saveContent', 'AdminController@saveContent');           	// Save the page content
 Route::post('admin/generate', 'AdminController@generateCatalog');		// Generate the catalog
 Route::post('admin/addCarouselSlide', 'AdminController@addSlide');		// Try to add a carousel slide

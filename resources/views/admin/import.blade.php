@@ -7,81 +7,110 @@
 @section('content')
         @include('admin.nav')
 
-        <h3>Artikelbestand</h3>
+        <div class="row">
+                <div class="col-md-6">
+                        <h3>Artikelbestand</h3>
 
-        <hr />
+                        <hr />
 
-        <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
-                {!! csrf_field() !!}
-                <div class="form-group">
-                        <label for="productFile" class="col-sm-2 control-label">Bestand</label>
-                        <div class="col-sm-10">
-                                <div class="input-group">
-                                        <span class="input-group-btn">
-                                                <span class="btn btn-primary btn-file">
-                                                        Bladeren&hellip; <input type="file" name="productFile" accept=".csv">
-                                                </span>
-                                        </span>
-                                        <input type="text" class="form-control" readonly id="fileName">
+                        <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
+                                {!! csrf_field() !!}
+                                <div class="form-group">
+                                        <label for="productFile" class="col-sm-2 control-label">Bestand</label>
+                                        <div class="col-sm-10">
+                                                <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                                <span class="btn btn-primary btn-file">
+                                                                        Bladeren&hellip; <input type="file" name="productFile" accept=".csv">
+                                                                </span>
+                                                        </span>
+                                                        <input type="text" class="form-control" readonly id="fileName">
+                                                </div>
+                                        </div>
                                 </div>
-                        </div>
-                </div>
 
-                <span class="help-block col-sm-offset-2">CSV, max. {{ ini_get('upload_max_filesize') }}</span>
-                <button type="submit" class="btn btn-success col-sm-offset-2">Artikelbestand uploaden</button>
-        </form>
+                                <span class="help-block col-sm-offset-2">CSV, max. {{ ini_get('upload_max_filesize') }}</span>
+                                <button type="submit" class="btn btn-success col-sm-offset-2">Artikelbestand uploaden</button>
+                        </form>
 
-        <hr />
+                        <hr />
 
-        <h3>Kortingsbestand</h3>
+                        <h3>Afbeeldingen</h3>
 
-        <hr />
+                        <hr />
 
-        <form action="/admin/discountimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                {!! csrf_field() !!}
-                <div class="form-group">
-                        <label for="discountFile" class="col-sm-2 control-label">Bestand</label>
-                        <div class="col-sm-10">
-                                <div class="input-group">
-                                        <span class="input-group-btn">
-                                                <span class="btn btn-primary btn-file">
-                                                        Bladeren&hellip; <input type="file" name="discountFile" accept=".csv">
-                                                </span>
-                                        </span>
-                                        <input type="text" class="form-control" readonly id="fileName">
+                        <form action="/admin/imageimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                {!! csrf_field() !!}
+                                <div class="form-group">
+                                        <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
+                                        <div class="col-sm-10">
+                                                <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                                <span class="btn btn-primary btn-file">
+                                                                        Bladeren&hellip; <input type="file" name="imageFile" accept=".zip,image/*">
+                                                                </span>
+                                                        </span>
+                                                        <input type="text" class="form-control" readonly id="fileName">
+                                                </div>
+                                        </div>
                                 </div>
-                        </div>
+
+                                <span class="help-block col-sm-offset-2">ZIP/Afbeelding, max. {{ ini_get('upload_max_filesize') }}</span>
+                                <button type="submit" class="btn btn-success col-sm-offset-2">Afbeeldingen uploaden</button>
+                        </form>
                 </div>
+                <div class="col-md-6">
+                        <h3>Kortingsbestand</h3>
 
-                <span class="help-block col-sm-offset-2">CSV, max. {{ ini_get('upload_max_filesize') }}</span>
-                <button type="submit" class="btn btn-success col-sm-offset-2">Kortingsbestand uploaden</button>
-        </form>
+                        <hr />
 
-        <hr />
-
-        <h3>Afbeeldingen</h3>
-
-        <hr />
-
-        <form action="/admin/imageimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                {!! csrf_field() !!}
-                <div class="form-group">
-                        <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
-                        <div class="col-sm-10">
-                                <div class="input-group">
-                                        <span class="input-group-btn">
-                                                <span class="btn btn-primary btn-file">
-                                                        Bladeren&hellip; <input type="file" name="imageFile" accept=".zip,image/*">
-                                                </span>
-                                        </span>
-                                        <input type="text" class="form-control" readonly id="fileName">
+                        <form action="/admin/discountimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                {!! csrf_field() !!}
+                                <div class="form-group">
+                                        <label for="discountFile" class="col-sm-2 control-label">Bestand</label>
+                                        <div class="col-sm-10">
+                                                <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                                <span class="btn btn-primary btn-file">
+                                                                        Bladeren&hellip; <input type="file" name="discountFile" accept=".csv">
+                                                                </span>
+                                                        </span>
+                                                        <input type="text" class="form-control" readonly id="fileName">
+                                                </div>
+                                        </div>
                                 </div>
-                        </div>
-                </div>
 
-                <span class="help-block col-sm-offset-2">ZIP/Afbeelding, max. {{ ini_get('upload_max_filesize') }}</span>
-                <button type="submit" class="btn btn-success col-sm-offset-2">Afbeeldingen uploaden</button>
-        </form>
+                                <span class="help-block col-sm-offset-2">CSV, max. {{ ini_get('upload_max_filesize') }}</span>
+                                <button type="submit" class="btn btn-success col-sm-offset-2">Kortingsbestand uploaden</button>
+                        </form>
+
+                        <hr />
+
+                        <h3>Downloads</h3>
+
+                        <hr />
+
+                        <form action="/admin/downloadimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                {!! csrf_field() !!}
+                                <div class="form-group">
+                                        <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
+                                        <div class="col-sm-10">
+                                                <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                                <span class="btn btn-primary btn-file">
+                                                                        Bladeren&hellip; <input type="file" name="imageFile" accept=".zip">
+                                                                </span>
+                                                        </span>
+                                                        <input type="text" class="form-control" readonly id="fileName">
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <span class="help-block col-sm-offset-2">ZIP, max. {{ ini_get('upload_max_filesize') }}</span>
+                                <button type="submit" class="btn btn-success col-sm-offset-2">Bestand uploaden</button>
+                        </form>
+                </div>
+        </div>
 @stop
 
 @section('extraCSS')
