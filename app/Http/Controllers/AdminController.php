@@ -409,11 +409,11 @@ class AdminController extends Controller {
 
                         $validator = Validator::make(
                                 ['fileType' => $file],
-                                ['fileType' => 'required|mimes:zip']
+                                ['fileType' => 'required|mimes:zip,pdf']
                         );
 
                         if ($validator->fails())
-                                return Redirect::back()->withErrors( 'Geen geldig bestand geuploaded. Het bestand mag alleen een Zip bestand zijn');
+                                return Redirect::back()->withErrors( 'Geen geldig bestand geuploaded. Het bestand mag een Zip of PDF bestand zijn');
                         else
                         {
 

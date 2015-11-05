@@ -98,7 +98,7 @@
                                                 <div class="input-group">
                                                         <span class="input-group-btn">
                                                                 <span class="btn btn-primary btn-file">
-                                                                        Bladeren&hellip; <input type="file" name="imageFile" accept=".zip">
+                                                                        Bladeren&hellip; <input type="file" name="imageFile">
                                                                 </span>
                                                         </span>
                                                         <input type="text" class="form-control" readonly id="fileName">
@@ -106,7 +106,7 @@
                                         </div>
                                 </div>
 
-                                <span class="help-block col-sm-offset-2">ZIP, max. {{ ini_get('upload_max_filesize') }}</span>
+                                <span class="help-block col-sm-offset-2">ZIP/PDF, max. {{ ini_get('upload_max_filesize') }}</span>
                                 <button type="submit" class="btn btn-success col-sm-offset-2">Bestand uploaden</button>
                         </form>
                 </div>
