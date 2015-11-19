@@ -4,3 +4,6 @@
 /public/build/*
 /public/css/*
 /public/fonts/*
+Homestead.yaml
+Vagrantfile
+.vagrant/
