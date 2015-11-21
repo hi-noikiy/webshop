@@ -4,25 +4,25 @@
   xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 
 <url>
-        <loc>http://wiringa.nl/</loc>
+        <loc>https://wiringa.nl/</loc>
 </url>
 <url>
-        <loc>http://www.wiringa.nl/about</loc>
+        <loc>https://www.wiringa.nl/about</loc>
         <image:image>
-                <image:loc>http://www.wiringa.nl/img/site-bg.jpg</image:loc>
+                <image:loc>https://www.wiringa.nl/img/site-bg.jpg</image:loc>
                 <image:caption>Het bedrijf</image:caption>
         </image:image>
 </url>
 <url>
-        <loc>http://www.wiringa.nl/contact</loc>
+        <loc>https://www.wiringa.nl/contact</loc>
 </url>
 <url>
-        <loc>http://www.wiringa.nl/assortment</loc>
+        <loc>https://www.wiringa.nl/assortment</loc>
 </url>
 <url>
-        <loc>http://www.wiringa.nl/downloads</loc>
+        <loc>https://www.wiringa.nl/downloads</loc>
 </url>
 <url>
-        <loc>http://www.wiringa.nl/webshop</loc>
+        <loc>https://www.wiringa.nl/webshop</loc>
 </url>
 </urlset>
