@@ -45,10 +45,6 @@
                                                 </p>
                                         </div>
                                 </div>
-
-                                <div class="well text-center ie-only">
-                                        <h4>Voor de beste ervaring met onze website raden wij een moderne browser zoals <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> of <a href="https://www.mozilla.org/nl/firefox/new/" target="_blank">Firefox</a> aan.</h4>
-                                </div>
                         @else
                                 <div class="row">
                                         <div class="col-md-8">
@@ -61,10 +57,6 @@
                                                                         {!! $news->content !!}
                                                                 </p>
                                                         </div>
-                                                </div>
-
-                                                <div class="well well-sm text-center ie-only">
-                                                        <h4>Voor de beste ervaring met onze website raden wij een moderne browser zoals <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> of <a href="https://www.mozilla.org/nl/firefox/new/" target="_blank">Firefox</a> aan.</h4>
                                                 </div>
                                         </div>
                                         <div class="col-md-4">

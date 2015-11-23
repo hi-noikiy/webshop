@@ -14,7 +14,7 @@
 
         <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
-        
+
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
@@ -186,6 +186,10 @@
                                 {{ Session::get('status') }}<br />
                         </div>
                 @endif
+
+                <div class="well well-sm text-center ie-only">
+                        <h4>Voor de beste ervaring met onze website raden wij een moderne browser zoals <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> of <a href="https://www.mozilla.org/nl/firefox/new/" target="_blank">Firefox</a> aan.</h4>
+                </div>
 
                 @yield('content')
 
