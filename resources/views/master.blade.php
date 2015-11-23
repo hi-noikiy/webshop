@@ -187,9 +187,11 @@
                         </div>
                 @endif
 
-                <div class="well well-sm text-center ie-only">
-                        <h4>Voor de beste ervaring met onze website raden wij een moderne browser zoals <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> of <a href="https://www.mozilla.org/nl/firefox/new/" target="_blank">Firefox</a> aan.</h4>
-                </div>
+                @if( Route::current()->getUri() === '/' )
+                        <div class="well well-sm text-center ie-only">
+                                <h4>Voor de beste ervaring met onze website raden wij een moderne browser zoals <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> of <a href="https://www.mozilla.org/nl/firefox/new/" target="_blank">Firefox</a> aan.</h4>
+                        </div>
+                @endif
 
                 @yield('content')
 
