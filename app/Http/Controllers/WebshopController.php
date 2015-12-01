@@ -175,7 +175,8 @@ class WebshopController extends Controller {
                         {
                                 $query->orWhere('number', 'LIKE', '%' . $str . '%')
                                       ->orWhere('group', 'LIKE', '%' . $str . '%')
-                                      ->orWhere('altNumber', 'LIKE', '%' . $str . '%');
+                                      ->orWhere('altNumber', 'LIKE', '%' . $str . '%')
+                                      ->orWhere('ean', 'LIKE', '%' . $str . '%');
 
                                 $query->orWhere(function($query)
                                 {
