@@ -126,6 +126,7 @@ class AdminController extends Controller {
                         else
                         {
                                 \Debugbar::disable();
+                                header('X-Accel-Buffering: no');
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
                                 for ($i=0; $i < 4089; $i++) {
@@ -254,6 +255,7 @@ class AdminController extends Controller {
                                 return Redirect::back()->withErrors( $validator->errors());
                         else
                         {
+                                header('X-Accel-Buffering: no');
                                 \Debugbar::disable();
                                 // This loop is used to send the first 4096 bytes for the output buffering to work
                                 echo "<!--";
