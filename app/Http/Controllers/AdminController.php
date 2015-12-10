@@ -6,6 +6,8 @@ use App\Content;
 use App\Carousel;
 use App\User;
 
+use App\Import\ProductImporter;
+
 use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash;
 
 class AdminController extends Controller {
@@ -140,8 +142,8 @@ class AdminController extends Controller {
 
                                 $startTime = microtime(true);
 
-                                $csv       = file($file->getRealPath());
-                                $lineCount = count($csv);
+                                $fh        = fopen($file->getRealPath(), 'r');
+                                $lineCount = count(file($file->getRealPath()));
 
                                 DB::beginTransaction();
 
@@ -153,9 +155,12 @@ class AdminController extends Controller {
 
                                         $line = $lastPercent = 0;
 
-                                        foreach ($csv as $row) {
-                                                $row  = preg_replace("/\r\n/", "", $row);
-                                                $data = explode(';', $row);
+                                        while(!feof($fh))
+                                        {
+                                            $data = str_getcsv(fgets($fh), ';');
+
+                                            // Make sure column count is 24 at minimum
+                                            if (count($data) === 30) {
 
                                                 DB::table('products')->insert([
                                                         'name'             => $data[0],
@@ -196,7 +201,9 @@ class AdminController extends Controller {
                                                 }
 
                                                 $lastPercent = $percentage;
+                                            }
                                         }
+                                        fclose($fh);
 
                                         echo "<br /><br />";
 
@@ -227,7 +234,12 @@ class AdminController extends Controller {
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
-                                return Redirect::intended('admin/importsuccess')->with(['count' => $lineCount, 'type' => 'product', 'time' => $endTime]);
+                                return Redirect::intended('admin/importsuccess')->with([
+                                    'count' => $line,
+                                    'type'  => 'product',
+                                    'time'  => $endTime,
+                                    'memory' => memory_get_peak_usage()
+                                ]);
                         }
                 } else
                         return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
@@ -270,8 +282,8 @@ class AdminController extends Controller {
 
                                 $startTime = microtime(true);
 
-                                $csv       = file($file->getRealPath());
-                                $lineCount = count($csv);
+                                $fh = fopen($file->getRealPath(), 'r');
+                                $lineCount = count(file($file->getRealPath()));
 
                                 DB::beginTransaction();
 
@@ -283,8 +295,12 @@ class AdminController extends Controller {
 
                                         $line = $lastPercent = 0;
 
-                                        foreach ($csv as $row) {
-                                                $data = explode(';', $row);
+                                        while(!feof($fh))
+                                        {
+                                            $data = str_getcsv(fgets($fh), ';');
+
+                                            // Make sure the column count is right
+                                            if (count($data) === 8) {
 
                                                 DB::table('discounts')->insert([
                                                         'table'         => $data[0],
@@ -310,7 +326,9 @@ class AdminController extends Controller {
                                                 }
 
                                                 $lastPercent = $percentage;
+                                            }
                                         }
+                                        fclose($fh);
 
                                         echo "<br /><br />";
 
@@ -341,7 +359,12 @@ class AdminController extends Controller {
 
                                 $endTime = round(microtime(true) - $startTime, 4);
 
-                                return Redirect::to('admin/importsuccess')->with(['count' => count($csv), 'time' => $endTime, 'type' => 'korting']);
+                                return Redirect::to('admin/importsuccess')->with([
+                                    'count' => $line,
+                                    'time'  => $endTime,
+                                    'type'  => 'korting',
+                                    'memory' => memory_get_peak_usage()
+                                ]);
                         }
                 } else
                         return Redirect::back()->withErrors( 'Geen bestand geselecteerd');
