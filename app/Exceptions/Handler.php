@@ -37,7 +37,8 @@ class Handler extends ExceptionHandler {
 
 		if ( !$e instanceof ModelNotFoundException &&
 		     !$e instanceof MethodNotAllowedHttpException &&
-			 !$e instanceof TokenMismatchException)
+			 !$e instanceof TokenMismatchException &&
+			 !$e instanceof NotFoundHttpException)
 		{
 			\Mail::send('email.exception', ['trace' => $trace, 'class' => $class], function($message)
 			{
