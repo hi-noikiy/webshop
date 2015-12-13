@@ -11,9 +11,10 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		'App\Console\Commands\createUser',
-		'App\Console\Commands\setAdmin'
-	];
+		Commands\createUser::class,
+		Commands\setAdmin::class,
+        Commands\checkRelatedProducts::class
+    ];
 
 	/**
 	 * Define the application's command schedule.
