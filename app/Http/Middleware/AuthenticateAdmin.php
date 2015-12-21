@@ -32,12 +32,12 @@ class AuthenticateAdmin
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest()) 
+        if ($this->auth->guest())
         {
             if ($request->ajax())
                 return response('Unauthorized.', 401);
             else
-                return redirect()->guest('/#loginModal');
+                return redirect()->guest('/#login');
         } elseif (!$this->auth->user()->isAdmin)
             return redirect()->to('/account')->with('error', "Dit account heeft geen admin rechten");
         return $next($request);
