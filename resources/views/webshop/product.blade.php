@@ -14,7 +14,7 @@
                         $discount 		= "Actie";
                         $price 			= (double) number_format(preg_replace("/\,/", ".", $productData->special_price), 2, ".", "");
                 }
-                $prijs_per_str	                = ($productData->refactor == 1 ? price_per($productData->registered_per) : price_per($productData->packed_per));
+                $prijs_per_str	                = ($productData->refactor == 1 ? Helper::price_per($productData->registered_per) : Helper::price_per($productData->packed_per));
         ?>
 
         @if (Auth::check())
@@ -127,48 +127,46 @@
                                                 </div>
                                         @endif
                                 </div>
-                                <div class="panel-body">
-                                        <table class="table">
+                                <table class="table">
+                                        <tr>
+                                                <td><b>Product nummer</b></td>
+                                                <td>{{ $productData->number }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Product groep</b></td>
+                                                <td>{{ $productData->group }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Fabrieksnummer</b></td>
+                                                <td>{{ $productData->altNumber }}</td>
+                                        </tr>
+                                        @if ($productData->ean != "")
                                                 <tr>
-                                                        <td><b>Product nummer</b></td>
-                                                        <td>{{ $productData->number }}</td>
+                                                        <td><b>EAN</b></td>
+                                                        <td>{{ $productData->ean }}</td>
                                                 </tr>
-                                                <tr>
-                                                        <td><b>Product groep</b></td>
-                                                        <td>{{ $productData->group }}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><b>Fabrieksnummer</b></td>
-                                                        <td>{{ $productData->altNumber }}</td>
-                                                </tr>
-                                                @if ($productData->ean != "")
-                                                        <tr>
-                                                                <td><b>EAN</b></td>
-                                                                <td>{{ $productData->ean }}</td>
-                                                        </tr>
-                                                @endif
-                                                <tr>
-                                                        <td><b>Voorraad</b></td>
-                                                        <td>{{ stockCode($productData->stockCode) }}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><b>Merk</b></td>
-                                                        <td>{{ $productData->brand }}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><b>Serie</b></td>
-                                                        <td>{{ $productData->series }}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><b>Type</b></td>
-                                                        <td>{{ $productData->type }}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><b>Prijs per</b></td>
-                                                        <td>{{ $prijs_per_str }}</td>
-                                                </tr>
-                                        </table>
-                                </div>
+                                        @endif
+                                        <tr>
+                                                <td><b>Voorraad</b></td>
+                                                <td>{{ Helper::stockCode($productData->stockCode) }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Merk</b></td>
+                                                <td>{{ $productData->brand }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Serie</b></td>
+                                                <td>{{ $productData->series }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Type</b></td>
+                                                <td>{{ $productData->type }}</td>
+                                        </tr>
+                                        <tr>
+                                                <td><b>Prijs per</b></td>
+                                                <td>{{ $prijs_per_str }}</td>
+                                        </tr>
+                                </table>
                         </div>
                 </div>
         </div>

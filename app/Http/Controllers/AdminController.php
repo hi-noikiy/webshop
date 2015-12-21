@@ -41,7 +41,13 @@ class AdminController extends Controller {
         */
         public function overview()
         {
-                return view('admin.overview');
+                $product_import = Content::where('name', 'admin.product_import')->first();
+                $discount_import = Content::where('name', 'admin.discount_import')->first();
+
+                return view('admin.overview', [
+                    'product_import' => $product_import,
+                    'discount_import' => $discount_import
+                ]);
         }
 
         /**
@@ -131,7 +137,7 @@ class AdminController extends Controller {
         */
         public function contentManager()
         {
-                $data = Content::where('visible', '1')->get();
+                $data = Content::where('hidden', '0')->get();
 
                 return view('admin.managecontent')->with(['data' => $data]);
         }
@@ -196,7 +202,7 @@ class AdminController extends Controller {
         {
                 if (Input::get('footer') !== "")
                 {
-                        $footer = Content::where('name', 'catalog.footer');
+                        $footer = Content::where('name', 'catalog.footer')->first();
 
                         $footer->content = Input::get('footer');
 

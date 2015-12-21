@@ -4,7 +4,7 @@ use App\Address;
 use App\Order;
 use App\User;
 
-use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session, Mail;
+use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session, Mail, Helper;
 
 class AccountController extends Controller {
 
@@ -121,7 +121,7 @@ class AccountController extends Controller {
 
                 return view('account.favorites', [
                                 'favorites'     => $productData,
-                                'discounts'     => getProductDiscount(Auth::user()->login),
+                                'discounts'     => Helper::getProductDiscount(Auth::user()->login),
                                 'groupData'     => $productGroup
                         ]
                 );
