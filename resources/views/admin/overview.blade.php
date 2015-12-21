@@ -9,6 +9,46 @@
 
         <div class="row">
                 <div class="col-md-12">
+                    <h3>Import status</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel {{ $product_import->error ? 'wtg-panel-danger' : 'panel-primary' }}">
+                                <div class="panel-heading">Product import</div>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Laatste update</td>
+                                            <td>{{ $product_import->updated_at->getTimestamp() === -62169984000 ? $product_import->created_at : $product_import->updated_at }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td>{!! $product_import->content !!}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel {{ $discount_import->error ? 'wtg-panel-danger' : 'panel-primary' }}">
+                                <div class="panel-heading">Korting import</div>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Laatste update</td>
+                                            <td>{{ $discount_import->updated_at->getTimestamp() === -62169984000 ? $discount_import->created_at : $discount_import->updated_at }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td>{!! $discount_import->content !!}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
                         <h3>System Health</h3>
                         <div class="row">
                                 <div class="col-sm-2">CPU gebruik:</div>
