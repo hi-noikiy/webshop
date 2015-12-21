@@ -17,10 +17,8 @@
                                 @if (Session::get('type') === 'afbeelding' || Session::get('type') === 'download')
                                         <h4>De {{ Session::get('type') }} import is gelukt. Er {{ (Session::get('count') === 1 ? 'is' : 'zijn') }} {{ Session::get('count') }} {{ Session::get('type') }}{{ (Session::get('count') === 1 ? '' : 'en') }} geimporteerd in {{ Session::get('time') }} seconden.</h4>
                                 @else
-                                        <h4>De {{ Session::get('type') }} import is gelukt. Er {{ (Session::get('count') === 1 ? 'is' : 'zijn') }} {{ Session::get('count') }} regel{{ (Session::get('count') === 1 ? '' : 's') }} geimporteerd in {{ Session::get('time') }} seconden.</h4>
+                                        <h4>De {{ Session::get('type') }} upload is gelukt. De import wordt uitgevoerd over {{ Helper::timeToNextCronJob() }} minuten.</h4>
                                 @endif
-
-                                <h4>Geheugen gebruik: {{ ((Session::get('memory') / 1000) / 1000 ) }} MB</h4>
                         </div>
                 </div>
         </div>
