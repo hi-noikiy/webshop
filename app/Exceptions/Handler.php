@@ -35,7 +35,8 @@ class Handler extends ExceptionHandler {
 		$trace = $e->getTraceAsString();
 		$class = get_class($e);
 
-		if ( !$e instanceof ModelNotFoundException &&
+		if ( env('APP_ENV') === "production" && 
+             !$e instanceof ModelNotFoundException &&
 		     !$e instanceof MethodNotAllowedHttpException &&
 			 !$e instanceof TokenMismatchException &&
 			 !$e instanceof NotFoundHttpException)
