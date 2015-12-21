@@ -199,6 +199,8 @@ return [
 		'Validator' => Illuminate\Support\Facades\Validator::class,
 		'View'      => Illuminate\Support\Facades\View::class,
 		'Zipper' 	=> Chumper\Zipper\Zipper::class,
+
+		'Helper'	=> App\Helper::class,
 	],
 
 ];
