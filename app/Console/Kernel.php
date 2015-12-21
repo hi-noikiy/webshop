@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel {
 	protected $commands = [
 		Commands\createUser::class,
 		Commands\setAdmin::class,
-        Commands\checkRelatedProducts::class
+        Commands\checkRelatedProducts::class,
+		Commands\ImportProducts::class,
+		Commands\ImportDiscounts::class
     ];
 
 	/**

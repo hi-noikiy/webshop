@@ -45,7 +45,6 @@ class checkRelatedProducts extends Command
 
         // Loop through every product that has related products
         foreach ($products as $product) {
-
             $bar->setMessage($product->number, 'product');
 
             // Loop though the related products to check if they exist
