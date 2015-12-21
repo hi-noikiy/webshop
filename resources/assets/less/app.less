@@ -3,6 +3,7 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Titillium Web", sans-serif;
 @navbar-bg: #c2272d;
+@wtg-danger: #F44336;
 
 @-webkit-keyframes navBrandHover {
 	from {
@@ -525,4 +526,13 @@ img {
 .well,
 .table-striped > tbody > tr:nth-child(odd) {
 	background-color: rgb(245,245,245) !important;
+}
+
+.wtg-panel-danger {
+	border-color: @wtg-danger;
+
+	.panel-heading {
+		background-color: @wtg-danger;
+		color: white;
+	}
 }
