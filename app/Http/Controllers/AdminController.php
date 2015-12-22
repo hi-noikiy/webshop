@@ -25,20 +25,10 @@ class AdminController extends Controller {
         */
 
         /**
-        * This will check if the user is logged in.
-        * If the user is not logged in then they will be redirected to the login page
-        * as they are not allowed to access this Controller without admin authentication.
-        *//*
-        public function __construct()
-        {
-                $this->middleware('auth.admin');
-        }*/
-
-        /**
-        * The admin overview page
-        *
-        * @return mixed
-        */
+         * The admin overview page
+         *
+         * @return mixed
+         */
         public function overview()
         {
                 $product_import = Content::where('name', 'admin.product_import')->first();
@@ -51,10 +41,20 @@ class AdminController extends Controller {
         }
 
         /**
-        * Return the CPU load
-        *
-        * @return string
-        */
+         * Display a fancy phpinfo page
+         *
+         * @return mixed
+         */
+        public function phpinfo()
+        {
+            return view('admin.phpinfo');
+        }
+
+        /**
+         * Return the CPU load
+         *
+         * @return string
+         */
         public function CPULoad()
         {
                 if (Request::ajax())
@@ -75,10 +75,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Return the RAM usage
-        *
-        * @return string
-        */
+         * Return the RAM usage
+         *
+         * @return string
+         */
         public function RAMLoad()
         {
                 if (Request::ajax())
@@ -102,10 +102,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * The import page
-        *
-        * @return mixed
-        */
+         * The import page
+         *
+         * @return mixed
+         */
         public function import()
         {
                 return view('admin.import');
@@ -114,19 +114,17 @@ class AdminController extends Controller {
 
 
         /**
-        * The import was successful :D
-        *
-        * @return mixed
-        */
+         * The import was successful :D
+         *
+         * @return mixed
+         */
         public function importSuccess()
         {
-                // Disable the debugbar or it will overload the memory
-                \Debugbar::disable();
-                // The type must be set
-                if (Session::has('type'))
+            // The type must be set
+            if (Session::has('type'))
                 return view('admin.importsuccess');
-                // Or you will be redirected
-                else
+            // Or you will be redirected
+            else
                 return Redirect::to('admin/import');
         }
 
@@ -143,10 +141,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Get the content that belongs to the page/field
-        *
-        * @return mixed
-        */
+         * Get the content that belongs to the page/field
+         *
+         * @return mixed
+         */
         public function getContent()
         {
                 if(Request::ajax())
@@ -163,10 +161,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Save the content to the database
-        *
-        * @return mixed
-        */
+         * Save the content to the database
+         *
+         * @return mixed
+         */
         public function saveContent()
         {
                 if (Input::has('field') && Input::has('content'))
@@ -182,10 +180,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Show the generate page
-        *
-        * @return mixed
-        */
+         * Show the generate page
+         *
+         * @return mixed
+         */
         public function generate()
         {
                 $content = DB::table('text')->where('name', 'catalog.footer')->first();
@@ -194,10 +192,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Generate the catalog PDF file
-        *
-        * @return string
-        */
+         * Generate the catalog PDF file
+         *
+         * @return string
+         */
         public function generateCatalog()
         {
                 if (Input::get('footer') !== "")
@@ -232,10 +230,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Carousel manager
-        *
-        * @return mixed
-        */
+         * Carousel manager
+         *
+         * @return mixed
+         */
         public function carousel()
         {
                 $carouselData = Carousel::orderBy('Order')->get();
@@ -244,10 +242,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Add a carousel slide
-        *
-        * @return mixed
-        */
+         * Add a carousel slide
+         *
+         * @return mixed
+         */
         public function addSlide()
         {
                 if (Input::has('title') && Input::has('caption') && Input::hasFile('image'))
@@ -284,11 +282,11 @@ class AdminController extends Controller {
         }
 
         /**
-        * Remove a slide from the carousel
-        *
-        * @var integer
-        * @return mixed
-        */
+         * Remove a slide from the carousel
+         *
+         * @var integer
+         * @return mixed
+         */
         public function removeSlide($id)
         {
                 if (isset($id) && Carousel::where('id', $id)->count() === 1)
@@ -306,11 +304,11 @@ class AdminController extends Controller {
         }
 
         /**
-        * Edit the slide order number
-        *
-        * @var integer
-        * @return mixed
-        */
+         * Edit the slide order number
+         *
+         * @var integer
+         * @return mixed
+         */
         public function editSlide($id)
         {
                 if (isset($id) && Carousel::where('id', $id)->count() === 1)
@@ -331,20 +329,20 @@ class AdminController extends Controller {
         }
 
         /**
-        * Show the user manager
-        *
-        * @return mixed
-        */
+         * Show the user manager
+         *
+         * @return mixed
+         */
         public function userManager()
         {
                 return view('admin.usermanager');
         }
 
         /**
-        * Get some user details
-        *
-        * @return json
-        */
+         * Get some user details
+         *
+         * @return json
+         */
         public function getUserData()
         {
                 if (Request::ajax())
@@ -361,10 +359,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Add/update a user
-        *
-        * @return mixed
-        */
+         * Add/update a user
+         *
+         * @return mixed
+         */
         public function updateUser()
         {
                 $validator = Validator::make(Input::all(), [
@@ -433,10 +431,10 @@ class AdminController extends Controller {
         }
 
         /**
-        * Show the user added page
-        *
-        * @return mixed
-        */
+         * Show the user added page
+         *
+         * @return mixed
+         */
         public function userAdded()
         {
                 if (Session::has('password') && Session::has('input'))

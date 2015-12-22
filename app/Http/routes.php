@@ -39,30 +39,35 @@ Route::get('search', 'WebshopController@search');                       	    // 
 Route::get('specials', 'WebshopController@specials');                   	    // Show only the specials
 Route::get('clearance', 'WebshopController@clearance');                 	    // Show only the clearance products
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function() {
-    Route::get('/', 'AdminController@overview');                        	    // Admin overview
-    Route::get('RAMLoad', 'AdminController@RAMLoad');                 	        // Get the server ram load
-    Route::get('CPULoad', 'AdminController@CPULoad');                 	        // Get the server cpu load
-    Route::get('import', 'AdminController@import');                             // The page where the user can upload a CSV file with the products
-    Route::get('importsuccess', 'AdminController@importSuccess');     	        // Import success page
-    Route::get('managecontent', 'AdminController@contentManager');    	        // Content manager
-    Route::get('generate', 'AdminController@generate');			                // Generate stuffs
-    Route::get('carousel', 'AdminController@carousel');			                // Carousel manager
-    Route::get('getContent', 'AdminController@getContent');           	        // Get the content for a field
-    Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');	    // Try to remove a carousel slide
-    Route::get('usermanager', 'AdminController@userManager');	        	    // Simple user manager
-    Route::get('getUserData', 'AdminController@getUserData');	        	    // Get the requested user's info
-    Route::get('userAdded', 'AdminController@userAdded');			            // The user added page
+Route::group(['middleware' => 'auth.admin'], function() {
 
-    Route::post('productimport', 'ImportController@product');       	    // Handle the product import
-    Route::post('discountimport', 'ImportController@discount');     	    // Handle the discount import
-    Route::post('imageimport', 'ImportController@image');     		        // Handle the image import
-    Route::post('downloadimport', 'ImportController@download');     	    // Handle the download file import
-    Route::post('saveContent', 'AdminController@saveContent');           	    // Save the page content
-    Route::post('generate', 'AdminController@generateCatalog');		            // Generate the catalog
-    Route::post('addCarouselSlide', 'AdminController@addSlide');		        // Try to add a carousel slide
-    Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');	        // Edit the slide order
-    Route::post('updateUser', 'AdminController@updateUser');			        // Update/add the user
+    Route::get('phpinfo', 'AdminController@phpinfo');                           // Display the phpinfo stuff
+
+    Route::group(['prefix' => 'admin'], function() {
+        Route::get('/', 'AdminController@overview');                        	// Admin overview
+        Route::get('RAMLoad', 'AdminController@RAMLoad');                 	    // Get the server ram load
+        Route::get('CPULoad', 'AdminController@CPULoad');                 	    // Get the server cpu load
+        Route::get('import', 'AdminController@import');                         // The page where the user can upload a CSV file with the products
+        Route::get('importsuccess', 'AdminController@importSuccess');     	    // Import success page
+        Route::get('managecontent', 'AdminController@contentManager');    	    // Content manager
+        Route::get('generate', 'AdminController@generate');			            // Generate stuffs
+        Route::get('carousel', 'AdminController@carousel');			            // Carousel manager
+        Route::get('getContent', 'AdminController@getContent');           	    // Get the content for a field
+        Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
+        Route::get('usermanager', 'AdminController@userManager');	        	// Simple user manager
+        Route::get('getUserData', 'AdminController@getUserData');	        	// Get the requested user's info
+        Route::get('userAdded', 'AdminController@userAdded');			        // The user added page
+
+        Route::post('productimport', 'ImportController@product');       	    // Handle the product import
+        Route::post('discountimport', 'ImportController@discount');     	    // Handle the discount import
+        Route::post('imageimport', 'ImportController@image');     		        // Handle the image import
+        Route::post('downloadimport', 'ImportController@download');     	    // Handle the download file import
+        Route::post('saveContent', 'AdminController@saveContent');           	// Save the page content
+        Route::post('generate', 'AdminController@generateCatalog');		        // Generate the catalog
+        Route::post('addCarouselSlide', 'AdminController@addSlide');		    // Try to add a carousel slide
+        Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');	    // Edit the slide order
+        Route::post('updateUser', 'AdminController@updateUser');			    // Update/add the user
+    });
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -87,9 +92,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('addresslist', 'AccountController@addresslist');             // Addresslist
         Route::get('discountfile', 'AccountController@discountfile');           // ICC/CSV Discount generation page
         Route::get('generate_{type}/{method}', [
-        			'middleware' => 'RemoveTempFile', 			                // Middleware to remove the temp css/icc file after download
-        			'uses' => 'AccountController@generateFile'		            // Discount file generation handler
-        		]);
+			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp css/icc file after download
+			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
+		]);
 
         Route::post('changepassword', 'AccountController@changePassPOST'); 	    // Handle the change password request
         Route::post('addAddress', 'AccountController@addAddress');         	    // Add address to the database
