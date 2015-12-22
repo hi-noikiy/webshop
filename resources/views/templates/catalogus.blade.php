@@ -1,6 +1,6 @@
-<?php 
+<?php
 	$lastype 	= '';
-	$lastgroup	= ''; 
+	$lastgroup	= '';
 	$lastserie 	= '';
 	$lastletter = '';
 ?>
@@ -21,7 +21,7 @@
         	font-weight: bold;
         }
 
-        h4, h6, 
+        h4, h6,
         b, p {
         	margin: 0 auto;
         }
@@ -49,9 +49,9 @@
         	max-height: 80px;
         }
 
-        .product-image { 
-        	position: relative; 
-        	height: 80px; 
+        .product-image {
+        	position: relative;
+        	height: 80px;
         }
 
         table {
@@ -140,7 +140,7 @@
 					<p class="series"><b>{!! $product->series !!}</b></p>
 				@endif
 				<p class="type"><b>{!! ucfirst($product->type) !!}</b> <h6 class="index_name">{!! ucfirst($product->catalog_index) !!}</h6></p>
-			</center>			
+			</center>
 			<div class="row">
 				<div class="col-xs-2 product-image">
 					@if ($product->image !== 'geenafbeelding.jpg')
@@ -159,7 +159,7 @@
 								<th>Prijs</th>
 							</tr>
 						</thead>
-							<tbody> 
+							<tbody>
 	@elseif($product->type !== $lastype && $lastype !== '')
 						</tbody>
 					</table>
@@ -191,19 +191,19 @@
 								<th>Prijs</th>
 							</tr>
 						</thead>
-							<tbody> 
+							<tbody>
 	@endif
-	
+
 	<tr>
 		<td>{!! $product->number !!}</td>
 		<td>{!! $product->name !!}</td>
 		<td>{!! $product->group !!}</td>
 		<td>{!! $product->altNumber !!}</td>
-		<td>{!! ($product->refactor == 1 ? price_per($product->registered_per) : price_per($product->packed_per)) !!}</td>
+		<td>{!! ($product->refactor == 1 ? Helper::price_per($product->registered_per) : Helper::price_per($product->packed_per)) !!}</td>
 		<td>&euro;{!! $price !!}</td>
 	</tr>
 
-	<?php 
+	<?php
 		$lastype 	= $product->type;
 		$lastserie 	= $product->series;
 		$lastgroup	= $product->catalog_group;

@@ -137,22 +137,4 @@ class ImportController extends Controller {
                     return Redirect::back()->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
     }
 
-    /**
-     * Check if all the related products exist
-     *
-     * @return void
-     */
-    private function checkRelatedProducts($products_with_related_products)
-    {
-        foreach ($products_with_related_products as $product => $relatedString) {
-
-            foreach(explode(",", $relatedString) as $relatedProduct) {
-                if (Product::where('number', $relatedProduct)->count() === 0) {
-                    throw new \Exception("Product " . $product . " heeft een niet-bestaand gerelateerd product: " . $relatedProduct);
-                }
-            }
-
-        }
-    }
-
 }

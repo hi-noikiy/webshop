@@ -105,7 +105,7 @@
                                 </tr>
                         </thead>
                         <tbody>
-                                <?php $discounts = (Auth::check() ? getProductDiscount(Auth::user()->login) : ''); ?>
+                                <?php $discounts = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login) : ''); ?>
                                 @foreach($results as $product)
                                         @if($product->special_price === '0.00')
                                                 @if(isset($discounts[$product->number]))

@@ -56,7 +56,7 @@
                                                                                                         $nettoprice 	= (double) $brutoprice;
                                                                                                 }
 
-                                                                                                $prijs_per_str	        = ($product->refactor == 1 ? price_per($product->registered_per) : price_per($product->packed_per));
+                                                                                                $prijs_per_str	        = ($product->refactor == 1 ? Helper::price_per($product->registered_per) : Helper::price_per($product->packed_per));
                                                                                         ?>
                                                                                         <tr>
                                                                                                 <td>{{ $product->number }}</td>

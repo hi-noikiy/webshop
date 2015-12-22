@@ -238,7 +238,7 @@ class WebshopController extends Controller {
                 Session::flash('product_id', $product_Id);
 
                 $product                = Product::where('number', $product_Id)->firstOrFail();
-                $discount               = (Auth::check() ? getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+                $discount               = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
                 $prevPage               = Input::get('ref');
 
                 if ($product->related_products)
@@ -458,7 +458,7 @@ class WebshopController extends Controller {
                                                 'qty'     => $qty,
                                                 'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
                                                 'options' => [
-                                                        'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                                        'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
                                                 ]
                                         ];
 
@@ -582,7 +582,7 @@ class WebshopController extends Controller {
                                         'qty'     => $item['qty'],
                                         'price'   => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
                                         'options' => [
-                                                'korting' => getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                                                'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
                                         ]
                                 ];
 
