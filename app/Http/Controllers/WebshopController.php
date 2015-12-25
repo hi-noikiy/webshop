@@ -137,13 +137,13 @@ class WebshopController extends Controller {
                         Session::flash('registrationData', $data);
 
                         \Mail::send('email.registration', $data, function($message)
-                                {
-                                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+                        {
+                                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                                        $message->to('verkoop@wiringa.nl');
+                                $message->to('verkoop@wiringa.nl');
 
-                                        $message->subject('Webshop registratie');
-                                });
+                                $message->subject('Webshop registratie');
+                        });
 
                         return Redirect::to('/register/sent');
                 } else
