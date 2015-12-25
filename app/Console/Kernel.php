@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel {
 		Commands\createUser::class,
 		Commands\setAdmin::class,
         Commands\checkRelatedProducts::class,
-		Commands\ImportProducts::class,
-		Commands\ImportDiscounts::class
+		Commands\importProducts::class,
+		Commands\importDiscounts::class
     ];
 
 	/**

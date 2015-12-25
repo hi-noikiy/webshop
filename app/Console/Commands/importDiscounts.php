@@ -10,7 +10,7 @@ use File, Validator, DB, Helper;
 use App\Discount;
 use App\Content;
 
-class ImportDiscounts extends Command
+class importDiscounts extends Command
 {
     /**
      * The name and signature of the console command.
