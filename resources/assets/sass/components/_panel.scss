@@ -1,0 +1,12 @@
+.panel {
+	background-color: transparent;
+}
+
+.wtg-panel-danger {
+	border-color: $danger-color;
+
+	.panel-heading {
+		background-color: $danger-color;
+		color: white;
+	}
+}
