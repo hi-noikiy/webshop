@@ -22,8 +22,8 @@ Route::get('assortment', 'HomeController@assortment');                          
 Route::group(['middleware' => 'guest'], function () {
     Route::get('password/email', 'Auth\PasswordController@getEmail');		    // Forgot password page
     Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');	// Password reset page
-    Route::get('register', 'WebshopController@register');				        // Show the register page
-    Route::get('register/sent', 'WebshopController@registerSent');			    // Show the register page
+    Route::get('register', 'WebshopController@register');				        // Show the registration page
+    Route::get('register/sent', 'WebshopController@registerSent');			    // Show the registration success page
     Route::get('forgotpassword', 'WebshopController@forgotPassword');       	// Forgot password page
 
     Route::post('login', 'WebshopController@login');                           	// Login handler
