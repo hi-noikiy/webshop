@@ -2,6 +2,7 @@
 
 use App\Product;
 use App\Content;
+use Carbon\Carbon;
 use DB, Input, Validator, Redirect, Helper;
 
 class ImportController extends Controller {
@@ -22,7 +23,11 @@ class ImportController extends Controller {
                     $runTime = new \DateTime("Europe/Amsterdam");
                     $runTime->setTimestamp(strtotime('+' . Helper::timeToNextCronJob() . " minutes"));
 
-                    Content::where('name', 'admin.product_import')->update(['content' => 'Er is een import ingepland voor ' . $runTime->format('H:i')]);
+                    Content::where('name', 'admin.product_import')->update([
+                        'content' => 'Er is een import ingepland voor ' . $runTime->format('H:i'),
+                        'updated_at' => Carbon::now('Europe/Amsterdam'),
+                        'error' => false
+                    ]);
 
                     return Redirect::to('admin/importsuccess')->with(['type' => 'product']);
             } else
@@ -45,7 +50,11 @@ class ImportController extends Controller {
                 $runTime = new \DateTime("Europe/Amsterdam");
                 $runTime->setTimestamp(strtotime('+' . Helper::timeToNextCronJob() . " minutes"));
 
-                Content::where('name', 'admin.discount_import')->update(['content' => 'Er is een import ingepland voor ' . $runTime->format('H:i')]);
+                Content::where('name', 'admin.discount_import')->update([
+                    'content' => 'Er is een import ingepland voor ' . $runTime->format('H:i'),
+                    'updated_at' => Carbon::now('Europe/Amsterdam'),
+                    'error' => false
+                ]);
 
                 return Redirect::to('admin/importsuccess')->with(['type' => 'korting']);
         } else

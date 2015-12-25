@@ -140,14 +140,25 @@ class ImportProducts extends Command
                 } catch (\Exception $e) {
                     DB::rollback();
 
+                    $errorMessage = "Er is een fout opgetreden, de database is niet aangepast: <br />" . $e->getMessage();
+
                     unlink($this->filePath);
-                    $this->error("Er is een fout opgetreden, de database is niet aangepast: " . $e->getMessage());
+                    $this->error($errorMessage);
 
                     Content::where('name', 'admin.product_import')->update([
-                            'content' => "Er is een fout opgetreden, de database is niet aangepast: <br />" . $e->getMessage(),
-                            'updated_at' => Carbon::now('Europe/Amsterdam'),
-                            'error' => true
-                        ]);
+                        'content' => $errorMessage,
+                        'updated_at' => Carbon::now('Europe/Amsterdam'),
+                        'error' => true
+                    ]);
+
+                    \Mail::send('email.import_error_notice', ['error' => $errorMessage, 'type' => 'product'], function($message)
+        			{
+        				$message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+        				$message->to('gfw@wiringa.nl');
+
+        				$message->subject('[WTG Webshop] Product import error');
+        			});
 
                     exit();
                 }
@@ -157,9 +168,10 @@ class ImportProducts extends Command
                 $this->info($line . " products were imported in " . $endTime . " seconds using " . number_format(memory_get_peak_usage() / 1000000, 2) . " MBs of memory");
 
                 Content::where('name', 'admin.product_import')->update([
-                        'content' => $line . " producten zijn geimporteerd. <br />Geheugen gebruik: " . number_format(memory_get_peak_usage() / 1000000, 2) . " MB",
-                        'updated_at' => Carbon::now('Europe/Amsterdam')
-                    ]);
+                    'content' => $line . " producten zijn geimporteerd. <br />Geheugen gebruik: " . number_format(memory_get_peak_usage() / 1000000, 2) . " MB",
+                    'updated_at' => Carbon::now('Europe/Amsterdam'),
+                    'error' => false
+                ]);
             }
 
             // Always remove the file at the end of the import to make sure that it doesn't get parsed twice
