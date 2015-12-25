@@ -50,7 +50,7 @@ class resendOrder extends Command
 
         $data['address'] = $address;
         $data['cart']    = unserialize($order->products);
-	$data['comment'] = 'Unknown :(';
+	$data['comment'] = "Verstuurd op: " . $order->created_at;
 
         \Mail::send('email.resend_order', $data, function($message)
         {
