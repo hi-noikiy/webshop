@@ -7,7 +7,7 @@ use App\User;
 use App\Address;
 use App\Order;
 
-use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App;
+use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App, Helper;
 
 class WebshopController extends Controller {
 
@@ -58,6 +58,11 @@ class WebshopController extends Controller {
                         ]);
         }
 
+        /**
+         * Show the registration page
+         *
+         * @return mixed
+         */
         public function register()
         {
                 if (Auth::check())
@@ -71,6 +76,11 @@ class WebshopController extends Controller {
                 return view('webshop.register', $data);
         }
 
+        /**
+         * Verify the registration page
+         *
+         * @return mixed
+         */
         public function register_check()
         {
                 $validator = Validator::make(Input::all(), [
@@ -142,10 +152,15 @@ class WebshopController extends Controller {
                                 ->withInput(Input::all());
         }
 
+        /**
+         * Show the registration success page
+         *
+         * @return mixed
+         */
         public function registerSent()
         {
-                if (Auth::check())
-                        return Redirect::to('/account');
+                if (!Session::has('registrationData'))
+                        return Redirect::to('/register');
 
                 return view('webshop.registerSent');
         }
