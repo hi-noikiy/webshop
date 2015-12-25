@@ -37,7 +37,7 @@ class resendOrder extends Command
 
         $order = Order::where('id', $orderId)->firstOrFail();
 
-        $customer = User::where('User_id', $order->User_id)->firstOrFail();
+        $customer = User::where('login', $order->User_id)->firstOrFail();
 
         $address = new \stdClass();
 
@@ -50,9 +50,9 @@ class resendOrder extends Command
 
         $data['address'] = $address;
         $data['cart']    = unserialize($order->products);
-        $data['comment'] = 'Unknown :(';
+	$data['comment'] = 'Unknown :(';
 
-        \Mail::send('email.order', $data, function($message)
+        \Mail::send('email.resend_order', $data, function($message)
         {
                 $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
