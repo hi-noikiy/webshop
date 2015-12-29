@@ -154,6 +154,10 @@
         </div><!-- /.container-->
     </nav>
 
+    @if(env('APP_ENV') !== 'production')
+        <div class="local-dev"> LOCAL DEVELOPMENT </div>
+    @endif
+
     <header class="page-header hidden-xs">
         <div class="container">
             <div class="col-md-5 header-logo">
