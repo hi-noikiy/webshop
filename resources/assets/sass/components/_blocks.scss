@@ -92,21 +92,24 @@
 
 .local-dev {
     text-align: center;
-    background: red; /* not working, let's see some red */
-    background: -moz-linear-gradient( left ,
-        rgba(255, 0, 0, 1) 0%,
-        rgba(255, 255, 0, 1) 15%,
-        rgba(0, 255, 0, 1) 30%,
-        rgba(0, 255, 255, 1) 50%,
-        rgba(0, 0, 255, 1) 65%,
-        rgba(255, 0, 255, 1) 80%,
-        rgba(255, 0, 0, 1) 100%);
     background: -webkit-gradient(linear,  left top,  right top,
-        color-stop(0%, rgba(255, 0, 0, 1)),
-        color-stop(15%, rgba(255, 255, 0, 1)),
-        color-stop(30%, rgba(0, 255, 0, 1)),
-        color-stop(50%, rgba(0, 255, 255, 1)),
-        color-stop(65%, rgba(0, 0, 255, 1)),
-        color-stop(80%, rgba(255, 0, 255, 1)),
-        color-stop(100%, rgba(255, 0, 0, 1)));
+        color-stop(0%, #ffffff),
+        color-stop(7%, #ff0000),
+        color-stop(14%, #ffff00),
+        color-stop(21%, #00ff00),
+        color-stop(28%, #00ffff),
+        color-stop(35%, #0000ff),
+        color-stop(42%, #ff00ff),
+
+        color-stop(50%, #ffffff),
+        color-stop(57%, #ff0000),
+        color-stop(64%, #ffff00),
+        color-stop(71%, #00ff00),
+        color-stop(78%, #00ffff),
+        color-stop(85%, #0000ff),
+        color-stop(92%, #ff00ff),
+        color-stop(100%, #ffffff));
+    background-size: 200% 200%;
+
+    animation: rainbow 10s linear 0s infinite;
 }

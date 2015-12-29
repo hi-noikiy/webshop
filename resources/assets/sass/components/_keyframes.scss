@@ -26,6 +26,15 @@
 	}
 }
 
+@-webkit-keyframes rainbow {
+    from {
+        background-position: 0% 50%;
+    }
+    to {
+        background-position: 100% 50%;
+    }
+}
+
 @keyframes navBrandHover {
 	from {
 		color: white;
@@ -52,4 +61,13 @@
 		padding-left: 12px;
 		padding-right: 42px;
 	}
+}
+
+@keyframes rainbow {
+    from {
+        background-position: 0% 50%;
+    }
+    to {
+        background-position: 100% 50%;
+    }
 }
