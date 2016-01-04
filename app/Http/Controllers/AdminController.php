@@ -8,7 +8,7 @@ use App\User;
 
 use App\Import\ProductImporter;
 
-use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash;
+use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash, Helper;
 
 class AdminController extends Controller {
 
@@ -441,5 +441,75 @@ class AdminController extends Controller {
                         return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
                 else
                         return Redirect::to('admin/usermanager');
+        }
+
+        /**
+         * Generate a pricelist for a specific user
+         *
+         * @return mixed
+         */
+        public function generate_pricelist()
+        {
+            $validator = Validator::make(Input::all(), [
+                'user_id'   => 'required',
+                'separator' => 'required',
+                'position'  => 'required'
+            ]);
+
+            if (!$validator->fails() && Input::hasFile('file'))
+            {
+                $user_id   = Input::get('user_id');
+                $file      = Input::file('file');
+                $separator = Input::get('separator');
+                $position  = Input::get('position');
+                $skip      = (int) Input::get('skip');
+                $count     = 0;
+
+                // Create a filesystem link to the temp file
+                $filename = storage_path() . '/prijslijst_' . $user_id . '.txt';
+
+                // Store the path in flash data so the middleware can delete the file afterwards
+                Session::flash('file.download', $filename);
+
+                $string = "product;netto prijs;prijs per;registratie eenheid\r\n";
+
+                foreach (file($file->getRealPath()) as $input)
+                {
+                    if ($count >= $skip)
+                    {
+                        $linedata = str_getcsv($input, $separator);
+
+                        if (isset($linedata[$position-1]))
+                        {
+                            $product = Product::select(['number', 'group', 'price', 'refactor', 'price_per', 'special_price', 'registered_per'])->where('number', $linedata[$position-1])->first();
+
+                            if ($product !== null)
+                            {
+                                if ($product->special_price === '0.00') {
+                                        //$price = (double) number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
+                                        $price = number_format($product->price * ((100 - Helper::getProductDiscount($user_id, $product->group, $product->number) ) / 100), 2, ".", "");
+                                } else {
+                                        $price = (double) number_format(preg_replace("/\,/", ".", $product->special_price), 2, ".", "");
+                                }
+
+                                $string .= $product->number . ";" . $price . ";" . $product->price_per . ";" . $product->registered_per . "\r\n";
+                            }
+                        }
+                    }
+
+                    $count++;
+                }
+
+                // File the file with discount data
+                File::put($filename, $string);
+
+                // Return the data as a downloadable file: 'icc_data.txt'
+                return Response::download($filename, 'prijslijst_' . $user_id . '.txt');
+            } else
+            {
+                return Redirect::to('admin/generate')
+                        ->withErrors((Input::hasFile('file') === false ? "Geen bestand geuploaded" : $validator->errors()))
+                        ->withInput(Input::all());
+            }
         }
 }

@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::get('import', 'AdminController@import');                         // The page where the user can upload a CSV file with the products
         Route::get('importsuccess', 'AdminController@importSuccess');     	    // Import success page
         Route::get('managecontent', 'AdminController@contentManager');    	    // Content manager
-        Route::get('generate', 'AdminController@generate');			            // Generate stuffs
+        Route::get('generate', 'AdminController@generate');			            // Generate page
         Route::get('carousel', 'AdminController@carousel');			            // Carousel manager
         Route::get('getContent', 'AdminController@getContent');           	    // Get the content for a field
         Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
@@ -63,10 +63,14 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::post('imageimport', 'ImportController@image');     		        // Handle the image import
         Route::post('downloadimport', 'ImportController@download');     	    // Handle the download file import
         Route::post('saveContent', 'AdminController@saveContent');           	// Save the page content
-        Route::post('generate', 'AdminController@generateCatalog');		        // Generate the catalog
+        Route::post('catalog', 'AdminController@generateCatalog');		        // Generate the catalog
         Route::post('addCarouselSlide', 'AdminController@addSlide');		    // Try to add a carousel slide
         Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');	    // Edit the slide order
         Route::post('updateUser', 'AdminController@updateUser');			    // Update/add the user
+        Route::post('pricelist', [
+            'middleware' => 'RemoveTempFile',                                   // Middleware to remove the temp csv file after download
+            'uses' => 'AdminController@generate_pricelist'                      // Generate a downloadable pricelist for a specified user
+        ]);
     });
 });
 
@@ -92,7 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('addresslist', 'AccountController@addresslist');             // Addresslist
         Route::get('discountfile', 'AccountController@discountfile');           // ICC/CSV Discount generation page
         Route::get('generate_{type}/{method}', [
-			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp css/icc file after download
+			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
 			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
 		]);
 
