@@ -32,7 +32,8 @@
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
         ga('create', 'UA-41373177-1', 'auto');
-        ga('send', 'pageview');
+        ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
     </script>
 </head>
 <body>
@@ -154,7 +155,7 @@
         </div><!-- /.container-->
     </nav>
 
-    @if(env('APP_ENV') !== 'production')
+    @if(app()->environment('local'))
         <div class="local-dev"> LOCAL DEVELOPMENT </div>
     @endif
 
@@ -206,6 +207,8 @@
                 Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                 <p>
                     <small>
+			Deze site maakt gebruik van <abbr title="Deze cookies houden de login status bij en zorgen voor de essentiele functionaliteit van de website">functionele cookies</abbr> en <abbr title="Deze cookies houden anoniem surfgedrag bij van uitsluitend deze website zodat wij de site beter kunnen laten werken">analytics cookies</abbr>.
+			<br />
                         Al onze leveringen geschieden volgens onze algemene leveringsvoorwaarden, gedeponeerd bij de Kamer van Koophandel te Groningen onder nummer 02023871.
                         <br />
                         Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
