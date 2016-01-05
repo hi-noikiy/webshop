@@ -488,9 +488,9 @@ class AdminController extends Controller {
                                 if ($product->special_price === '0.00') {
                                         $discount = 1 - (Helper::getProductDiscount($user_id, $product->group, $product->number) / 100);
                                         //$price = (double) number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
-                                        $price = number_format(preg_replace("/\,/", ".", $product->price) * $discount, 2, ".", "");
+                                        $price = number_format(preg_replace("/\,/", ".", $product->price) * $discount, 2, ",", "");
                                 } else {
-                                        $price = number_format(preg_replace("/\,/", ".", $product->special_price), 2, ".", "");
+                                        $price = number_format(preg_replace("/\,/", ".", $product->special_price), 2, ",", "");
                                 }
 
                                 $string .= $product->number . ";" . $price . ";" . $product->price_per . ";" . $product->registered_per . "\r\n";
