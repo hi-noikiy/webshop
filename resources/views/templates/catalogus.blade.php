@@ -144,7 +144,7 @@
 			<div class="row">
 				<div class="col-xs-2 product-image">
 					@if ($product->image !== 'geenafbeelding.jpg')
-						<center><img src="http://wiringa.nl/img/shopimg/{!! $product->image !!}"></center>
+						<center><img src="http://wiringa.nl/img/products/{!! $product->image !!}"></center>
 					@endif
 				</div>
 				<div class="col-xs-10">
@@ -176,7 +176,7 @@
 			<div class="row">
 				<div class="col-xs-2 product-image">
 					@if ($product->image !== 'geenafbeelding.jpg')
-						<center><img src="http://wiringa.nl/img/shopimg/{!! $product->image !!}"></center>
+						<center><img src="http://wiringa.nl/img/products/{!! $product->image !!}"></center>
 					@endif
 				</div>
 				<div class="col-xs-10">
