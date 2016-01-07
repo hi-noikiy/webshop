@@ -6,6 +6,7 @@ use App\Product;
 use App\User;
 use App\Address;
 use App\Order;
+use Carbon\Carbon;
 
 use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App, Helper;
 
@@ -84,57 +85,63 @@ class WebshopController extends Controller {
         public function register_check()
         {
                 $validator = Validator::make(Input::all(), [
-                                'corContactName'        => 'required',
-                                'corName'               => 'required',
-                                'corAddress'            => 'required',
-                                'corPostcode'           => 'required',
-                                'corCity'               => 'required',
-                                'corPhone'              => 'required',
-                                'corEmail'              => 'required|email',
-                                'corSite'               => 'url',
+                        'corContactName' => 'required',
+                        'corName'        => 'required',
+                        'corAddress'     => 'required',
+                        'corPostcode'    => 'required',
+                        'corCity'        => 'required',
+                        'corPhone'       => 'required',
+                        'corEmail'       => 'required|email',
+                        'corSite'        => 'url',
 
-                                'delAddress'            => 'required',
-                                'delPostcode'           => 'required',
-                                'delCity'               => 'required',
-                                'delPhone'              => 'required',
+                        'delAddress'     => 'required',
+                        'delPostcode'    => 'required',
+                        'delCity'        => 'required',
+                        'delPhone'       => 'required',
 
-                                'betIBAN'               => 'required',
-                                'betKvK'                => 'required',
-                                'betBTW'                => 'required',
+                        'betIBAN'        => 'required',
+                        'betKvK'         => 'required',
+                        'betBTW'         => 'required',
 
-                                'digFactuur'            => 'email',
-                        ]);
+                        'digFactuur'     => 'email',
+                ]);
 
                 if (!$validator->fails())
                 {
-                        $data['corContactName'] = Input::get('corContactName');
-                        $data['corName']        = Input::get('corName');
-                        $data['corAddress']     = Input::get('corAddress');
-                        $data['corPostcode']    = Input::get('corPostcode');
-                        $data['corCity']        = Input::get('corCity');
-                        $data['corContactPhone']= Input::get('corContactPhone');
-                        $data['corPhone']       = Input::get('corPhone');
-                        $data['corFax']         = (Input::get('corFax') !== false ? Input::get('corFax') : "");
-                        $data['corEmail']       = Input::get('corEmail');
-                        $data['corSite']        = (Input::get('corSite') !== false ? Input::get('corSite') : "");
+                        $data['corContactName']  = Input::get('corContactName');
+                        $data['corName']         = Input::get('corName');
+                        $data['corAddress']      = Input::get('corAddress');
+                        $data['corPostcode']     = Input::get('corPostcode');
+                        $data['corCity']         = Input::get('corCity');
+                        $data['corContactPhone'] = Input::get('corContactPhone');
+                        $data['corPhone']        = Input::get('corPhone');
+                        $data['corFax']          = (Input::get('corFax') !== false ? Input::get('corFax') : "");
+                        $data['corEmail']        = Input::get('corEmail');
+                        $data['corSite']         = (Input::get('corSite') !== false ? Input::get('corSite') : "");
 
-                        $data['corIsDel']       = Input::get('corIsDel');
+                        $data['corIsDel']        = Input::get('corIsDel');
 
-                        $data['delAddress']     = ($data['corIsDel'] ? $data['corAddress'] : Input::get('delAddress'));
-                        $data['delPostcode']    = ($data['corIsDel'] ? $data['corPostcode'] : Input::get('delPostcode'));
-                        $data['delCity']        = ($data['corIsDel'] ? $data['corCity'] : Input::get('delCity'));
-                        $data['delPhone']       = ($data['corIsDel'] ? $data['corPhone'] : Input::get('delPhone'));
-                        $data['delFax']         = ($data['corIsDel'] ? $data['corFax'] : (Input::get('delFax') !== false ? Input::get('delFax') : ""));
+                        $data['delAddress']      = ($data['corIsDel'] ? $data['corAddress'] : Input::get('delAddress'));
+                        $data['delPostcode']     = ($data['corIsDel'] ? $data['corPostcode'] : Input::get('delPostcode'));
+                        $data['delCity']         = ($data['corIsDel'] ? $data['corCity'] : Input::get('delCity'));
+                        $data['delPhone']        = ($data['corIsDel'] ? $data['corPhone'] : Input::get('delPhone'));
+                        $data['delFax']          = ($data['corIsDel'] ? $data['corFax'] : (Input::get('delFax') !== false ? Input::get('delFax') : ""));
 
-                        $data['betIBAN']        = Input::get('betIBAN');
-                        $data['betKvK']         = Input::get('betKvK');
-                        $data['betBTW']         = Input::get('betBTW');
+                        $data['betIBAN']         = Input::get('betIBAN');
+                        $data['betKvK']          = Input::get('betKvK');
+                        $data['betBTW']          = Input::get('betBTW');
 
-                        $data['digFactuur']     = Input::get('digFactuur');
-                        $data['digOrder']       = Input::get('digOrder');
-                        $data['digArtikel']     = Input::get('digArtikel');
+                        $data['digFactuur']      = Input::get('digFactuur');
+                        $data['digOrder']        = Input::get('digOrder');
+                        $data['digArtikel']      = Input::get('digArtikel');
 
                         Session::flash('registrationData', $data);
+
+                        DB::table('registrations')->insert([
+                            'company' => $data['corName'],
+                            'formdata' => json_encode($data),
+                            'created_at' => Carbon::now()
+                        ]);
 
                         \Mail::send('email.registration', $data, function($message)
                         {

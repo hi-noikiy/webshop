@@ -437,10 +437,10 @@ class AdminController extends Controller {
          */
         public function userAdded()
         {
-                if (Session::has('password') && Session::has('input'))
-                        return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
-                else
-                        return Redirect::to('admin/usermanager');
+            if (Session::has('password') && Session::has('input'))
+                return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
+            else
+                return Redirect::to('admin/usermanager');
         }
 
         /**
@@ -481,16 +481,17 @@ class AdminController extends Controller {
 
                         if (isset($linedata[$position-1]))
                         {
-                            $product = Product::select(['number', 'group', 'price', 'refactor', 'price_per', 'special_price', 'registered_per'])->where('number', $linedata[$position-1])->first();
+                            $product = Product::select(['number', 'group', 'price', 'refactor', 'price_per', 'special_price', 'registered_per'])
+                                ->where('number', $linedata[$position-1])
+                                ->first();
 
                             if ($product !== null)
                             {
                                 if ($product->special_price === '0.00') {
-                                        $discount = 1 - (Helper::getProductDiscount($user_id, $product->group, $product->number) / 100);
-                                        //$price = (double) number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
-                                        $price = number_format(preg_replace("/\,/", ".", $product->price) * $discount, 2, ",", "");
+                                    $discount = 1 - (Helper::getProductDiscount($user_id, $product->group, $product->number) / 100);
+                                    $price = number_format(preg_replace("/\,/", ".", $product->price) * $discount, 2, ",", "");
                                 } else {
-                                        $price = number_format(preg_replace("/\,/", ".", $product->special_price), 2, ",", "");
+                                    $price = number_format(preg_replace("/\,/", ".", $product->special_price), 2, ",", "");
                                 }
 
                                 $string .= $product->number . ";" . $price . ";" . $product->price_per . ";" . $product->registered_per . "\r\n";
@@ -509,8 +510,8 @@ class AdminController extends Controller {
             } else
             {
                 return Redirect::to('admin/generate')
-                        ->withErrors((Input::hasFile('file') === false ? "Geen bestand geuploaded" : $validator->errors()))
-                        ->withInput(Input::all());
+                    ->withErrors((Input::hasFile('file') === false ? "Geen bestand geuploaded" : $validator->errors()))
+                    ->withInput(Input::all());
             }
         }
 }

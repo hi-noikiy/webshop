@@ -92,7 +92,8 @@
 
 .local-dev {
     text-align: center;
-    background: -webkit-gradient(linear,  left top,  right top,
+    background: -webkit-gradient(
+		linear,  left top,  right top,
         color-stop(0%, #ffffff),
         color-stop(7%, #ff0000),
         color-stop(14%, #ffff00),
@@ -108,7 +109,8 @@
         color-stop(78%, #00ffff),
         color-stop(85%, #0000ff),
         color-stop(92%, #ff00ff),
-        color-stop(100%, #ffffff));
+        color-stop(100%, #ffffff)
+	);
     background-size: 200% 200%;
 
     animation: rainbow 10s linear 0s infinite;
