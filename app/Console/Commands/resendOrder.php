@@ -34,47 +34,20 @@ class resendOrder extends Command
     public function handle()
     {
         $orderId = $this->argument('order_id');
-
+        
         $order = Order::where('id', $orderId)->firstOrFail();
-
-        $customer = User::where('login', $order->User_id)->firstOrFail();
         
-        if ($order->addressId === -2)
-        {
-            $address = new \stdClass();
-
-            $address->name       = "";
-            $address->street     = "Wordt gehaald";
-            $address->postcode   = "";
-            $address->city       = "";
-            $address->telephone  = "";
-            $address->mobile     = "";
-        } else if ($order->addressId === -1)
-        {
-            $address = new \stdClass();
-            
-            $address->name       = $customer->company;
-            $address->street     = $customer->street;
-            $address->postcode   = $customer->postcode;
-            $address->city       = $customer->city;
-            $address->telephone  = 'Unknown';
-            $address->mobile     = 'Unknown';
-        } else
-        {
-            $address = Address::find($order->addressId);
-        }
-        
-        $data['address'] = $address;
+        $data['address'] = $order->getAddress();
         $data['cart']    = unserialize($order->products);
-	    $data['comment'] = "Verstuurd op: " . $order->created_at;
+	    $data['comment'] = $order->comment . "<br />Verstuurd op: " . $order->created_at;
 
         \Mail::send('email.resend_order', $data, function($message)
         {
-                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+            $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                $message->to('verkoop@wiringa.nl');
+            $message->to('verkoop@wiringa.nl');
 
-                $message->subject('Webshop order [Opnieuw verstuurd!]');
+            $message->subject('Webshop order [Opnieuw verstuurd!]');
         });
     }
 
