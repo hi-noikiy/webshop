@@ -10,3 +10,4 @@ Vagrantfile
 *Thumbs.db
 .bundle
 .DS_Store
+.*.swp
