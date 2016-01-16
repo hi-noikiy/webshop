@@ -38,19 +38,35 @@ class resendOrder extends Command
         $order = Order::where('id', $orderId)->firstOrFail();
 
         $customer = User::where('login', $order->User_id)->firstOrFail();
+        
+        if ($order->addressId === -2)
+        {
+            $address = new \stdClass();
 
-        $address = new \stdClass();
-
-        $address->name       = $customer->company;
-        $address->street     = $customer->street;
-        $address->postcode   = $customer->postcode;
-        $address->city       = $customer->city;
-        $address->telephone  = '?';
-        $address->mobile     = '?';
-
+            $address->name       = "";
+            $address->street     = "Wordt gehaald";
+            $address->postcode   = "";
+            $address->city       = "";
+            $address->telephone  = "";
+            $address->mobile     = "";
+        } else if ($order->addressId === -1)
+        {
+            $address = new \stdClass();
+            
+            $address->name       = $customer->company;
+            $address->street     = $customer->street;
+            $address->postcode   = $customer->postcode;
+            $address->city       = $customer->city;
+            $address->telephone  = 'Unknown';
+            $address->mobile     = 'Unknown';
+        } else
+        {
+            $address = Address::find($order->addressId);
+        }
+        
         $data['address'] = $address;
         $data['cart']    = unserialize($order->products);
-	$data['comment'] = "Verstuurd op: " . $order->created_at;
+	    $data['comment'] = "Verstuurd op: " . $order->created_at;
 
         \Mail::send('email.resend_order', $data, function($message)
         {
