@@ -671,8 +671,10 @@ class WebshopController extends Controller {
 
                                 $order = new Order();
 
-                                $order->products = serialize($items);
-                                $order->User_id  = Auth::user()->login;
+                                $order->products  = serialize($items);
+                                $order->User_id   = Auth::user()->login;
+                                $order->comment   = $data['comment'];
+                                $order->addressId = Input::get('addressId');
 
                                 $order->save();
 
