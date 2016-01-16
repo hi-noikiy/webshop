@@ -50,6 +50,10 @@
                                                 </div>
                                         @endforeach
                                 </div>
+
+                                <div class="text-center">
+                                    {!! $orderlist->render() !!}
+                                </div>
                         @endif
                 </div>
         </div>

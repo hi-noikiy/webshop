@@ -219,7 +219,7 @@ class AccountController extends Controller {
          */
         public function orderhistory()
         {
-                $orderList = Order::where('User_id', Auth::user()->login)->orderBy('created_at', 'desc')->get();
+                $orderList = Order::where('User_id', Auth::user()->login)->orderBy('created_at', 'desc')->paginate(15);
 
                 return view('account.orderhistory', ['orderlist' => $orderList]);
         }
