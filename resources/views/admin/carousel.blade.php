@@ -85,7 +85,7 @@
                                                                 </div>
                                                         </form>
                                                 </p>
-                                                <p><a href="/admin/removeCarouselSlide/{{{ $slide['id'] }}}" class="btn btn-danger btn-block" role="button">Remove from carousel</a></p>
+                                                <p><a href="/admin/removeCarouselSlide/{{{ $slide['id'] }}}" class="btn btn-danger btn-block" role="button">Verwijderen uit carousel</a></p>
                                         </div>
                                 </div>
                         </div>
