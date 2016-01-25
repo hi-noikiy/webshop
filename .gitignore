@@ -12,3 +12,4 @@ Vagrantfile
 .DS_Store
 .*.swp
 .idea
+_ide_helper.php
