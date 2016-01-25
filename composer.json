@@ -8,7 +8,8 @@
 		"laravel/framework": "5.1.*",
 		"barryvdh/laravel-debugbar": "^2.0",
 		"gloudemans/shoppingcart": "~1.3",
-		"chumper/zipper": "0.6.x"
+		"chumper/zipper": "0.6.x",
+		"barryvdh/laravel-ide-helper": "^2.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
