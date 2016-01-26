@@ -28,7 +28,7 @@
                         </div>
 
                         <div id="step-2" style="display: none;">
-                                <h3>2. De HTML code aanpassen</h3>
+                                <h3>2. De inhoud aanpassen</h3>
 
                                 <hr />
 
