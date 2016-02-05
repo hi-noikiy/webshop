@@ -16,5 +16,10 @@ class Address extends Model {
 	 *
 	 * @var array
 	 */
-	protected $guarded = array('id');
+	protected $guarded = ['id'];
+
+	public function user()
+	{
+		return $this->belongsTo('App\User', 'User_id', 'login');
+	}
 }

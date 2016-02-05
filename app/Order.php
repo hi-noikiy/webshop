@@ -16,10 +16,10 @@ class Order extends Model {
  	 *
 	 * @var array
 	 */
-	protected $guarded = array('id');
+	protected $guarded = ['id'];
 
     public function getAddress()
-    { 
+    {
         if ($this->addressId === -2)
         { // This will be returned if the customer came to us to get their order
             $address = new \stdClass();
@@ -34,7 +34,7 @@ class Order extends Model {
         { // This will be returned if the order was made before the address column was added
             $customer = User::where('login', $this->User_id)->first();
             $address = new \stdClass();
-            
+
             $address->name       = $customer->company;
             $address->street     = $customer->street;
             $address->postcode   = $customer->postcode;
@@ -48,5 +48,10 @@ class Order extends Model {
 
         return $address;
     }
+
+	public function user()
+	{
+		return $this->belongsTo('App\User', 'User_id', 'login');
+	}
 
 }
