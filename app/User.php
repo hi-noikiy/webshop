@@ -28,4 +28,40 @@ class User extends Model implements AuthenticatableContract,
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
+    public function addresses()
+    {
+        return $this->hasMany('App\Address', 'User_id', 'login');
+    }
+
+    public function discounts(string $type = null)
+    {
+        $query = $this->hasMany('App\Discount', 'User_id', 'login');
+        $query->where('group_desc', '!=', 'Vervallen');
+
+        switch ($type) {
+            case 'group':
+                $query->where('table', 'VA-220');
+                break;
+
+            case 'product':
+                $query->where('table', 'VA-260');
+                break;
+
+            case 'product-default':
+                $query->where('table', 'VA-261');
+                break;
+
+            case 'group-default':
+                $query->where('table', 'VA-221');
+                break;
+        }
+
+        return $query;
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order', 'User_id', 'login');
+    }
+
 }
