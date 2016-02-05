@@ -618,7 +618,7 @@ class AccountController extends Controller {
                 foreach ($groep_korting as $korting) {
                         $groepsnummer 	= $korting->product;
                         $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
-                        $korting1 	= $korting->discount . "%";
+                        $korting1 	    = $korting->discount . "%";
 
                         $text 	       .= $groepsnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
                 }
@@ -647,6 +647,28 @@ class AccountController extends Controller {
                 }
 
                 /*
+                 * Append the "Global Product" discounts to the ICC file
+                 */
+                $query = DB::table('discounts')
+                        ->where('table', 'VA-261')
+                        ->whereNotIn('product', function($query) use ($debiteur) {
+                        $query->select('product')
+                                ->from('discounts')
+                                ->where('table', 'VA-260')
+                                ->where('User_Id', $debiteur);
+                });
+
+                $product_korting = $query->get();
+
+                foreach ($product_korting as $korting) {
+                        $artikelnummer = $korting->product;
+                        $omschrijving  = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+                        $korting1      = $korting->discount . "%";
+
+                        $text .= $artikelnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+                }
+
+                /*
                  * Append the "Productgebonden" discounts to the CSV file
                  */
                 $query = DB::table('discounts')
@@ -658,7 +680,7 @@ class AccountController extends Controller {
                 foreach ($product_korting as $korting) {
                         $artikelnummer 	= $korting->product;
                         $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
-                        $korting1 	= $korting->discount . "%";
+                        $korting1 	    = $korting->discount . "%";
 
                         $text 	       .= $artikelnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
                 }
