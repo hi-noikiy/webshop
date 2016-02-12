@@ -74,7 +74,11 @@ class HomeController extends Controller {
                 $flyers          = Content::where('name', 'downloads.flyers')->first();
                 $artikel         = Content::where('name', 'downloads.artikel')->first();
 
-                return view('home.downloads', ['catalogus' => $catalogus, 'flyers' => $flyers, 'artikelbestand' => $artikel]);
+                return view('home.downloads', [
+                    'catalogus'         => $catalogus,
+                    'flyers'            => $flyers,
+                    'artikelbestand'    => $artikel
+                ]);
         }
 
         /**
@@ -85,5 +89,25 @@ class HomeController extends Controller {
         public function licenses()
         {
                 return view('home.licenses');
+        }
+
+        /**
+         * Show a pdf inside a view
+         *
+         * @param $filename
+         * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+         */
+        public function download($filename)
+        {
+                $path = public_path() . "/dl/" . $filename;
+
+                if (!\File::exists($path))
+                        abort(404);
+                else {
+                        if (\File::mimeType($path) === 'application/pdf')
+                                return view('home.showfile', ['file' => $filename]);
+                        else
+                                return response()->download($path, $filename);
+                }
         }
 }

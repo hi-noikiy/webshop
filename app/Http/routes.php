@@ -18,6 +18,7 @@ Route::get('contact', 'HomeController@contact');                         	    //
 Route::get('downloads', 'HomeController@downloads');                     	    // Downloads
 Route::get('licenses', 'HomeController@licenses');                      	    // Licenses
 Route::get('assortment', 'HomeController@assortment');                          // Assortment
+Route::get('download/{filename}', 'HomeController@download');                   // Download a file
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('password/email', 'Auth\PasswordController@getEmail');		    // Forgot password page
