@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		//
+		$schedule->command('import:products')->everyTenMinutes();
+        $schedule->command('import:discounts')->everyTenMinutes();
 	}
 
 }
