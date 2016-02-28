@@ -156,7 +156,7 @@
     </nav>
 
     @if(app()->environment('local'))
-        <div class="local-dev"> LOCAL DEVELOPMENT </div>
+        <!--div class="local-dev"> LOCAL DEVELOPMENT </div-->
     @endif
 
     <header class="page-header hidden-xs">

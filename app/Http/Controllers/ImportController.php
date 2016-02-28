@@ -29,9 +29,7 @@ class ImportController extends Controller
                 'error' => false
             ]);
 
-            return redirect('admin/importsuccess', [
-                'type' => 'product'
-            ]);
+            return redirect('admin/importsuccess')->with(['type' => 'product']);
         } else
             return redirect()->back()->withErrors('Geen bestand geselecteerd');
     }
@@ -57,7 +55,7 @@ class ImportController extends Controller
                 'error' => false
             ]);
 
-            return redirect('admin/importsuccess', [
+            return redirect('admin/importsuccess')->with([
                 'type' => 'korting'
             ]);
         } else
@@ -102,7 +100,7 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('/admin/importsuccess', [
+                return redirect('/admin/importsuccess')->with([
                     'count' => $count,
                     'time' => $endTime,
                     'type' => 'afbeelding'
@@ -139,7 +137,7 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('/admin/importsuccess', [
+                return redirect('/admin/importsuccess')->with([
                     'count' => $count,
                     'time' => $endTime,
                     'type' => 'download'
