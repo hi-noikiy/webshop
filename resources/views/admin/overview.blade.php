@@ -88,6 +88,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 
     <script type="text/javascript">
+        // Get the context of the canvas element we want to select
+        var ctx = document.getElementById("orderChart").getContext("2d");
+
+        var orderChart = new Chart(ctx).Bar({
+            labels: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
+            datasets: [
+                {
+                    label: "Orders",
+                    fillColor: "#2196F3",
+                    strokeColor: "#2196F3",
+                    highlightFill: "#90CAF9",
+                    highlightStroke: "#90CAF9",
+                    data: [0,0,0,0,0,0,0,0,0,0,0,0]
+                }
+            ]
+        });
+
         setInterval(function() {
             getServerLoad();
         }, 15000);
@@ -146,35 +163,18 @@
                 data: { year : $('#yearSelect').val() },
                 dataType: "json",
                 success: function(response) {
-                    console.log(response);
-
-                    // Create an empty array to fill each month
                     var chartData = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-                    for (var i = 0 ; i < response.length; i++)
-                    {
+                    for (var i = 0; i < response.length; i++) {
                         // Replace the data from the empty array with data from the ajax response
                         chartData[response[i].month-1] = response[i].count;
                     }
 
-                    // Get the context of the canvas element we want to select
-                    var ctx = document.getElementById("orderChart").getContext("2d");
+                    for (var x = 0; x < 12; x++) {
+                        orderChart.datasets[0].bars[x].value = chartData[x];
+                    }
 
-                    var data = {
-                        labels: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
-                        datasets: [
-                            {
-                                label: "Orders",
-                                fillColor: "#2196F3",
-                                strokeColor: "#2196F3",
-                                highlightFill: "#90CAF9",
-                                highlightStroke: "#90CAF9",
-                                data: chartData
-                            }
-                        ]
-                    };
-
-                    var myLineChart = new Chart(ctx).Bar(data);
+                    orderChart.update();
                 }
             });
         }
