@@ -44,10 +44,14 @@ Route::group(['middleware' => 'auth.admin'], function() {
 
     Route::get('phpinfo', 'AdminController@phpinfo');                           // Display the phpinfo stuff
 
+    Route::group(['prefix' => 'json'], function() {
+        Route::get('load/cpu', 'AdminController@CPULoad');                      // Get CPU Load
+        Route::get('load/ram', 'AdminController@RAMLoad');                      // Get RAM Load
+        Route::get('chart/{data}', 'AdminController@chart');                    // Get data for a chart
+    });
+
     Route::group(['prefix' => 'admin'], function() {
         Route::get('/', 'AdminController@overview');                        	// Admin overview
-        Route::get('RAMLoad', 'AdminController@RAMLoad');                 	    // Get the server ram load
-        Route::get('CPULoad', 'AdminController@CPULoad');                 	    // Get the server cpu load
         Route::get('import', 'AdminController@import');                         // The page where the user can upload a CSV file with the products
         Route::get('importsuccess', 'AdminController@importSuccess');     	    // Import success page
         Route::get('managecontent', 'AdminController@contentManager');    	    // Content manager

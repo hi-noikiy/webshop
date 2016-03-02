@@ -6,7 +6,7 @@ use App\Content;
 use App\Carousel;
 use App\User;
 
-use App\Import\ProductImporter;
+use Carbon\Carbon;
 
 use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash, Helper;
 
@@ -35,10 +35,32 @@ class AdminController extends Controller
         $product_import = Content::where('name', 'admin.product_import')->first();
         $discount_import = Content::where('name', 'admin.discount_import')->first();
 
+        // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
+        $groupedOrders = App\Order::select(DB::raw("YEAR(created_at) as 'year'"))->groupBy(DB::raw('YEAR(created_at)'))->orderBy('year', 'DESC')->get();
+
         return view('admin.overview', [
-            'product_import' => $product_import,
-            'discount_import' => $discount_import
+            'product_import'    => $product_import,
+            'discount_import'   => $discount_import,
+            'years'             => $groupedOrders->toArray(),
         ]);
+    }
+
+    public function chart($type)
+    {
+        if (Request::ajax()) {
+            if ($type === 'orders')
+            {
+                // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
+                $groupedOrders = App\Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
+                    ->where(DB::raw('YEAR(created_at)'), request()->input('year'))
+                    ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+                    ->get();
+
+                return response()->json($groupedOrders);
+            } else
+                return response()->json(['Unknown chart type'], 400);
+        } else
+            return response('Only ajax requests are allowed!', 401);
     }
 
     /**
