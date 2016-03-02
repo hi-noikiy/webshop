@@ -45,12 +45,18 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * Get data for a chart.js chart
+     *
+     * @param $type
+     * @return \Illuminate\Http\JsonResponse|Response
+     */
     public function chart($type)
     {
         if (Request::ajax()) {
             if ($type === 'orders')
             {
-                // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
+                // Get the count, year and month
                 $groupedOrders = App\Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
                     ->where(DB::raw('YEAR(created_at)'), request()->input('year'))
                     ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))

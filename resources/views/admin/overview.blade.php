@@ -70,7 +70,7 @@
 
         <div class="col-md-12">
             <h3>
-                Orders per maand - 
+                Orders per maand -
 
                 <select id="yearSelect" onchange="getChartData()">
                     @foreach ($years as $year)
@@ -78,7 +78,6 @@
                     @endforeach
                 </select>
             </h3>
-
 
             <canvas id="orderChart" style="height: 500px; width: 100%;"></canvas>
         </div>
