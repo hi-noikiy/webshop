@@ -46,30 +46,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Get data for a chart.js chart
-     *
-     * @param $type
-     * @return \Illuminate\Http\JsonResponse|Response
-     */
-    public function chart($type)
-    {
-        if (Request::ajax()) {
-            if ($type === 'orders')
-            {
-                // Get the count, year and month
-                $groupedOrders = App\Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
-                    ->where(DB::raw('YEAR(created_at)'), request()->input('year'))
-                    ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
-                    ->get();
-
-                return response()->json($groupedOrders);
-            } else
-                return response()->json(['Unknown chart type'], 400);
-        } else
-            return response('Only ajax requests are allowed!', 401);
-    }
-
-    /**
      * Display a fancy phpinfo page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -77,55 +53,6 @@ class AdminController extends Controller
     public function phpinfo()
     {
         return view('admin.phpinfo');
-    }
-
-    /**
-     * Return the CPU load
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     */
-    public function CPULoad()
-    {
-        if (Request::ajax()) {
-            $uptime = exec('uptime');
-
-            $load = array_slice(explode(' ', str_replace(',', '', $uptime)), -3);
-            $max = exec('grep "model name" /proc/cpuinfo | wc -l');
-
-            $data = [
-                'load' => $load[0],
-                'max' => $max,
-            ];
-
-            return Response::json($data);
-        } else
-            return redirect()->back();
-    }
-
-    /**
-     * Return the RAM usage
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     */
-    public function RAMLoad()
-    {
-        if (Request::ajax()) {
-            $total = preg_replace("/\D/", "", exec("grep 'MemTotal' /proc/meminfo"));
-            $free = preg_replace("/\D/", "", exec("grep 'MemFree' /proc/meminfo"));
-            //$buffer	= preg_replace("/\D/", "", exec("grep 'Buffers' /proc/meminfo"));
-            //$cached	= preg_replace("/\D/", "", exec("grep 'Cached' /proc/meminfo"));
-
-            $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
-
-            $data = [
-                'total' => $total,
-                'freePercentage' => $freePercentage,
-                'free' => $free
-            ];
-
-            return Response::json($data);
-        } else
-            return redirect()->back();
     }
 
     /**

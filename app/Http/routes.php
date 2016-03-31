@@ -45,9 +45,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
     Route::get('phpinfo', 'AdminController@phpinfo');                           // Display the phpinfo stuff
 
     Route::group(['prefix' => 'json'], function() {
-        Route::get('load/cpu', 'AdminController@CPULoad');                      // Get CPU Load
-        Route::get('load/ram', 'AdminController@RAMLoad');                      // Get RAM Load
-        Route::get('chart/{data}', 'AdminController@chart');                    // Get data for a chart
+
     });
 
     Route::group(['prefix' => 'admin'], function() {
@@ -76,6 +74,23 @@ Route::group(['middleware' => 'auth.admin'], function() {
             'middleware' => 'RemoveTempFile',                                   // Middleware to remove the temp csv file after download
             'uses' => 'AdminController@generate_pricelist'                      // Generate a downloadable pricelist for a specified user
         ]);
+
+        Route::group(['prefix' => 'api', 'namespace' => 'Admin'], function () {
+            Route::get('cpu', 'ApiController@cpu');                      // Get CPU Load
+            Route::get('ram', 'ApiController@ram');                      // Get RAM Load
+            Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
+            Route::get('product/{product}', 'ApiController@product');    // Get product data
+        });
+
+        Route::group(['prefix' => 'packs', 'namespace' => 'Admin'], function () {
+            Route::get('/', 'PacksController@index');
+            Route::get('edit/{id}', 'PacksController@edit');
+
+            Route::post('add', 'PacksController@create');
+            Route::post('addProduct', 'PacksController@addProduct');
+            Route::post('remove', 'PacksController@destroy');
+            Route::post('removeProduct', 'PacksController@removeProduct');
+        });
     });
 });
 

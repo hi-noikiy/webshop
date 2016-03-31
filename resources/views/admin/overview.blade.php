@@ -107,12 +107,12 @@
 
         setInterval(function() {
             getServerLoad();
-        }, 15000);
+        }, 10000);
 
         function getServerLoad()
         {
             $.ajax({
-                url: "/json/load/cpu",
+                url: "/admin/api/cpu",
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
@@ -133,7 +133,7 @@
             });
 
             $.ajax({
-                url: "/json/load/ram",
+                url: "/admin/api/ram",
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
@@ -158,7 +158,7 @@
         function getChartData()
         {
             $.ajax({
-                url: "/json/chart/orders",
+                url: "/admin/api/chart/orders",
                 type: "GET",
                 data: { year : $('#yearSelect').val() },
                 dataType: "json",
