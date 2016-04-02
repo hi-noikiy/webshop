@@ -155,8 +155,10 @@
         </div><!-- /.container-->
     </nav>
 
-    @if(app()->environment('local'))
-        <!--div class="local-dev"> LOCAL DEVELOPMENT </div-->
+    @if(app()->environment('staging'))
+        <div class="local-dev"> TESTING </div>
+    @elseif(app()->environment('local'))
+        <div class="local-dev"> LOCAL DEVELOPMENT </div>
     @endif
 
     <header class="page-header hidden-xs">
