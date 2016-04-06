@@ -12,9 +12,6 @@
                         @foreach ($cart as $item)
 
                                 <?php
-                                        $rowid          = $item->rowid;
-                                        $artNr          = $item->id;
-                                        $qty            = $item->qty;
                                         $name           = (strlen($item->name) > 50 ? substr($item->name, 0, 47) . "..." : $item->name);
                                         $korting        = $item->options->korting;
                                         $brutoPrice     = number_format($item->price, 2, ".", "");
@@ -24,40 +21,55 @@
                                         else
                                                 $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
 
-                                        $total          += (double) ($nettoPrice * $qty);
+                                        $total          += (double) ($nettoPrice * $item->qty);
                                 ?>
 
                                 <form action="/cart/update" method="POST" class="col-md-4 col-sm-6">
                                         {!! csrf_field() !!}
-                                        <input type="text" class="hidden" name="rowId" value="{{ $rowid }}">
+                                        <input type="text" class="hidden" name="rowId" value="{{ $item->rowid }}">
 
                                         <div class="panel panel-primary">
                                                 <div class="panel-heading">
                                                         <div class="pull-right">
                                                                 <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
                                                         </div>
-                                                        <a href="/product/{{ $artNr }}" class="panel-heading-link">{{ $name }}</a>
+
+                                                        @if ($item->options->special)
+                                                                <a href="/pack/{{ $item->id }}" class="panel-heading-link">{{ $name }}</a>
+                                                        @else
+                                                                <a href="/product/{{ $item->id }}" class="panel-heading-link">{{ $name }}</a>
+                                                        @endif
                                                 </div>
                                                 <table class="table">
                                                         <tbody>
                                                                 <tr>
                                                                         <td><b>Product nummer</b></td>
-                                                                        <td>{{ $artNr }}</td>
+                                                                        <td>
+                                                                                @if ($item->options->special)
+                                                                                        Actiepakket
+                                                                                @else
+                                                                                        {{ $item->id }}
+                                                                                @endif
+                                                                        </td>
                                                                 </tr>
                                                                 <tr>
                                                                         <td><b>Aantal</b></td>
                                                                         <td class="col-xs-6">
-                                                                                <div class="input-group">
-                                                                                        <input type="text" class="form-control" placeholder="{{ $qty }}" name="qty" value="{{ $qty }}">
-                                                                                        <span class="input-group-btn">
-                                                                                                <button type="submit" class="btn btn-primary" name="edit"><span class="glyphicon glyphicon-pencil"></span></button>
-                                                                                        </span>
-                                                                                </div>
+                                                                                @if ($item->options->special)
+                                                                                        <input type="text" class="form-control" disabled="disabled" placeholder="{{ $item->qty }}" value="1">
+                                                                                @else
+                                                                                        <div class="input-group">
+                                                                                                <input type="text" class="form-control" placeholder="{{ $item->qty }}" name="qty" value="{{ $item->qty }}">
+                                                                                                <span class="input-group-btn">
+                                                                                                        <button type="submit" class="btn btn-primary" name="edit"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                                                                </span>
+                                                                                        </div>
+                                                                                @endif
                                                                         </td>
                                                                 </tr>
                                                                 <tr>
                                                                         <td><b>Netto subtotaal</b></td>
-                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $qty, 2, ".", "") }}</td>
+                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $item->qty, 2, ".", "") }}</td>
                                                                 </tr>
                                                         </tbody>
                                                 </table>
@@ -119,7 +131,7 @@
 
                                                         <div class="form-group">
                                                                 <label for="comment">Opmerking</label>
-                                                                <textarea name="comment" class="form-control" rows="5" id="comment" placeholer="Opmerking"></textarea>
+                                                                <textarea name="comment" class="form-control" rows="5" id="comment"></textarea>
                                                         </div>
 
                                                 </div>

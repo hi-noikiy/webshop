@@ -321,54 +321,6 @@ class WebshopController extends Controller
     }
 
     /**
-     * A search page only searching for the specials
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function specials()
-    {
-        $startTime = microtime(true);
-        $inputBrand = Input::get('brand');
-        $inputSerie = Input::get('serie');
-        $inputType = Input::get('type');
-
-        $query = DB::table('products')->Where('action_type', 'Actie');
-
-        if (Input::has('brand')) $query = $query->where('brand', $inputBrand);
-        if (Input::has('serie')) $query = $query->where('series', $inputSerie);
-        if (Input::has('type')) $query = $query->where('type', $inputType);
-
-        // Get all the results to filter the brands, series and types from it
-        $allResults = $query->orderBy('number', 'asc')->get();
-
-        // Get the paginated results
-        $results = $query->paginate(25);
-
-        // Initialize $brands, $series, $types as array
-        $brands =
-        $series =
-        $types = [];
-
-        // Get the brands, series and types from the search results
-        foreach ($allResults as $product) {
-            $brands[] = $product->brand;
-            $series[] = $product->series;
-            $types[] = $product->type;
-        }
-
-        // Return the search view with the fetched data
-        return view('webshop.altSearch', [
-                'results' => $results,
-                'title' => 'Acties',
-                'brands' => array_unique($brands),
-                'series' => array_unique($series),
-                'types' => array_unique($types),
-                'scriptTime' => round(microtime(true) - $startTime, 4)
-            ]
-        );
-    }
-
-    /**
      * A search page only searching for the clearance products
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
