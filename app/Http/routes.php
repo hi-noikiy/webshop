@@ -37,13 +37,13 @@ Route::group(['middleware' => 'guest'], function () {
 Route::get('webshop', 'WebshopController@main');                        	    // Main webshop page
 Route::get('product/{product_id?}', 'WebshopController@showProduct');   	    // Product page
 Route::get('pack/{pack_id}', 'ProductController@showPack');                     // Pack page
-Route::get('search', 'WebshopController@search');                       	    // Page with the search results
+Route::get('search', 'SearchController@search');                       	        // Page with the search results
 Route::get('specials', 'SearchController@specials');                   	        // Show only the specials
-Route::get('clearance', 'WebshopController@clearance');                 	    // Show only the clearance products
+Route::get('clearance', 'SearchController@clearance');                 	        // Show only the clearance products
 
 Route::group(['middleware' => 'auth.admin'], function() {
 
-    Route::get('phpinfo', 'Admin\AdminController@phpinfo');                           // Display the phpinfo stuff
+    Route::get('phpinfo', 'Admin\AdminController@phpinfo');                     // Display the phpinfo stuff
 
     Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::get('/', 'AdminController@overview');                        	// Admin overview
