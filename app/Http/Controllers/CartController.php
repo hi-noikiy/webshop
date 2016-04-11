@@ -109,7 +109,7 @@ class CartController extends Controller {
             {
                 $product = $product->details;
 
-                $price = number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
+                $price += number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
             }
 
             // Add the product data to the cart data
@@ -121,6 +121,7 @@ class CartController extends Controller {
                 'price' => number_format($price, 2, ".", ""),
                 'options' => [
                     'special' => true,
+                    'products' => $products
                 ]
             ];
 

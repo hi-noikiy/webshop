@@ -1,8 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Product;
-use App\User;
-use App\Address;
+use App\Pack;
 use App\Order;
 use Carbon\Carbon;
 
@@ -225,13 +224,12 @@ class WebshopController extends Controller
 
         // Return the search view with the fetched data
         return view('webshop.search', [
-                'results' => $results,
-                'brands' => array_unique($brands),
-                'series' => array_unique($series),
-                'types' => array_unique($types),
-                'scriptTime' => round(microtime(true) - $startTime, 4)
-            ]
-        );
+            'results' => $results,
+            'brands' => array_unique($brands),
+            'series' => array_unique($series),
+            'types' => array_unique($types),
+            'scriptTime' => round(microtime(true) - $startTime, 4)
+        ]);
     }
 
     /**
@@ -294,7 +292,9 @@ class WebshopController extends Controller
                     }
                 }
 
-                return redirect()->back()->with('status', 'U bent nu ingelogd');
+                return redirect()
+                    ->back()
+                    ->with('status', 'U bent nu ingelogd');
             }
         }
 
@@ -327,45 +327,17 @@ class WebshopController extends Controller
      */
     public function clearance()
     {
-        $startTime = microtime(true);
-        $inputBrand = Input::get('brand');
-        $inputSerie = Input::get('serie');
-        $inputType = Input::get('type');
-
-        $query = DB::table('products')->Where('action_type', 'Opruiming');
-
-        if (Input::has('brand')) $query = $query->where('brand', $inputBrand);
-        if (Input::has('serie')) $query = $query->where('series', $inputSerie);
-        if (Input::has('type')) $query = $query->where('type', $inputType);
-
-        // Get all the results to filter the brands, series and types from it
-        $allResults = $query->orderBy('number', 'asc')->get();
-
-        // Get the paginated results
-        $results = $query->paginate(25);
-
-        // Initialize $brands, $series, $types as array
-        $brands =
-        $series =
-        $types = [];
-
-        // Get the brands, series and types from the search results
-        foreach ($allResults as $product) {
-            $brands[] = $product->brand;
-            $series[] = $product->series;
-            $types[] = $product->type;
-        }
+        $results = DB::table('products')
+            ->where('action_type', 'Opruiming')
+            ->orderBy('number', 'asc')
+            ->paginate(25);
 
         // Return the search view with the fetched data
         return view('webshop.altSearch', [
-                'results' => $results,
-                'title' => 'Opruiming',
-                'brands' => array_unique($brands),
-                'series' => array_unique($series),
-                'types' => array_unique($types),
-                'scriptTime' => round(microtime(true) - $startTime, 4)
-            ]
-        );
+            'results' => $results,
+            'title' => 'Opruiming',
+            'scriptTime' => round(microtime(true) - LARAVEL_START, 4)
+        ]);
     }
 
     /**
@@ -376,24 +348,53 @@ class WebshopController extends Controller
      */
     public function reorder($orderId)
     {
-        $order = Order::where('User_id', Auth::user()->login)->where('id', $orderId)->firstOrFail();
+        $order = Order::where('User_id', Auth::user()->login)
+            ->where('id', $orderId)
+            ->firstOrFail();
 
         $order = unserialize($order->products);
 
         foreach ($order as $item) {
-            $product = Product::where('number', $item['id'])->firstOrFail();
-            $productData = [
-                'id' => $product->number,
-                'name' => $product->name,
-                'qty' => $item['qty'],
-                'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
-                'options' => [
-                    'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
-                ]
-            ];
+            if (Product::where('number', $item['id'])->count()) {
+                $product = Product::where('number', $item['id'])->firstOrFail();
+                $cartData = [
+                    'id' => $product->number,
+                    'name' => $product->name,
+                    'qty' => $item['qty'],
+                    'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                    'options' => [
+                        'special' => false,
+                        'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                    ]
+                ];
+            } elseif (Pack::where('id', $item['id'])->count()) {
+                $pack       = Pack::where('id', $item['id'])->firstOrFail();
+                $products   = $pack->products;
+                $price      = 0.00;
+
+                foreach ($products as $product)
+                {
+                    $product = $product->details;
+
+                    $price += number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
+                }
+
+                $cartData = [
+                    'id' => $pack->id,
+                    'name' => $pack->name,
+                    'qty' => $item['qty'],
+                    'price' => number_format($price, 2),
+                    'options' => [
+                        'special' => true,
+                        'products' => $pack->products
+                    ]
+                ];
+            } else {
+                return abort(404);
+            }
 
             // Add the product to the cart
-            Cart::add($productData);
+            Cart::add($cartData);
         }
 
         return redirect('cart')
