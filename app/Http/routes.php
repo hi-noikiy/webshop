@@ -100,14 +100,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reorder/{order_id}', 'WebshopController@reorder');			    // Add the items from a previous order to the cart again
 
     Route::group(['prefix' => 'cart'], function () {
-        Route::get('/', 'WebshopController@viewCart');               		    // Show the cart
-        Route::get('destroy', 'WebshopController@cartDestroy');            	    // Remove all items from the cart
-        Route::get('order/finished', 'WebshopController@orderFinished');		// Show the order finished page
+        Route::get('/', 'CartController@view');               		            // Show the cart
+        Route::get('destroy', 'CartController@destroy');            	        // Remove all items from the cart
+        Route::get('order/finished', 'WebshopController@orderFinished');	    // Show the order finished page
 
-        Route::post('add', 'WebshopController@addToCart');                      // Add product to cart
+        Route::post('add/product', 'CartController@addProduct');                // Add product to cart
         Route::post('add/pack', 'CartController@addPack');                      // Add pack to cart
-        Route::post('update', 'WebshopController@updateCart');                	// Update or remove product from cart
-        Route::post('order', 'WebshopController@order');				        // Send the order
+        Route::post('update', 'CartController@update');                	        // Update or remove product from cart
+        Route::post('order', 'CartController@order');				            // Send the order
     });
 
     Route::group(['prefix' => 'account'], function () {
