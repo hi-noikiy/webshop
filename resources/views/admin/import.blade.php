@@ -13,7 +13,7 @@
 
                         <hr />
 
-                        <form action="/admin/productimport" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
+                        <form action="{{ url('admin/import/product') }}" method="POST" enctype="multipart/form-data" class="form-horizontal" id="productForm">
                                 {!! csrf_field() !!}
                                 <div class="form-group">
                                         <label for="productFile" class="col-sm-2 control-label">Bestand</label>
@@ -39,7 +39,7 @@
 
                         <hr />
 
-                        <form action="/admin/imageimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                        <form action="{{ url('admin/import/image') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                                 {!! csrf_field() !!}
                                 <div class="form-group">
                                         <label for="imageFile" class="col-sm-2 control-label">Bestand</label>
@@ -64,7 +64,7 @@
 
                         <hr />
 
-                        <form action="/admin/discountimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                        <form action="{{ url('admin/import/discount') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                                 {!! csrf_field() !!}
                                 <div class="form-group">
                                         <label for="discountFile" class="col-sm-2 control-label">Bestand</label>
@@ -90,7 +90,7 @@
 
                         <hr />
 
-                        <form action="/admin/downloadimport" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                        <form action="{{ url('admin/import/download') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                                 {!! csrf_field() !!}
                                 <div class="form-group">
                                         <label for="imageFile" class="col-sm-2 control-label">Bestand</label>

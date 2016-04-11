@@ -1,5 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Product;
 use App\Content;
 use Carbon\Carbon;
@@ -29,9 +30,13 @@ class ImportController extends Controller
                 'error' => false
             ]);
 
-            return redirect('admin/importsuccess')->with(['type' => 'product']);
+            return redirect('admin/import/success', [
+                'type' => 'product'
+            ]);
         } else
-            return redirect()->back()->withErrors('Geen bestand geselecteerd');
+            return redirect()
+                ->back()
+                ->withErrors('Geen bestand geselecteerd');
     }
 
     /**
@@ -55,11 +60,13 @@ class ImportController extends Controller
                 'error' => false
             ]);
 
-            return redirect('admin/importsuccess')->with([
+            return redirect('admin/import/success', [
                 'type' => 'korting'
             ]);
         } else
-            return redirect()->back()->withErrors('Geen bestand geselecteerd');
+            return redirect()
+                ->back()
+                ->withErrors('Geen bestand geselecteerd');
     }
 
     /**
@@ -81,7 +88,9 @@ class ImportController extends Controller
             );
 
             if ($validator->fails())
-                return redirect()->back()->withErrors('Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
+                return redirect()
+                    ->back()
+                    ->withErrors('Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
             else {
                 if ($fileMime === "application/zip") {
                     // Unzip the files to the product image folder
@@ -100,14 +109,16 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('/admin/importsuccess')->with([
+                return redirect('/admin/import/success', [
                     'count' => $count,
                     'time' => $endTime,
                     'type' => 'afbeelding'
                 ]);
             }
         } else
-            return redirect()->back()->withErrors('Geen bestand geselecteerd of de afbeelding is ongeldig');
+            return redirect()
+                ->back()
+                ->withErrors('Geen bestand geselecteerd of de afbeelding is ongeldig');
     }
 
     /**
@@ -129,7 +140,9 @@ class ImportController extends Controller
             );
 
             if ($validator->fails())
-                return redirect()->back()->withErrors('Geen geldig bestand geuploaded. Het bestand mag een Zip of PDF bestand zijn');
+                return redirect()
+                    ->back()
+                    ->withErrors('Geen geldig bestand geuploaded. Het bestand mag een Zip of PDF bestand zijn');
             else {
                 $file->move(public_path() . "/dl", $fileName);
 
@@ -137,13 +150,15 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('/admin/importsuccess')->with([
+                return redirect('/admin/import/success', [
                     'count' => $count,
                     'time' => $endTime,
                     'type' => 'download'
                 ]);
             }
         } else
-            return redirect()->back()->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
+            return redirect()
+                ->back()
+                ->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
     }
 }

@@ -43,16 +43,10 @@ Route::get('clearance', 'WebshopController@clearance');                 	    // 
 
 Route::group(['middleware' => 'auth.admin'], function() {
 
-    Route::get('phpinfo', 'AdminController@phpinfo');                           // Display the phpinfo stuff
+    Route::get('phpinfo', 'Admin\AdminController@phpinfo');                           // Display the phpinfo stuff
 
-    Route::group(['prefix' => 'json'], function() {
-
-    });
-
-    Route::group(['prefix' => 'admin'], function() {
+    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::get('/', 'AdminController@overview');                        	// Admin overview
-        Route::get('import', 'AdminController@import');                         // The page where the user can upload a CSV file with the products
-        Route::get('importsuccess', 'AdminController@importSuccess');     	    // Import success page
         Route::get('managecontent', 'AdminController@contentManager');    	    // Content manager
         Route::get('generate', 'AdminController@generate');			            // Generate page
         Route::get('carousel', 'AdminController@carousel');			            // Carousel manager
@@ -62,10 +56,6 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::get('getUserData', 'AdminController@getUserData');	        	// Get the requested user's info
         Route::get('userAdded', 'AdminController@userAdded');			        // The user added page
 
-        Route::post('productimport', 'ImportController@product');       	    // Handle the product import
-        Route::post('discountimport', 'ImportController@discount');     	    // Handle the discount import
-        Route::post('imageimport', 'ImportController@image');     		        // Handle the image import
-        Route::post('downloadimport', 'ImportController@download');     	    // Handle the download file import
         Route::post('saveContent', 'AdminController@saveContent');           	// Save the page content
         Route::post('catalog', 'AdminController@generateCatalog');		        // Generate the catalog
         Route::post('addCarouselSlide', 'AdminController@addSlide');		    // Try to add a carousel slide
@@ -76,14 +66,24 @@ Route::group(['middleware' => 'auth.admin'], function() {
             'uses' => 'AdminController@generate_pricelist'                      // Generate a downloadable pricelist for a specified user
         ]);
 
-        Route::group(['prefix' => 'api', 'namespace' => 'Admin'], function () {
+        Route::group(['prefix' => 'import'], function () {
+            Route::get('/', 'AdminController@import');                          // The page where the user can upload a CSV file with the products
+            Route::get('success', 'AdminController@importSuccess');     	    // Import success page
+
+            Route::post('product', 'ImportController@product');       	        // Handle the product import
+            Route::post('discount', 'ImportController@discount');     	        // Handle the discount import
+            Route::post('image', 'ImportController@image');     		        // Handle the image import
+            Route::post('download', 'ImportController@download');     	        // Handle the download file import
+        });
+
+        Route::group(['prefix' => 'api'], function () {
             Route::get('cpu', 'ApiController@cpu');                      // Get CPU Load
             Route::get('ram', 'ApiController@ram');                      // Get RAM Load
             Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
             Route::get('product/{product}', 'ApiController@product');    // Get product data
         });
 
-        Route::group(['prefix' => 'packs', 'namespace' => 'Admin'], function () {
+        Route::group(['prefix' => 'packs'], function () {
             Route::get('/', 'PacksController@index');
             Route::get('edit/{id}', 'PacksController@edit');
 
