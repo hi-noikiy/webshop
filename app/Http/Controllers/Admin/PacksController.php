@@ -42,23 +42,13 @@ class PacksController extends Controller {
     public function create(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'image' => 'image',
-            'name'  => 'required'
+            'product'  => 'required'
         ]);
 
         if ($validator->passes()) {
-            $pack = new Pack;
-            $pack->name = $request->get('name');
-
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-
-                $pack->image = $image->getFilename();
-
-                $image->move(public_path('img/specials'));
-            }
-
-            $pack->save();
+            $pack = Pack::firstOrCreate([
+                'product_number' => $request->get('product')
+            ]);
 
             return redirect()
                 ->intended('admin/packs/edit/' . $pack->id)
@@ -78,7 +68,7 @@ class PacksController extends Controller {
     public function destroy(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'pack'      => 'required'
+            'pack' => 'required'
         ]);
 
         if ($validator->passes()) {

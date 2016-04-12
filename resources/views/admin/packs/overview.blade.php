@@ -19,23 +19,16 @@
                     <div class="modal-body">
                         {!! csrf_field() !!}
                         <div class="form-group">
-                            <label for="image" class="col-sm-2 control-label">Afbeelding</label>
-                            <div class="col-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                            <span class="btn btn-primary btn-file">
-                                                    Bladeren&hellip; <input type="file" name="image">
-                                            </span>
-                                    </span>
-                                    <input type="text" class="form-control" readonly id="fileName">
-                                </div>
+                            <label for="title" class="col-sm-4 control-label">Artikelnummer*</label>
+                            <div class="col-sm-8">
+                                <input onkeyup="getProductName(this)" class="form-control" placeholder="Artikelnummer" type="text" name="product" maxlength="100" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="title" class="col-sm-2 control-label">Naam*</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" placeholder="Naam" type="text" name="name" maxlength="100" required>
+                            <label for="title" class="col-sm-4 control-label">Naam</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="name" disabled>
                             </div>
                         </div>
                     </div>
@@ -82,7 +75,7 @@
                 <div class="col-md-4">
                     <div class="actiepaket">
                         <div class="title">
-                            {{ strlen($pack->name) > 50 ? substr($pack->name, 0 , 47) . "..." : $pack->name }}
+                            {{ strlen($pack->product->name) > 40 ? substr($pack->product->name, 0 , 37) . "..." : $pack->product->name }}
                         </div>
                         <div class="product-list">
                             <table class="table table-striped">
@@ -124,6 +117,10 @@
 
 @section('extraCSS')
     <style>
+        .title {
+            font-weight: 600;
+        }
+
         .actiepaket,
         .add-actiepaket {
             border: 1px solid steelblue;
@@ -160,60 +157,41 @@
         .actiepaket-actions {
             padding: 20px 10px;
         }
-
-        .btn-file {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-file input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            min-width: 100%;
-            min-height: 100%;
-            font-size: 100px;
-            text-align: right;
-            filter: alpha(opacity=0);
-            opacity: 0;
-            background: red;
-            cursor: inherit;
-            display: block;
-        }
-        input[readonly] {
-            background-color: white !important;
-            cursor: default !important;
-        }
     </style>
 @endsection
 
 @section('extraJS')
     <script type="text/javascript">
-        $(document).on('change', '.btn-file :file', function() {
-            var input = $(this),
-                    numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [numFiles, label]);
-        });
+        /**
+         * Get some product info
+         *
+         * @param sender
+         * @return void
+         */
+        function getProductName(sender) {
+            var val     = $(sender).val();
+            var target  = $("#name");
 
-        $(document).ready( function() {
-            $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-
-                var input = $(this).parents('.input-group').find(':text'),
-                        log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-                if( input.length ) {
-                    input.val(log);
-                } else {
-                    if( log ) alert(log);
+            setTimeout(function() {
+                if ($(sender).val() == val && val.length >= 7) {
+                    $.ajax({
+                        url: '/admin/api/product/' + val,
+                        dataType: 'json',
+                        success: function (data) {
+                            if ($(sender).val() == val) {
+                                $(target).val(data.payload.name);
+                            }
+                        }
+                    });
                 }
-
-            });
-        });
+            }, 100);
+        }
 
         /**
          * Show a confirmation modal to make sure if the user wants to delete the product pack
          *
          * @param sender
+         * @return void
          */
         function showConfirmationModal(sender) {
             $('#packName').html($(sender).attr('data-name'));

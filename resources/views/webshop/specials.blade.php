@@ -1,7 +1,7 @@
-@extends('master', ['pagetitle' => 'Webshop / Zoeken'])
+@extends('master', ['pagetitle' => 'Webshop / Acties'])
 
 @section('title')
-    <h3>{{ $title }}</h3>
+    <h3>Acties</h3>
 @stop
 
 @section('content')
@@ -19,26 +19,10 @@
         </thead>
         <tbody>
         @foreach($results as $product)
-            <?php
-                if (\App\Product::where('number', $product->id)->count()) {
-                    $id      = $product->id;
-                    $special = false;
-                } else {
-                    $id      = 'Actiepakket';
-                    $special = true;
-                }
-            ?>
-
             <tr class="success">
-                @if (!$special)
-                    <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
-                    <td class="hidden-xs">{{ $id }}</td>
-                    <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
-                @else
-                    <td class="product-thumbnail"><img src="/img/specials/{{ $product->image ? $product->image : 'default.jpg' }}" alt="{{ $product->image }}"></td>
-                    <td class="hidden-xs">{{ $id }}</td>
-                    <td><a href="/pack/{{ $product->id }}">{{ $product->name }}</a></td>
-                @endif
+                <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
+                <td class="hidden-xs">{{ $product->number }}</td>
+                <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
             </tr>
         @endforeach
         </tbody>

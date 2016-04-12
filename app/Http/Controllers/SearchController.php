@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Product;
 use Illuminate\Http\Request;
 use DB;
 
@@ -79,22 +79,14 @@ class SearchController extends Controller {
      */
     public function specials()
     {
-        $product = \DB::table('products')
-            ->select(['number', 'name', 'image'])
-            ->Where('action_type', 'Actie')
-            ->orderBy('number', 'asc');
-
-        $query = \DB::table('packs')
-            ->select(['id', 'name', 'image'])
-            ->union($product);
-
-        // Get all the results
-        $results = $query->get();
+        $products = Product::select(['number', 'name', 'image'])
+            ->where('action_type', 'Actie')
+            ->orderBy('number', 'asc')
+            ->paginate(25);
 
         // Return the search view with the fetched data
         return view('webshop.specials', [
-            'results'    => new LengthAwarePaginator($results, count($results), 25),
-            'title'      => 'Acties',
+            'results'    => $products,
             'scriptTime' => round(microtime(true) - LARAVEL_START, 4)
         ]);
     }

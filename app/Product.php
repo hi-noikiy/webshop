@@ -18,4 +18,13 @@ class Product extends Model {
 	 */
 	protected $guarded = array('id');
 
+    /**
+     * Check if the product if a pack
+     *
+     * @return bool
+     */
+    public function isPack()
+    {
+        return Pack::where('product_number', $this->number)->count() === 1;
+    }
 }

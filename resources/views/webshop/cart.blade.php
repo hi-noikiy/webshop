@@ -9,93 +9,82 @@
         @if(Cart::count() > 0)
                 <!-- Mobile friendly display -->
                 <div class="row">
-                        @foreach ($cart as $item)
+                    @foreach ($cart as $item)
 
-                                <?php
-                                        $name           = (strlen($item->name) > 50 ? substr($item->name, 0, 47) . "..." : $item->name);
-                                        $korting        = $item->options->korting;
-                                        $brutoPrice     = number_format($item->price, 2, ".", "");
+                        <?php
+                            $name           = (strlen($item->name) > 50 ? substr($item->name, 0, 47) . "..." : $item->name);
+                            $korting        = $item->options->korting;
+                            $brutoPrice     = number_format($item->price, 2, ".", "");
 
-                                        if ($korting === 'Actie')
-                                                $nettoPrice     = number_format($item->price, 2, ".", "");
-                                        else
-                                                $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
+                            if ($korting === 'Actie') {
+                                $nettoPrice     = number_format($item->price, 2, ".", "");
+                            } else {
+                                $nettoPrice     = number_format($brutoPrice * ((100-$korting) / 100), 2, ".", "");
+                            }
 
-                                        $total          += (double) ($nettoPrice * $item->qty);
-                                ?>
+                            $total          += (double) ($nettoPrice * $item->qty);
+                        ?>
 
-                                <form action="/cart/update" method="POST" class="col-md-4 col-sm-6">
-                                        {!! csrf_field() !!}
-                                        <input type="text" class="hidden" name="rowId" value="{{ $item->rowid }}">
+                        <form action="/cart/update" method="POST" class="col-md-4 col-sm-6">
+                            {!! csrf_field() !!}
+                            <input type="text" class="hidden" name="rowId" value="{{ $item->rowid }}">
 
-                                        <div class="panel panel-primary">
-                                                <div class="panel-heading">
-                                                        <div class="pull-right">
-                                                                <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                                                        </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="pull-right">
+                                        <button type="submit" name="remove" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                    </div>
 
-                                                        @if ($item->options->special)
-                                                                <a href="/pack/{{ $item->id }}" class="panel-heading-link">{{ $name }}</a>
-                                                        @else
-                                                                <a href="/product/{{ $item->id }}" class="panel-heading-link">{{ $name }}</a>
-                                                        @endif
+                                    <a href="/product/{{ $item->id }}" class="panel-heading-link">{{ $name }}</a>
+                                </div>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Product nummer</b></td>
+                                            <td>
+                                                {{ $item->id }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Aantal</b></td>
+                                            <td class="col-xs-6">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="{{ $item->qty }}" name="qty" value="{{ $item->qty }}">
+                                                    <span class="input-group-btn">
+                                                        <button type="submit" class="btn btn-primary" name="edit"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                    </span>
                                                 </div>
-                                                <table class="table">
-                                                        <tbody>
-                                                                <tr>
-                                                                        <td><b>Product nummer</b></td>
-                                                                        <td>
-                                                                                @if ($item->options->special)
-                                                                                        Actiepakket
-                                                                                @else
-                                                                                        {{ $item->id }}
-                                                                                @endif
-                                                                        </td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><b>Aantal</b></td>
-                                                                        <td class="col-xs-6">
-                                                                                @if ($item->options->special)
-                                                                                        <input type="text" class="form-control" disabled="disabled" placeholder="{{ $item->qty }}" value="1">
-                                                                                @else
-                                                                                        <div class="input-group">
-                                                                                                <input type="text" class="form-control" placeholder="{{ $item->qty }}" name="qty" value="{{ $item->qty }}">
-                                                                                                <span class="input-group-btn">
-                                                                                                        <button type="submit" class="btn btn-primary" name="edit"><span class="glyphicon glyphicon-pencil"></span></button>
-                                                                                                </span>
-                                                                                        </div>
-                                                                                @endif
-                                                                        </td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><b>Netto subtotaal</b></td>
-                                                                        <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $item->qty, 2, ".", "") }}</td>
-                                                                </tr>
-                                                        </tbody>
-                                                </table>
-                                        </div>
-                                </form>
-                        @endforeach
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Netto subtotaal</b></td>
+                                            <td><span class="glyphicon glyphicon-euro"></span> {{ number_format($nettoPrice * $item->qty, 2, ".", "") }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    @endforeach
                 </div>
 
                 <hr />
 
                 <div class="row">
-                        <div class="col-sm-4">
-                                <a class="btn btn-danger btn-block btn-lg" href="/cart/destroy">Winkelwagen legen</a>
-                        </div>
+                    <div class="col-sm-4">
+                        <a class="btn btn-danger btn-block btn-lg" href="/cart/destroy">Winkelwagen legen</a>
+                    </div>
 
-                        <br class="visible-xs" />
+                    <br class="visible-xs" />
 
-                        <div class="col-sm-4">
-                                <a class="btn btn-primary btn-block btn-lg" href="{{ (Session::has('continueShopping') ? Session::get('continueShopping') : '/webshop') }}">Verder winkelen</a>
-                        </div>
+                    <div class="col-sm-4">
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ (Session::has('continueShopping') ? Session::get('continueShopping') : '/webshop') }}">Verder winkelen</a>
+                    </div>
 
-                        <br class="visible-xs" />
+                    <br class="visible-xs" />
 
-                        <div class="col-sm-4">
-                                <button data-target="#confirmDialog" data-toggle="modal" class="btn btn-success btn-block btn-lg">Bestelling afronden <span class="glyphicon glyphicon-arrow-right"></span></button>
-                        </div>
+                    <div class="col-sm-4">
+                        <button data-target="#confirmDialog" data-toggle="modal" class="btn btn-success btn-block btn-lg">Bestelling afronden <span class="glyphicon glyphicon-arrow-right"></span></button>
+                    </div>
                 </div>
 
                 <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="finishOrder" aria-hidden="true">

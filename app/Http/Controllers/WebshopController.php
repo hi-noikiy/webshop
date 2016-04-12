@@ -265,7 +265,8 @@ class WebshopController extends Controller
             ->where('id', $orderId)
             ->firstOrFail();
 
-        $order = unserialize($order->products);
+        $order  = unserialize($order->products);
+        $errors = false;
 
         foreach ($order as $item) {
             if (Product::where('number', $item['id'])->count()) {
@@ -280,38 +281,21 @@ class WebshopController extends Controller
                         'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
                     ]
                 ];
-            } elseif (Pack::where('id', $item['id'])->count()) {
-                $pack       = Pack::where('id', $item['id'])->firstOrFail();
-                $products   = $pack->products;
-                $price      = 0.00;
 
-                foreach ($products as $product)
-                {
-                    $product = $product->details;
-
-                    $price += number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
-                }
-
-                $cartData = [
-                    'id' => $pack->id,
-                    'name' => $pack->name,
-                    'qty' => $item['qty'],
-                    'price' => number_format($price, 2),
-                    'options' => [
-                        'special' => true,
-                        'products' => $pack->products
-                    ]
-                ];
+                // Add the product to the cart
+                Cart::add($cartData);
             } else {
-                return abort(404);
+                $errors = true;
             }
-
-            // Add the product to the cart
-            Cart::add($cartData);
         }
 
-        return redirect('cart')
-            ->with('status', 'De order producten zijn in uw winkelmandje geplaatst.');
+        if ($errors) {
+            return redirect('cart')
+                ->withErrors('Sommige producten konden niet toegevoegd worden aan uw winkelmandje');
+        } else {
+            return redirect('cart')
+                ->with('status', 'De order producten zijn in uw winkelmandje geplaatst.');
+        }
     }
 
     /**

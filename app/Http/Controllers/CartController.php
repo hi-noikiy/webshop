@@ -18,10 +18,13 @@ class CartController extends Controller {
      */
     public function view()
     {
-        if (Auth::check())
-            $addresses = DB::table('addresses')->where('User_id', Auth::user()->login)->get();
-        else
+        if (Auth::check()) {
+            $addresses = DB::table('addresses')
+                ->where('User_id', Auth::user()->login)
+                ->get();
+        } else {
             return redirect('/#loginModal');
+        }
 
         return view('webshop.cart', [
             'cart' => Cart::content(),
@@ -41,8 +44,8 @@ class CartController extends Controller {
         $qty    = $request->get('qty');
 
         $validator = \Validator::make($request->all(), [
-            'product' => 'required|digits:7',
-            'qty' => 'required|numeric'
+            'product'   => 'required|digits:7',
+            'qty'       => 'required|numeric'
         ]);
 
         if (!$validator->fails()) {
@@ -59,7 +62,7 @@ class CartController extends Controller {
                 'qty' => $qty,
                 'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
                 'options' => [
-                    'special' => false,
+                    'special' => (bool) Pack::where('product_number', $product->number)->count(),
                     'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
                 ]
             ];
@@ -79,66 +82,6 @@ class CartController extends Controller {
         } else
             return redirect()
                 ->back()
-                ->withErrors($validator->errors());
-    }
-
-    /**
-     * Add a product pack to the cart
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function addPack(Request $request)
-    {
-        $id  = $request->get('pack');
-
-        $validator = \Validator::make($request->all(), [
-            'pack' => 'required'
-        ]);
-
-        if (!$validator->fails()) {
-            // Load the product data
-            $pack = Pack::find($id);
-            $products = $pack->products;
-            $price = 0.00;
-
-            // Load the user cart data
-            $cartArray = unserialize(Auth::user()->cart);
-
-            foreach ($products as $product)
-            {
-                $product = $product->details;
-
-                $price += number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", "");
-            }
-
-            // Add the product data to the cart data
-            $cartArray[$id] =
-            $productData = [
-                'id' => $id,
-                'name' => $pack->name,
-                'qty' => 1,
-                'price' => number_format($price, 2, ".", ""),
-                'options' => [
-                    'special' => true,
-                    'products' => $products
-                ]
-            ];
-
-            // Add the product to the cart
-            Cart::add($productData);
-
-            // Save the updated array to the database
-            $user = User::find(Auth::user()->id);
-            $user->cart = serialize($cartArray);
-            $user->save();
-
-            if (Session::has('continueShopping'))
-                return redirect(Session::get('continueShopping'))->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
-            else
-                return redirect('cart');
-        } else
-            return redirect()->back()
                 ->withErrors($validator->errors());
     }
 

@@ -35,8 +35,7 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::get('webshop', 'WebshopController@main');                        	    // Main webshop page
-Route::get('product/{product_id?}', 'WebshopController@showProduct');   	    // Product page
-Route::get('pack/{pack_id}', 'ProductController@showPack');                     // Pack page
+Route::get('product/{product_id?}', 'ProductController@showProduct');   	    // Product page
 Route::get('search', 'SearchController@search');                       	        // Page with the search results
 Route::get('specials', 'SearchController@specials');                   	        // Show only the specials
 Route::get('clearance', 'SearchController@clearance');                 	        // Show only the clearance products
@@ -104,8 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('destroy', 'CartController@destroy');            	        // Remove all items from the cart
         Route::get('order/finished', 'WebshopController@orderFinished');	    // Show the order finished page
 
-        Route::post('add/product', 'CartController@addProduct');                // Add product to cart
-        Route::post('add/pack', 'CartController@addPack');                      // Add pack to cart
+        Route::post('add', 'CartController@addProduct');                        // Add product to cart
         Route::post('update', 'CartController@update');                	        // Update or remove product from cart
         Route::post('order', 'CartController@order');				            // Send the order
     });

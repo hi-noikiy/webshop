@@ -79,7 +79,7 @@
     </form>
 
     <div class="text-center">
-        <h3>{{ $pack->name }}</h3>
+        <h3>{{ $pack->product->name }}</h3>
     </div>
 
     <hr />
@@ -105,7 +105,7 @@
             <tr>
                 <td class="product-thumbnail"><img src="/img/products/{{ $prod->details->image }}"></td>
                 <td>{{ $prod->details->number }}</td>
-                <td>{{ $prod->details->name }}</a></td>
+                <td><a href="/product/{{ $prod->details->number }}">{{ $prod->details->name }}</a></td>
                 <td>{{ $prod->amount }}</td>
                 <td class="no-padding"><button onclick="showConfirmationModal(this)" data-product-id="{{ $prod->id }}" data-product-number="{{ $prod->details->number }}" class="btn btn-danger delete-button"><i class="fa fa-remove"></i></button></td>
             </tr>
