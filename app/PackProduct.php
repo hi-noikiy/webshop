@@ -1,9 +1,11 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class PackProduct
+ * @package App
+ */
 class PackProduct extends Model
 {
     /**

@@ -2,6 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Address
+ * @package App
+ */
 class Address extends Model {
 
 	/**
@@ -18,6 +22,11 @@ class Address extends Model {
 	 */
 	protected $guarded = ['id'];
 
+	/**
+     * The user the address belongs to
+     *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function user()
 	{
 		return $this->belongsTo('App\User', 'User_id', 'login');

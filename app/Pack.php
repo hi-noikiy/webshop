@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Pack
+ * @package App
+ */
 class Pack extends Model
 {
     /**

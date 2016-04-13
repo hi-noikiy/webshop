@@ -46,13 +46,12 @@ class ProductController extends Controller {
         }
 
         return view('webshop.product', [
-                'product'           => $product,
-                'discount'          => $discount,
-                'related_products'  => $related_products,
-                'prevPage'          => $prevPage,
-                'pack_list'         => $pack_list
-            ]
-        );
+            'product'           => $product,
+            'discount'          => $discount,
+            'related_products'  => $related_products,
+            'prevPage'          => $prevPage,
+            'pack_list'         => $pack_list
+        ]);
     }
 
 }
