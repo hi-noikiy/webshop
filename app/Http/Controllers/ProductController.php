@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use App\PackProduct;
+use App\Pack;
 use Illuminate\Http\Request;
 use App\Product;
 use Session, Auth, Helper;
@@ -25,22 +27,30 @@ class ProductController extends Controller {
         $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
         $prevPage = $request->get('ref');
         $related_products = [];
+        $pack_list = [];
 
-        if ($product->related_products)
-            foreach (explode(',', $product->related_products) as $related_product)
+        if ($product->related_products) {
+            foreach (explode(',', $product->related_products) as $related_product) {
                 $related_products[] = Product::where('number', $related_product)->first();
-        else
+            }
+        } else {
             $related_products = false;
+        }
 
+        if ($pack = PackProduct::select(['pack_id'])->where('product', $product_Id)->get()->toArray()) {
+            $pack_list = Pack::whereIn('id', $pack)->get();
+        }
 
-        if (preg_match("/(search|clearance|specials)/", $request->server('HTTP_REFERER')))
+        if (preg_match("/(search|clearance|specials)/", $request->server('HTTP_REFERER'))) {
             Session::put('continueShopping', $request->server('HTTP_REFERER'));
+        }
 
         return view('webshop.product', [
                 'product'           => $product,
                 'discount'          => $discount,
                 'related_products'  => $related_products,
-                'prevPage'          => $prevPage
+                'prevPage'          => $prevPage,
+                'pack_list'         => $pack_list
             ]
         );
     }

@@ -108,6 +108,26 @@
             </div>
         </div>
         <div class="col-md-8">
+            @if (count($pack_list) === 1)
+                <div class="alert alert-warning text-center">
+                    <h3>Attentie!</h3>
+                    <p>
+                        Dit product is onderdeel het volgende actiepakket: <br />
+                        <a href="/product/{{ $pack_list[0]->product_number }}">{{ $pack_list[0]->product->name }}</a> <br />
+                    </p>
+                </div>
+            @elseif(count($pack_list) >= 2)
+                <div class="alert alert-warning text-center">
+                    <h3>Attentie!</h3>
+                    <p>
+                        Dit product is onderdeel van meerdere actiepakketten: <br />
+                        @foreach($pack_list as $pack)
+                            <a href="/product/{{ $pack->product_number }}">{{ $pack->product->name }}</a><br />
+                        @endforeach
+                    </p>
+                </div>
+            @endif
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @if (Auth::check())
@@ -219,7 +239,7 @@
                                 <img src="/img/products/{{ $pack_product->details->image }}">
                             </td>
                             <td>
-                                <a href="/product/{{ $pack_product->details->number }}?ref=/product/{{ $pack_product->details->number }}">{{ $pack_product->details->name }}</a>
+                                <a href="/product/{{ $pack_product->details->number }}">{{ $pack_product->details->name }}</a>
                             </td>
                             <td>{{ $pack_product->amount }}</td>
                         </tr>
