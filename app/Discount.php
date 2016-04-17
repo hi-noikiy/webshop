@@ -2,6 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Discount
+ * @package App
+ */
 class Discount extends Model {
 
     /**
@@ -18,11 +22,19 @@ class Discount extends Model {
      */
     protected $guarded = ['id'];
 
+    /**
+     * Discount constructor.
+     */
     public function __construct()
     {
         $this->where('group_desc', '!=', 'Vervallen');
     }
 
+    /**
+     * Get the user the discount belongs to
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
 	{
 		return $this->belongsTo('App\User', 'User_id', 'login');

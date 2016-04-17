@@ -2,6 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Order
+ * @package App
+ */
 class Order extends Model {
 
 	/**
@@ -18,6 +22,11 @@ class Order extends Model {
 	 */
 	protected $guarded = ['id'];
 
+    /**
+     * Get the address that the ordered products were sent to
+     *
+     * @return \stdClass
+     */
     public function getAddress()
     {
         if ($this->addressId === -2)
@@ -49,6 +58,11 @@ class Order extends Model {
         return $address;
     }
 
+    /**
+     * Get the user who placed the order
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function user()
 	{
 		return $this->belongsTo('App\User', 'User_id', 'login');

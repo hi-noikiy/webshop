@@ -2,6 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Product
+ * @package App
+ */
 class Product extends Model {
 
 	/**
@@ -16,7 +20,7 @@ class Product extends Model {
  	 *
 	 * @var array
 	 */
-	protected $guarded = array('id');
+	protected $guarded = ['id'];
 
     /**
      * Check if the product if a pack
