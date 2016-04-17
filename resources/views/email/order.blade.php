@@ -59,25 +59,11 @@
 
 	<tbody style="text-align: left;">
 		@foreach ($cart as $product)
-			@if($product->options->special)
 			<tr style="padding: 5px 0px;">
-			    <td style="border-bottom: 1px solid #ccc;">Actiepakket</td>
-			    <td style="border-bottom: 1px solid #ccc;">{{ $product->name }}</td>
-			    <td style="border-bottom: 1px solid #ccc;">
-					<ul>
-						@foreach ($product->options->products as $pack_product)
-							<li>{{ $pack_product->number }} - {{ $pack_product->amount }}</li>
-						@endforeach
-					</ul>
-				</td>
+				<td style="border-bottom: 1px solid #ccc;">{{ $product->id }}</td>
+				<td style="border-bottom: 1px solid #ccc;">{{ $product->name }}</td>
+				<td style="border-bottom: 1px solid #ccc;">{{ $product->qty }}</td>
 			</tr>
-			@else
-				<tr style="padding: 5px 0px;">
-					<td style="border-bottom: 1px solid #ccc;">{{ $product->id }}</td>
-					<td style="border-bottom: 1px solid #ccc;">{{ $product->name }}</td>
-					<td style="border-bottom: 1px solid #ccc;">{{ $product->qty }}</td>
-				</tr>
-			@endif
 		@endforeach
 	</tbody>
 </table>

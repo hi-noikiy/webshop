@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use App\Product;
-use App\Pack;
 use App\Order;
 use Carbon\Carbon;
 
@@ -46,11 +45,11 @@ class WebshopController extends Controller
         usort($types, function ($a, $b) {
             return strcmp(strtolower($a->type), strtolower($b->type));
         });
-
+        
         return view('webshop.main', [
-            'brands' => $brands,
-            'series' => $series,
-            'types' => $types,
+            'brands' => array_pluck($brands, 'brand'),
+            'series' => array_pluck($series, 'series'),
+            'types' => array_pluck($types, 'type'),
         ]);
     }
 

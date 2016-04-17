@@ -21,7 +21,7 @@
                                                                 <select onchange="wtg.quickSearch();" name="brand" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($brands as $brand)
-                                                                                <option value="{{ $brand->brand }}">{{ $brand->brand }}</option>
+                                                                                <option value="{{ $brand }}">{{ $brand }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
@@ -34,7 +34,7 @@
                                                                 <select onchange="wtg.quickSearch();" name="serie" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($series as $serie)
-                                                                                <option value="{{ $serie->series }}">{{ $serie->series }}</option>
+                                                                                <option value="{{ $serie }}">{{ $serie }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
@@ -47,7 +47,7 @@
                                                                 <select onchange="wtg.quickSearch();" name="type" class="form-control">
                                                                         <option value="">----------</option>
                                                                         @foreach($types as $type)
-                                                                                <option value="{{ $type->type }}">{{ $type->type }}</option>
+                                                                                <option value="{{ $type }}">{{ $type }}</option>
                                                                         @endforeach
                                                                 </select>
                                                         </div>
