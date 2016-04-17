@@ -79,7 +79,7 @@ class SearchController extends Controller {
      */
     public function specials()
     {
-        $products = Product::select(['number', 'name', 'image'])
+        $products = Product::select(['number', 'name', 'image', 'special_price'])
             ->where('action_type', 'Actie')
             ->orderBy('number', 'asc')
             ->paginate(25);
