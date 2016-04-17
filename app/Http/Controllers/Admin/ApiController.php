@@ -90,10 +90,10 @@ class ApiController extends Controller {
      * Return a single product
      *
      * @param Request $request
-     * @param int $id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function product(Request $request, int $id)
+    public function product(Request $request, $id)
     {
         if ($request->ajax()) {
             $product = Product::where('number', $id)->first();
