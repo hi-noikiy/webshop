@@ -3,12 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use Carbon\Carbon;
-
 use File, Validator, DB, Helper;
 use App\Discount;
 use App\Content;
+use App\Exceptions\InvalidColumnCountException;
 
 class importDiscounts extends Command
 {
@@ -82,7 +81,8 @@ class importDiscounts extends Command
 
                     while(!feof($fh))
                     {
-                        $data = str_getcsv(fgets($fh), ';');
+                        $data = preg_replace('/;$/', '', fgets($fh));
+                        $data = str_getcsv($data, ';');
 
                         // Make sure column count is 24 at minimum
                         if (count($data) === 8) {
@@ -101,6 +101,8 @@ class importDiscounts extends Command
                             $line++;
 
                             $bar->advance();
+                        } else {
+                            throw new InvalidColumnCountException($line);
                         }
                     }
                     fclose($fh);
@@ -133,7 +135,7 @@ class importDiscounts extends Command
         				$message->subject('[WTG Webshop] Korting import error');
         			});
 
-                    exit();
+                    return 2;
                 }
 
                 $endTime = round(microtime(true) - $startTime, 4);
@@ -149,7 +151,10 @@ class importDiscounts extends Command
 
             // Always remove the file at the end of the import to make sure that it doesn't get parsed twice
             unlink($this->filePath);
-            exit();
+            return 0;
+        } else {
+            $this->warn('No discounts file found.');
+            return 1;
         }
     }
 }
