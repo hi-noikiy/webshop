@@ -3,12 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use Carbon\Carbon;
-
 use File, Validator, DB, Helper;
 use App\Product;
 use App\Content;
+use App\Exceptions\InvalidColumnCountException;
 
 class importProducts extends Command
 {
@@ -42,7 +41,7 @@ class importProducts extends Command
     {
         parent::__construct();
 
-        $this->filePath = storage_path() . "/import/products.csv";
+        $this->filePath = storage_path('import/products.csv');
     }
 
     /**
@@ -62,7 +61,7 @@ class importProducts extends Command
             );
 
             if ($validator->fails())
-                    $this->error("Invalid CSV file!");
+                $this->error("Invalid CSV file!");
             else
             {
                 $startTime = microtime(true);
@@ -79,14 +78,18 @@ class importProducts extends Command
                     // Truncate the products table
                     (new Product)->newQuery()->delete();
 
-                    $line = 0;
+                    $line = 1;
 
                     while(!feof($fh))
                     {
-                        $data = str_getcsv(fgets($fh), ';');
+                        $data = preg_replace('/;$/', '', fgets($fh));
+                        $data = str_getcsv($data, ';');
+                        $columnCount = count($data);
 
-                        // Make sure column count is 24 at minimum
-                        if (count($data) === 30) {
+                        if ($columnCount === 1) {
+                            $this->info("Skipping empty line {$line}");
+                        // Make sure column count is 30
+                        } elseif ($columnCount === 30) {
 
                             $bar->setMessage($data[3], 'product');
 
@@ -126,6 +129,8 @@ class importProducts extends Command
                             }
 
                             $bar->advance();
+                        } else {
+                            throw new InvalidColumnCountException($line, $columnCount, 30);
                         }
                     }
                     fclose($fh);
@@ -160,7 +165,7 @@ class importProducts extends Command
         				$message->subject('[WTG Webshop] Product import error');
         			});
 
-                    exit();
+                    return 2;
                 }
 
                 $endTime = round(microtime(true) - $startTime, 4);
@@ -176,7 +181,10 @@ class importProducts extends Command
 
             // Always remove the file at the end of the import to make sure that it doesn't get parsed twice
             unlink($this->filePath);
-            exit();
+            return 0;
+        } else {
+            $this->warn('No products file found.');
+            return 1;
         }
     }
 }

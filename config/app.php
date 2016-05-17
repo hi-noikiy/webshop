@@ -150,6 +150,7 @@ return [
 		Barryvdh\Debugbar\ServiceProvider::class,
 		Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 		Chumper\Zipper\ZipperServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 	],
 
 	/*
@@ -201,7 +202,8 @@ return [
 		'View'      => Illuminate\Support\Facades\View::class,
 		'Zipper' 	=> Chumper\Zipper\Zipper::class,
 
-		'Helper'	=> App\Helper::class,
+        'Helper'	=> App\Helper::class,
+        'Sentry'    => Sentry\SentryLaravel\SentryFacade::class,
 	],
 
 ];
