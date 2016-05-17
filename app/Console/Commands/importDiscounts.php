@@ -77,15 +77,18 @@ class importDiscounts extends Command
                     // Truncate the products table
                     (new Discount)->newQuery()->delete();
 
-                    $line = 0;
+                    $line = 1;
 
                     while(!feof($fh))
                     {
                         $data = preg_replace('/;$/', '', fgets($fh));
                         $data = str_getcsv($data, ';');
+                        $columnCount = count($data);
 
-                        // Make sure column count is 24 at minimum
-                        if (count($data) === 8) {
+                        if ($columnCount === 1) {
+                            $this->info("Skipping empty line {$line}");
+                        // Make sure column count is 8
+                        } elseif ($columnCount === 8) {
 
                             DB::table('discounts')->insert([
                                     'table'         => $data[0],
@@ -102,7 +105,7 @@ class importDiscounts extends Command
 
                             $bar->advance();
                         } else {
-                            throw new InvalidColumnCountException($line);
+                            throw new InvalidColumnCountException($line, $columnCount, 8);
                         }
                     }
                     fclose($fh);

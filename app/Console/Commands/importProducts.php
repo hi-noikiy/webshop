@@ -78,15 +78,18 @@ class importProducts extends Command
                     // Truncate the products table
                     (new Product)->newQuery()->delete();
 
-                    $line = 0;
+                    $line = 1;
 
                     while(!feof($fh))
                     {
                         $data = preg_replace('/;$/', '', fgets($fh));
                         $data = str_getcsv($data, ';');
+                        $columnCount = count($data);
 
-                        // Make sure column count is 24 at minimum
-                        if (count($data) === 30) {
+                        if ($columnCount === 1) {
+                            $this->info("Skipping empty line {$line}");
+                        // Make sure column count is 30
+                        } elseif ($columnCount === 30) {
 
                             $bar->setMessage($data[3], 'product');
 
@@ -127,7 +130,7 @@ class importProducts extends Command
 
                             $bar->advance();
                         } else {
-                            throw new InvalidColumnCountException($line);
+                            throw new InvalidColumnCountException($line, $columnCount, 30);
                         }
                     }
                     fclose($fh);
