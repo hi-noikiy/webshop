@@ -32,6 +32,8 @@ class Handler extends ExceptionHandler {
      */
     public function report(Exception $e)
     {
+        app('sentry')->captureException($e);
+
 		$trace = $e->getTraceAsString();
 		$class = get_class($e);
 
