@@ -32,7 +32,25 @@ class Handler extends ExceptionHandler {
      */
     public function report(Exception $e)
     {
-        app('sentry')->captureException($e);
+        // Create a sentry variable
+        $sentry = app('sentry');
+
+        // Add the user login if someone is logged in
+        if (auth()->check()) {
+            $sentry->user_context([
+                'id'    => auth()->user()->login,
+            ]);
+        }
+
+        // Send reportable errors with level 'Error'
+        if ($this->shouldReport($e)) {
+            $sentry->captureException($e);
+        // Else send them with warning and only if someone is logged in
+        } else if (auth()->check()) {
+            $sentry->captureException($e, [
+                'level' => 'warning'
+            ]);
+        }
 
 		$trace = $e->getTraceAsString();
 		$class = get_class($e);
