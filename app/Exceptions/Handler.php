@@ -38,7 +38,8 @@ class Handler extends ExceptionHandler {
         // Add the user login if someone is logged in
         if (auth()->check()) {
             $sentry->user_context([
-                'id'    => auth()->user()->login,
+                'id'        => auth()->user()->login,
+                'username'  => auth()->user()->company
             ]);
         }
 
