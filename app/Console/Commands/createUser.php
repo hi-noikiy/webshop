@@ -31,13 +31,14 @@ class createUser extends Command {
 	public function handle()
 	{
 		$login 	  = $this->argument('login');
-		$pass 	  = $this->argument('password');
 		$company  = $this->argument('company');
 		$street   = $this->argument('street');
 		$postcode = $this->argument('postcode');
 		$city 	  = $this->argument('city');
 		$email	  = $this->argument('email');
-		$admin 	  = $this->argument('admin');
+        $admin 	  = $this->argument('admin');
+
+        $password = $this->secret('Enter a password for the new user');
 
 		DB::table('users')->insert(
 			array(
@@ -49,7 +50,7 @@ class createUser extends Command {
 				'email'		=> $email,
 				'active' 	=> 1,
 				'isAdmin' 	=> $admin,
-				'password' 	=> Hash::make($pass),
+				'password' 	=> Hash::make($password),
 				)
 			);
 
@@ -64,7 +65,6 @@ class createUser extends Command {
 	{
 		return array(
 			array('login', 		InputArgument::REQUIRED, '(Required) Integer'),
-			array('password', 	InputArgument::REQUIRED, '(Required) String'),
 			array('company', 	InputArgument::REQUIRED, '(Required) String'),
 			array('street', 	InputArgument::REQUIRED, '(Required) String'),
 			array('postcode', 	InputArgument::REQUIRED, '(Required) String'),
