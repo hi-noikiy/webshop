@@ -4,8 +4,7 @@ use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-
-use DB;
+use App\User;
 
 class setAdmin extends Command {
 
@@ -30,31 +29,22 @@ class setAdmin extends Command {
 	 */
 	public function handle()
 	{
-		$login = $this->argument('login');
-		$admin = $this->argument('admin');
+		$login = $this->ask('Which user?');
 
-        $query = DB::table('users')->where('login', $login);
+        try {
+            $user = User::where('login', $login)->firstOrFail();
 
-        if ($query->count() === 1) {
-    		DB::table('users')->where('login', $login)->update(
-    			     array('isAdmin' => $admin)
-    			);
-        } else {
-            $this->error(PHP_EOL."No user found with login: ". $login .PHP_EOL);
+        } catch (\ModelNotFoundException $e) {
+            $this->error(PHP_EOL . "No user found with login: ". $login . PHP_EOL);
+            
+            return 127;
         }
-	}
+        
+        $this->comment("This user " . ($user->isAdmin ? 'IS' : 'IS NOT') . " an admin.");
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
-			array('login', 	InputArgument::REQUIRED, '(Required) Integer'),
-			array('admin', 	InputArgument::REQUIRED, '(Required) Boolean'),
-		);
+        $user->isAdmin = $this->confirm('Make this user an admin? (Answering \'no\' will remove the admin status)');
+
+        $user->save(); 
 	}
 
 }
