@@ -11,7 +11,7 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --prefer-dist --no-interaction --prefer-stable
+  - composer install --no-interaction
   - php artisan migrate
 
 script: vendor/bin/phpunit
