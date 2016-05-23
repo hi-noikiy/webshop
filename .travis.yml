@@ -6,9 +6,12 @@ php:
 sudo: false
 
 before_install:
-  - travis_retry composer self-update
+  - cp .env.travis .env
+  - mysql -e 'create database testing;'
+  - composer self-update
 
 install:
-  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable
+  - composer install --prefer-dist --no-interaction --prefer-stable
+  - php artisan migrate
 
 script: vendor/bin/phpunit
