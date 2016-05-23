@@ -9,6 +9,7 @@ before_install:
   - cp .env.travis .env
   - mysql -e 'create database testing;'
   - composer self-update
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 
 install:
   - composer install --no-interaction
