@@ -1,4 +1,4 @@
-# Laravel WTG
+# Laravel WTG [![Build Status](https://travis-ci.org/DuckThom/laravel-wtg.svg?branch=master)](https://travis-ci.org/DuckThom/laravel-wtg)
 
 * * *
 
