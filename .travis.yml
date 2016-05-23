@@ -13,7 +13,7 @@ before_install:
 install:
   - composer install --no-interaction
   - php artisan migrate
-  - npm install
+  - travis_retry npm install
   - node_modules/.bin/gulp
 
 script: vendor/bin/phpunit
