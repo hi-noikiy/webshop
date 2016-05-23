@@ -131,7 +131,3 @@ Route::group(['middleware' => 'auth'], function () {
 // POST Requests will be handled here
 Route::when('*', 'csrf', array('post', 'put', 'delete'));
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
