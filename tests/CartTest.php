@@ -114,24 +114,5 @@ class CartTest extends TestCase
             ->press('Toevoegen')
             ->see('Verder winkelen');
     }
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testAddProductToCart()
-    {
-        $this->createProduct()
-            ->createDiscount()
-            ->createFakeUser();
-
-        $this->actingAs(User::where('login', 10000)->first())
-            ->visit('/product/1000030')
-            ->dontSee('Not Found')
-            ->see('Someproduct')
-            ->type(5, 'qty')
-            ->press('Toevoegen')
-            ->see('Verder winkelen');
-    }
+    
 }
