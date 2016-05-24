@@ -69,6 +69,7 @@ class importDiscounts extends Command
                 $lineCount = count(file($this->filePath));
                 $bar       = $this->output->createProgressBar($lineCount);
 
+                $bar->setRedrawFrequency(100);
                 $bar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %memory:6s%');
 
                 DB::beginTransaction();

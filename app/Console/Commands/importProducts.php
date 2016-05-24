@@ -70,6 +70,7 @@ class importProducts extends Command
                 $bar       = $this->output->createProgressBar($lineCount);
                 $products_with_related_products = [];
 
+                $bar->setRedrawFrequency(100);
                 $bar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %memory:6s% %product%');
 
                 DB::beginTransaction();
