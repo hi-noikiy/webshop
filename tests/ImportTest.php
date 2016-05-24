@@ -61,7 +61,7 @@ class ImportTest extends TestCase
      */
     public function testValidDiscountsFile()
     {
-        $contents = 'VA-220;10002;20125125;18-2-2008 0:00:00;31-12-9999 0:00:00;33;Grohe onderdelen;';
+        $contents = 'VA-220;69696;20125125;18-2-2008 0:00:00;31-12-9999 0:00:00;33;Grohe onderdelen;';
 
         File::put(storage_path('import/discounts.csv'), $contents);
 
@@ -69,7 +69,7 @@ class ImportTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
 
-        $discount = Discount::where('user_id', 10002)->where('table', 'VA-220')->first();
+        $discount = Discount::where('user_id', 69696)->where('table', 'VA-220')->first();
 
         $this->assertInstanceOf(Discount::class, $discount);
     }
@@ -101,7 +101,7 @@ class ImportTest extends TestCase
      */
     public function testInvalidDiscountsFile()
     {
-        $contents = 'VA-220;10002;20125125;Grohe onderdelen;';
+        $contents = 'VA-220;69696;20125125;Grohe onderdelen;';
 
         File::put(storage_path('import/discounts.csv'), $contents);
 
@@ -109,7 +109,7 @@ class ImportTest extends TestCase
 
         $this->assertEquals(2, $exitCode);
 
-        $discount = Discount::where('user_id', 10002)->where('table', 'VA-220')->first();
+        $discount = Discount::where('user_id', 69696)->where('table', 'VA-220')->first();
 
         $this->assertEquals(null, $discount);
     }
