@@ -82,8 +82,8 @@ class importProducts extends Command
 
                     while(!feof($fh))
                     {
-                        $data = preg_replace('/;$/', '', fgets($fh));
-                        $data = str_getcsv($data, ';');
+                        //$data = preg_replace('/;$/', '', fgets($fh));
+                        $data = str_getcsv(fgets($fh), ';');
                         $columnCount = count($data);
 
                         if ($columnCount === 1) {
