@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\Order;
+use App\User;
 use Illuminate\Http\Request;
 
 use Response, DB;
@@ -21,20 +22,17 @@ class ApiController extends Controller {
      */
     public function cpu(Request $request)
     {
-        if ($request->ajax()) {
-            $uptime = exec('uptime');
+        $uptime = exec('uptime');
 
-            $load = array_slice(explode(' ', str_replace(',', '', $uptime)), -3);
-            $max = exec('grep "model name" /proc/cpuinfo | wc -l');
+        $load = array_slice(explode(' ', str_replace(',', '', $uptime)), -3);
+        $max = exec('grep "model name" /proc/cpuinfo | wc -l');
 
-            $data = [
-                'load' => $load[0],
-                'max' => $max,
-            ];
+        $data = [
+            'load' => $load[0],
+            'max' => $max,
+        ];
 
-            return Response::json($data);
-        } else
-            return redirect()->back();
+        return Response::json($data);
     }
 
     /**
@@ -45,21 +43,18 @@ class ApiController extends Controller {
      */
     public function ram(Request $request)
     {
-        if ($request->ajax()) {
-            $total = preg_replace("/\D/", "", exec("grep 'MemTotal' /proc/meminfo"));
-            $free = preg_replace("/\D/", "", exec("grep 'MemFree' /proc/meminfo"));
+        $total = preg_replace("/\D/", "", exec("grep 'MemTotal' /proc/meminfo"));
+        $free = preg_replace("/\D/", "", exec("grep 'MemFree' /proc/meminfo"));
 
-            $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
+        $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
 
-            $data = [
-                'total' => $total,
-                'freePercentage' => $freePercentage,
-                'free' => $free
-            ];
+        $data = [
+            'total' => $total,
+            'freePercentage' => $freePercentage,
+            'free' => $free
+        ];
 
-            return Response::json($data);
-        } else
-            return redirect()->back();
+        return Response::json($data);
     }
 
     /**
@@ -71,19 +66,16 @@ class ApiController extends Controller {
      */
     public function chart(Request $request, string $type)
     {
-        if ($request->ajax()) {
-            if ($type === 'orders')
-            { // Get the count, year and month
-                $groupedOrders = Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
-                    ->where(DB::raw('YEAR(created_at)'), request()->input('year'))
-                    ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
-                    ->get();
+        if ($type === 'orders')
+        { // Get the count, year and month
+            $groupedOrders = Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
+                ->where(DB::raw('YEAR(created_at)'), $request->input('year'))
+                ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+                ->get();
 
-                return Response::json($groupedOrders);
-            } else
-                return Response::json(['Unknown chart type'], 400);
+            return Response::json($groupedOrders);
         } else
-            return redirect()->back();
+            return Response::json(['Unknown chart type'], 400);
     }
 
     /**
@@ -95,23 +87,46 @@ class ApiController extends Controller {
      */
     public function product(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $product = Product::where('number', $id)->first();
+        $product = Product::where('number', $id)->first();
 
-            if ($product) {
+        if ($product) {
+            return Response::json([
+                'status'    => 'success',
+                'payload'   => $product,
+                'message'   => "Details for product: {$product}"
+            ]);
+        } else {
+            return Response::json([
+                'status'    => 'failure',
+                'message'   => "No details for product: {$product}"
+            ]);
+        }
+    }
+
+    /**
+     * Get some user details
+     *
+     * @return mixed
+     */
+    public function userDetails(Request $request)
+    {
+        if ($request->has('id')) {
+            $user = User::where('login', $request->input('id'))->first();
+
+            if ($user !== null) {
                 return Response::json([
-                    'status'    => 'success',
-                    'payload'   => $product,
-                    'message'   => "Details for product: {$product}"
+                    'message' => 'User details for user ' . $user->login,
+                    'payload' => $user
                 ]);
             } else {
                 return Response::json([
-                    'status'    => 'failure',
-                    'message'   => "No details for product: {$product}"
-                ]);
+                    'message' => 'No user found with login ' . $request->input('id'),
+                ], 404);
             }
-        } else
-            return redirect()->back();
+        } else {
+            return Response::json([
+                'message' => 'Missing request parameter: `id`',
+            ], 400);
+        }
     }
-
 }

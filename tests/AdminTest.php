@@ -7,7 +7,8 @@ use App\User;
 
 class AdminTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+        WithoutMiddleware;
 
     /**
      * A basic test example.
@@ -19,7 +20,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/getUserData?id=13370')
+            ->get('/admin/api/user?id=13370')
             ->seeJsonEquals([
                 'message' => 'User details for user 13370',
                 'payload' => $user->toArray()
@@ -36,7 +37,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/getUserData')
+            ->get('/admin/api/user')
             ->seeJsonEquals([
                 'message' => "Missing request parameter: `id`"
             ]);
@@ -52,7 +53,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/getUserData?id=07331')
+            ->get('/admin/api/user?id=07331')
             ->seeJsonEquals([
                 'message' => 'No user found with login 07331'
             ]);
@@ -68,7 +69,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/getUserData?id=1337')
+            ->get('/admin/api/user?id=1337')
             ->seeJsonEquals([
                 'message' => 'No user found with login 1337'
             ]);

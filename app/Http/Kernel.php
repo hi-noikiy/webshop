@@ -29,6 +29,7 @@ class Kernel extends HttpKernel {
 		'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
 		'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
 		'RemoveTempFile' => \App\Http\Middleware\RemoveTempFile::class,
+        'ajax' => \App\Http\Middleware\CheckAjaxRequest::class
 	];
 
 }

@@ -52,7 +52,6 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::get('getContent', 'AdminController@getContent');           	    // Get the content for a field
         Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
         Route::get('usermanager', 'AdminController@userManager');	        	// Simple user manager
-        Route::get('getUserData', 'AdminController@getUserData');	        	// Get the requested user's info
         Route::get('userAdded', 'AdminController@userAdded');			        // The user added page
 
         Route::post('saveContent', 'AdminController@saveContent');           	// Save the page content
@@ -75,11 +74,12 @@ Route::group(['middleware' => 'auth.admin'], function() {
             Route::post('download', 'ImportController@download');     	        // Handle the download file import
         });
 
-        Route::group(['prefix' => 'api'], function () {
+        Route::group(['prefix' => 'api', 'middleware' => 'ajax'], function () {
             Route::get('cpu', 'ApiController@cpu');                      // Get CPU Load
             Route::get('ram', 'ApiController@ram');                      // Get RAM Load
             Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
             Route::get('product/{product}', 'ApiController@product');    // Get product data
+            Route::get('user', 'ApiController@userDetails');             // Get user details
         });
 
         Route::group(['prefix' => 'packs'], function () {

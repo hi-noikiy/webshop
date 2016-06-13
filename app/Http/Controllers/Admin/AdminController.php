@@ -288,32 +288,6 @@ class AdminController extends Controller
         return view('admin.usermanager');
     }
 
-    /**
-     * Get some user details
-     *
-     * @return mixed
-     */
-    public function getUserData()
-    {
-        if (Input::has('id')) {
-            $user = User::where('login', Input::get('id'))->first();
-
-            if ($user !== null) {
-                return Response::json([
-                    'message' => 'User details for user ' . $user->login,
-                    'payload' => $user
-                ]);
-            } else {
-                return Response::json([
-                    'message' => 'No user found with login ' . Input::get('id'),
-                ], 404);
-            }
-        } else {
-            return Response::json([
-                'message' => 'Missing request parameter: `id`',
-            ], 400);
-        }
-    }
 
     /**
      * Add/update a user

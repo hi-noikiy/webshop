@@ -98,7 +98,7 @@
                         if (value = $(this).val())
                         {
                                 $.ajax({
-                                        url: "/admin/getUserData",
+                                        url: "/admin/api/user",
                                         type: "GET",
                                         dataType: "json",
                                         data: {id: value},
