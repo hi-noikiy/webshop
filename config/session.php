@@ -148,6 +148,6 @@ return [
 	|
 	*/
 
-	'secure' => true,
+	'secure' => env('SECURE_SESSION_ONLY', true),
 
 ];
