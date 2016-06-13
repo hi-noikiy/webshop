@@ -295,15 +295,24 @@ class AdminController extends Controller
      */
     public function getUserData()
     {
-        if (Request::ajax()) {
-            if (Input::has('id')) {
-                $userdata = User::where('login', Input::get('id'))->firstOrFail();
+        if (Input::has('id')) {
+            $user = User::where('login', Input::get('id'))->first();
 
-                return $userdata;
-            } else
-                abort(400);
-        } else
-            abort(405);
+            if ($user !== null) {
+                return Response::json([
+                    'message' => 'User details for user ' . $user->login,
+                    'payload' => $user
+                ]);
+            } else {
+                return Response::json([
+                    'message' => 'No user found with login ' . Input::get('id'),
+                ], 404);
+            }
+        } else {
+            return Response::json([
+                'message' => 'Missing request parameter: `id`',
+            ], 400);
+        }
     }
 
     /**
