@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group">
                         <div class="col-sm-2">
-                                <button type="button" class="btn btn-block btn-lg btn-danger" disabled="disabled" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
+                                <button id="deleteButton" type="button" class="btn btn-block btn-lg btn-danger" disabled="disabled" data-toggle="modal" data-target="#deleteUserModal">Verwijderen</button>
                         </div>
                         <div class="col-sm-10">
                                 <button type="submit" class="btn btn-block btn-lg btn-success" name="update">Toevoegen/wijzigen</button>
@@ -103,6 +103,8 @@
                                         dataType: "json",
                                         data: {id: value},
                                         success: function(data) {
+                                                var data = data.payload;
+
                                                 if (value == $('#inputUserId').val() && data != null) {
                                                         $('#inputUserName').attr('value', data['company']);
                                                         $('#inputUserEmail').attr('value', data['email']);
@@ -111,7 +113,7 @@
                                                         $('#inputUserCity').attr('value', data['city']);
                                                         $('#inputUserActive').val(data['active']);
 
-                                                        $('.btn-danger').removeAttr('disabled');
+                                                        $('#deleteButton').removeAttr('disabled');
                                                 }
                                         },
                                         error: function(data) {
@@ -122,7 +124,7 @@
                                                 $('#inputUserCity').attr('value', '');
                                                 $('#inputUserActive').val(0);
 
-                                                $('.btn-danger').attr('disabled', 'disabled');
+                                                $('#deleteButton').attr('disabled', 'disabled');
                                         }
                                 });
                         }
