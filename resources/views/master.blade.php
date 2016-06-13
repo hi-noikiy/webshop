@@ -209,7 +209,7 @@
 
         <footer>
             <div class="text-center">
-                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                 <p>
                     <small>
 			            Deze site maakt gebruik van <abbr title="Deze cookies houden de login status bij en zorgen voor de essentiele functionaliteit van de website">functionele cookies</abbr> en <abbr title="Deze cookies houden anoniem surfgedrag bij van uitsluitend deze website zodat wij de site beter kunnen laten werken">analytics cookies</abbr>.
@@ -221,7 +221,7 @@
                 </p>
             </div>
 
-            <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+            <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
             @yield('extraJS')
