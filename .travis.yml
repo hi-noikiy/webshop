@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 7.0
+
+sudo: false
+
+before_install:
+  - cp .env.travis .env
+  - mysql -e 'create database testing;'
+  - composer self-update
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+
+install:
+  - composer install --no-interaction
+  - php artisan migrate
+  - travis_retry npm install
+  - node_modules/.bin/gulp
+
+script: vendor/bin/phpunit

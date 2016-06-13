@@ -1,4 +1,4 @@
-# Laravel WTG
+# Laravel WTG [![Build Status](https://travis-ci.org/DuckThom/laravel-wtg.svg?branch=master)](https://travis-ci.org/DuckThom/laravel-wtg)
 
 * * *
 
@@ -12,9 +12,9 @@ This webshop is currently live on [wiringa.nl](http://wiringa.nl)
 
 * [Install Composer](https://getcomposer.org)
 
-* Clone this repository `git clone https://github.com/DuckThom/laravel-wtg.git`
+* Clone this repository `git clone https://github.com/DuckThom/laravel-wtg.git && cd laravel-wtg`
 
-* `cd laravel-wtg && composer update` (`composer install` will install the module versions I'm currently using, `update` will download the latest modules) To download the neccesary Laravel components.
+* To download the necessary Laravel components: `composer install` will install the module versions I'm currently using, `composer update` will download the latest modules.
 
 * Copy `.env.example` to `.env`
 
@@ -22,13 +22,9 @@ This webshop is currently live on [wiringa.nl](http://wiringa.nl)
 
 * Run `php artisan migrate` to initialize the database
 
-* Install gulp and bower by running `npm install --global gulp bower`
+* Get elixir by running `npm install` in the project root folder
 
-* To install jQuery and Bootstrap: `bower install`
-
-* Get elixir by running `npm install` in the project root folder (On Windows you might need to run `npm install --no-bin-links`)
-
-* And finally, run `gulp` (dev) / `gulp --production` (minify the css) to copy all the fonts/js/css to the right places
+* And finally, run `node_modules/.bin/gulp` (dev) / `node_modules/.bin/gulp --production` (minify the css) to copy all the fonts/js/css to the right places
 
 ### Laravel Documentation
 

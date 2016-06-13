@@ -288,23 +288,6 @@ class AdminController extends Controller
         return view('admin.usermanager');
     }
 
-    /**
-     * Get some user details
-     *
-     * @return mixed
-     */
-    public function getUserData()
-    {
-        if (Request::ajax()) {
-            if (Input::has('id')) {
-                $userdata = User::where('login', Input::get('id'))->firstOrFail();
-
-                return $userdata;
-            } else
-                abort(400);
-        } else
-            abort(405);
-    }
 
     /**
      * Add/update a user

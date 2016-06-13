@@ -9,9 +9,8 @@
 		"barryvdh/laravel-debugbar": "^2.0",
 		"gloudemans/shoppingcart": "~1.3",
 		"chumper/zipper": "0.6.x",
-		"barryvdh/laravel-ide-helper": "^2.1",
-		"predis/predis": "^1.0",
-		"sentry/sentry-laravel": "^0.3.0"
+		"sentry/sentry-laravel": "^0.3.0",
+		"barryvdh/laravel-ide-helper": "^2.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

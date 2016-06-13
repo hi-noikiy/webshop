@@ -10,18 +10,18 @@
                         <div id="slideshow" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
                                         @for($i=0; $i < count($carouselSlides); $i++)
-                                                <li data-target="#slideshow" data-slide-to="{{{ $i }}}" class="{{{ ($i === 0 ? 'active' : '') }}}"></li>
+                                                <li data-target="#slideshow" data-slide-to="{{ $i }}}" class="{{ ($i === 0 ? 'active' : '') }}"></li>
                                         @endfor
                                 </ol>
 
                                 <div class="carousel-inner">
                                         <?php $count = 1; ?>
                                         @foreach ($carouselSlides as $slide)
-                                                <div class="item {{{ ($count === 1 ? 'active' : '') }}}">
-                                                        <img src="/img/carousel/{{{ $slide['Image'] }}}" alt="{{{ $slide['Image'] }}}" style="height: 300px">
+                                                <div class="item {{ ($count === 1 ? 'active' : '') }}">
+                                                        <img src="/img/carousel/{{ $slide['Image'] }}" alt="{{ $slide['Image'] }}" style="height: 300px">
                                                         <div class="carousel-caption">
-                                                                <h3>{{{ $slide['Title'] }}}</h3>
-                                                                <p>{{{ $slide['Caption'] }}}</p>
+                                                                <h3>{{ $slide['Title'] }}</h3>
+                                                                <p>{{ $slide['Caption'] }}</p>
                                                         </div>
                                                 </div>
                                                 <?php $count++; ?>

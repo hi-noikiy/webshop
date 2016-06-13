@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Product;
+use App\Discount;
 
 class ImportTest extends TestCase
 {
@@ -39,13 +41,17 @@ class ImportTest extends TestCase
      */
     public function testValidProductsFile()
     {
-        $contents = 'Dyka o ring  49 x 5mm voor krimpmof 50 x 68mm;NE;BDY;1000030;10900100;20020658;1;A;Stk;Stk;1;HG;1;Dyka;8716936000541;zw0042005.jpg;1;;1,42;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
+        $contents = 'Someproduct;NE;BDY;1000030;10900100;20020658;1;A;Stk;Stk;1;HG;1;Dyka;8716936000541;zw0042005.jpg;1;;0,02;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
 
         File::put(storage_path('import/products.csv'), $contents);
 
         $exitCode = Artisan::call('import:products');
 
         $this->assertEquals(0, $exitCode);
+
+        $product = Product::first();
+
+        $this->assertInstanceOf(Product::class, $product);
     }
 
     /**
@@ -55,13 +61,17 @@ class ImportTest extends TestCase
      */
     public function testValidDiscountsFile()
     {
-        $contents = 'VA-220;10002;20125125;18-2-2008 0:00:00;31-12-9999 0:00:00;33;Grohe onderdelen;';
+        $contents = 'VA-220;69696;20125125;18-2-2008 0:00:00;31-12-9999 0:00:00;33;Grohe onderdelen;';
 
         File::put(storage_path('import/discounts.csv'), $contents);
 
         $exitCode = Artisan::call('import:discounts');
 
-        $this->assertEquals(2, $exitCode);
+        $this->assertEquals(0, $exitCode);
+
+        $discount = Discount::where('user_id', 69696)->where('table', 'VA-220')->first();
+
+        $this->assertInstanceOf(Discount::class, $discount);
     }
 
     /**
@@ -71,13 +81,17 @@ class ImportTest extends TestCase
      */
     public function testInvalidProductsFile()
     {
-        $contents = 'Dyka o ring  49 x 5mm voor krimpmof 50 x 68mm;8716936000541;zw0042005.jpg;1;;1,42;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
+        $contents = 'Someinvalidproduct;8716936000541;zw0042005.jpg;1;;0,01;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
 
         File::put(storage_path('import/products.csv'), $contents);
 
         $exitCode = Artisan::call('import:products');
 
         $this->assertEquals(2, $exitCode);
+
+        $product = Product::where('name', 'Someinvalidproduct')->first();
+
+        $this->assertEquals(null, $product);
     }
 
     /**
@@ -87,12 +101,16 @@ class ImportTest extends TestCase
      */
     public function testInvalidDiscountsFile()
     {
-        $contents = 'VA-220;10002;20125125;Grohe onderdelen;';
+        $contents = 'VA-220;69696;20125125;Grohe onderdelen;';
 
         File::put(storage_path('import/discounts.csv'), $contents);
 
         $exitCode = Artisan::call('import:discounts');
 
         $this->assertEquals(2, $exitCode);
+
+        $discount = Discount::where('user_id', 69696)->where('table', 'VA-220')->first();
+
+        $this->assertEquals(null, $discount);
     }
 }

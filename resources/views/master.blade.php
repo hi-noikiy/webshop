@@ -18,6 +18,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
+    <link rel="mask-icon" href="{{ asset('img/WTG-icon.svg') }}" color="red">
+    <link rel="apple-touch-icon" href="{{ asset('img/WTG-icon.svg') }}">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -33,7 +36,7 @@
 
         ga('create', 'UA-41373177-1', 'auto');
         ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
+	    ga('send', 'pageview');
     </script>
 </head>
 <body>
@@ -90,7 +93,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand visible-xs" href="/">
+                <a class="navbar-brand visible-xs" href="{{ url('/') }}">
                     <img src="/img/nav-logo.png" alt="Logo">
                 </a>
             </div>
@@ -206,7 +209,7 @@
 
         <footer>
             <div class="text-center">
-                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="http://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="http://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
                 <p>
                     <small>
 			            Deze site maakt gebruik van <abbr title="Deze cookies houden de login status bij en zorgen voor de essentiele functionaliteit van de website">functionele cookies</abbr> en <abbr title="Deze cookies houden anoniem surfgedrag bij van uitsluitend deze website zodat wij de site beter kunnen laten werken">analytics cookies</abbr>.
@@ -218,7 +221,7 @@
                 </p>
             </div>
 
-            <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+            <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
             @yield('extraJS')

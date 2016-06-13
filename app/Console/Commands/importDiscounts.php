@@ -69,6 +69,7 @@ class importDiscounts extends Command
                 $lineCount = count(file($this->filePath));
                 $bar       = $this->output->createProgressBar($lineCount);
 
+                $bar->setRedrawFrequency(100);
                 $bar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %memory:6s%');
 
                 DB::beginTransaction();
@@ -81,24 +82,23 @@ class importDiscounts extends Command
 
                     while(!feof($fh))
                     {
-                        $data = preg_replace('/;$/', '', fgets($fh));
-                        $data = str_getcsv($data, ';');
+                        $data = str_getcsv(fgets($fh), ';');
                         $columnCount = count($data);
 
                         if ($columnCount === 1) {
                             $this->info("Skipping empty line {$line}");
-                        // Make sure column count is 8
+                        // Make sure column count is 8 columns
                         } elseif ($columnCount === 8) {
 
                             DB::table('discounts')->insert([
-                                    'table'         => $data[0],
-                                    'User_id'       => ($data[1] !== "" ? $data[1] : 0),
-                                    'product'       => (is_numeric($data[2]) ? $data[2] : 0),
-                                    'start_date'    => $data[3],
-                                    'end_date'      => $data[4],
-                                    'discount'      => $data[5],
-                                    'group_desc'    => $data[6],
-                                    'product_desc'  => $data[7],
+                                'table'         => $data[0],
+                                'User_id'       => ($data[1] !== "" ? $data[1] : 0),
+                                'product'       => (is_numeric($data[2]) ? $data[2] : 0),
+                                'start_date'    => $data[3],
+                                'end_date'      => $data[4],
+                                'discount'      => $data[5],
+                                'group_desc'    => $data[6],
+                                'product_desc'  => $data[7],
                             ]);
 
                             $line++;
@@ -118,7 +118,7 @@ class importDiscounts extends Command
                 } catch (\Exception $e) {
                     DB::rollback();
 
-                    $errorMessage = "Er is een fout opgetreden, de database is niet aangepast: <br />" . $e->getMessage();
+                    $errorMessage = "Er is een fout opgetreden, de database is niet aangepast: \r\n" . $e->getMessage();
 
                     unlink($this->filePath);
                     $this->error($errorMessage);

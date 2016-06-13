@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
 
     /*
      |--------------------------------------------------------------------------
@@ -27,10 +27,11 @@ return [
      |
      */
     'storage' => array(
-        'enabled' => true,
-        'driver' => 'file', // redis, file, pdo
-        'path' => storage_path() . '/debugbar', // For file driver
+        'enabled'    => true,
+        'driver'     => 'file', // redis, file, pdo, custom
+        'path'       => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
+        'provider'   => '' // Instance of StorageInterface for custom driver
     ),
 
     /*
@@ -63,6 +64,17 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Clockwork integration
+     |--------------------------------------------------------------------------
+     |
+     | The Debugbar can emulate the Clockwork headers, so you can use the Chrome
+     | Extension, without the server-side code. It uses Debugbar collectors instead.
+     |
+     */
+    'clockwork' => false,
+
+    /*
+     |--------------------------------------------------------------------------
      | DataCollectors
      |--------------------------------------------------------------------------
      |
@@ -88,7 +100,8 @@ return [
         'logs'            => false, // Add the latest log messages
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
-        'auth'            => false, // Display Laravel authentication status
+        'auth'            => true, // Display Laravel authentication status
+        'gate'            => false, // Display Laravel Gate checks
         'session'         => true,  // Display session data
     ),
 
@@ -103,7 +116,7 @@ return [
 
     'options' => array(
         'auth' => array(
-            'show_name' => false,   // Also show the users name/email in the debugbar
+            'show_name' => true,   // Also show the users name/email in the debugbar
         ),
         'db' => array(
             'with_params'       => true,   // Render SQL with the parameters substituted
@@ -154,4 +167,4 @@ return [
      */
     'route_prefix' => '_debugbar',
 
-];
+);
