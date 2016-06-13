@@ -25,6 +25,13 @@ class User extends Model implements AuthenticatableContract,
 	 */
 	protected $table = 'users';
 
+    /**
+     * Non mass-assignable fields
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
