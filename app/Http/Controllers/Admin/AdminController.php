@@ -188,11 +188,8 @@ class AdminController extends Controller
      */
     public function carousel()
     {
-        $carouselData = Carousel::orderBy('Order')->get();
-
         return view('admin.carousel', [
-            'carouselData' => $carouselData,
-            'status' => 'ok'
+            'carouselData' => Carousel::orderBy('Order')->get(),
         ]);
     }
 
@@ -226,12 +223,16 @@ class AdminController extends Controller
 
                 $slide->save();
 
-                Input::file('image')->move(public_path() . "/img/carousel", $image->getClientOriginalName());
+                Input::file('image')->move(public_path("img/carousel"), $image->getClientOriginalName());
 
-                return redirect()->back()->with('status', "De slide is toegevoegd aan de carousel");
+                return redirect()
+                    ->back()
+                    ->with('status', "De slide is toegevoegd aan de carousel");
             }
         } else
-            return redirect()->back()->withErrors("Een of meer velden zijn niet ingevuld");
+            return redirect()
+                ->back()
+                ->withErrors("Een of meer velden zijn niet ingevuld");
     }
 
     /**
@@ -250,9 +251,13 @@ class AdminController extends Controller
 
             Carousel::destroy($id);
 
-            return redirect()->back()->with('status', "De slide is verwijderd uit de carousel");
+            return redirect()
+                ->back()
+                ->with('status', "De slide is verwijderd uit de carousel");
         } else
-            return redirect()->back()->withErrors("De slide met id $id bestaat niet");
+            return redirect()
+                ->back()
+                ->withErrors("De slide met id $id bestaat niet");
     }
 
     /**
@@ -271,11 +276,17 @@ class AdminController extends Controller
 
                 $slide->save();
 
-                return redirect()->back()->with('status', "Het slide nummer is aangepast");
+                return redirect()
+                    ->back()
+                    ->with('status', "Het slide nummer is aangepast");
             } else
-                return redirect()->back()->withErrors('Er is een ongeldig slide nummer opgegeven');
+                return redirect()
+                    ->back()
+                    ->withErrors('Er is een ongeldig slide nummer opgegeven');
         } else
-            return redirect()->back()->withErrors("De slide met id $id bestaat niet");
+            return redirect()
+                ->back()
+                ->withErrors("De slide met id $id bestaat niet");
     }
 
     /**
@@ -313,7 +324,9 @@ class AdminController extends Controller
 
                 $user->delete();
 
-                return redirect()->back()->with(['status' => 'De gebruiker is succesvol verwijderd']);
+                return redirect()
+                    ->back()
+                    ->with(['status' => 'De gebruiker is succesvol verwijderd']);
             } elseif (Input::get('update') === '') {
                 if (User::where('login', Input::get('login'))->count() === 1) { // The user exists...
                     $user = User::where('login', Input::get('login'))->first();
@@ -327,7 +340,9 @@ class AdminController extends Controller
 
                     $user->save();
 
-                    return redirect()->back()->with(['status' => 'Gebruiker ' . Input::get('login') . ' is aangepast']);
+                    return redirect()->back()->with([
+                        'status' => 'Gebruiker ' . Input::get('login') . ' is aangepast'
+                    ]);
                 } else { // The user does not exist...
                     $pass = mt_rand(100000, 999999);
                     $user = new User;
@@ -349,7 +364,9 @@ class AdminController extends Controller
                     return redirect('admin/userAdded');
                 }
             } else
-                return redirect()->back()->withErrors('Geen actie opgegeven (toevoegen of verwijderen)');
+                return redirect()
+                    ->back()
+                    ->withErrors('Geen actie opgegeven (toevoegen of verwijderen)');
         } else
             return redirect()->back()
                 ->withErrors($validator->errors())
