@@ -132,7 +132,7 @@ class CartTest extends TestCase
             ->see('Someproduct')
             ->type(0, 'qty')
             ->press('Toevoegen')
-            ->see('qty dient minimaal 1 te zijn');
+            ->see('Aantal dient minimaal 1 te zijn');
     }
     
 }
