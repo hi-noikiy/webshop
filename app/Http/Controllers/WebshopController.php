@@ -219,9 +219,13 @@ class WebshopController extends Controller
             if (Auth::attempt(['login' => Input::get('username'), 'password' => Input::get('password'), 'active' => 1], (Input::get('remember_me') === "on" ? true : false))) {
                 if (Auth::user()->cart) {
                     foreach (unserialize(Auth::user()->cart) as $item) {
-                        // Restore the user's cart
-                        Cart::add($item);
+                        // Check if the id is set to prevent problems when reloading the cart
+                        if (isset($item['id'])) {
+                            // Restore the user's cart
+                            Cart::add($item);
+                        }
                     }
+
                 }
 
                 return redirect()
