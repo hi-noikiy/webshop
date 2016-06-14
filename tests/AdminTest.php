@@ -24,7 +24,8 @@ class AdminTest extends TestCase
             ->seeJsonEquals([
                 'message' => 'User details for user 13370',
                 'payload' => $user->toArray()
-            ]);
+            ])
+            ->assertResponseStatus(200);
     }
 
     /**
@@ -40,7 +41,8 @@ class AdminTest extends TestCase
             ->get('/admin/api/user')
             ->seeJsonEquals([
                 'message' => "Missing request parameter: `id`"
-            ]);
+            ])
+            ->assertResponseStatus(400);
     }
 
     /**
@@ -56,7 +58,8 @@ class AdminTest extends TestCase
             ->get('/admin/api/user?id=07331')
             ->seeJsonEquals([
                 'message' => 'No user found with login 07331'
-            ]);
+            ])
+            ->assertResponseStatus(404);
     }
 
     /**
@@ -72,7 +75,8 @@ class AdminTest extends TestCase
             ->get('/admin/api/user?id=1337')
             ->seeJsonEquals([
                 'message' => 'No user found with login 1337'
-            ]);
+            ])
+            ->assertResponseStatus(404);
     }
 
     /**
