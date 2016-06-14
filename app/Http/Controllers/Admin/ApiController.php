@@ -100,7 +100,7 @@ class ApiController extends Controller {
             return Response::json([
                 'status'    => 'failure',
                 'message'   => "No details for product: {$id}"
-            ]);
+            ], 404);
         }
     }
 
