@@ -49,7 +49,6 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::get('managecontent', 'AdminController@contentManager');    	    // Content manager
         Route::get('generate', 'AdminController@generate');			            // Generate page
         Route::get('carousel', 'AdminController@carousel');			            // Carousel manager
-        Route::get('getContent', 'AdminController@getContent');           	    // Get the content for a field
         Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');	// Try to remove a carousel slide
         Route::get('usermanager', 'AdminController@userManager');	        	// Simple user manager
         Route::get('userAdded', 'AdminController@userAdded');			        // The user added page
@@ -80,6 +79,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
             Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
             Route::get('product/{product}', 'ApiController@product');    // Get product data
             Route::get('user', 'ApiController@userDetails');             // Get user details
+            Route::get('content', 'ApiController@content');           	 // Get the content for a field
         });
 
         Route::group(['prefix' => 'packs'], function () {

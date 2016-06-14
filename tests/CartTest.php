@@ -19,7 +19,7 @@ class CartTest extends TestCase
      */
     private function createProduct()
     {
-        $contents = 'Someproduct;NE;BDY;1000030;10900100;20020658;1;A;Stk;Stk;1;HG;1;Dyka;8716936000541;zw0042005.jpg;1;;0,02;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
+        $contents = 'Someproduct;NE;BDY;9999999;10900100;20020658;1;A;Stk;Stk;1;HG;1;Dyka;8716936000541;zw0042005.jpg;1;;0,02;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
         $data = str_getcsv($contents, ';');
 
         DB::table('products')->insert([
@@ -62,7 +62,7 @@ class CartTest extends TestCase
         DB::table('discounts')->insert([
             'table'         => 'VA-220',
             'User_id'       => 10000,
-            'product'       => 10900100,
+            'product'       => 9999999,
             'start_date'    => '1-1-2008 0:00:00',
             'end_date'      => '31-12-9999 0:00:00',
             'discount'      => '0',
@@ -107,12 +107,32 @@ class CartTest extends TestCase
             ->createFakeUser();
 
         $this->actingAs(User::where('login', 10000)->first())
-            ->visit('/product/1000030')
+            ->visit('/product/9999999')
             ->dontSee('Not Found')
             ->see('Someproduct')
             ->type(5, 'qty')
             ->press('Toevoegen')
             ->see('Verder winkelen');
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testAddProductToCartWithZeroQty()
+    {
+        $this->createProduct()
+            ->createDiscount()
+            ->createFakeUser();
+
+        $this->actingAs(User::where('login', 10000)->first())
+            ->visit('/product/9999999')
+            ->dontSee('Not Found')
+            ->see('Someproduct')
+            ->type(0, 'qty')
+            ->press('Toevoegen')
+            ->see('Aantal dient minimaal 1 te zijn');
     }
     
 }
