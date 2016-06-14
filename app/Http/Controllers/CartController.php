@@ -134,14 +134,7 @@ class CartController extends Controller {
             } else
                 return redirect('cart')->withErrors('Er is een fout opgetreden');
         } else {
-            $messages = $validator->errors();
-            $msg = '';
-
-            // Put all the messages in one variable
-            foreach ($messages->all() as $key => $message)
-                $msg .= ucfirst($message) . "<br />";
-
-            return redirect('cart')->withErrors($msg);
+            return redirect('cart')->withErrors($validator->errors());
         }
     }
 
