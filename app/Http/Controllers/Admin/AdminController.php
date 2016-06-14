@@ -95,24 +95,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Get the content that belongs to the page/field
-     *
-     * @return mixed
-     */
-    public function getContent()
-    {
-        if (Request::ajax()) {
-            if (Input::has('page')) {
-                $data = Content::where('name', Input::get('page'))->firstOrFail();
-
-                return $data->content;
-            } else
-                abort(404, 'Missing page varable');
-        } else
-            abort(401, 'Not an ajax request!');
-    }
-
-    /**
      * Save the content to the database
      *
      * @return $this|\Illuminate\Http\RedirectResponse

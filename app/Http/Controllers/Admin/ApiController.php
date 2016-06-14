@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Order;
 use App\User;
+use App\Content;
 use Illuminate\Http\Request;
 
 use Response, DB;
@@ -106,6 +107,7 @@ class ApiController extends Controller {
     /**
      * Get some user details
      *
+     * @param Request $request
      * @return mixed
      */
     public function userDetails(Request $request)
@@ -128,5 +130,33 @@ class ApiController extends Controller {
                 'message' => 'Missing request parameter: `id`',
             ], 400);
         }
+    }
+
+    /**
+     * Get the content that belongs to the page/field
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function content(Request $request)
+    {
+        if ($request->has('page')) {
+            $data = Content::where('name', $request->input('page'))->first();
+
+            if ($data) {
+                return Response::json([
+                    'message' => 'Content for page ' . $request->input('page'),
+                    'payload' => $data
+                ]);
+            } else {
+                return Response::json([
+                    'message' => 'No content found for page: ' . $request->input('page'),
+                ], 404);
+            }
+
+        } else
+            return Response::json([
+                'message' => 'Missing request parameter: `page`',
+            ], 400);
     }
 }
