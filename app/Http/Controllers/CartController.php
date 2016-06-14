@@ -45,7 +45,7 @@ class CartController extends Controller {
 
         $validator = \Validator::make($request->all(), [
             'product'   => 'required|digits:7',
-            'qty'       => 'required|numeric'
+            'qty'       => 'required|numeric|min:1'
         ]);
 
         if (!$validator->fails()) {
@@ -99,7 +99,7 @@ class CartController extends Controller {
 
         $validator = \Validator::make($request->all(), [
             'rowId' => 'required',
-            'qty' => 'required|numeric'
+            'qty' => 'required|numeric|min:1'
         ]);
 
         if (!$validator->fails()) {
