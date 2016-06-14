@@ -94,12 +94,12 @@ class ApiController extends Controller {
             return Response::json([
                 'status'    => 'success',
                 'payload'   => $product,
-                'message'   => "Details for product: {$product}"
+                'message'   => "Details for product: {$id}"
             ]);
         } else {
             return Response::json([
                 'status'    => 'failure',
-                'message'   => "No details for product: {$product}"
+                'message'   => "No details for product: {$id}"
             ]);
         }
     }
