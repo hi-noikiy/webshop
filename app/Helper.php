@@ -165,4 +165,35 @@ class Helper {
         // return the difference between now and the next 10 minute mark
         return ceil($time_to_next_10_minutes);
     }
+
+    /**
+     * Convert bytes to KB/MB/etc.
+     *
+     * @param int $bytes
+     * @param string $to
+     * @throws \Exception
+     * @return float
+     */
+    public static function convertByte(int $bytes, $to = 'MB')
+    {
+        switch (strtoupper($to)) {
+            case 'KB':
+                $ret = $bytes / pow(10, 3);
+                break;
+            case 'MB':
+                $ret = $bytes / pow(10, 6);
+                break;
+            case 'GB':
+                $ret = $bytes / pow(10, 9);
+                break;
+            case 'TB':
+                $ret = $bytes / pow(10, 12);
+                break;
+            default:
+                throw new \Exception("Cannot convert {$bytes} to '{$to}'");
+                break;
+        }
+
+        return round($ret, 2);
+    }
 }
