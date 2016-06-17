@@ -209,7 +209,8 @@
 
         <footer>
             <div class="text-center">
-                Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a>
+                <p>Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a></p>
+
                 <p>
                     <small>
 			            Deze site maakt gebruik van <abbr title="Deze cookies houden de login status bij en zorgen voor de essentiele functionaliteit van de website">functionele cookies</abbr> en <abbr title="Deze cookies houden anoniem surfgedrag bij van uitsluitend deze website zodat wij de site beter kunnen laten werken">analytics cookies</abbr>.
@@ -219,33 +220,16 @@
                         Een kopie van deze leveringsvoorwaarden zenden wij u op verzoek toe.
                     </small>
                 </p>
+
+                <p><small>Load time: {{ round(microtime(true) - LARAVEL_START, 3) }}s  -  Memory usage: {{ round(memory_get_peak_usage(true) / 1000000, 2) }}MB</small></p>
             </div>
 
-            <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+            <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+            <script src="{{ elixir('js/application.js') }}"></script>
 
             @yield('extraJS')
-
-            <script type="text/javascript">
-                // Set the useragent in a data attribute in the html tag
-                var doc = document.documentElement;
-                doc.setAttribute('data-useragent', navigator.userAgent);
-
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-
-                    if (location.hash == '#login')
-                        $('#loginModal').modal('show');
-                });
-
-                $('#loginModal').on('shown.bs.modal', function () {
-                    $('input[name=username]').focus();
-                });
-
-                setTimeout(function() {
-                    $('#statusmessage').slideUp();
-                }, 5000);
-            </script>
         </footer>
     </div>
 </body>

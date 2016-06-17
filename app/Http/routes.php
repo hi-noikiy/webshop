@@ -91,6 +91,12 @@ Route::group(['middleware' => 'auth.admin'], function() {
             Route::post('remove', 'PacksController@destroy');
             Route::post('removeProduct', 'PacksController@removeProduct');
         });
+
+        Route::group(['prefix' => 'cache'], function () {
+            Route::get('/', 'CacheController@stats');                         // Get information about cache usage
+
+            Route::post('reset', 'CacheController@reset');                    // Reset the OpCache cache
+        });
     });
 });
 

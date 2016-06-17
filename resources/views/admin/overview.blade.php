@@ -85,30 +85,68 @@
 @endsection
 
 @section('extraJS')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-
     <script type="text/javascript">
         // Get the context of the canvas element we want to select
-        var ctx = document.getElementById("orderChart").getContext("2d");
+        var ctx = $('#orderChart');
 
-        var orderChart = new Chart(ctx).Bar({
-            labels: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
-            datasets: [
-                {
-                    label: "Orders",
-                    fillColor: "#2196F3",
-                    strokeColor: "#2196F3",
-                    highlightFill: "#90CAF9",
-                    highlightStroke: "#90CAF9",
-                    data: [0,0,0,0,0,0,0,0,0,0,0,0]
+        var orderChart = new Chart(ctx, {
+            type: 'bar',
+            data:  {
+                labels: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
+                datasets: [
+                    {
+                        label: "Orders",
+                        backgroundColor: "#2196F3",
+                        borderColor: "#2196F3",
+                        hoverBackgroundColor: "#90CAF9",
+                        hoverBorderColor: "#90CAF9",
+                        data: [0,0,0,0,0,0,0,0,0,0,0,0]
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true,
+                            max: 70
+                        }
+                    }]
                 }
-            ]
+            }
         });
 
-        setInterval(function() {
-            getServerLoad();
-        }, 10000);
+        function getChartData()
+        {
+            $.ajax({
+                url: "/admin/api/chart/orders",
+                type: "GET",
+                data: { year : $('#yearSelect').val() },
+                dataType: "json",
+                success: function(response) {
+                    var chartData = [0,0,0,0,0,0,0,0,0,0,0,0];
+                    var x, i;
 
+                    for (i = 0; i < response.length; i++) {
+                        // Replace the data from the empty array with data from the ajax response
+                        chartData[response[i].month-1] = response[i].count;
+                    }
+
+                    for (x = 0; x < 12; x++) {
+                        orderChart.data.datasets[0].data[x] = chartData[x];
+                    }
+
+                    orderChart.update();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            getChartData();
+        });
+    </script>
+
+    <script type="text/javascript">
         function getServerLoad()
         {
             $.ajax({
@@ -155,31 +193,9 @@
             });
         }
 
-        function getChartData()
-        {
-            $.ajax({
-                url: "/admin/api/chart/orders",
-                type: "GET",
-                data: { year : $('#yearSelect').val() },
-                dataType: "json",
-                success: function(response) {
-                    var chartData = [0,0,0,0,0,0,0,0,0,0,0,0];
-
-                    for (var i = 0; i < response.length; i++) {
-                        // Replace the data from the empty array with data from the ajax response
-                        chartData[response[i].month-1] = response[i].count;
-                    }
-
-                    for (var x = 0; x < 12; x++) {
-                        orderChart.datasets[0].bars[x].value = chartData[x];
-                    }
-
-                    orderChart.update();
-                }
-            });
-        }
-
-        getServerLoad();
-        getChartData();
+        //setInterval(function() {
+            //getServerLoad();
+        //}, 5000);
+        //getServerLoad();
     </script>
 @endsection
