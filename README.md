@@ -6,7 +6,7 @@
 
 [Laravel](http://laravel.com/) implementation of the wiringa.nl webshop.
 
-This webshop is currently live on [wiringa.nl](http://wiringa.nl)
+This webshop is currently live on [wiringa.nl](https://wiringa.nl)
 
 ## Installation
 
