@@ -1,4 +1,4 @@
-# Laravel WTG [![Build Status](https://travis-ci.org/DuckThom/laravel-wtg.svg?branch=master)](https://travis-ci.org/DuckThom/laravel-wtg)
+# Laravel WTG [![Build Status](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop.svg?branch=master)](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop)
 
 * * *
 
