@@ -12,7 +12,7 @@ This webshop is currently live on [wiringa.nl](https://wiringa.nl)
 
 * [Install Composer](https://getcomposer.org)
 
-* Clone this repository `git clone https://github.com/DuckThom/laravel-wtg.git && cd laravel-wtg`
+* Clone this repository `git clone https://github.com/Wiringa-Technische-Groothandel/webshop.git laravel-wtg && cd laravel-wtg`
 
 * To download the necessary Laravel components: `composer install` will install the module versions I'm currently using, `composer update` will download the latest modules.
 
