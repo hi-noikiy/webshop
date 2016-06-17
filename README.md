@@ -32,7 +32,7 @@ Documentation for the entire framework can be found on the [Laravel website](htt
 
 ### Contributing to this project
 
-**All pull requests will be rejected**
+**Pull requests will be rejected**
 [Thomas Wiringa](https://github.com/DuckThom) is the only contributor for this project.
 
 ### Other licenses
@@ -46,3 +46,5 @@ The LaravelShoppingcart by Crinsane license can be found [here](https://github.c
 The Twitter Bootstrap license can be found [here](https://github.com/twbs/bootstrap/blob/master/LICENSE)
 
 The jQuery license can be found [here](https://jquery.org/license/)
+
+The ChartJS license can be found [here](https://github.com/chartjs/Chart.js/blob/master/LICENSE.md)
