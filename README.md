@@ -1,4 +1,4 @@
-# Laravel WTG [![Build Status](https://travis-ci.org/DuckThom/laravel-wtg.svg?branch=master)](https://travis-ci.org/DuckThom/laravel-wtg)
+# Laravel WTG [![Build Status](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop.svg?branch=master)](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop)
 
 * * *
 
@@ -6,13 +6,13 @@
 
 [Laravel](http://laravel.com/) implementation of the wiringa.nl webshop.
 
-This webshop is currently live on [wiringa.nl](http://wiringa.nl)
+This webshop is currently live on [wiringa.nl](https://wiringa.nl)
 
 ## Installation
 
 * [Install Composer](https://getcomposer.org)
 
-* Clone this repository `git clone https://github.com/DuckThom/laravel-wtg.git && cd laravel-wtg`
+* Clone this repository `git clone https://github.com/Wiringa-Technische-Groothandel/webshop.git laravel-wtg && cd laravel-wtg`
 
 * To download the necessary Laravel components: `composer install` will install the module versions I'm currently using, `composer update` will download the latest modules.
 
@@ -32,7 +32,7 @@ Documentation for the entire framework can be found on the [Laravel website](htt
 
 ### Contributing to this project
 
-**All pull requests will be rejected**
+**Pull requests will be rejected**
 [Thomas Wiringa](https://github.com/DuckThom) is the only contributor for this project.
 
 ### Other licenses
@@ -46,3 +46,5 @@ The LaravelShoppingcart by Crinsane license can be found [here](https://github.c
 The Twitter Bootstrap license can be found [here](https://github.com/twbs/bootstrap/blob/master/LICENSE)
 
 The jQuery license can be found [here](https://jquery.org/license/)
+
+The ChartJS license can be found [here](https://github.com/chartjs/Chart.js/blob/master/LICENSE.md)

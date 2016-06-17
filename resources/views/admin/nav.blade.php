@@ -7,6 +7,7 @@
     <li @if( Route::current()->getUri() === 'admin/generate') class="active" @endif><a href="{{ url('admin/generate') }}">Genereren</a></li>
     <li @if( Route::current()->getUri() === 'admin/managecontent') class="active" @endif><a href="{{ url('admin/managecontent') }}">Inhoud aanpassen</a></li>
     <li @if( Route::current()->getUri() === 'admin/packs') class="active" @endif><a href="{{ url('admin/packs') }}">Actiepaketten</a></li>
+    <li @if( Route::current()->getUri() === 'admin/cache') class="active" @endif><a href="{{ url('admin/cache') }}">Cache</a></li>
 </ul>
 
 <!-- Mobile navigation -->
@@ -18,4 +19,5 @@
     <a class="list-group-item @if( Route::current()->getUri() === 'admin/generate') active @endif " href="{{ url('admin/generate') }}">Genereren</a>
     <a class="list-group-item @if( Route::current()->getUri() === 'admin/managecontent') active @endif " href="{{ url('admin/managecontent') }}">Inhoud aanpassen</a>
     <a class="list-group-item @if( Route::current()->getUri() === 'admin/packs') active @endif " href="{{ url('admin/packs') }}">Actiepaketten</a></a>
+    <a class="list-group-item @if( Route::current()->getUri() === 'admin/cache') active @endif " href="{{ url('admin/cache') }}">Cache</a>
 </div>

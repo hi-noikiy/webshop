@@ -12,9 +12,29 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    var paths = {
+        resources: {
+            js: './resources/assets/js',
+            css: './resources/assets/css'
+        },
+
+        public: {
+            js: './public/js',
+            css: './public/css'
+        }
+    };
+
 	mix.sass("app.scss");
 
+    mix.scripts([
+        paths.resources.js + '/jquery-2.2.4.min.js',
+        paths.resources.js + '/bootstrap-3.3.6.min.js',
+        paths.resources.js + '/chart-2.1.6.min.js',
+        paths.resources.js + '/application.js'
+    ], paths.public.js + "/application.js");
+
 	mix.version([
-        'css/app.css'
+        'css/app.css',
+        'js/application.js'
     ]);
 });

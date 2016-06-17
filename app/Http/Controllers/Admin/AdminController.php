@@ -281,7 +281,6 @@ class AdminController extends Controller
         return view('admin.usermanager');
     }
 
-
     /**
      * Add/update a user
      *

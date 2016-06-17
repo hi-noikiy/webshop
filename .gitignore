@@ -13,4 +13,3 @@ Vagrantfile
 .*.swp
 .idea
 _ide_helper.php
-docker

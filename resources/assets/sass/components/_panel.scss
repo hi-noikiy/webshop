@@ -1,3 +1,5 @@
+@import "../helpers/variables";
+
 .panel {
 	background-color: transparent;
 }
@@ -7,6 +9,15 @@
 
 	.panel-heading {
 		background-color: $danger-color;
+		color: white;
+	}
+}
+
+.wtg-panel-success {
+	border-color: $success-color;
+
+	.panel-heading {
+		background-color: $success-color;
 		color: white;
 	}
 }
