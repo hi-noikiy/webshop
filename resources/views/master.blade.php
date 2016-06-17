@@ -224,9 +224,6 @@
                 <p><small>Load time: {{ round(microtime(true) - LARAVEL_START, 3) }}s  -  Memory usage: {{ round(memory_get_peak_usage(true) / 1000000, 2) }}MB</small></p>
             </div>
 
-            <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
             <script src="{{ elixir('js/application.js') }}"></script>
 
             @yield('extraJS')
