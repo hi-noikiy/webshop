@@ -12,7 +12,7 @@
             <h3>Import status</h3>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel {{ $product_import->error ? 'wtg-panel-danger' : 'panel-primary' }}">
+                    <div class="panel {{ $product_import->error ? 'wtg-panel-danger' : 'wtg-panel-success' }}">
                         <div class="panel-heading">Product import</div>
                         <table class="table">
                             <tbody>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="panel {{ $discount_import->error ? 'wtg-panel-danger' : 'panel-primary' }}">
+                    <div class="panel {{ $discount_import->error ? 'wtg-panel-danger' : 'wtg-panel-success' }}">
                         <div class="panel-heading">Korting import</div>
                         <table class="table">
                             <tbody>
