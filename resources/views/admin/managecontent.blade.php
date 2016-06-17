@@ -53,8 +53,8 @@
 @stop
 
 @section('extraJS')
-    <script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="/js/ckeditor/adapters/jquery.js"></script>
+    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
 
     <script type="text/javascript">
         $('#field-selector').change(function() {
