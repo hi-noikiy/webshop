@@ -34,21 +34,11 @@ class CacheController extends Controller
             'wasted' => Helper::convertByte($wasted_memory),
         ]);
 
-        $cache_hits     = $opcache_stats->get('hits');
-        $cache_misses   = $opcache_stats->get('misses');
-
-        $opcache_hitrate = collect([
-            'hitrate'   => round(($cache_hits / ($cache_hits + $cache_misses)) * 100, 1),
-            'hits'      => $cache_hits,
-            'misses'    => $cache_misses
-        ]);
-
         return view('admin.cache', [
             'opcache_enabled'       => $opcache['opcache_enabled'],
             'opcache_full'          => $opcache['cache_full'],
             'opcache_stats'         => $opcache_stats,
             'opcache_memory'        => $opcache_memory,
-            'opcache_hitrate'       => $opcache_hitrate
         ]);
     }
 

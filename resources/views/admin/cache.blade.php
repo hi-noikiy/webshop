@@ -37,15 +37,15 @@
 
     <hr />
 
-    <div class="container text-center">
-        <div class="row">
+    <div class="container">
+        <div class="row text-center">
             <div class="col-md-6">
                 <h4>Geheugen gebruik</h4>
                 <canvas style="width: 100%; height: 200px;" id="memoryChart"></canvas>
             </div>
 
             <div class="col-md-6">
-                <h4>Cache hitrate {{ $opcache_hitrate->get('hitrate') }}%</h4>
+                <h4>Cache hitrate {{ round(($opcache_stats->get('hits') / ($opcache_stats->get('hits') + $opcache_stats->get('misses'))) * 100, 1) }}%</h4>
                 <canvas style="width: 100%; height: 200px;" id="hitsChart"></canvas>
             </div>
         </div>
@@ -53,30 +53,54 @@
         <hr />
 
         <div class="row">
-            <h3>Statistics</h3>
+            <div class="text-center">
+                <h3>Information</h3>
+            </div>
 
-            <div class="col-md-12">
+            <div class="col-md-4 col-md-offset-2">
                 <table class="table table-striped">
-                    <thead><tr><th>Statistics</th><th></th></tr></thead>
+                    <thead><tr><th colspan="2" class="text-center">Status</th></tr></thead>
                     <tbody>
                         <tr>
                             <td>Status</td>
-                            <td><span class="label label-{{ $opcache_enabled ? 'success' : 'danger' }}">{{ $opcache_enabled ? 'Enabled' : 'Disabled' }}</span></td>
+                            <td class="text-right"><span class="label label-{{ $opcache_enabled ? 'success' : 'danger' }}">{{ $opcache_enabled ? 'Enabled' : 'Disabled' }}</span></td>
                         </tr>
 
                         <tr>
                             <td>Cache full</td>
-                            <td><span class="label label-{{ !$opcache_full ? 'success' : 'danger' }}">{{ !$opcache_full ? 'No' : 'Yes' }}</span></td>
+                            <td class="text-right"><span class="label label-{{ !$opcache_full ? 'success' : 'danger' }}">{{ !$opcache_full ? 'No' : 'Yes' }}</span></td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <div class="col-md-4">
+                <table class="table table-striped">
+                    <thead><tr><th colspan="2" class="text-center">Statistics</th></tr></thead>
+                    <tbody>
                         <tr>
                             <td>Cached scripts</td>
-                            <td>{{ $opcache_stats->get('num_cached_scripts') }}</td>
+                            <td class="text-right">{{ $opcache_stats->get('num_cached_scripts') }}</td>
                         </tr>
 
                         <tr>
                             <td>Cached keys</td>
-                            <td>{{ $opcache_stats->get('num_cached_keys') }} / {{ $opcache_stats->get('max_cached_keys') }}</td>
+                            <td class="text-right">{{ $opcache_stats->get('num_cached_keys') }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Max cached keys</td>
+                            <td class="text-right">{{ $opcache_stats->get('max_cached_keys') }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cache hits</td>
+                            <td class="text-right">{{ $opcache_stats->get('hits') }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cache misses</td>
+                            <td class="text-right">{{ $opcache_stats->get('misses') }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -120,16 +144,16 @@
                 datasets: [
                     {
                         data: [
-                            {{ $opcache_hitrate->get('misses') }},
-                            {{ $opcache_hitrate->get('hits') }},
+                            {{ $opcache_stats->get('misses') }},
+                            {{ $opcache_stats->get('hits') }}
                         ],
                         backgroundColor: [
                             "#F44336",
-                            "#4CAF50",
+                            "#4CAF50"
                         ],
                         hoverBackgroundColor: [
                             "#FF5252",
-                            "#69F0AE",
+                            "#69F0AE"
                         ]
                     }
                 ]
