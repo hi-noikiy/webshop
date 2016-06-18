@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Licenties</h3>
-@stop
+@endsection
 
 @section('content')
         <h2><a href="http://laravel.com" target="_blank">Laravel</a> by <a href="https://github.com/taylorotwell" target="_blank">Taylor Otwell</a> <small>(<a href="https://github.com/laravel/framework/blob/4.2/LICENSE.txt" target="_blank">license</a>)</small></h2>
@@ -228,4 +228,4 @@
                         text-align: center;
                 }
         </style>
-@stop
+@endsection

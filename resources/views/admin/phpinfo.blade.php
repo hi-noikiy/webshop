@@ -2,8 +2,8 @@
 
 @section('title')
     <h3>Phpinfo</h3>
-@stop
+@endsection
 
 @section('content')
     <?php phpinfo(); ?>
-@stop
+@endsection

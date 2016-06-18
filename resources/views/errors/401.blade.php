@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Error 401: Unauthorized</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-danger" role="alert">
@@ -15,4 +15,4 @@
                         <li>De pagina is nog niet actief</li>
                 </ul>
         </div>
-@stop
+@endsection

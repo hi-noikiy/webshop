@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Error 500: Internal Server Error</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-danger" role="alert">
@@ -11,7 +11,7 @@
 
                 {{ $exception }}
         </div>
-@stop
+@endsection
 
 @section('extraCSS')
         <style type="text/css">
@@ -19,4 +19,4 @@
                         text-transform: capitalize;
                 }
         </style>
-@stop
+@endsection

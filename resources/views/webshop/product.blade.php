@@ -2,7 +2,7 @@
 
 @section('title')
     <h3>{{ $product->name }}</h3>
-@stop
+@endsection
 
 @section('content')
     <?php
@@ -276,7 +276,7 @@
             </div>
         @endif
     </div>
-@stop
+@endsection
 
 @section('extraCSS')
     <style type="text/css">
@@ -284,7 +284,7 @@
             padding: 0 !important;
         }
     </style>
-@stop
+@endsection
 
 @section('extraJS')
     <script type="text/javascript">
@@ -359,4 +359,4 @@
             });
         });
     </script>
-@stop
+@endsection

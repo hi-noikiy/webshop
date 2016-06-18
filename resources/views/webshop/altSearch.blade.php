@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>{{ $title }}</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-success" role="alert">
@@ -39,7 +39,7 @@
         <div class="text-center">
                 {!! $results->appends(array('brand' => Input::get('brand'), 'serie' => Input::get('serie'), 'type' => Input::get('type')))->render() !!}
         </div>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -49,4 +49,4 @@
                         }
                 }
         </script>
-@stop
+@endsection

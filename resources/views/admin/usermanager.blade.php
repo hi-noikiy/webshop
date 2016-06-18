@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Admin <small>gebruikers beheer</small></h3>
-@stop
+@endsection
 
 @section('content')
         @include('admin.nav')
@@ -87,7 +87,7 @@
                         </div>
                 </div>
         </form>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -130,4 +130,4 @@
                         }
                 });
         </script>
-@stop
+@endsection

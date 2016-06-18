@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Error: Sessie verlopen</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-danger" role="alert">
@@ -14,4 +14,4 @@
                         <li>Te lang inactief</li>
                 </ul>
         </div>
-@stop
+@endsection

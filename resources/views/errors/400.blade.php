@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Error 400: Bad Request</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-danger" role="alert">
@@ -15,4 +15,4 @@
                 	<li>Interne fouten</li>
                 </ul>
         </div>
-@stop
+@endsection

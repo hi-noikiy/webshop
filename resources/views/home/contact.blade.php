@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Contact</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="visible-xs">
@@ -54,4 +54,4 @@
 
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2387.994500319521!2d6.590588013491823!3d53.23587489278383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c9d29bd46ee021%3A0x9589c80e5b3dd396!2sBovenstreek+1%2C+9731+DH+Groningen!5e0!3m2!1snl!2snl!4v1389359520881" style="width: 100%;" seamless="" frameborder="0" height="600"></iframe>
         </div>
-@stop
+@endsection

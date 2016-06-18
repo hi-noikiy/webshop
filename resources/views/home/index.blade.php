@@ -2,7 +2,7 @@
 
 @section('title')
         <h1>Welkom op de website van Wiringa Technische Groothandel</h1>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -69,4 +69,4 @@
                         @endif
                 </div>
         </div>
-@stop
+@endsection

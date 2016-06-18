@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Account <small>overzicht</small></h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -30,4 +30,4 @@
                         </table>
                 </div>
         </div>
-@stop
+@endsection

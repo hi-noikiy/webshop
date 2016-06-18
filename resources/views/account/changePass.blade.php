@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Account <small>wachtwoord wijzigen</small></h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -36,4 +36,4 @@
                         </div>
                 </div>
         </div>
-@stop
+@endsection

@@ -2,7 +2,7 @@
 
 @section('title')
     <h3>Admin <small>actiepaketten overzicht</small></h3>
-@stop
+@endsection
 
 @section('content')
 
@@ -200,4 +200,4 @@
             $('#removePackModal').modal('show');
         }
     </script>
-@stop
+@endsection

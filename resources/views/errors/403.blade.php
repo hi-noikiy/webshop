@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Error 403: Forbidden</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="alert alert-danger" role="alert">
@@ -14,4 +14,4 @@
                         <li>Geen administrator</li>
                 </ul>
         </div>
-@stop
+@endsection

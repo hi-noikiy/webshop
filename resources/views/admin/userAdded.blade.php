@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Admin <small>gebruiker toegevoegd</small></h3>
-@stop
+@endsection
 
 @section('content')
         @include('admin.nav')
@@ -26,4 +26,4 @@
                 </div>
         </div>
 
-@stop
+@endsection

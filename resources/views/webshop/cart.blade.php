@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Winkelwagen</h3>
-@stop
+@endsection
 
 @section('content')
         <?php $total = 0; ?>
@@ -207,7 +207,7 @@
         @else
                 <div class="alert alert-warning">Uw winkelwagen is nog leeg.</div>
         @endif
-@stop
+@endsection
 
 @section('extraCSS')
         <style type="text/css">
@@ -220,7 +220,7 @@
                         min-height: 65px !important;
                 }
         </style>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -241,4 +241,4 @@
                         }
                 });
         </script>
-@stop
+@endsection

@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Admin <small>bestanden importeren</small></h3>
-@stop
+@endsection
 
 @section('content')
         @include('admin.nav')
@@ -111,7 +111,7 @@
                         </form>
                 </div>
         </div>
-@stop
+@endsection
 
 @section('extraCSS')
         <style type="text/css">
@@ -138,7 +138,7 @@
                         cursor: default !important;
                 }
         </style>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -164,4 +164,4 @@
                         });
                 });
         </script>
-@stop
+@endsection

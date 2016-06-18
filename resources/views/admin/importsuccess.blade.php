@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Admin <small>importeren geslaagd</small></h3>
-@stop
+@endsection
 
 @section('content')
         @include('admin.nav')
@@ -23,4 +23,4 @@
                 </div>
         </div>
 
-@stop
+@endsection
