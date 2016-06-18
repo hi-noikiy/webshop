@@ -113,3 +113,15 @@
 	);
     background-size: 200% 200%;
 }
+
+@media only screen and (max-width: 768px) {
+	.google-maps-wrapper {
+		height: 350px;
+	}
+}
+
+@media only screen and (min-width: 769px) {
+	.google-maps-wrapper {
+		height: 600px;
+	}
+}
