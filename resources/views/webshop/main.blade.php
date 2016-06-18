@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Webshop</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="panel panel-default">
@@ -70,7 +70,7 @@
                         </form>
                 </div>
         </div>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -80,4 +80,4 @@
                         }
                 }
         </script>
-@stop
+@endsection

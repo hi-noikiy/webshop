@@ -85,7 +85,7 @@
     @endif
 
     <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
-        <div class="wtg-nav-container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -94,49 +94,49 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand visible-xs" href="{{ url('/') }}">
-                    <img src="/img/nav-logo.png" alt="Logo">
+                    <img src="{{ asset('img/nav-logo.png') }}" alt="Logo">
                 </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav" id="nav-buttons">
-                    <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="/">Home</a></li>
+                    <li class="@if( Route::current()->getUri() === '/' ) active @endif"><a href="{{ url('/') }}">Home</a></li>
                     <li class="dropdown @if( Route::current()->getUri() === 'about' || Route::current()->getUri() === 'contact' || Route::current()->getUri() === 'assortment' ) active @endif">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/about">Het bedrijf</a></li>
-                            <li><a href="/contact">Contact</a></li>
-                            <li><a href="/assortment">Assortiment</a></li>
+                            <li><a href="{{ url('about') }}">Het bedrijf</a></li>
+                            <li><a href="{{ url('contact') }}">Contact</a></li>
+                            <li><a href="{{ url('assortment') }}">Assortiment</a></li>
                         </ul>
                     </li>
                     <li class="@if( Route::current()->getUri() === 'downloads' ) active @endif"><a href="/downloads">Downloads</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Webshop <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/webshop">Zoeken</a></li>
-                            <li><a href="/specials">Acties</a></li>
-                            <li><a href="/clearance">Opruiming</a></li>
+                            <li><a href="{{ url('webshop') }}">Zoeken</a></li>
+                            <li><a href="{{ url('specials') }}">Acties</a></li>
+                            <li><a href="{{ url('clearance') }}">Opruiming</a></li>
                         </ul>
                     </li>
                     @if(Auth::check() && Auth::user()->isAdmin)
-                        <li class="@if( substr(Route::current()->getUri(), 0, 5) === 'admin' ) active @endif"><a href="/admin">Admin</a></li>
+                        <li class="@if( substr(Route::current()->getUri(), 0, 5) === 'admin' ) active @endif"><a href="{{ url('admin') }}">Admin</a></li>
                     @endif
                 </ul>
 
                 <div class="navbar-right " id="nav-utils">
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
-                            <li class="@if( Route::current()->getUri() === 'cart' ) active @endif"><a href="/cart" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
+                            <li class="@if( Route::current()->getUri() === 'cart' ) active @endif"><a href="{{ url('cart') }}" style="height: 50px">Winkelwagen @if(Cart::count(false) > 0) <span class="badge">{{ Cart::count(false) }}</span> @endif</a></li>
                             <li class="dropdown @if( substr(Route::current()->getUri(), 0, 7) === 'account' ) active @endif">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/account"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
-                                    <li><a href="/account/favorites"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
-                                    <li><a href="/account/orderhistory"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
-                                    <li><a href="/account/discountfile"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
+                                    <li><a href="{{ url('account') }}"><span class="glyphicon glyphicon-user"></span> Gegevens</a></li>
+                                    <li><a href="{{ url('account/favorites') }}"><span class="glyphicon glyphicon-heart"></span> Favorieten</a></li>
+                                    <li><a href="{{ url('account/orderhistory') }}"><span class="glyphicon glyphicon-time"></span> Geschiedenis</a></li>
+                                    <li><a href="{{ url('account/discountfile') }}"><span class="glyphicon glyphicon-euro"></span> Kortingsbestand</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
+                                    <li><a href="{{ url('logout') }}"><span class="glyphicon glyphicon-off"></span> Loguit</a></li>
                                 </ul>
                             </li>
                         @else
@@ -146,10 +146,10 @@
 
                     <br />
 
-                    <form action="/search" method="GET" class="navbar-form hidden-xs" role="search">
-                        {!! csrf_field() !!}
+                    <form action="{{ url('search') }}" method="GET" class="navbar-form hidden-xs" role="search">
+                        {{ csrf_field() }}
                         <div class="form-group search-field has-feedback">
-                            <input id="searchInput" value="{{ Input::get('q') }}" name="q" type="text" required="" class="form-control" placeholder="Zoeken">
+                            <input id="searchInput" value="{{ request('q') }}" name="q" type="text" required="" class="form-control" placeholder="Zoeken">
                             <button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-search form-control-feedback"></i></button>
                         </div>
                     </form>
@@ -209,7 +209,7 @@
 
         <footer>
             <div class="text-center">
-                <p>Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/info" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="/licenses">licenties</a></p>
+                <p>Wiringa Technische Groothandel (1956 - {{ date("Y") }}) | <a href="https://lunamoonfang.nl/about" target="_blank">Thomas Wiringa</a> - <a href="https://wiringa.nl/">wiringa.nl</a> | <a href="{{ url('licenses') }}">licenties</a></p>
 
                 <p>
                     <small>

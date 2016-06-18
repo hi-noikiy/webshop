@@ -2,7 +2,7 @@
 
 @section('title')
     <h3>Admin <small>inhoud aanpassen</small></h3>
-@stop
+@endsection
 
 @section('content')
     @include('admin.nav')
@@ -50,7 +50,7 @@
     <div class="hidden-md hidden-lg">
         <div class="alert alert-warning">Deze pagina kan alleen worden bekeken op grote vensters zoals een laptop of desktop.</div>
     </div>
-@stop
+@endsection
 
 @section('extraJS')
     <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
@@ -73,4 +73,4 @@
 
         $('#editor').ckeditor();
     </script>
-@stop
+@endsection

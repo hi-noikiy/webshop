@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Het bedrijf</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -17,4 +17,4 @@
                         <img src="/img/site-bg.jpg" class="col-xs-12" style="max-height: inherit;">
                 </div>
         </div>
-@stop
+@endsection

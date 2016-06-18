@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Registratie aanvragen</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -145,7 +145,7 @@
                         </form>
                 </div>
         </div>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -165,4 +165,4 @@
                     }
                 });
         </script>
-@stop
+@endsection

@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Bedankt voor uw registratie!</h3>
-@stop
+@endsection
 
 @section('content')
 	<div class="row">
@@ -14,4 +14,4 @@
 			</p>
 		</div>
 	</div>
-@stop
+@endsection

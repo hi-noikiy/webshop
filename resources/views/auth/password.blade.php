@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Wachtwoord vergeten?</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -23,4 +23,4 @@
                         </form>
                 </div>
         </div>
-@stop
+@endsection

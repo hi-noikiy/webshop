@@ -2,7 +2,7 @@
 
 @section('title')
     <h3>Admin <small>actiepaket aanpassen</small></h3>
-@stop
+@endsection
 
 @section('content')
 

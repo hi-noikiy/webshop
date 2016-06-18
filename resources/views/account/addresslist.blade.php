@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Account <small>adressenlijst</small></h3>
-@stop
+@endsection
 
 @section('content')
         <div class="modal fade" id="addAddressDialog" tabindex="-1" role="dialog" aria-labelledby="addAddress" aria-hidden="true">
@@ -110,4 +110,4 @@
                         </table>
                 </div>
         </div>
-@stop
+@endsection

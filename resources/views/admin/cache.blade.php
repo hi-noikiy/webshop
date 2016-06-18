@@ -2,7 +2,7 @@
 
 @section('title')
     <h3>Admin <small>cache statistieken</small></h3>
-@stop
+@endsection
 
 @section('content')
     @include('admin.nav')

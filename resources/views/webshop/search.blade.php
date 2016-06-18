@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Zoeken</h3>
-@stop
+@endsection
 
 @section('content')
         @if ($results->total() === 0)
@@ -142,7 +142,7 @@
                         {!! $results->appends(array('brand' => Input::get('brand'), 'serie' => Input::get('serie'), 'type' => Input::get('type'), 'q' => Input::get('q')))->render() !!}
                 </div>
         @endif
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript">
@@ -152,4 +152,4 @@
                         }
                 }
         </script>
-@stop
+@endsection

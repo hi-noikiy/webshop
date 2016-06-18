@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Account <small>favorieten</small></h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -77,4 +77,4 @@
                         @endif
                 </div>
         </div>
-@stop
+@endsection

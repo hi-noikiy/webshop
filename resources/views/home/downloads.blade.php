@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Downloads</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -43,4 +43,4 @@
                 </div>
         </div>
 
-@stop
+@endsection

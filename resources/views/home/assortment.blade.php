@@ -2,7 +2,7 @@
 
 @section('title')
         <h3>Assortiment</h3>
-@stop
+@endsection
 
 @section('content')
         <div class="row">
@@ -132,11 +132,11 @@
                         </div>
                 </div>
         </div>
-@stop
+@endsection
 
 @section('extraCSS')
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.3.15/slick.css"/>
-@stop
+@endsection
 
 @section('extraJS')
         <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.3.8/slick.min.js"></script>
@@ -154,4 +154,4 @@
                         cssEase: 'ease'
                 });
         </script>
-@stop
+@endsection
