@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth, Cart, Log;
+use Carbon\Carbon;
+use Auth, Cart, Log, Session;
 
-class LoginController extends Controller
+class UserController extends Controller
 {
 
     /**
@@ -16,10 +17,6 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        // Check if the user is already logged in
-        if (Auth::check())
-            return redirect('account');
-
         // Is all the data entered
         if ($request->has('username') && $request->has('password')) {
             // Try to log the user in
@@ -59,15 +56,123 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        if (Auth::check()) {
-            Cart::destroy();
-            Auth::logout();
+        $user = Auth::user()->login;
 
-            Log::info("User [" . Auth::user()->login . "] logged out successfully");
+        Cart::destroy();
+        Auth::logout();
 
-            return redirect()->intended('/')->with('status', 'U bent nu uitgelogd');
+        Log::info("User [" . $user . "] logged out successfully");
+
+        return redirect()
+            ->intended('/')
+            ->with('status', 'U bent nu uitgelogd');
+    }
+
+    /**
+     * Show the registration page
+     *
+     * @return mixed
+     */
+    public function register()
+    {
+        $data = Session::has('registrationData') ? Session::get('registrationData') : [];
+
+        return view('webshop.register', $data);
+    }
+
+    /**
+     * Verify the registration page
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    public function register_check(Request $request)
+    {
+        $validator = \Validator::make($request->input(), [
+            'corContactName' => 'required',
+            'corName' => 'required',
+            'corAddress' => 'required',
+            'corPostcode' => 'required',
+            'corCity' => 'required',
+            'corPhone' => 'required',
+            'corEmail' => 'required|email',
+            'corSite' => 'url',
+
+            'delAddress' => 'required',
+            'delPostcode' => 'required',
+            'delCity' => 'required',
+            'delPhone' => 'required',
+
+            'betIBAN' => 'required',
+            'betKvK' => 'required',
+            'betBTW' => 'required',
+
+            'digFactuur' => 'email',
+        ]);
+
+        if (!$validator->fails()) {
+            $data['corContactName'] = $request->input('corContactName');
+            $data['corName'] = $request->input('corName');
+            $data['corAddress'] = $request->input('corAddress');
+            $data['corPostcode'] = $request->input('corPostcode');
+            $data['corCity'] = $request->input('corCity');
+            $data['corContactPhone'] = $request->input('corContactPhone');
+            $data['corPhone'] = $request->input('corPhone');
+            $data['corFax'] = ($request->input('corFax') !== false ? $request->input('corFax') : "");
+            $data['corEmail'] = $request->input('corEmail');
+            $data['corSite'] = ($request->input('corSite') !== false ? $request->input('corSite') : "");
+
+            $data['corIsDel'] = $request->input('corIsDel');
+
+            $data['delAddress'] = ($data['corIsDel'] ? $data['corAddress'] : $request->input('delAddress'));
+            $data['delPostcode'] = ($data['corIsDel'] ? $data['corPostcode'] : $request->input('delPostcode'));
+            $data['delCity'] = ($data['corIsDel'] ? $data['corCity'] : $request->input('delCity'));
+            $data['delPhone'] = ($data['corIsDel'] ? $data['corPhone'] : $request->input('delPhone'));
+            $data['delFax'] = ($data['corIsDel'] ? $data['corFax'] : ($request->input('delFax') !== false ? $request->input('delFax') : ""));
+
+            $data['betIBAN'] = $request->input('betIBAN');
+            $data['betKvK'] = $request->input('betKvK');
+            $data['betBTW'] = $request->input('betBTW');
+
+            $data['digFactuur'] = $request->input('digFactuur');
+            $data['digOrder'] = $request->input('digOrder');
+            $data['digArtikel'] = $request->input('digArtikel');
+
+            Session::flash('registrationData', $data);
+
+            \DB::table('registrations')->insert([
+                'company' => $data['corName'],
+                'formdata' => json_encode($data),
+                'created_at' => Carbon::now()
+            ]);
+
+            \Mail::send('email.registration', $data, function ($message) {
+                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+
+                $message->to('verkoop@wiringa.nl');
+
+                $message->subject('Webshop registratie');
+            });
+
+            return redirect('/register/sent');
         } else
-            return redirect('/')->withErrors('Geen gebruiker ingelogd');
+            return redirect()->back()
+                ->withErrors($validator->errors())
+                ->withInput($request->input());
+    }
+
+    /**
+     * Show the registration success page
+     *
+     * @return mixed
+     */
+    public function registerSent()
+    {
+        if (!Session::has('registrationData')) {
+            return redirect('/register');
+        }
+
+        return view('webshop.registerSent');
     }
 
 }
