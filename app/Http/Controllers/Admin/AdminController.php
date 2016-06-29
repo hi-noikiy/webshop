@@ -1,15 +1,12 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Spatie\Analytics\Period;
 use App\Product;
-use App\Discount;
 use App\Content;
 use App\Carousel;
 use App\User;
-
-use Carbon\Carbon;
-
-use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash, Helper;
+use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Hash, Helper, Analytics;
 
 class AdminController extends Controller
 {
@@ -43,6 +40,7 @@ class AdminController extends Controller
             'product_import'    => $product_import,
             'discount_import'   => $discount_import,
             'years'             => $groupedOrders->toArray(),
+            'browsers'          => Analytics::fetchTopBrowsers(Period::days(365))
         ]);
     }
 

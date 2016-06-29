@@ -151,6 +151,7 @@ return [
 		Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 		Chumper\Zipper\ZipperServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+		Spatie\Analytics\AnalyticsServiceProvider::class,
 	],
 
 	/*
@@ -202,6 +203,7 @@ return [
 		'View'      => Illuminate\Support\Facades\View::class,
 		'Zipper' 	=> Chumper\Zipper\Zipper::class,
 
+		'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
         'Helper'	=> App\Helper::class,
         'Sentry'    => Sentry\SentryLaravel\SentryFacade::class,
 	],
