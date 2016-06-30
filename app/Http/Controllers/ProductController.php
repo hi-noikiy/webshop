@@ -19,7 +19,6 @@ class ProductController extends Controller {
      */
     public function showProduct(Request $request, $product_Id = null)
     {
-        kapot;
         // Store the product id in the session
         Session::flash('product_id', $product_Id);
 

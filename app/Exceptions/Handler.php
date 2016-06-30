@@ -1,7 +1,6 @@
 <?php namespace App\Exceptions;
 
-use Exception, Redirect;
-
+use Redirect;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -29,9 +28,10 @@ class Handler extends ExceptionHandler {
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
      * @param  \Exception  $e
+     * @throws \Exception  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(\Exception $e)
     {
         // Create a sentry variable
         $sentry = app('sentry');
@@ -83,14 +83,15 @@ class Handler extends ExceptionHandler {
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, \Exception $e)
     {
         if ($e instanceof ModelNotFoundException || $e instanceof MethodNotAllowedHttpException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
 		if ($e instanceof TokenMismatchException) {
-			return Redirect::to('/')->withErrors("Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw");
+			return redirect('/')
+                ->withErrors("Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw");
 		}
 
         if ($this->isUnauthorizedException($e)) {
