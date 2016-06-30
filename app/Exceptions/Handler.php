@@ -20,6 +20,7 @@ class Handler extends ExceptionHandler {
 		NotFoundHttpException::class,
         HttpException::class,
         ModelNotFoundException::class,
+        ProductNotFoundException::class
     ];
 
     /**
@@ -89,14 +90,22 @@ class Handler extends ExceptionHandler {
         }
 
 		if ($e instanceof TokenMismatchException) {
-			return Redirect::to('/')->withErrors("Uw sessie is verlopen, log opnieuw in en probeer het opnieuw");
+			return Redirect::to('/')->withErrors("Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw");
 		}
 
-		if ($this->isHttpException($e)) {
-			return $this->renderHttpException($e);
-		}
+        if ($this->isUnauthorizedException($e)) {
+            $e = new HttpException(403, $e->getMessage());
+        }
 
-		return parent::render($request, $e);
-	}
-
+        if ($this->isHttpException($e)) {
+            return $this->toIlluminateResponse($this->renderHttpException($e), $e);
+        } else {
+            // Display a custom 500 error screen if the app is in production
+            if (app()->environment() === "production") {
+                return response()->view('errors.500', ['exception' => $e], 500);
+            } else {
+                return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+            }
+        }
+    }
 }

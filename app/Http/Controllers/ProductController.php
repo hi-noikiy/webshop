@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Exceptions\ProductNotFoundException;
 use App\PackProduct;
 use App\Pack;
 use Illuminate\Http\Request;
@@ -13,17 +14,21 @@ class ProductController extends Controller {
      * Will throw 404 error when no product matches the product id
      *
      * @param Request $request
-     * @param bool $product_Id
+     * @param int $product_Id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showProduct(Request $request, $product_Id = false)
+    public function showProduct(Request $request, $product_Id = null)
     {
-        if ($product_Id === false)
-            abort(404);
-
+        kapot;
+        // Store the product id in the session
         Session::flash('product_id', $product_Id);
 
-        $product  = Product::where('number', $product_Id)->firstOrFail();
+        try {
+            $product  = Product::where('number', $product_Id)->firstOrFail();
+        } catch (\Exception $e) {
+            throw new ProductNotFoundException($product_Id);
+        }
+
         $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
         $prevPage = $request->get('ref');
         $related_products = [];

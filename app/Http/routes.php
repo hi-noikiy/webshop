@@ -33,7 +33,7 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::get('webshop', 'WebshopController@main');                        	    // Main webshop page
-Route::get('product/{product_id?}', 'ProductController@showProduct');   	    // Product page
+Route::get('product/{product}', 'ProductController@showProduct');   	        // Product page
 Route::get('search', 'SearchController@search');                       	        // Page with the search results
 Route::get('specials', 'SearchController@specials');                   	        // Show only the specials
 Route::get('clearance', 'SearchController@clearance');                 	        // Show only the clearance products
