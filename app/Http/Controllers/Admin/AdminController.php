@@ -36,11 +36,17 @@ class AdminController extends Controller
         // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
         $groupedOrders = App\Order::select(DB::raw("YEAR(created_at) as 'year'"))->groupBy(DB::raw('YEAR(created_at)'))->orderBy('year', 'DESC')->get();
 
+        try {
+            $analytics = Analytics::fetchTopBrowsers(Period::days(365));
+        } catch (\Exception $e) {
+            $analytics = $e;
+        }
+
         return view('admin.overview', [
             'product_import'    => $product_import,
             'discount_import'   => $discount_import,
             'years'             => $groupedOrders->toArray(),
-            'browsers'          => Analytics::fetchTopBrowsers(Period::days(365))
+            'browsers'          => $analytics
         ]);
     }
 

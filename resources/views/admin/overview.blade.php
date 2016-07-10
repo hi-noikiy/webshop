@@ -91,18 +91,22 @@
                 </div>
 
                 <div class="col-md-6">
-                    <h3>
-                        Bezoekers per browser per -
+                    @if ($browsers instanceof \Exception)
+                        <div class="alert alert-danger">Er is een fout opgetreden tijdens het laden van de browser lijst: {{ $browsers->getMessage() }}</div>
+                    @else
+                        <h3>
+                            Bezoekers per browser per -
 
-                        <select id="periodSelect" onchange="getBrowserChartData()">
-                            <option value="365">Jaar</option>
-                            <option value="31">Maand</option>
-                            <option value="7">Week</option>
-                            <option value="1">Dag</option>
-                        </select>
-                    </h3>
+                            <select id="periodSelect" onchange="getBrowserChartData()">
+                                <option value="365">Jaar</option>
+                                <option value="31">Maand</option>
+                                <option value="7">Week</option>
+                                <option value="1">Dag</option>
+                            </select>
+                        </h3>
 
-                    <canvas id="browserChart" height="400" style="width: 100%;"></canvas>
+                        <canvas id="browserChart" height="400" style="width: 100%;"></canvas>
+                    @endif
                 </div>
             </div>
         </div>
@@ -167,67 +171,69 @@
             });
         }
 
-        var browserChartContext = $('#browserChart');
-        var browsers        = {!! $browsers->toJson() !!};
-        var browserLabels   = [];
-        var browserSessions = [];
+        @if (!$browsers instanceof \Exception)
+            var browserChartContext = $('#browserChart');
+            var browsers        = {!! $browsers->toJson() !!};
+            var browserLabels   = [];
+            var browserSessions = [];
 
-        for (var i = 0; i < browsers.length; i++) {
-            browserLabels.push(browsers[i].browser);
-            browserSessions.push(browsers[i].sessions);
-        }
-
-        var browserChart = new Chart(browserChartContext, {
-            type: 'bar',
-            data:  {
-                labels: browserLabels,
-                datasets: [
-                    {
-                        label: "Browsers",
-                        backgroundColor: "#FF5722",
-                        borderColor: "#FF5722",
-                        hoverBackgroundColor: "#FF3D00",
-                        hoverBorderColor: "#FF3D00",
-                        data: browserSessions
-                    }
-                ],
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
+            for (var i = 0; i < browsers.length; i++) {
+                browserLabels.push(browsers[i].browser);
+                browserSessions.push(browsers[i].sessions);
             }
-        });
 
-        function getBrowserChartData()
-        {
-            $.ajax({
-                url: "/admin/api/chart/browsers",
-                type: "GET",
-                data: { days : $('#periodSelect').val() },
-                dataType: "json",
-                success: function(response) {
-                    var data = response.payload;
-                    var browserSessions = [];
-                    var browserLabels = [];
-                    var i;
-
-                    for (i = 0; i < data.length; i++) {
-                        browserLabels.push(data[i].browser);
-                        browserSessions.push(data[i].sessions);
+            var browserChart = new Chart(browserChartContext, {
+                type: 'bar',
+                data:  {
+                    labels: browserLabels,
+                    datasets: [
+                        {
+                            label: "Browsers",
+                            backgroundColor: "#FF5722",
+                            borderColor: "#FF5722",
+                            hoverBackgroundColor: "#FF3D00",
+                            hoverBorderColor: "#FF3D00",
+                            data: browserSessions
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
                     }
-
-                    browserChart.data.labels           = browserLabels;
-                    browserChart.data.datasets[0].data = browserSessions;
-
-                    browserChart.update();
                 }
             });
-        }
+
+            function getBrowserChartData()
+            {
+                $.ajax({
+                    url: "/admin/api/chart/browsers",
+                    type: "GET",
+                    data: { days : $('#periodSelect').val() },
+                    dataType: "json",
+                    success: function(response) {
+                        var data = response.payload;
+                        var browserSessions = [];
+                        var browserLabels = [];
+                        var i;
+
+                        for (i = 0; i < data.length; i++) {
+                            browserLabels.push(data[i].browser);
+                            browserSessions.push(data[i].sessions);
+                        }
+
+                        browserChart.data.labels           = browserLabels;
+                        browserChart.data.datasets[0].data = browserSessions;
+
+                        browserChart.update();
+                    }
+                });
+            }
+        @endif
 
         $(document).ready(function() {
             getOrderChartData();

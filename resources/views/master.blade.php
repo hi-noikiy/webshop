@@ -158,6 +158,8 @@
         </div><!-- /.container-->
     </nav>
 
+    @include('components.notifications')
+
     @if(app()->environment('staging'))
         <div class="local-dev"> TESTING </div>
     @elseif(app()->environment('local'))
@@ -182,20 +184,6 @@
                 @yield('title')
             </div>
         </div>
-
-        @if ($errors->has())
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    {{ $error }}<br />
-                @endforeach
-            </div>
-        @endif
-
-        @if (Session::has('status'))
-            <div class="alert alert-success" id="statusmessage">
-                {{ Session::get('status') }}<br />
-            </div>
-        @endif
 
         @if( Route::current()->getUri() === '/' )
             <div class="well well-sm text-center ie-only">
