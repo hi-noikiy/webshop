@@ -46,7 +46,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function addresses()
     {
-        return $this->hasMany(Address::class, 'User_id', 'company');
+        return $this->hasMany(Address::class, 'User_id', 'company_id');
     }
 
     /**
@@ -57,7 +57,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function discounts($type = null)
     {
-        $query = $this->hasMany(Discount::class, 'User_id', 'company');
+        $query = $this->hasMany(Discount::class, 'User_id', 'company_id');
         $query->where('group_desc', '!=', 'Vervallen');
 
         switch ($type) {
@@ -98,7 +98,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function company()
     {
-        return $this->belongsTo(Company::class, 'login', 'company');
+        return $this->belongsTo(Company::class, 'company_id', 'login');
     }
 
 }
