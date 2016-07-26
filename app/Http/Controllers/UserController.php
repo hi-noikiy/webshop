@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Auth, Cart, Log, Session;
@@ -13,14 +12,27 @@ class UserController extends Controller
      * a message indicating whether the login was successful or not
      *
      * @param  Request $request
-     * @return $this|\Illuminate\Http\RedirectResponse|Redirect
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
     {
+        $validator = \Validator::make($request->all(), [
+            'company' => 'required',
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
         // Is all the data entered
-        if ($request->has('username') && $request->has('password')) {
+        if ($validator->passes()) {
+            $user_data = [
+                'company' => $request->input('company'),
+                'username' => $request->input('username'),
+                'password' => $request->input('password'),
+                'active' => 1
+            ];
+
             // Try to log the user in
-            if (Auth::attempt(['login' => $request->input('username'), 'password' => $request->input('password'), 'active' => 1], ($request->input('remember_me') === "on" ? true : false))) {
+            if (Auth::attempt($user_data, ($request->input('remember_me') === "on" ? true : false))) {
                 Log::info("User [{$request->input('username')}] logged in successfully");
 
                 if (Auth::user()->cart) {
@@ -44,7 +56,8 @@ class UserController extends Controller
         Log::info("User [{$request->input('username')}] failed to log in");
 
         // The input field(s) is/are empty, go back to the previous page with an error message
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->withErrors('Gebruikersnaam en/of wachtwoord onjuist')
             ->withInput($request->except('password'));
     }

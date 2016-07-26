@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label for="username" class="col-sm-4 control-label">Debiteurnummer</label>
                         <div class="col-sm-8">
-                            <input type="text" name="username" class="form-control" placeholder="Debiteurnummer" autocomplete="off" required value="{{ old('username') }}">
+                            <input type="text" name="company" class="form-control" placeholder="Debiteurnummer" autocomplete="off" required value="{{ old('company') }}">
                             <p class="help-block">Bijv. 12345</p>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="account" class="col-sm-4 control-label">Gebruikersnaam</label>
                         <div class="col-sm-8">
-                            <input type="text" name="account" class="form-control" placeholder="Gebruikersnaam" autocomplete="off" required value="{{ old('account') }}">
+                            <input type="text" name="username" class="form-control" placeholder="Gebruikersnaam" autocomplete="off" required value="{{ old('username') }}">
                             <p class="help-block">Bijv. "Piet"</p>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <label for="password" class="col-sm-4 control-label">Wachtwoord</label>
                         <div class="col-sm-8">
                             <input type="password" name="password" class="form-control" placeholder="Wachtwoord" aria-describedby="forgotPassword" required>
-                            <span id="forgotPassword" class="help-block"><a href="/password/email">Wachtwoord vergeten?</a></span>
+                            <span id="forgotPassword" class="help-block"><a href="{{ url('password/email') }}">Wachtwoord vergeten?</a></span>
                         </div>
                     </div>
 
