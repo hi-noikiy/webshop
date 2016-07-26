@@ -30,7 +30,7 @@ class AccountController extends Controller {
      */
     public function overview()
     {
-        $orderCount = Order::where('User_id', Auth::user()->login)->count();
+        $orderCount = Order::where('User_id', Auth::user()->username)->count();
 
         return view('account.overview', [
             'orderCount' => $orderCount
