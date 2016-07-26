@@ -1,10 +1,12 @@
-<?php namespace App\Http\Controllers;
+<?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
 use App\Address;
 use App\Order;
 use App\User;
-
-use DB, Auth, Redirect, Input, Request, Validator, Log, Hash, File, Response, Session, Mail, Helper;
+use DB, Auth, Input, Validator, Log, Hash, File, Response, Session, Mail, Helper;
 
 class AccountController extends Controller {
 
@@ -50,20 +52,19 @@ class AccountController extends Controller {
     /**
      * Change password handler
      *
+     * @param  Request $request
      * @return mixed
      */
-    public function changePassPOST()
+    public function changePassPOST(Request $request)
     {
-        if (Input::has('oldPass') && Input::has('newPass') && Input::has('newPassVerify'))
+        if ($request->has('oldPass') && $request->has('newPass') && $request->has('newPassVerify'))
         {
-            $oldPass        = Input::get('oldPass');
-            $newPass        = Input::get('newPass');
-            $newPassVerify  = Input::get('newPassVerify');
+            $oldPass        = $request->input('oldPass');
+            $newPass        = $request->input('newPass');
+            $newPassVerify  = $request->input('newPassVerify');
 
-            if (Auth::validate(['login' => Auth::user()->login, 'password' => $oldPass]))
-            {
-                if ($newPass === $newPassVerify)
-                {
+            if (Auth::validate(['username' => Auth::user()->username, 'password' => $oldPass])) {
+                if ($newPass === $newPassVerify) {
                     $hashedPass     = Hash::make($newPass);
                     $user           = User::find(Auth::id());
 
@@ -71,18 +72,22 @@ class AccountController extends Controller {
 
                     $user->save();
 
-                    return redirect('account')->with('status', 'Uw wachtwoord is gewijzigd');
-                } else
-                {
-                    return redirect('account/changepassword')->withErrors('De nieuwe wachtwoorden komen niet overeen');
+                    return redirect('account')
+                        ->with('status', 'Uw wachtwoord is gewijzigd');
+                } else {
+                    return redirect('account/changepassword')
+                        ->withErrors('De nieuwe wachtwoorden komen niet overeen');
                 }
-            } else
-            {
+            } else {
                 Log::warning('User: ' . Auth::user()->login . ' tried to change password but entered the wrong password.');
-                return redirect('account/changepassword')->withErrors('Het oude wachtwoord is onjuist!');
+
+                return redirect('account/changepassword')
+                    ->withErrors('Het oude wachtwoord is onjuist!');
             }
-        } else
-            return redirect('account/changepassword')->withErrors('Niet alle velden zijn ingevuld');
+        } else {
+            return redirect('account/changepassword')
+                ->withErrors('Niet alle velden zijn ingevuld');
+        }
     }
 
     /**
@@ -127,26 +132,24 @@ class AccountController extends Controller {
     /**
      * Update the favourites from a user
      *
-     * @return $this|string
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function modFav()
+    public function modFav(Request $request)
     {
-        if (Request::ajax())
-        {
-            $product = Input::get('product');
+        if ($request->ajax()) {
+            $product = $request->input('product');
 
             $validator = Validator::make(
                 ['product' => $product],
                 ['product' => 'required|digits:7']
             );
 
-            if (!$validator->fails())
-            {
+            if ($validator->passes()) {
                 $currentFavorites = unserialize(Auth::user()->favorites);
 
                 // Remove the product from the favorites if it is already in
-                if (in_array($product, $currentFavorites))
-                {
+                if (in_array($product, $currentFavorites)) {
                     $key = array_search($product, $currentFavorites);
 
                     // Remove the product from the favorites array
@@ -159,8 +162,7 @@ class AccountController extends Controller {
 
                     echo 'SUCCESS';
                     exit();
-                } else
-                {
+                } else {
                     // Add the product to the favorites array
                     array_push($currentFavorites, $product);
 
@@ -172,40 +174,49 @@ class AccountController extends Controller {
                     echo 'SUCCESS';
                     exit();
                 }
-            } else
-                return 'FAILED';
-        } else
-            return redirect()->back()->withErrors( 'Geen toegang!');
+            } else {
+                echo 'FAILED';
+                exit();
+            }
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors('Geen toegang!');
+        }
     }
 
     /**
      * Check if the product is in the favorites array
      *
-     * @return $this|string
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function isFav()
+    public function isFav(Request $request)
     {
-        if (Request::ajax())
-        {
-            $product = Input::get('product');
+        if ($request->ajax()) {
+            $product = $request->input('product');
 
             $validator = Validator::make(
                 ['product' => $product],
                 ['product' => 'required|digits:7']
             );
 
-            if (!$validator->fails())
-            {
+            if ($validator->passes()) {
                 $currentFavorites = unserialize(Auth::user()->favorites);
 
-                if (in_array($product, $currentFavorites))
+                if (in_array($product, $currentFavorites)) {
                     return 'IN_ARRAY';
-                else
+                } else {
                     return 'NOT_IN_ARRAY';
-            } else
+                }
+            } else {
                 return 'FAILED';
-        } else
-            return redirect()->back()->withErrors( 'Geen toegang!');
+            }
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors( 'Geen toegang!');
+        }
     }
 
     /**
@@ -215,9 +226,11 @@ class AccountController extends Controller {
      */
     public function orderhistory()
     {
-        $orderList = Order::where('User_id', Auth::user()->login)->orderBy('created_at', 'desc')->paginate(15);
+        $orderList = Order::where('User_id', Auth::user()->company_id)->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('account.orderhistory', ['orderlist' => $orderList]);
+        return view('account.orderhistory', [
+            'orderlist' => $orderList
+        ]);
     }
 
     /**
@@ -227,101 +240,82 @@ class AccountController extends Controller {
      */
     public function addresslist()
     {
-        $addressList = Address::where('User_id', Auth::user()->login)->get();
+        $addressList = Address::where('User_id', Auth::user()->company_id)->get();
 
-        return view('account.addresslist', ['addresslist' => $addressList]);
+        return view('account.addresslist', [
+            'addresslist' => $addressList
+        ]);
     }
 
     /**
      * Handle the add address request
      *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function addAddress()
+    public function addAddress(Request $request)
     {
-        if (Input::has('name') && Input::has('street') && Input::has('postcode') && Input::has('city'))
-        {
-            $name           = Input::get('name');
-            $street         = Input::get('street');
-            $postcode       = Input::get('postcode');
-            $city           = Input::get('city');
-            $telephone      = (Input::has('telephone') ? Input::get('telephone') : '');
-            $mobile         = (Input::has('mobile') ? Input::get('mobile') : '');
+        $validator = Validator::make($request->all(), [
+            'name'          => 'required',
+            'street'        => 'required|regex:/^[a-zA-Z0-9\s]+$/',
+            'postcode'      => 'required|regex:/^[a-zA-Z0-9\s]+$/|between:6,8',
+            'city'          => 'required|regex:/^[a-zA-Z\s]+$/',
+            'telephone'     => 'regex:/^[0-9\s\-]+$/',
+            'mobile'        => 'regex:/^[0-9\s\-]+$/'
+        ]);
 
-            $validator = Validator::make([
-                'name'          => $name,
-                'street'        => $street,
-                'postcode'      => $postcode,
-                'city'          => $city,
-                'telephone'     => $telephone,
-                'mobile'        => $mobile
-            ],
-                [
-                    'name'          => 'required',
-                    'street'        => 'required|regex:/^[a-zA-Z0-9\s]+$/',
-                    'postcode'      => 'required|regex:/^[a-zA-Z0-9\s]+$/|between:6,8',
-                    'city'          => 'required|regex:/^[a-zA-Z\s]+$/',
-                    'telephone'     => 'regex:/^[0-9\s\-]+$/',
-                    'mobile'        => 'regex:/^[0-9\s\-]+$/'
-                ]
-            );
+        if ($validator->passes()) {
+            $address = new Address;
 
-            if (!$validator->fails())
-            {
-                $address = new Address;
+            $address->name          = $request->input('name');
+            $address->street        = $request->input('street');
+            $address->postcode      = $request->input('postcode');
+            $address->city          = $request->input('city');
+            $address->telephone     = ($request->input('telephone') ?: '');
+            $address->mobile        = ($request->input('mobile') ?: '');
+            $address->User_id       = Auth::user()->company_id;
 
-                $address->name          = $name;
-                $address->street        = $street;
-                $address->postcode      = $postcode;
-                $address->city          = $city;
-                $address->telephone     = $telephone;
-                $address->mobile        = $mobile;
-                $address->User_id       = Auth::user()->login;
+            $address->save();
 
-                $address->save();
-
-                return redirect()->back()->with('status', 'Het adres is toegevoegd');
-            } else
-            {
-                $messages = $validator->errors();
-                $msg = '';
-
-                foreach($messages->all() as $key => $message)
-                    $msg .= ucfirst($message) . "\r\n";
-
-                return redirect()->back()->withErrors( $msg);
-            }
-
-        } else
-            return redirect()->back()->withErrors( 'Een of meer vereiste velden zijn leeg');
+            return redirect()
+                ->back()
+                ->with('status', 'Het adres is toegevoegd');
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator->errors());
+        }
     }
 
     /**
      * This function handles the removal of an address
      *
-     * @return mixed
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeAddress()
+    public function removeAddress(Request $request)
     {
-        if (Input::has('id'))
-        {
-            $address = Address::where('id', Input::get('id'))->where('User_id', Auth::user()->login)->firstOrFail();
+        if ($request->has('id')) {
+            $address = Address::where('id', $request->input('id'))->where('User_id', Auth::user()->company_id)->first();
 
-            if (!empty($address))
-            {
+            if (!empty($address)) {
                 $address->delete();
 
-                return redirect('account/addresslist')->with('status', 'Het adres is verwijderd');
-            } else
-                return redirect('account/addresslist')->withErrors('Het adres bestaat niet of behoort niet bij uw account');
-        } else
-            return redirect('account/addresslist')->withErrors('Geen adres id aangegeven');
+                return redirect('account/addresslist')
+                    ->with('status', 'Het adres is verwijderd');
+            } else {
+                return redirect('account/addresslist')
+                    ->withErrors('Het adres bestaat niet of behoort niet bij uw account');
+            }
+        } else {
+            return redirect('account/addresslist')
+                ->withErrors('Geen adres id aangegeven');
+        }
     }
 
     /**
      * The user is able to download their discounts file from here in ICC and CSV format
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function discountfile()
     {
@@ -337,12 +331,10 @@ class AccountController extends Controller {
      */
     public function generateFile($type, $method)
     {
-        if ($type === 'icc')
-        {
-            if ($method === 'download')
-            {
+        if ($type === 'icc') {
+            if ($method === 'download') {
                 // Create a filesystem link to the temp file
-                $filename       = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
+                $filename = storage_path('icc_data' . Auth::user()->company_id . '.txt');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
@@ -351,11 +343,9 @@ class AccountController extends Controller {
                 File::put($filename, AccountController::discountICC());
 
                 // Return the data as a downloadable file: 'icc_data.txt'
-                return Response::download($filename, 'icc_data' . Auth::user()->login . '.txt');
-
-            } elseif ($method === 'mail')
-            {
-                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.txt';
+                return Response::download($filename, 'icc_data' . Auth::user()->company_id . '.txt');
+            } elseif ($method === 'mail') {
+                $filename = storage_path('icc_data' . Auth::user()->company_id . '.txt');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
@@ -370,52 +360,63 @@ class AccountController extends Controller {
 
                     $message->subject('WTG Webshop ICC kortingen');
 
-                    $message->attach($filename, ['as' => 'icc_data' . Auth::user()->login . '.txt']);
+                    $message->attach($filename, ['as' => 'icc_data' . Auth::user()->company_id . '.txt']);
                 });
 
                 return redirect('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
-            } else
+            } else {
                 return redirect('account/discountfile')->withErrors( 'Geen verzendmethode opgegeven');
-        } elseif ($type === 'csv')
-        {
-            if ($method === 'download')
-            {
+            }
+        } elseif ($type === 'csv') {
+            if ($method === 'download') {
                 // Create a filesystem link to the temp file
-                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
+                $filename = storage_path() . '/icc_data' . Auth::user()->company_id . '.csv';
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
                 File::put($filename, AccountController::discountCSV());
 
-                return Response::download($filename, 'icc_data' . Auth::user()->login . '.csv');
+                return Response::download($filename, 'icc_data' . Auth::user()->company_id . '.csv');
 
-            } elseif ($method === 'mail')
-            {
-                $filename = storage_path() . '/icc_data' . Auth::user()->login . '.csv';
+            } elseif ($method === 'mail') {
+                $filename = storage_path() . '/icc_data' . Auth::user()->company_id . '.csv';
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
                 File::put($filename, AccountController::discountCSV());
 
-                Mail::send('email.discountfile', [], function($message) use ($filename)
-                {
+                Mail::send('email.discountfile', [], function($message) use ($filename) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
                     $message->to(Auth::user()->email);
 
                     $message->subject('WTG Webshop CSV kortingen');
 
-                    $message->attach($filename, ['as' => 'icc_data' . Auth::user()->login . '.csv']);
+                    $message->attach($filename, [
+                        'as' => 'icc_data' . Auth::user()->company_id . '.csv'
+                    ]);
                 });
 
-                return redirect('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
-            } else
-                return redirect('account/discountfile')->withErrors('Geen verzendmethode opgegeven');
-        } else
-            return redirect('account/discountfile')->withErrors( 'Ongeldig bestands type');
+                return redirect('account/discountfile')
+                    ->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+            } else {
+                return redirect('account/discountfile')
+                    ->withErrors('Geen verzendmethode opgegeven');
+            }
+        } else {
+            return redirect('account/discountfile')
+                ->withErrors('Ongeldig bestands type');
+        }
     }
+
+    /**
+     * The code below is a real mess, I should clean it up sometime
+     * but as long as it works, I won't change it too much...
+     *
+     * TODO: Clean the code below
+     */
 
     /**
      * This function will generate the data for the ICC file
@@ -430,11 +431,11 @@ class AccountController extends Controller {
          */
         $GLN = 8714253038995;
         $empty1 = '       ';
-        $debiteur = Auth::user()->login;
+        $debiteur = Auth::user()->company_id;
         $empty2 = '               ';
         $date = date('Ymd');
         $version = '1.1  ';
-        $name = Auth::user()->company;
+        $name = Auth::user()->company->company;
 
         /*
          * Used in the rows containing the discounts
@@ -593,7 +594,7 @@ class AccountController extends Controller {
     {
         // Static variables
         $firstRow 	= 'Artikelnr;Omschrijving;Kortingspercentage;ingangsdatum' . "\r\n";
-        $debiteur 	= Auth::user()->login;
+        $debiteur 	= Auth::user()->company_id;
         $date		= date('Y-m-d');
         $delimiter	= ';';
 

@@ -18,17 +18,9 @@ class CartController extends Controller {
      */
     public function view()
     {
-        if (Auth::check()) {
-            $addresses = DB::table('addresses')
-                ->where('User_id', Auth::user()->login)
-                ->get();
-        } else {
-            return redirect('/#loginModal');
-        }
-
         return view('webshop.cart', [
             'cart' => Cart::content(),
-            'addresses' => $addresses
+            'addresses' => Auth::user()->addresses()
         ]);
     }
 

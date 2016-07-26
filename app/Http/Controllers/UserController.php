@@ -25,7 +25,7 @@ class UserController extends Controller
         // Is all the data entered
         if ($validator->passes()) {
             $user_data = [
-                'company' => $request->input('company'),
+                'company_id' => $request->input('company'),
                 'username' => $request->input('username'),
                 'password' => $request->input('password'),
                 'active' => 1
@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function logout()
     {
-        $user = Auth::user()->login;
+        $user = Auth::user()->username;
 
         Cart::destroy();
         Auth::logout();

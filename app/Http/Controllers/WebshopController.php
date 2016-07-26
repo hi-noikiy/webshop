@@ -68,7 +68,7 @@ class WebshopController extends Controller
         Session::flash('product_id', $product_Id);
 
         $product = Product::where('number', $product_Id)->firstOrFail();
-        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
         $prevPage = Input::get('ref');
 
         if ($product->related_products)
@@ -98,7 +98,7 @@ class WebshopController extends Controller
      */
     public function reorder($orderId)
     {
-        $order = Order::where('User_id', Auth::user()->login)
+        $order = Order::where('User_id', Auth::user()->company_id)
             ->where('id', $orderId)
             ->firstOrFail();
 

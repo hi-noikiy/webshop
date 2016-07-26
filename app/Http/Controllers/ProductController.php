@@ -28,7 +28,7 @@ class ProductController extends Controller {
             throw new ProductNotFoundException($product_Id);
         }
 
-        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
         $prevPage = $request->get('ref');
         $related_products = [];
         $pack_list = [];
