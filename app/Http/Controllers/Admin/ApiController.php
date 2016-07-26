@@ -126,11 +126,11 @@ class ApiController extends Controller {
     public function userDetails(Request $request)
     {
         if ($request->has('id')) {
-            $user = User::where('login', $request->input('id'))->first();
+            $user = User::where('username', $request->input('id'))->first();
 
             if ($user !== null) {
                 return Response::json([
-                    'message' => 'User details for user ' . $user->login,
+                    'message' => 'User details for user ' . $user->username,
                     'payload' => $user
                 ]);
             } else {

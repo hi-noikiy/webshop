@@ -87,12 +87,14 @@ class AdminTest extends TestCase
     private function createUser()
     {
         User::create([
-            'login' => '13370',
+            'company_id' => '13370',
+            'username' => '13370',
             'password' => bcrypt('password'),
-            'company' => 'company',
-            'isAdmin' => 1
+            'email' => 'test@example.com',
+            'isAdmin' => 1,
+            'manager' => 1
         ]);
 
-        return User::whereLogin('13370')->first();
+        return User::whereUsername('13370')->first();
     }
 }

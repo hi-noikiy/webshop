@@ -81,15 +81,13 @@ class CartTest extends TestCase
     private function createFakeUser()
     {
         DB::table('users')->insert([
-            'login'     => 10000,
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
+            'username'     => 10000,
+            'company_id'   => 10000,
             'email'     => 'test@example.com',
             'active'    => '1',
             'isAdmin'   => '0',
-            'password'  => bcrypt('test')
+            'password'  => bcrypt('test'),
+            'manager'   => '1'
         ]);
 
         return $this;
@@ -106,7 +104,7 @@ class CartTest extends TestCase
             ->createDiscount()
             ->createFakeUser();
 
-        $this->actingAs(User::where('login', 10000)->first())
+        $this->actingAs(User::where('username', 10000)->first())
             ->visit('/product/9999999')
             ->dontSee('Not Found')
             ->see('Someproduct')
@@ -126,7 +124,7 @@ class CartTest extends TestCase
             ->createDiscount()
             ->createFakeUser();
 
-        $this->actingAs(User::where('login', 10000)->first())
+        $this->actingAs(User::where('username', 10000)->first())
             ->visit('/product/9999999')
             ->dontSee('Not Found')
             ->see('Someproduct')

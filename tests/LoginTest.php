@@ -9,26 +9,37 @@ class LoginTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * Create a test user
+     *
+     * @param  bool $admin
+     * @param  bool $manager
+     * @param  bool $active
+     */
+    private function createTestUser($admin = false, $manager = true, $active = true)
+    {
+        DB::table('users')->insert([
+            'username'     => 'user',
+            'company_id'   => 10000,
+            'email'     => 'test@example.com',
+            'active'    => $active,
+            'isAdmin'   => $admin,
+            'password'  => bcrypt('test'),
+            'manager'   => $manager
+        ]);
+    }
+
+    /**
      * Check the default user login
      *
      * @return void
      */
     public function testSuccessfulUserLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser();
 
         $this->visit('/')
             ->type('user', 'username')
+            ->type('10000', 'company')
             ->type('test', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
@@ -42,20 +53,11 @@ class LoginTest extends TestCase
      */
     public function testInactiveUserLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '0',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser(false, true, false);
 
         $this->visit('/')
             ->type('user', 'username')
+            ->type('10000', 'company')
             ->type('test', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist')
@@ -69,20 +71,11 @@ class LoginTest extends TestCase
      */
     public function testAdminUserLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '1',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser(true);
 
         $this->visit('/')
             ->type('user', 'username')
+            ->type('10000', 'company')
             ->type('test', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
@@ -96,20 +89,28 @@ class LoginTest extends TestCase
      */
     public function testIncorrectUsernameLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser();
 
         $this->visit('/')
             ->type('baduser', 'username')
+            ->type('10000', 'company')
+            ->type('test', 'password')
+            ->press('Login')
+            ->see('Gebruikersnaam en/of wachtwoord onjuist');
+    }
+
+    /**
+     * Check login with wrong password
+     *
+     * @return void
+     */
+    public function testIncorrectCompanyLogin()
+    {
+        $this->createTestUser();
+
+        $this->visit('/')
+            ->type('user', 'username')
+            ->type('badcompany', 'company')
             ->type('test', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
@@ -122,21 +123,12 @@ class LoginTest extends TestCase
      */
     public function testIncorrectPasswordLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser();
 
         $this->visit('/')
             ->type('user', 'username')
-            ->type('wrongpassword', 'password')
+            ->type('10000', 'company')
+            ->type('badpassword', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
@@ -148,17 +140,7 @@ class LoginTest extends TestCase
      */
     public function testEmptyFormLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createTestUser();
 
         $this->visit('/')
             ->type('user', 'username')
