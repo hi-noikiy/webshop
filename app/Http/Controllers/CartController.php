@@ -55,7 +55,7 @@ class CartController extends Controller {
                 'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
                 'options' => [
                     'special' => (bool) Pack::where('product_number', $product->number)->count(),
-                    'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)
+                    'korting' => Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number)
                 ]
             ];
 
@@ -168,8 +168,8 @@ class CartController extends Controller {
                     $address->telephone = '';
                     $address->mobile = '';
 
-                } else if (Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->login)->first())
-                    $address = Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->login)->first();
+                } else if (Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->company_id)->first())
+                    $address = Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->company_id)->first();
                 else
                     return redirect('/cart')->withErrors('Het opgegeven adres hoort niet bij uw account');
 
@@ -180,7 +180,7 @@ class CartController extends Controller {
                 \Mail::send('email.order', $data, function ($message) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                    if (Auth::user()->login === "99999")
+                    if (Auth::user()->company_id === "99999")
                         $message->to('gfw@wiringa.nl');
                     else
                         $message->to('verkoop@wiringa.nl');
@@ -201,7 +201,7 @@ class CartController extends Controller {
                 $order = new Order();
 
                 $order->products = serialize($items);
-                $order->User_id = Auth::user()->login;
+                $order->User_id = Auth::user()->company_id;
                 $order->comment = $data['comment'];
                 $order->addressId = Input::get('addressId');
 
