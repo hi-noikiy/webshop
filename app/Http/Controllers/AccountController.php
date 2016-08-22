@@ -47,7 +47,7 @@ class AccountController extends Controller {
     public function subAccounts()
     {
         return view('account.sub_accounts', [
-            'accounts' => User::whereCompanyId(Auth::user()->company_id)
+            'accounts' => User::whereCompanyId(Auth::user()->company_id)->paginate(15)
         ]);
     }
 
