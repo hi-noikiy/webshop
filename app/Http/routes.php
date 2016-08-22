@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
 			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
 			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
 		]);
+        Route::get('accounts', ['uses' => 'AccountController@subAccounts', 'middleware' => 'manager']);
 
         Route::post('changepassword', 'AccountController@changePassPOST'); 	    // Handle the change password request
         Route::post('addAddress', 'AccountController@addAddress');         	    // Add address to the database
@@ -133,5 +134,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 // POST Requests will be handled here
+// TODO: Change to something that is not deprecated
 Route::when('*', 'csrf', array('post', 'put', 'delete'));
 
