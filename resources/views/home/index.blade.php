@@ -18,10 +18,10 @@
                     <?php $count = 1; ?>
                     @foreach ($carouselSlides as $slide)
                         <div class="item {{ ($count === 1 ? 'active' : '') }}">
-                            <img src="/img/carousel/{{ $slide['Image'] }}" alt="{{ $slide['Image'] }}" style="height: 300px">
+                            <img src="/img/carousel/{{ $slide->Image }}" alt="{{ $slide->Image }}" style="height: 300px">
                             <div class="carousel-caption">
-                                <h3>{{ $slide['Title'] }}</h3>
-                                <p>{{ $slide['Caption'] }}</p>
+                                <h3>{{ $slide->Title }}</h3>
+                                <p>{{ $slide->Caption }}</p>
                             </div>
                         </div>
                         <?php $count++; ?>
