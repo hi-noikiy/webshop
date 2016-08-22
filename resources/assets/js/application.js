@@ -15,7 +15,7 @@ $(function () {
 });
 
 $('#loginModal').on('shown.bs.modal', function () {
-    $('input[name=username]').focus();
+    $('input[name=company]').focus();
 });
 
 function hideNotification() {
