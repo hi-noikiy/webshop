@@ -37,7 +37,7 @@ class User extends Model implements AuthenticatableContract,
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = ['password', 'remember_token', 'isAdmin', 'manager', 'cart', 'favorites'];
 
     /**
      * Get the list of addresses that belong to the user
