@@ -40,18 +40,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * Get the sub accounts
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function subAccounts()
-    {
-        return view('account.sub_accounts', [
-            'accounts' => User::whereCompanyId(Auth::user()->company_id)->paginate(15)
-        ]);
-    }
-
-    /**
      * The change password page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

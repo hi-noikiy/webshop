@@ -123,7 +123,9 @@ Route::group(['middleware' => 'auth'], function () {
 			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
 			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
 		]);
-        Route::get('accounts', ['uses' => 'AccountController@subAccounts', 'middleware' => 'manager']);
+
+        Route::resource('accounts', 'SubAccountController');
+        // Route::get('accounts', ['uses' => 'AccountController@subAccounts', 'middleware' => 'manager']);
 
         Route::post('changepassword', 'AccountController@changePassPOST'); 	    // Handle the change password request
         Route::post('addAddress', 'AccountController@addAddress');         	    // Add address to the database

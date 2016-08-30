@@ -9,7 +9,7 @@
     <div class="modal fade" id="addAccountDialog" tabindex="-1" role="dialog" aria-labelledby="addAccount" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form class="form-horizontal" action="/account/accounts/add" method="POST" role="form">
+                <form class="form-horizontal" method="POST" role="form">
 
                     {!! csrf_field() !!}
 
@@ -27,6 +27,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="inputEmail" class="col-sm-3 hidden-xs control-label">Email*</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" maxlength="150" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="inputPassword" class="col-sm-3 hidden-xs control-label">Wachtwoord*</label>
                             <div class="col-xs-12 col-sm-9">
                                 <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Wachtwoord" maxlength="100" required>
@@ -36,7 +43,7 @@
                         <div class="form-group">
                             <label for="inputPasswordVerify" class="col-sm-3 hidden-xs control-label">Wachtwoord (verificatie)*</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="password" name="password_confirm" class="form-control" id="inputPasswordVerify" placeholder="Wachtwoord (verificatie)" maxlength="100" required>
+                                <input type="password" name="password_confirmation" class="form-control" id="inputPasswordVerify" placeholder="Wachtwoord (verificatie)" maxlength="100" required>
                             </div>
                         </div>
 
@@ -44,7 +51,7 @@
                             <div class="checkbox">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <label>
-                                        <input type="checkbox" name="manager" id="inputManager"> Maak dit account manager
+                                        <input type="checkbox" name="manager" id="inputManager" value="1"> Maak dit account manager
                                     </label>
 
                                     <p class="help-block">Managers kunnen sub accounts toevoegen en verwijderen.</p>
@@ -84,26 +91,29 @@
                 <thead>
                 <tr>
                     <th>Login</th>
+                    <th>Email</th>
                     <th>Manager?</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($accounts as $account)
-                    @if ($account->id !== Auth::user()->id)
+                    @if ($account->id === Auth::user()->id)
                         <tr>
                             <td>{{ $account->username }}</td>
-                            <td><input type="checkbox" name="manager" disabled="disabled" checked="{{ $account->manager }}"></td>
-                            <td><button class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-remove"></i></button></td>
+                            <td>{{ $account->email }}</td>
+                            <td><input type="checkbox" name="manager" disabled="disabled" {{ $account->manager ? 'checked' : '' }}></td>
+                            <td>Uw account</td>
                         </tr>
                     @else
                         <tr>
                             <td>{{ $account->username }}</td>
+                            <td>{{ $account->email }}</td>
                             <td>
                                 <div class="fa fa-spinner fa-spin" style="display: none;"></div>
-                                <input data-user="{{ $account }}" type="checkbox" name="manager" onchange="updateManager(this)" checked="{{ $account->manager }}">
+                                <input data-user="{{ $account }}" type="checkbox" name="manager" onchange="updateManager(this)" {{ $account->manager ? 'checked' : '' }}>
                             </td>
-                            <td><a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a></td>
+                            <td><a href="#" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
                         </tr>
                     @endif
                 @endforeach
