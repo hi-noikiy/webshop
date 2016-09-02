@@ -90,22 +90,21 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Login</th>
+                    <th>Gebruikersnaam</th>
                     <th>Email</th>
                     <th>Manager?</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>{{ Auth::user()->username }}</td>
+                        <td>{{ Auth::user()->email }}</td>
+                        <td><input type="checkbox" name="manager" disabled="disabled" {{ Auth::user()->manager ? 'checked' : '' }}></td>
+                        <td>Uw account</td>
+                    </tr>
                 @foreach($accounts as $account)
-                    @if ($account->id === Auth::user()->id)
-                        <tr>
-                            <td>{{ $account->username }}</td>
-                            <td>{{ $account->email }}</td>
-                            <td><input type="checkbox" name="manager" disabled="disabled" {{ $account->manager ? 'checked' : '' }}></td>
-                            <td>Uw account</td>
-                        </tr>
-                    @else
+                    @if ($account->id !== Auth::user()->id)
                         <tr>
                             <td>{{ $account->username }}</td>
                             <td>{{ $account->email }}</td>

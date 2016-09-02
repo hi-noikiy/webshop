@@ -54,6 +54,8 @@ class SubAccountController extends Controller
             $user->password     = bcrypt($request->input('password'));
 
             if ($user->save()) {
+                \Log::info('Created a sub account for user ' . Auth::user()->username);
+
                 return redirect('account/accounts')
                     ->with('message', 'Het sub account is aangemaakt.');
             } else {
@@ -73,37 +75,35 @@ class SubAccountController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required',
+            'username' => 'required',
+            'password' => 'required|confirmed',
+            'email' => 'required|email'
+        ]);
+
+        if ($validator->passes()) {
+            \Log::warning('Failed to update sub account. Errors: ' . json_encode($validator->errors()));
+
+            return redirect()
+                ->back()
+                ->withInput($request->except('password'))
+                ->withErrors($validator->errors());
+        } else {
+            \Log::warning('Failed to update sub account. Errors: ' . json_encode($validator->errors()));
+
+            return redirect()
+                ->back()
+                ->withInput($request->except('password'))
+                ->withErrors($validator->errors());
+        }
     }
 
     /**
