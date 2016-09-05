@@ -40,57 +40,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * The change password page
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function changePassGET()
-    {
-        return view('account.changePass');
-    }
-
-    /**
-     * Change password handler
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    public function changePassPOST(Request $request)
-    {
-        if ($request->has('oldPass') && $request->has('newPass') && $request->has('newPassVerify'))
-        {
-            $oldPass        = $request->input('oldPass');
-            $newPass        = $request->input('newPass');
-            $newPassVerify  = $request->input('newPassVerify');
-
-            if (Auth::validate(['username' => Auth::user()->username, 'password' => $oldPass])) {
-                if ($newPass === $newPassVerify) {
-                    $hashedPass     = Hash::make($newPass);
-                    $user           = User::find(Auth::id());
-
-                    $user->password = $hashedPass;
-
-                    $user->save();
-
-                    return redirect('account')
-                        ->with('status', 'Uw wachtwoord is gewijzigd');
-                } else {
-                    return redirect('account/changepassword')
-                        ->withErrors('De nieuwe wachtwoorden komen niet overeen');
-                }
-            } else {
-                Log::warning('User: ' . Auth::user()->login . ' tried to change password but entered the wrong password.');
-
-                return redirect('account/changepassword')
-                    ->withErrors('Het oude wachtwoord is onjuist!');
-            }
-        } else {
-            return redirect('account/changepassword')
-                ->withErrors('Niet alle velden zijn ingevuld');
-        }
-    }
-
-    /**
      * This will fetch the favorites list from the database and
      * transform it into a list categorised by series
      *

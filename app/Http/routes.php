@@ -32,6 +32,9 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('password/reset', 'Auth\PasswordController@postReset');
 });
 
+/**
+ * Webshop routes
+ */
 Route::get('webshop', 'WebshopController@main');                        	    // Main webshop page
 Route::get('product/{product}', 'ProductController@showProduct');   	        // Product page
 Route::get('search', 'SearchController@search');                       	        // Page with the search results
@@ -114,7 +117,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', 'AccountController@overview');                          // Account overview
-        Route::get('changepassword', 'AccountController@changePassGET');        // Change password page
         Route::get('favorites', 'AccountController@favorites');                 // Favorites
         Route::get('orderhistory', 'AccountController@orderhistory');           // Order history
         Route::get('addresslist', 'AccountController@addresslist');             // Addresslist
@@ -131,9 +133,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('update', 'SubAccountController@update');
         });
 
+        Route::group(['namespace' => 'Account'], function () {
+            // Change password page
+            Route::get('password', 'PasswordController@getChangePassword')->name('change_password');
+
+            // Handle the change password request
+            Route::post('password', 'PasswordController@doChangePassword');
+        });
+
         // Route::get('accounts', ['uses' => 'AccountController@subAccounts', 'middleware' => 'manager']);
 
-        Route::post('changepassword', 'AccountController@changePassPOST'); 	    // Handle the change password request
+
         Route::post('addAddress', 'AccountController@addAddress');         	    // Add address to the database
         Route::post('removeAddress', 'AccountController@removeAddress');   	    // Remove address from the database
         Route::post('modFav', 'AccountController@modFav');                 	    // Change the favorites

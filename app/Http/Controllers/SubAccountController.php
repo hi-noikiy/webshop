@@ -32,7 +32,7 @@ class SubAccountController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -50,7 +50,7 @@ class SubAccountController extends Controller
             $user->email        = $request->input('email');
             $user->active       = true;
             $user->isAdmin      = false;
-            $user->manager      = $request->input('manager');
+            $user->manager      = ($request->input('manager') ? true : false);
             $user->password     = bcrypt($request->input('password'));
 
             if ($user->save()) {
@@ -78,7 +78,7 @@ class SubAccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
