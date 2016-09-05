@@ -126,14 +126,17 @@ Route::group(['middleware' => 'auth'], function () {
 			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
 		]);
 
-        Route::group(['prefix' => 'accounts', 'middleware' => 'manager'], function () {
-            Route::get('/', 'SubAccountController@index');
-
-            Route::post('/', 'SubAccountController@store');
-            Route::post('update', 'SubAccountController@update');
-        });
-
+        /**
+         * Account routes
+         */
         Route::group(['namespace' => 'Account'], function () {
+            Route::group(['prefix' => 'accounts', 'middleware' => 'manager'], function () {
+                Route::get('/', 'SubAccountController@index');
+
+                Route::post('/', 'SubAccountController@store');
+                Route::post('update', 'SubAccountController@update');
+            });
+
             // Change password page
             Route::get('password', 'PasswordController@getChangePassword')->name('change_password');
 
