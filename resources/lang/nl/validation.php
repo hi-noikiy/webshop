@@ -27,8 +27,8 @@ return [
 		"string"  => ":attribute moet tussen :min en :max karakters lang zijn.",
 		"array"   => ":attribute moet tussen :min en :max items bevatten.",
 	],
-	"boolean"              => ":attribute kan enkel true of false zijn.",
-	"confirmed"            => ":attribute bevestiging komt niet overeen.",
+	"boolean"              => ":attribute kan enkel waar of niet-waar zijn.",
+	"confirmed"            => ":attribute en :attribute bevestiging komen niet overeen.",
 	"date"                 => ":attribute is geen geldige datum.",
 	"date_format"          => ":attribute komt niet overeen met het formaat :format.",
 	"different"            => ":attribute en :other dienen verschillend te zijn.",
@@ -129,7 +129,8 @@ return [
 
         'digFactuur'     => 'Digitale factuur e-mail adres',
         'digOrder'       => 'Digitale order',
-        'qty'			 => 'Aantal'
+        'qty'			 => 'Aantal',
+        'password'       => 'Wachtwoord'
     ]
 
 ];
