@@ -13,6 +13,7 @@ class ProductTest extends TestCase
      */
     public function testExistingProduct()
     {
+        $this->createDiscount();
         $this->createProduct();
 
         $this->visit('/product/9999999')

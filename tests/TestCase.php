@@ -129,7 +129,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     {
         DB::table('discounts')->insert([
             'table'         => 'VA-220',
-            'User_id'       => 10000,
+            'User_id'       => 12345,
             'product'       => 9999999,
             'start_date'    => '1-1-2008 0:00:00',
             'end_date'      => '31-12-9999 0:00:00',
