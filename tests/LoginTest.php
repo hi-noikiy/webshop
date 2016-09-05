@@ -9,38 +9,18 @@ class LoginTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Create a test user
-     *
-     * @param  bool $admin
-     * @param  bool $manager
-     * @param  bool $active
-     */
-    private function createTestUser($admin = false, $manager = true, $active = true)
-    {
-        DB::table('users')->insert([
-            'username'     => 'user',
-            'company_id'   => 10000,
-            'email'     => 'test@example.com',
-            'active'    => $active,
-            'isAdmin'   => $admin,
-            'password'  => bcrypt('test'),
-            'manager'   => $manager
-        ]);
-    }
-
-    /**
      * Check the default user login
      *
      * @return void
      */
     public function testSuccessfulUserLogin()
     {
-        $this->createTestUser();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('10000', 'company')
-            ->type('test', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
             ->dontSee('Admin');
@@ -53,12 +33,12 @@ class LoginTest extends TestCase
      */
     public function testInactiveUserLogin()
     {
-        $this->createTestUser(false, true, false);
+        $this->createUser(false, true, false);
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('10000', 'company')
-            ->type('test', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist')
             ->dontSee('Admin');
@@ -71,12 +51,12 @@ class LoginTest extends TestCase
      */
     public function testAdminUserLogin()
     {
-        $this->createTestUser(true);
+        $this->createUser(true);
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('10000', 'company')
-            ->type('test', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
             ->see('Admin');
@@ -89,12 +69,12 @@ class LoginTest extends TestCase
      */
     public function testIncorrectUsernameLogin()
     {
-        $this->createTestUser();
+        $this->createUser();
 
         $this->visit('/')
             ->type('baduser', 'username')
-            ->type('10000', 'company')
-            ->type('test', 'password')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
@@ -106,12 +86,12 @@ class LoginTest extends TestCase
      */
     public function testIncorrectCompanyLogin()
     {
-        $this->createTestUser();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
+            ->type('12345', 'username')
             ->type('badcompany', 'company')
-            ->type('test', 'password')
+            ->type('password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
@@ -123,12 +103,12 @@ class LoginTest extends TestCase
      */
     public function testIncorrectPasswordLogin()
     {
-        $this->createTestUser();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('10000', 'company')
-            ->type('badpassword', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('bad_password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
@@ -140,11 +120,9 @@ class LoginTest extends TestCase
      */
     public function testEmptyFormLogin()
     {
-        $this->createTestUser();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }

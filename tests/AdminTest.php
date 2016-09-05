@@ -20,9 +20,9 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=13370')
+            ->get('/admin/api/user?id=12345')
             ->seeJsonEquals([
-                'message' => 'User details for user 13370',
+                'message' => 'User details for user 12345',
                 'payload' => $user->toArray()
             ])
             ->assertResponseStatus(200);
@@ -55,9 +55,9 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=07331')
+            ->get('/admin/api/user?id=54321')
             ->seeJsonEquals([
-                'message' => 'No user found with login 07331'
+                'message' => 'No user found with login 54321'
             ])
             ->assertResponseStatus(404);
     }
@@ -72,29 +72,10 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=1337')
+            ->get('/admin/api/user?id=1234')
             ->seeJsonEquals([
-                'message' => 'No user found with login 1337'
+                'message' => 'No user found with login 1234'
             ])
             ->assertResponseStatus(404);
-    }
-
-    /**
-     * Create an admin user
-     *
-     * @return mixed
-     */
-    private function createUser()
-    {
-        User::create([
-            'company_id' => '13370',
-            'username' => '13370',
-            'password' => bcrypt('password'),
-            'email' => 'test@example.com',
-            'isAdmin' => 1,
-            'manager' => 1
-        ]);
-
-        return User::whereUsername('13370')->first();
     }
 }

@@ -20,7 +20,7 @@ class SubAccountTest extends TestCase
     public function testIfManagerHasSubAccountsNavigationItem()
     {
         $this->createCompany();
-        $this->createUser(true);
+        $this->createUser(false, true);
 
         $this->actingAs(User::whereUsername('12345')->first())
             ->visit('account')
@@ -35,46 +35,10 @@ class SubAccountTest extends TestCase
     public function testIfNormalAccountCannotAccessManagerRoute()
     {
         $this->createCompany();
-        $this->createUser(false);
+        $this->createUser(false, false);
 
         $this->actingAs(User::whereUsername('12345')->first())
             ->visit('account')
             ->dontSee('Sub-Accounts');
-    }
-
-    /**
-     * Create a test company
-     */
-    private function createCompany()
-    {
-        $company = new Company;
-
-        $company->login = '12345';
-        $company->street = 'Teststraat 23';
-        $company->postcode = '1234 XX';
-        $company->city = 'City';
-        $company->email = 'Test@example.com';
-        $company->active = true;
-
-        $company->save();
-    }
-
-    /**
-     * Create a test user
-     *
-     * @param bool $manager
-     */
-    private function createUser($manager = false)
-    {
-        $company = new User;
-
-        $company->username = '12345';
-        $company->company_id = '12345';
-        $company->email = 'Test@example.com';
-        $company->active = true;
-        $company->manager = $manager;
-        $company->password = bcrypt('password');
-
-        $company->save();
     }
 }
