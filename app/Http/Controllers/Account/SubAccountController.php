@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -43,6 +43,13 @@ class SubAccountController extends Controller
         ]);
 
         if ($validator->passes()) {
+            if (User::whereUsername($request->input('username'))->whereCompanyId(Auth::user()->company_id)->count()) {
+                return redirect()
+                    ->back()
+                    ->withInput($request->except(['password', 'password_confirmation']))
+                    ->withErrors('Er bestaat al een sub account met deze login naam.');
+            }
+
             $user = new User;
 
             $user->username     = $request->input('username');
@@ -57,7 +64,7 @@ class SubAccountController extends Controller
                 \Log::info('Created a sub account for user ' . Auth::user()->username);
 
                 return redirect('account/accounts')
-                    ->with('message', 'Het sub account is aangemaakt.');
+                    ->with('status', 'Het sub account is aangemaakt.');
             } else {
                 \Log::error('An error occurred while creating a sub account');
 
