@@ -4,7 +4,24 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Order
+ *
  * @package App
+ * @property-read \App\User $user
+ * @mixin \Eloquent
+ * @property integer $id
+ * @property string $products
+ * @property string $User_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $comment
+ * @property integer $addressId
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereProducts($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereComment($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order whereAddressId($value)
  */
 class Order extends Model {
 

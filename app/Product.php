@@ -4,7 +4,63 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Product
+ *
  * @package App
+ * @mixin \Eloquent
+ * @property integer $id
+ * @property string $name
+ * @property integer $number
+ * @property integer $group
+ * @property string $altNumber
+ * @property string $stockCode
+ * @property string $registered_per
+ * @property string $packed_per
+ * @property string $price_per
+ * @property string $refactor
+ * @property string $supplier
+ * @property string $ean
+ * @property string $image
+ * @property string $length
+ * @property string $price
+ * @property integer $vat
+ * @property string $brand
+ * @property string $series
+ * @property string $type
+ * @property float $special_price
+ * @property string $action_type
+ * @property string $keywords
+ * @property string $related_products
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $catalog_group
+ * @property string $catalog_index
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereNumber($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereGroup($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereAltNumber($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereStockCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereRegisteredPer($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product wherePackedPer($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product wherePricePer($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereRefactor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereSupplier($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereEan($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereImage($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereLength($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product wherePrice($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereVat($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereBrand($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereSeries($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereSpecialPrice($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereActionType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereKeywords($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereRelatedProducts($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereCatalogGroup($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Product whereCatalogIndex($value)
  */
 class Product extends Model {
 

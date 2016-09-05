@@ -10,7 +10,39 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
  * Class User
+ *
  * @package App
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Address[] $addresses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Discount[] $discounts
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read \App\Company $company
+ * @mixin \Eloquent
+ * @property integer $id
+ * @property string $username
+ * @property string $company_id
+ * @property string $email
+ * @property boolean $active
+ * @property boolean $isAdmin
+ * @property boolean $manager
+ * @property string $password
+ * @property string $favorites
+ * @property string $cart
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUsername($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCompanyId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereActive($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereManager($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereFavorites($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCart($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  */
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,

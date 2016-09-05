@@ -4,7 +4,32 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Discount
+ *
  * @package App
+ * @property-read \App\User $user
+ * @mixin \Eloquent
+ * @property integer $id
+ * @property string $table
+ * @property integer $User_id
+ * @property integer $product
+ * @property string $start_date
+ * @property string $end_date
+ * @property string $discount
+ * @property string $group_desc
+ * @property string $product_desc
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereTable($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereProduct($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereStartDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereEndDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereDiscount($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereGroupDesc($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereProductDesc($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Discount whereUpdatedAt($value)
  */
 class Discount extends Model {
 
