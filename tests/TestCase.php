@@ -48,14 +48,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @param  bool $admin
      * @param  bool $manager
      * @param  bool $active
+     * @param  string $username
+     * @param  string $company
      * @return App\User
      */
-    protected function createUser($admin = false, $manager = true, $active = true)
+    protected function createUser($admin = false, $manager = true, $active = true, $username = '12345', $company = '12345')
     {
         $user = new User;
 
-        $user->username = '12345';
-        $user->company_id = '12345';
+        $user->username = $username;
+        $user->company_id = $company;
         $user->email = 'Test@example.com';
         $user->active = (int) $active;
         $user->manager = (int) $manager;

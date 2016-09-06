@@ -11,11 +11,6 @@ class SubAccountTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * Test the product method with an existing product
-     *
-     * @return void
-     */
     public function testIfManagerHasSubAccountsNavigationItem()
     {
         $this->createCompany();
@@ -26,11 +21,6 @@ class SubAccountTest extends TestCase
             ->see('Sub-Accounts');
     }
 
-    /**
-     * Test the product method with an existing product
-     *
-     * @return void
-     */
     public function testIfNormalAccountCannotAccessManagerRoute()
     {
         $this->createCompany();
@@ -83,5 +73,56 @@ class SubAccountTest extends TestCase
 
         $this->assertTrue(\Auth::validate(['username' => 'username', 'company_id' => 12345, 'password' => 'password']));
         $this->assertFalse(\Auth::validate(['username' => 'username', 'company_id' => 12345, 'password' => 'another_password']));
+    }
+
+    public function testIfManagerCanDeleteSubAccount()
+    {
+        $this->createCompany();
+
+        // Manager
+        $user = $this->createUser();
+
+        // Sub account
+        $this->createUser(false, false, true, '54321');
+
+        $this->actingAs($user)
+            ->visit('account/accounts')
+            ->type('54321', 'username')
+            ->type('1', 'delete')
+            ->press('Verwijderen')
+            ->see('Het sub account is verwijderd');
+    }
+
+    public function testIfManagerCanNotDeleteSubAccountFromOtherCompany()
+    {
+        $this->createCompany();
+
+        // Manager
+        $user = $this->createUser();
+
+        // Sub account
+        $this->createUser(false, false, true, '54321', '54321');
+
+        $this->actingAs($user)
+            ->visit('account/accounts')
+            ->type('54321', 'username')
+            ->type('1', 'delete')
+            ->press('Verwijderen')
+            ->see('Geen sub account gevonden die bij uw account hoort');
+    }
+
+    public function testIfManagerCanNotDeleteOwnAccount()
+    {
+        $this->createCompany();
+
+        // Manager
+        $user = $this->createUser();
+
+        $this->actingAs($user)
+            ->visit('account/accounts')
+            ->type('12345', 'username')
+            ->type('1', 'delete')
+            ->press('Verwijderen')
+            ->see('U kunt uw eigen account niet verwijderen');
     }
 }

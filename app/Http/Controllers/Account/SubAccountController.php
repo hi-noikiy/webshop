@@ -90,19 +90,38 @@ class SubAccountController extends Controller
     public function update(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'id' => 'required',
-            'username' => 'required',
-            'password' => 'required|confirmed',
-            'email' => 'required|email'
+            'delete' => 'required',
+            'username' => 'required'
         ]);
 
         if ($validator->passes()) {
-            \Log::warning('Failed to update sub account. Errors: ' . json_encode($validator->errors()));
+            $user = User::whereUsername($request->input('username'))
+                ->where('company_id', Auth::user()->company_id)
+                ->first();
 
-            return redirect()
-                ->back()
-                ->withInput($request->except('password'))
-                ->withErrors($validator->errors());
+            if ($user) {
+                if (Auth::user()->username === $user->username) {
+                    \Log::warning('User: ' . Auth::id() . ' tried to delete their own account');
+
+                    return redirect()
+                        ->back()
+                        ->withErrors('U kunt uw eigen account niet verwijderen!');
+                } else {
+                    $user->delete();
+
+                    \Log::info('User: ' . Auth::id() . ' deleted a sub account');
+
+                    return redirect()
+                        ->back()
+                        ->with('status', 'Het sub account is verwijderd');
+                }
+            } else {
+                \Log::warning('User: ' . Auth::id() . ' tried to delete a sub account that does not belong to them');
+
+                return redirect()
+                    ->back()
+                    ->withErrors('Geen sub account gevonden die bij uw account hoort');
+            }
         } else {
             \Log::warning('Failed to update sub account. Errors: ' . json_encode($validator->errors()));
 
