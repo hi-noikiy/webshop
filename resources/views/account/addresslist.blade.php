@@ -70,7 +70,6 @@
         </form>
     </div>
 
-
     <div class="row">
         <div class="col-md-3">
             @include('account.sidebar')
@@ -79,13 +78,15 @@
             <button data-target="#addAddressDialog" data-toggle="modal" class="btn btn-success btn-block">Adres toevoegen</button>
             <table class="table table-striped">
                 <thead>
-                <th>Naam</th>
-                <th>Straat</th>
-                <th>Postcode</th>
-                <th>Plaats</th>
-                <th>Telefoon</th>
-                <th>Mobiel</th>
-                <th>Verwijderen</th>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Straat</th>
+                        <th>Postcode</th>
+                        <th>Plaats</th>
+                        <th>Telefoon</th>
+                        <th>Mobiel</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach ($addresslist as $address)
@@ -99,7 +100,9 @@
                         <td>
                             <form action="/account/removeAddress" method="POST">
                                 {!! csrf_field() !!}
+
                                 <input class="hidden" value="{{{ $address->id }}}" name="id">
+
                                 <button type="submit" class="btn btn-danger">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
