@@ -118,9 +118,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', 'AccountController@overview');                          // Account overview
         Route::get('favorites', 'AccountController@favorites');                 // Favorites
-        Route::get('orderhistory', 'AccountController@orderhistory');           // Order history
-        Route::get('addresslist', 'AccountController@addresslist');             // Addresslist
-        Route::get('discountfile', 'AccountController@discountfile');           // ICC/CSV Discount generation page
+        Route::get('orderhistory', 'AccountController@orderHistory');           // Order history
+        Route::get('addresslist', 'AccountController@addressList');             // Addresslist
+        Route::get('discountfile', 'AccountController@discountFile');           // ICC/CSV Discount generation page
         Route::get('generate_{type}/{method}', [
 			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
 			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
@@ -143,9 +143,6 @@ Route::group(['middleware' => 'auth'], function () {
             // Handle the change password request
             Route::post('password', 'PasswordController@doChangePassword');
         });
-
-        // Route::get('accounts', ['uses' => 'AccountController@subAccounts', 'middleware' => 'manager']);
-
 
         Route::post('addAddress', 'AccountController@addAddress');         	    // Add address to the database
         Route::post('removeAddress', 'AccountController@removeAddress');   	    // Remove address from the database

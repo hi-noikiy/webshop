@@ -1,13 +1,14 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pack;
-use App\User;
 use App\Product;
 use App\Helper;
 use App\Order;
 use App\Address;
-use Auth, Session, Cart, DB, Input;
+use Auth, Session, Cart;
 
 class CartController extends Controller {
 
@@ -63,18 +64,21 @@ class CartController extends Controller {
             Cart::add($productData);
 
             // Save the updated array to the database
-            $user = User::find(Auth::user()->id);
+            $user = Auth::user();
             $user->cart = serialize($cartArray);
             $user->save();
 
-            if (Session::has('continueShopping'))
-                return redirect(Session::get('continueShopping'))->with('status', 'Het product ' . $number . ' is toegevoegd aan uw winkelwagen');
-            else
+            if (Session::has('continueShopping')) {
+                return redirect(Session::get('continueShopping'))
+                    ->with('status', "Het product {$number} is toegevoegd aan uw winkelwagen");
+            } else {
                 return redirect('cart');
-        } else
+            }
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator->errors());
+        }
     }
 
     /**
@@ -94,39 +98,45 @@ class CartController extends Controller {
             'qty' => 'required|numeric|min:1'
         ]);
 
-        if (!$validator->fails()) {
-            if (Input::get('edit') === "") {
+        if ($validator->passes()) {
+            if ($request->input('edit') === "") {
                 // Load the user cart data
                 $cartArray = unserialize(Auth::user()->cart);
 
                 $cartArray[$artNr]['qty'] = $qty;
 
                 // Save the updated array to the database
-                $user = User::find(Auth::user()->id);
+                $user = Auth::user();
                 $user->cart = serialize($cartArray);
                 $user->save();
 
                 Cart::update($rowId, ['qty' => $qty]);
 
-                return redirect('cart')->with('status', 'Uw winkelwagen is geupdatet');
-            } elseif (Input::get('remove') === "") {
+                return redirect('cart')
+                    ->with('status', 'Uw winkelwagen is geupdatet');
+
+            } elseif ($request->input('remove') === "") {
                 // Load the user cart data
                 $cartArray = unserialize(Auth::user()->cart);
 
                 unset($cartArray[$artNr]);
 
                 // Save the updated array to the database
-                $user = User::find(Auth::user()->id);
+                $user = Auth::user();
                 $user->cart = serialize($cartArray);
                 $user->save();
 
                 Cart::remove($rowId);
 
-                return redirect('cart')->with('status', 'Het product is verwijderd');
-            } else
-                return redirect('cart')->withErrors('Er is een fout opgetreden');
+                return redirect('cart')
+                    ->with('status', 'Het product is verwijderd');
+            } else {
+                return redirect('cart')
+                    ->withErrors('Er is een fout opgetreden');
+            }
         } else {
-            return redirect('cart')->withErrors($validator->errors());
+            return redirect('cart')
+                ->withErrors($validator->errors());
         }
     }
 
@@ -137,28 +147,32 @@ class CartController extends Controller {
      */
     public function destroy()
     {
-        // Cart::destroy() returns NULL, issue:
-        // https://github.com/Crinsane/LaravelShoppingcart/issues/56
         if (!Cart::destroy()) {
-            $user = User::find(Auth::user()->id);
+            $user = Auth::user();
             $user->cart = NULL;
             $user->save();
 
-            return redirect('/')->with('status', 'Uw winkelwagen is geleegd');
-        } else
-            return redirect('cart')->withErrors('Er is een fout opgetreden tijden het legen van de winkelwagen');
+            return redirect('/')
+                ->with('status', 'Uw winkelwagen is geleegd');
+        } else {
+            return redirect('cart')
+                ->withErrors('Er is een fout opgetreden tijden het legen van de winkelwagen');
+        }
     }
 
     /**
      * Mail the order to the company
      *
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
-    public function order()
+    public function order(Request $request)
     {
         if (Cart::count(false) !== 0) {
-            if (Input::has('addressId')) {
-                if (Input::get('addressId') === '-2') {
+            if ($request->has('addressId')) {
+                $addressId = $request->input('addressId');
+
+                if ($request->input('addressId') === '-2') {
                     $address = new \stdClass();
 
                     $address->name = '';
@@ -168,22 +182,27 @@ class CartController extends Controller {
                     $address->telephone = '';
                     $address->mobile = '';
 
-                } else if (Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->company_id)->first())
-                    $address = Address::where('id', Input::get('addressId'))->where('User_id', Auth::user()->company_id)->first();
-                else
-                    return redirect('/cart')->withErrors('Het opgegeven adres hoort niet bij uw account');
+                } else if (Address::where('id', $addressId)->where('User_id', Auth::user()->company_id)->first()) {
+                    $address = Address::where('id', $addressId)
+                        ->where('User_id', Auth::user()->company_id)
+                        ->first();
+                } else {
+                    return redirect('/cart')
+                        ->withErrors('Het opgegeven adres hoort niet bij uw account');
+                }
 
                 $data['address'] = $address;
                 $data['cart'] = Cart::content();
-                $data['comment'] = (Input::has('comment') ? Input::get('comment') : false);
+                $data['comment'] = $request->input('comment');
 
                 \Mail::send('email.order', $data, function ($message) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                    if (Auth::user()->company_id === "99999")
+                    if (Auth::user()->company_id === "99999") {
                         $message->to('gfw@wiringa.nl');
-                    else
+                    } else {
                         $message->to('verkoop@wiringa.nl');
+                    }
 
                     $message->subject('Webshop order');
                 });
@@ -203,7 +222,7 @@ class CartController extends Controller {
                 $order->products = serialize($items);
                 $order->User_id = Auth::user()->company_id;
                 $order->comment = $data['comment'];
-                $order->addressId = Input::get('addressId');
+                $order->addressId = $addressId;
 
                 $order->save();
 
@@ -211,15 +230,19 @@ class CartController extends Controller {
 
                 Cart::destroy();
 
-                $user = User::find(Auth::user()->id);
+                $user = Auth::user();
                 $user->cart = "a:0:{}";
                 $user->save();
 
                 return redirect('/cart/order/finished');
-            } else
-                return redirect('/cart')->withErrors('Geen adres opgegeven');
-        } else
-            return redirect('/')->withErrors('Er zitten geen producten in uw winkelwagen!');
+            } else {
+                return redirect('/cart')
+                    ->withErrors('Geen adres opgegeven');
+            }
+        } else {
+            return redirect('/')
+                ->withErrors('Er zitten geen producten in uw winkelwagen!');
+        }
     }
 
 }

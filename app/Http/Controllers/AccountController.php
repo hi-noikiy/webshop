@@ -5,30 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Address;
 use App\Order;
-use App\User;
-use DB, Auth, Input, Validator, Log, Hash, File, Response, Session, Mail, Helper;
+use App\Product;
+use DB, Auth, File, Response, Session, Mail, Helper;
 
+/**
+ * Class AccountController
+ * @package App\Http\Controllers
+ */
 class AccountController extends Controller {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Account Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller will process the requests for the pages:
-    |       - Overview
-    |       - Change Password
-    |       - Favorites
-    |       - Address list
-    |       - Order history
-    |       - ICC/CSV file generation page
-    |
-    */
 
     /**
      * The overview for the account page
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function overview()
     {
@@ -43,7 +32,7 @@ class AccountController extends Controller {
      * This will fetch the favorites list from the database and
      * transform it into a list categorised by series
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function favorites()
     {
@@ -52,30 +41,30 @@ class AccountController extends Controller {
         $productGroup   = [];
 
         // Get the product data
-        $productData    = DB::table('products')->whereIn('number', $favoritesArray)->get();
+        $productData    = Product::whereIn('number', $favoritesArray)->get();
 
-        // Store each serie from the products in a seperate array for categorisation
-        foreach ($productData as $product)
+        // Store each series from the products in a separate array for categorisation
+        foreach ($productData as $product) {
             array_push($seriesData, $product->series);
+        }
 
         // Only keep the unique values
         $seriesData = array_unique($seriesData);
 
-        // Put the product and serie data in a new array
-        foreach ($seriesData as $key => $serie) {
+        // Put the product and series data in a new array
+        foreach ($seriesData as $key => $series) {
             foreach ($productData as $product) {
-                if ($product->series == $serie) {
-                    $productGroup[$serie][] = $product;
+                if ($product->series == $series) {
+                    $productGroup[$series][] = $product;
                 }
             }
         }
 
         return view('account.favorites', [
-                'favorites'     => $productData,
-                'discounts'     => Helper::getProductDiscount(Auth::user()->login),
-                'groupData'     => $productGroup
-            ]
-        );
+            'favorites'     => $productData,
+            'discounts'     => Helper::getProductDiscount(Auth::user()->login),
+            'groupData'     => $productGroup
+        ]);
     }
 
     /**
@@ -89,7 +78,7 @@ class AccountController extends Controller {
         if ($request->ajax()) {
             $product = $request->input('product');
 
-            $validator = Validator::make(
+            $validator = \Validator::make(
                 ['product' => $product],
                 ['product' => 'required|digits:7']
             );
@@ -105,7 +94,7 @@ class AccountController extends Controller {
                     unset($currentFavorites[$key]);
 
                     // Save the new favorites array to the database
-                    $user = User::find(Auth::user()->id);
+                    $user = Auth::user();
                     $user->favorites = serialize($currentFavorites);
                     $user->save();
 
@@ -116,7 +105,7 @@ class AccountController extends Controller {
                     array_push($currentFavorites, $product);
 
                     // Save the new favorites array to the database
-                    $user = User::find(Auth::user()->id);
+                    $user = Auth::user();
                     $user->favorites = serialize($currentFavorites);
                     $user->save();
 
@@ -145,7 +134,7 @@ class AccountController extends Controller {
         if ($request->ajax()) {
             $product = $request->input('product');
 
-            $validator = Validator::make(
+            $validator = \Validator::make(
                 ['product' => $product],
                 ['product' => 'required|digits:7']
             );
@@ -164,18 +153,20 @@ class AccountController extends Controller {
         } else {
             return redirect()
                 ->back()
-                ->withErrors( 'Geen toegang!');
+                ->withErrors('Geen toegang!');
         }
     }
 
     /**
-     * This page will show the orderhistory
+     * This page will show the order history
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
-    public function orderhistory()
+    public function orderHistory()
     {
-        $orderList = Order::where('User_id', Auth::user()->company_id)->orderBy('created_at', 'desc')->paginate(15);
+        $orderList = Order::where('User_id', Auth::user()->company_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         return view('account.orderhistory', [
             'orderlist' => $orderList
@@ -185,9 +176,9 @@ class AccountController extends Controller {
     /**
      * The address list page
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
-    public function addresslist()
+    public function addressList()
     {
         $addressList = Address::where('User_id', Auth::user()->company_id)->get();
 
@@ -199,11 +190,12 @@ class AccountController extends Controller {
     /**
      * Handle the add address request
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function addAddress(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = \Validator::make($request->all(), [
             'name'          => 'required',
             'street'        => 'required|regex:/^[a-zA-Z0-9\s]+$/',
             'postcode'      => 'required|regex:/^[a-zA-Z0-9\s]+$/|between:6,8',
@@ -238,13 +230,15 @@ class AccountController extends Controller {
     /**
      * This function handles the removal of an address
      *
-     * @param  Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function removeAddress(Request $request)
     {
         if ($request->has('id')) {
-            $address = Address::where('id', $request->input('id'))->where('User_id', Auth::user()->company_id)->first();
+            $address = Address::where('id', $request->input('id'))
+                ->where('User_id', Auth::user()->company_id)
+                ->first();
 
             if (!empty($address)) {
                 $address->delete();
@@ -266,7 +260,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function discountfile()
+    public function discountFile()
     {
         return view('account.discountfile');
     }
@@ -274,9 +268,9 @@ class AccountController extends Controller {
     /**
      * This will handle the requests for the generation of the discounts file
      *
-     * @param $type
-     * @param $method
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @param  string $type
+     * @param  string $method
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function generateFile($type, $method)
     {
@@ -301,8 +295,7 @@ class AccountController extends Controller {
 
                 File::put($filename, AccountController::discountICC());
 
-                Mail::send('email.discountfile', [], function($message) use ($filename)
-                {
+                Mail::send('email.discountfile', [], function($message) use ($filename) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
                     $message->to(Auth::user()->email);
@@ -314,12 +307,13 @@ class AccountController extends Controller {
 
                 return redirect('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
             } else {
-                return redirect('account/discountfile')->withErrors( 'Geen verzendmethode opgegeven');
+                return redirect('account/discountfile')
+                    ->withErrors( 'Geen verzendmethode opgegeven');
             }
         } elseif ($type === 'csv') {
             if ($method === 'download') {
                 // Create a filesystem link to the temp file
-                $filename = storage_path() . '/icc_data' . Auth::user()->company_id . '.csv';
+                $filename = storage_path('/icc_data' . Auth::user()->company_id . '.csv');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
@@ -329,7 +323,7 @@ class AccountController extends Controller {
                 return Response::download($filename, 'icc_data' . Auth::user()->company_id . '.csv');
 
             } elseif ($method === 'mail') {
-                $filename = storage_path() . '/icc_data' . Auth::user()->company_id . '.csv';
+                $filename = storage_path('/icc_data' . Auth::user()->company_id . '.csv');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
