@@ -134,7 +134,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/', 'SubAccountController@index');
 
                 Route::post('/', 'SubAccountController@store');
-                Route::post('update', 'SubAccountController@update');
+                Route::post('update/{id}', 'SubAccountController@update')->name('update_subaccount');
+                Route::post('remove', 'SubAccountController@destroy')->name('delete_subaccount');
             });
 
             // Change password page
