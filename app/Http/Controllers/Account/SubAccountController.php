@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Account;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
-use Auth;
+use Auth, Response;
 
 class SubAccountController extends Controller
 {
@@ -82,12 +82,12 @@ class SubAccountController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete a sub account
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function destroy(Request $request)
     {
         $validator = \Validator::make($request->all(), [
             'delete' => 'required',
@@ -133,13 +133,27 @@ class SubAccountController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Toggle manager status for a sub account
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function update($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($user->company_id === Auth::user()->company_id) {
+            // Turn false into true and vice versa
+            $user->manager = ($user->manager ? false : true);
+            $user->save();
+
+            return Response::json([
+                'message' => 'Toggled manager status'
+            ]);
+        } else {
+            return Response::json([
+                'message' => 'The user with the given id does not belong to your account'
+            ], 403);
+        }
     }
 }

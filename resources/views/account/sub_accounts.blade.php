@@ -83,7 +83,7 @@
     <div class="modal fade" id="deleteAccountDialog" tabindex="-2" role="dialog" aria-labelledby="deleteAccount" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form class="form-horizontal" action="{{ url('account/accounts/update') }}" method="POST" role="form">
+                <form class="form-horizontal" action="{{ route('delete_subaccount') }}" method="POST" role="form">
 
                     {!! csrf_field() !!}
 
@@ -143,7 +143,7 @@
                 <tr>
                     <th>Gebruikersnaam</th>
                     <th>Email</th>
-                    <th>Manager?</th>
+                    <th>Manager</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -155,13 +155,13 @@
                         <td>Uw account</td>
                     </tr>
                 @foreach($accounts as $account)
-                    @if ($account->id !== Auth::user()->id)
+                    @if ($account->id !== Auth::id())
                         <tr>
                             <td>{{ $account->username }}</td>
                             <td>{{ $account->email }}</td>
                             <td>
                                 <div class="fa fa-spinner fa-spin" style="display: none;"></div>
-                                <input data-user="{{ $account }}" type="checkbox" name="manager" onchange="updateManager(this)" {{ $account->manager ? 'checked' : '' }}>
+                                <input data-user="{{ $account }}" data-url="{{ route('update_subaccount', ['id' => $account->id]) }}" type="checkbox" name="manager" onchange="updateManager(this)" {{ $account->manager ? 'checked' : '' }}>
                             </td>
                             <td><button data-username="{{ $account->username }}" class="btn btn-danger deleteUserButton"><i class="glyphicon glyphicon-remove"></i></button></td>
                         </tr>
@@ -190,20 +190,21 @@
 
         function updateManager(target) {
             var user = $.parseJSON($(target).attr('data-user'));
-            var checked = target.checked;
             var spinner = $(target).siblings('.fa-spinner');
 
             $(target).hide();
             $(spinner).show();
 
             $.ajax({
-                url: '/api/user/setManager',
-                data: { user: user.id, manager: target.checked },
+                url: $(target).attr('data-url'),
+                method: 'POST',
+                data: { _token: '{{ csrf_token() }}' },
                 dataType: 'json',
                 success: function (data) {
+                    $(target).prop('checked', target.checked);
                 },
                 error: function (data) {
-                    $(target).prop('checked', checked != true);
+                    $(target).prop('checked', target.checked != true);
                 },
                 complete: function () {
                     $(spinner).hide();
