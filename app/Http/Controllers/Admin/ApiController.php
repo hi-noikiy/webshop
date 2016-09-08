@@ -6,8 +6,8 @@ use App\Order;
 use App\User;
 use App\Content;
 use Illuminate\Http\Request;
-
 use Response, DB;
+use Spatie\Analytics\Period;
 
 /**
  * Class ApiController
@@ -18,7 +18,7 @@ class ApiController extends Controller {
     /**
      * Return the CPU load
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function cpu(Request $request)
@@ -39,7 +39,7 @@ class ApiController extends Controller {
     /**
      * Return the RAM usage
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function ram(Request $request)
@@ -61,29 +61,42 @@ class ApiController extends Controller {
     /**
      * Get data for a chart.js chart
      *
-     * @param Request $request
-     * @param string $type
+     * @param  Request $request
+     * @param  string $type
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function chart(Request $request, string $type)
     {
-        if ($type === 'orders')
-        { // Get the count, year and month
+        // Get the count, year and month
+        if ($type === 'orders') {
             $groupedOrders = Order::select(DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
                 ->where(DB::raw('YEAR(created_at)'), $request->input('year'))
                 ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
                 ->get();
 
-            return Response::json($groupedOrders);
-        } else
-            return Response::json(['Unknown chart type'], 400);
+            return Response::json([
+                'message' => "Chart data for chart '{$type}'",
+                'payload' => $groupedOrders
+            ]);
+        } elseif ($type === 'browsers') {
+            $days = $request->input('days');
+
+            return Response::json([
+                'message' => "Chart data for chart '{$type}'",
+                'payload' => \Analytics::fetchTopBrowsers(Period::days($days))
+            ]);
+        } else {
+            return Response::json([
+                'message' => 'Unknown chart type'
+            ], 400);
+        }
     }
 
     /**
      * Return a single product
      *
-     * @param Request $request
-     * @param $id
+     * @param  Request $request
+     * @param  $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function product(Request $request, $id)
@@ -107,7 +120,7 @@ class ApiController extends Controller {
     /**
      * Get some user details
      *
-     * @param Request $request
+     * @param  Request $request
      * @return mixed
      */
     public function userDetails(Request $request)
@@ -135,7 +148,7 @@ class ApiController extends Controller {
     /**
      * Get the content that belongs to the page/field
      *
-     * @param Request $request
+     * @param  Request $request
      * @return mixed
      */
     public function content(Request $request)

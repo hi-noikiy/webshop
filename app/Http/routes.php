@@ -23,19 +23,17 @@ Route::get('download/{filename}', 'HomeController@download');                   
 Route::group(['middleware' => 'guest'], function () {
     Route::get('password/email', 'Auth\PasswordController@getEmail');		    // Forgot password page
     Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');	// Password reset page
-    Route::get('register', 'WebshopController@register');				        // Show the registration page
-    Route::get('register/sent', 'WebshopController@registerSent');			    // Show the registration success page
-    Route::get('forgotpassword', 'WebshopController@forgotPassword');       	// Forgot password page
+    Route::get('register', 'UserController@register');				            // Show the registration page
+    Route::get('register/sent', 'UserController@registerSent');			        // Show the registration success page
 
-    Route::post('login', 'WebshopController@login');                           	// Login handler
-    Route::post('register', 'WebshopController@register_check');			    // Validate the registration reguest
-    Route::post('forgotpassword', 'WebshopController@resetPassword');          	// Password reset handler
+    Route::post('login', 'UserController@login');                           	// Login handler
+    Route::post('register', 'UserController@register_check');			        // Validate the registration reguest
     Route::post('password/email', 'Auth\PasswordController@postEmail');		    // Reset password handler
     Route::post('password/reset', 'Auth\PasswordController@postReset');
 });
 
 Route::get('webshop', 'WebshopController@main');                        	    // Main webshop page
-Route::get('product/{product_id?}', 'ProductController@showProduct');   	    // Product page
+Route::get('product/{product}', 'ProductController@showProduct');   	        // Product page
 Route::get('search', 'SearchController@search');                       	        // Page with the search results
 Route::get('specials', 'SearchController@specials');                   	        // Show only the specials
 Route::get('clearance', 'SearchController@clearance');                 	        // Show only the clearance products
@@ -101,7 +99,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('logout', 'WebshopController@logout');                      	    // Logout the current user
+    Route::get('logout', 'UserController@logout');                      	    // Logout the current user
     Route::get('reorder/{order_id}', 'WebshopController@reorder');			    // Add the items from a previous order to the cart again
 
     Route::group(['prefix' => 'cart'], function () {

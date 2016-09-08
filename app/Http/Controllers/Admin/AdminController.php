@@ -1,15 +1,12 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Spatie\Analytics\Period;
 use App\Product;
-use App\Discount;
 use App\Content;
 use App\Carousel;
 use App\User;
-
-use Carbon\Carbon;
-
-use Auth, App, DB, Response, Redirect, Input, Validator, Session, File, Request, Storage, Hash, Helper;
+use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Hash, Helper, Analytics;
 
 class AdminController extends Controller
 {
@@ -39,10 +36,17 @@ class AdminController extends Controller
         // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
         $groupedOrders = App\Order::select(DB::raw("YEAR(created_at) as 'year'"))->groupBy(DB::raw('YEAR(created_at)'))->orderBy('year', 'DESC')->get();
 
+        try {
+            $analytics = Analytics::fetchTopBrowsers(Period::days(365));
+        } catch (\Exception $e) {
+            $analytics = $e;
+        }
+
         return view('admin.overview', [
             'product_import'    => $product_import,
             'discount_import'   => $discount_import,
             'years'             => $groupedOrders->toArray(),
+            'browsers'          => $analytics
         ]);
     }
 

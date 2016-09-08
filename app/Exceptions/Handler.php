@@ -1,7 +1,6 @@
 <?php namespace App\Exceptions;
 
-use Exception, Redirect;
-
+use Redirect;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,6 +19,7 @@ class Handler extends ExceptionHandler {
 		NotFoundHttpException::class,
         HttpException::class,
         ModelNotFoundException::class,
+        ProductNotFoundException::class
     ];
 
     /**
@@ -28,9 +28,10 @@ class Handler extends ExceptionHandler {
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
      * @param  \Exception  $e
+     * @throws \Exception  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(\Exception $e)
     {
         // Create a sentry variable
         $sentry = app('sentry');
@@ -82,21 +83,30 @@ class Handler extends ExceptionHandler {
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, \Exception $e)
     {
         if ($e instanceof ModelNotFoundException || $e instanceof MethodNotAllowedHttpException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
 		if ($e instanceof TokenMismatchException) {
-			return Redirect::to('/')->withErrors("Uw sessie is verlopen, log opnieuw in en probeer het opnieuw");
+			return redirect('/')
+                ->withErrors("Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw");
 		}
 
-		if ($this->isHttpException($e)) {
-			return $this->renderHttpException($e);
-		}
+        if ($this->isUnauthorizedException($e)) {
+            $e = new HttpException(403, $e->getMessage());
+        }
 
-		return parent::render($request, $e);
-	}
-
+        if ($this->isHttpException($e)) {
+            return $this->toIlluminateResponse($this->renderHttpException($e), $e);
+        } else {
+            // Display a custom 500 error screen if the app is in production
+            if (app()->environment() === "production") {
+                return response()->view('errors.500', ['exception' => $e], 500);
+            } else {
+                return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+            }
+        }
+    }
 }

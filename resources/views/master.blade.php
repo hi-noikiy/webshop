@@ -43,45 +43,7 @@
     <div class="background"></div>
 
     @if(!Auth::check())
-    <div class="modal fade" id="loginModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="/login" method="POST" class="form form-horizontal">
-                    {!! csrf_field() !!}
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Login</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="username" class="col-sm-4 control-label">Login</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="username" class="form-control" placeholder="Login" autocomplete="off" required value="{{ old('username') }}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-sm-4 control-label">Wachtwoord</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="password" class="form-control" placeholder="Wachtwoord" aria-describedby="forgotPassword" required>
-                                <span id="forgotPassword" class="help-block"><a href="/password/email">Wachtwoord vergeten?</a></span>
-                            </div>
-                        </div>
-                        <div class="checkbox">
-                            <div class="col-sm-offset-4 col-sm-8">
-                                <label>
-                                    <input name="remember_me" type="checkbox"> Ingelogd blijven?
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+        @include('components.login')
     @endif
 
     <nav class="navbar navbar-wtg navbar-static-top" role="navigation">
@@ -158,6 +120,8 @@
         </div><!-- /.container-->
     </nav>
 
+    @include('components.notifications')
+
     @if(app()->environment('staging'))
         <div class="local-dev"> TESTING </div>
     @elseif(app()->environment('local'))
@@ -182,20 +146,6 @@
                 @yield('title')
             </div>
         </div>
-
-        @if ($errors->has())
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    {{ $error }}<br />
-                @endforeach
-            </div>
-        @endif
-
-        @if (Session::has('status'))
-            <div class="alert alert-success" id="statusmessage">
-                {{ Session::get('status') }}<br />
-            </div>
-        @endif
 
         @if( Route::current()->getUri() === '/' )
             <div class="well well-sm text-center ie-only">

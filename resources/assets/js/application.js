@@ -5,16 +5,35 @@ doc.setAttribute('data-useragent', navigator.userAgent);
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
-    if (location.hash == '#login')
+    if (location.hash == '#login') {
         $('#loginModal').modal('show');
+    }
+
+    $('.notification').on('click', function() {
+        hideNotification();
+    });
 });
 
 $('#loginModal').on('shown.bs.modal', function () {
     $('input[name=username]').focus();
 });
 
+function hideNotification() {
+    var n = $('.notification');
+    var h = $(n).height();
+
+    $(n).animate({
+        top: h - 100 + "px"
+    }, {
+        duration: 500,
+        done: function() {
+            $(n).hide();
+        }
+    });
+}
+
 setTimeout(function() {
-    $('#statusmessage').slideUp();
+    hideNotification();
 }, 5000);
 
 // ChartJS Stuff
