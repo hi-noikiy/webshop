@@ -23,7 +23,7 @@ class SubAccountController extends Controller
     public function index()
     {
         return view('account.sub_accounts', [
-            'accounts' => User::whereCompanyId(Auth::user()->company_id)->paginate(15)
+            'accounts' => Auth::user()->subAccounts()
         ]);
     }
 

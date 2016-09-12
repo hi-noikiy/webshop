@@ -133,4 +133,16 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsTo(Company::class, 'company_id', 'login');
     }
 
+    /**
+     * Get the sub accounts that have the same parent company as
+     * the current account.
+     *
+     * @param  int $paginate
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function subAccounts($paginate = 15)
+    {
+        return self::whereCompanyId($this->company_id)->paginate($paginate);
+    }
+
 }
