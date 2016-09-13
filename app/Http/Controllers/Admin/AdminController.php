@@ -1,12 +1,13 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Spatie\Analytics\Period;
 use App\Product;
 use App\Content;
 use App\Carousel;
-use App\User;
-use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Hash, Helper, Analytics;
+use App\Company;
+use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Helper, Analytics;
 
 class AdminController extends Controller
 {
@@ -288,63 +289,58 @@ class AdminController extends Controller
     /**
      * Add/update a user
      *
+     * @param  Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function updateUser()
+    public function updateCompany(Request $request)
     {
-        $validator = Validator::make(Input::all(), [
-            'login' => 'required|integer|between:10000,99999',
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'street' => 'required',
+        $validator = Validator::make($request->all(), [
+            'company_id' => 'required|integer|between:10000,99999',
+            'company_name' => 'required|string',
+
+            'address' => 'required',
             'postcode' => 'required',
             'city' => 'required',
+
+            'email' => 'required|email',
             'active' => 'required',
         ]);
 
 
         if (!$validator->fails()) {
-            if (Input::get('delete') === '') {
-                $user = User::where('login', Input::get('login'));
+            if ($request->input('delete') === '') {
+                $user = Company::where('login', $request->get('username'));
 
                 $user->delete();
 
                 return redirect()
                     ->back()
                     ->with(['status' => 'De gebruiker is succesvol verwijderd']);
-            } elseif (Input::get('update') === '') {
-                if (User::where('login', Input::get('login'))->count() === 1) { // The user exists...
-                    $user = User::where('login', Input::get('login'))->first();
+            } elseif ($request->input('update') === '') {
+                if (Company::where('login', $request->input('username'))->count() === 1) { // The user exists...
+                    $user = Company::where('login', $request->input('username'))->first();
 
-                    $user->company = Input::get('name');
-                    $user->email = Input::get('email');
-                    $user->street = Input::get('street');
-                    $user->postcode = Input::get('postcode');
-                    $user->city = Input::get('city');
-                    $user->active = Input::get('active');
+                    $user->company = $request->input('name');
+                    $user->active = $request->input('active');
 
                     $user->save();
 
                     return redirect()->back()->with([
-                        'status' => 'Gebruiker ' . Input::get('login') . ' is aangepast'
+                        'status' => 'Gebruiker ' . $request->input('username') . ' is aangepast'
                     ]);
                 } else { // The user does not exist...
                     $pass = mt_rand(100000, 999999);
-                    $user = new User;
+                    $user = new Company;
 
-                    $user->login = Input::get('login');
-                    $user->company = Input::get('name');
-                    $user->email = Input::get('email');
-                    $user->street = Input::get('street');
-                    $user->postcode = Input::get('postcode');
-                    $user->city = Input::get('city');
-                    $user->active = Input::get('active');
-                    $user->password = Hash::make($pass);
+                    $user->login = $request->input('username');
+                    $user->company = $request->input('name');
+                    $user->active = $request->input('active');
+                    $user->password = bcrypt($pass);
 
                     $user->save();
 
                     Session::flash('password', $pass);
-                    Session::flash('input', Input::all());
+                    Session::flash('input', $request->all());
 
                     return redirect('admin/userAdded');
                 }
@@ -355,7 +351,7 @@ class AdminController extends Controller
         } else
             return redirect()->back()
                 ->withErrors($validator->errors())
-                ->withInput(Input::all());
+                ->withInput($request->all());
     }
 
     /**

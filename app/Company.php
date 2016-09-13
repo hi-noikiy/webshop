@@ -53,4 +53,14 @@ class Company extends Model
         return $this->hasMany(User::class, 'company_id', 'login');
     }
 
+    /**
+     * The main user for the account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function mainUser()
+    {
+        return $this->hasOne(User::class, 'username', 'login');
+    }
+
 }

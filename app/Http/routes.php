@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
         Route::post('catalog', 'AdminController@generateCatalog');		        // Generate the catalog
         Route::post('addCarouselSlide', 'AdminController@addSlide');		    // Try to add a carousel slide
         Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');	    // Edit the slide order
-        Route::post('updateUser', 'AdminController@updateUser');			    // Update/add the user
+        Route::post('updateCompany', 'AdminController@updateCompany');          // Update/add the user
         Route::post('pricelist', [
             'middleware' => 'RemoveTempFile',                                   // Middleware to remove the temp csv file after download
             'uses' => 'AdminController@generate_pricelist'                      // Generate a downloadable pricelist for a specified user
@@ -79,7 +79,7 @@ Route::group(['middleware' => 'auth.admin'], function() {
             Route::get('ram', 'ApiController@ram');                      // Get RAM Load
             Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
             Route::get('product/{product}', 'ApiController@product');    // Get product data
-            Route::get('user', 'ApiController@userDetails');             // Get user details
+            Route::get('company', 'ApiController@companyDetails');       // Get user details
             Route::get('content', 'ApiController@content');           	 // Get the content for a field
         });
 
@@ -122,9 +122,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('addresslist', 'AccountController@addressList');             // Addresslist
         Route::get('discountfile', 'AccountController@discountFile');           // ICC/CSV Discount generation page
         Route::get('generate_{type}/{method}', [
-			'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
-			'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
-		]);
+            'middleware' => 'RemoveTempFile', 			                        // Middleware to remove the temp csv/icc file after download
+            'uses' => 'AccountController@generateFile'		                    // Discount file generation handler
+        ]);
 
         /**
          * Account routes

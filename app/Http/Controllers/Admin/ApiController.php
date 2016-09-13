@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Company;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\Order;
@@ -123,15 +124,15 @@ class ApiController extends Controller {
      * @param  Request $request
      * @return mixed
      */
-    public function userDetails(Request $request)
+    public function companyDetails(Request $request)
     {
         if ($request->has('id')) {
-            $user = User::where('username', $request->input('id'))->first();
+            $company = Company::with('mainUser')->where('login', $request->input('id'))->first();
 
-            if ($user !== null) {
+            if ($company !== null) {
                 return Response::json([
-                    'message' => 'User details for user ' . $user->username,
-                    'payload' => $user
+                    'message' => 'User details for user ' . $company->login,
+                    'payload' => $company
                 ]);
             } else {
                 return Response::json([
