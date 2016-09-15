@@ -145,4 +145,14 @@ class User extends Model implements AuthenticatableContract,
         return self::whereCompanyId($this->company_id)->paginate($paginate);
     }
 
+    /**
+     * Check if this is the main account
+     *
+     * @return bool
+     */
+    public function isMain()
+    {
+        return $this->company_id === $this->username;
+    }
+
 }
