@@ -148,24 +148,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{{ Auth::user()->username }}</td>
-                        <td>{{ Auth::user()->email }}</td>
-                        <td><input type="checkbox" name="manager" disabled="disabled" {{ Auth::user()->manager ? 'checked' : '' }}></td>
-                        <td>Uw account</td>
-                    </tr>
                 @foreach($accounts as $account)
-                    @if ($account->id !== Auth::id())
-                        <tr>
-                            <td>{{ $account->username }}</td>
-                            <td>{{ $account->email }}</td>
+                    <tr>
+                        <td>{{ $account->username }} <small>{{ $account->isMain() ? '[Hoofdaccount]' : '' }}</small></td>
+                        <td>{{ $account->email }}</td>
+
+                        @if ($account->id !== Auth::id() && !$account->isMain())
                             <td>
                                 <div class="fa fa-spinner fa-spin" style="display: none;"></div>
                                 <input data-user="{{ $account }}" data-url="{{ route('update_subaccount', ['id' => $account->id]) }}" type="checkbox" name="manager" onchange="updateManager(this)" {{ $account->manager ? 'checked' : '' }}>
                             </td>
                             <td><button data-username="{{ $account->username }}" class="btn btn-danger deleteUserButton"><i class="glyphicon glyphicon-remove"></i></button></td>
-                        </tr>
-                    @endif
+                        @else
+                            <td><input type="checkbox" disabled="disabled" checked></td>
+                            <td>
+                                {{ $account->id === Auth::id() ? 'Uw account' : '' }}
+                            </td>
+                        @endif
+                    </tr>
                 @endforeach
                 </tbody>
             </table>

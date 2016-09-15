@@ -27,8 +27,7 @@ class UserController extends Controller
             $user_data = [
                 'company_id' => $request->input('company'),
                 'username' => $request->input('username'),
-                'password' => $request->input('password'),
-                'active' => 1
+                'password' => $request->input('password')
             ];
 
             // Try to log the user in

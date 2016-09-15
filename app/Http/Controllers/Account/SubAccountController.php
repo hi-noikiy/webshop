@@ -100,6 +100,14 @@ class SubAccountController extends Controller
                 ->first();
 
             if ($user) {
+                if ($user->isMain()) {
+                    \Log::warning('User: ' . Auth::id() . ' tried to delete their main account');
+
+                    return redirect()
+                        ->back()
+                        ->withErrors('U kunt het hoofdaccount niet verwijderen');
+                }
+
                 if (Auth::user()->username === $user->username) {
                     \Log::warning('User: ' . Auth::id() . ' tried to delete their own account');
 

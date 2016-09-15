@@ -7,6 +7,7 @@ use App\Product;
 use App\Content;
 use App\Carousel;
 use App\Company;
+use App\User;
 use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Helper, Analytics;
 
 class AdminController extends Controller
@@ -298,19 +299,85 @@ class AdminController extends Controller
             'company_id' => 'required|integer|between:10000,99999',
             'company_name' => 'required|string',
 
-            'address' => 'required',
-            'postcode' => 'required',
-            'city' => 'required',
+//            'address' => 'required',
+//            'postcode' => 'required',
+//            'city' => 'required',
 
             'email' => 'required|email',
             'active' => 'required',
         ]);
 
         if ($validator->passes()) {
-            if ($request->has('delete')) {
-                //Company::whereL
-            } elseif ($request->has('update')) {
+            if ($request->get('delete') === '') {
+                // Get the company
+                $company = Company::whereLogin($request->input('company_id'))->first();
 
+                if ($company) {
+                    // Remove associated users
+                    $company->users->delete();
+
+                    // Remove the company
+                    $company->delete();
+
+                    return redirect()
+                        ->back()
+                        ->with('status', 'Het bedrijf en bijbehorende gegevens zijn verwijderd');
+                } else {
+                    return redirect()
+                        ->back()
+                        ->withInput($request->input())
+                        ->withErrors('Geen bedrijf gevonden met login naam ' . $request->input('company_id'));
+                }
+            } elseif ($request->get('update') === '') {
+                if ($company = Company::whereLogin($request->input('company_id'))->first()) {
+
+                    $company->login = $request->input('company_id');
+                    $company->company = $request->input('company_name');
+                    $company->active = $request->input('active');
+
+                    $company->save();
+
+                    \Log::info('Company ' . $company->login . ' has been updated by an admin');
+
+                    $user = $company->mainUser;
+
+                    $user->username     = $request->input('company_id');
+                    $user->company_id   = $request->input('company_id');
+                    $user->email        = $request->input('email');
+
+                    $user->save();
+
+                    \Log::info('User ' . $user->username . ' has been updated by an admin');
+
+                    return redirect()
+                        ->back()
+                        ->with('status', 'Bedrijf ' . $company->company_id . ' is aangepast');
+                } else {
+                    $pass = mt_rand(100000, 999999);
+
+                    $company = new Company();
+
+                    $company->login = $request->input('company_id');
+                    $company->company = $request->input('company_name');
+                    $company->active = $request->input('active');
+
+                    $company->save();
+
+                    $user = new User();
+
+                    $user->username     = $request->input('company_id');
+                    $user->company_id   = $request->input('company_id');
+                    $user->email        = $request->input('email');
+                    $user->manager      = true;
+                    $user->password     = bcrypt($pass);
+
+                    $user->save();
+
+                    Session::flash('password', $pass);
+                    Session::flash('input', $request->all());
+
+                    return redirect('admin/userAdded');
+                }
             } else {
                 return redirect()
                     ->back()
@@ -323,53 +390,6 @@ class AdminController extends Controller
                 ->withInput($request->input())
                 ->withErrors($validator->errors());
         }
-
-
-        if (!$validator->fails()) {
-            if ($request->input('delete') === '') {
-                $user = Company::where('login', $request->get('username'));
-
-                $user->delete();
-
-                return redirect()
-                    ->back()
-                    ->with(['status' => 'De gebruiker is succesvol verwijderd']);
-            } elseif ($request->input('update') === '') {
-                if (Company::where('login', $request->input('username'))->count() === 1) { // The user exists...
-                    $user = Company::where('login', $request->input('username'))->first();
-
-                    $user->company = $request->input('name');
-                    $user->active = $request->input('active');
-
-                    $user->save();
-
-                    return redirect()->back()->with([
-                        'status' => 'Gebruiker ' . $request->input('username') . ' is aangepast'
-                    ]);
-                } else { // The user does not exist...
-                    $pass = mt_rand(100000, 999999);
-                    $user = new Company;
-
-                    $user->login = $request->input('username');
-                    $user->company = $request->input('name');
-                    $user->active = $request->input('active');
-                    $user->password = bcrypt($pass);
-
-                    $user->save();
-
-                    Session::flash('password', $pass);
-                    Session::flash('input', $request->all());
-
-                    return redirect('admin/userAdded');
-                }
-            } else
-                return redirect()
-                    ->back()
-                    ->withErrors('Geen actie opgegeven (toevoegen of verwijderen)');
-        } else
-            return redirect()->back()
-                ->withErrors($validator->errors())
-                ->withInput($request->all());
     }
 
     /**
