@@ -32,19 +32,19 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testInactiveUserLogin()
-    {
-        $this->createCompany(['active' => false]);
-        $this->createUser(false, true);
-
-        $this->visit('/')
-            ->type('12345', 'username')
-            ->type('12345', 'company')
-            ->type('password', 'password')
-            ->press('Login')
-            ->see('Gebruikersnaam en/of wachtwoord onjuist')
-            ->dontSee('Admin');
-    }
+//    public function testInactiveUserLogin()
+//    {
+//        $this->createCompany(['active' => false]);
+//        $this->createUser(false, true);
+//
+//        $this->visit('/')
+//            ->type('12345', 'username')
+//            ->type('12345', 'company')
+//            ->type('password', 'password')
+//            ->press('Login')
+//            ->see('Gebruikersnaam en/of wachtwoord onjuist')
+//            ->dontSee('Admin');
+//    }
 
     /**
      * Check admin user login
