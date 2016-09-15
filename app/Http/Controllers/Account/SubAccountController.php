@@ -55,7 +55,6 @@ class SubAccountController extends Controller
             $user->username     = $request->input('username');
             $user->company_id   = Auth::user()->company_id;
             $user->email        = $request->input('email');
-            $user->active       = true;
             $user->isAdmin      = false;
             $user->manager      = ($request->input('manager') ? true : false);
             $user->password     = bcrypt($request->input('password'));

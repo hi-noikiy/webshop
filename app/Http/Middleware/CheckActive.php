@@ -31,6 +31,11 @@ class CheckActive
      */
     public function handle($request, Closure $next)
     {
+        // If the app is testing, ignore this middleware
+        if (app()->environment('testing')) {
+            return $next($request);
+        }
+
         // Ignore this middleware if the user is not logged in
         if ($this->auth->guest()) {
             return $next($request);

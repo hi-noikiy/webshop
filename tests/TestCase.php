@@ -24,15 +24,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
      * Create a test company
      *
+     * @param  array $params
      * @return App\Company
      */
-    protected function createCompany($login = '12345', $name = 'Test Company', $active = true)
+    protected function createCompany($params = [])
     {
         $company = new Company;
 
-        $company->login = $login;
-        $company->company = $name;
-        $company->active = $active;
+        $company->login = isset($params['login']) ? $params['login'] : '12345';
+        $company->company = isset($params['name']) ? $params['name'] : 'Test Company';
+        $company->active = isset($params['active']) ? $params['active'] : true;
 
         $company->save();
 
@@ -44,19 +45,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      *
      * @param  bool $admin
      * @param  bool $manager
-     * @param  bool $active
      * @param  string $username
      * @param  string $company
      * @return App\User
      */
-    protected function createUser($admin = false, $manager = true, $active = true, $username = '12345', $company = '12345')
+    protected function createUser($admin = false, $manager = true, $username = '12345', $company = '12345')
     {
         $user = new User;
 
         $user->username = $username;
         $user->company_id = $company;
         $user->email = 'Test@example.com';
-        $user->active = (int) $active;
         $user->manager = (int) $manager;
         $user->isAdmin = (int) $admin;
         $user->password = bcrypt('password');

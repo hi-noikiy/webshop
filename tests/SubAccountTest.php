@@ -4,9 +4,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use App\Company;
-use App\User;
-
 class SubAccountTest extends TestCase
 {
     use DatabaseTransactions;
@@ -83,7 +80,7 @@ class SubAccountTest extends TestCase
         $user = $this->createUser();
 
         // Sub account
-        $this->createUser(false, false, true, '54321');
+        $this->createUser(false, false, '54321');
 
         $this->actingAs($user)
             ->visit('account/accounts')
@@ -101,7 +98,7 @@ class SubAccountTest extends TestCase
         $user = $this->createUser();
 
         // Sub account
-        $this->createUser(false, false, true, '54321', '54321');
+        $this->createUser(false, false, '54321', '54321');
 
         $this->actingAs($user)
             ->visit('account/accounts')
@@ -115,14 +112,35 @@ class SubAccountTest extends TestCase
     {
         $this->createCompany();
 
+        // Main account
+        $this->createUser();
+
         // Manager
-        $user = $this->createUser();
+        $user = $this->createUser(false, true, '54321');
+
+        $this->actingAs($user)
+            ->visit('account/accounts')
+            ->type('54321', 'username')
+            ->type('1', 'delete')
+            ->press('Verwijderen')
+            ->see('U kunt uw eigen account niet verwijderen');
+    }
+
+    public function testIfManagerCanNotDeleteMainAccount()
+    {
+        $this->createCompany();
+
+        // Main account
+        $this->createUser();
+
+        // Manager
+        $user = $this->createUser(false, true, '54321');
 
         $this->actingAs($user)
             ->visit('account/accounts')
             ->type('12345', 'username')
             ->type('1', 'delete')
             ->press('Verwijderen')
-            ->see('U kunt uw eigen account niet verwijderen');
+            ->see('U kunt het hoofdaccount niet verwijderen');
     }
 }

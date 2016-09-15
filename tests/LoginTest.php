@@ -15,6 +15,7 @@ class LoginTest extends TestCase
      */
     public function testSuccessfulUserLogin()
     {
+        $this->createCompany();
         $this->createUser();
 
         $this->visit('/')
@@ -33,7 +34,8 @@ class LoginTest extends TestCase
      */
     public function testInactiveUserLogin()
     {
-        $this->createUser(false, true, false);
+        $this->createCompany(['active' => false]);
+        $this->createUser(false, true);
 
         $this->visit('/')
             ->type('12345', 'username')
@@ -51,6 +53,7 @@ class LoginTest extends TestCase
      */
     public function testAdminUserLogin()
     {
+        $this->createCompany();
         $this->createUser(true);
 
         $this->visit('/')
@@ -69,6 +72,7 @@ class LoginTest extends TestCase
      */
     public function testIncorrectUsernameLogin()
     {
+        $this->createCompany();
         $this->createUser();
 
         $this->visit('/')
@@ -86,6 +90,7 @@ class LoginTest extends TestCase
      */
     public function testIncorrectCompanyLogin()
     {
+        $this->createCompany();
         $this->createUser();
 
         $this->visit('/')
@@ -103,6 +108,7 @@ class LoginTest extends TestCase
      */
     public function testIncorrectPasswordLogin()
     {
+        $this->createCompany();
         $this->createUser();
 
         $this->visit('/')
@@ -120,6 +126,7 @@ class LoginTest extends TestCase
      */
     public function testEmptyFormLogin()
     {
+        $this->createCompany();
         $this->createUser();
 
         $this->visit('/')
