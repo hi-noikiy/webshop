@@ -21,6 +21,7 @@ class RemoveUnusedColumnsFromCompaniesTable extends Migration
             $table->dropColumn('favorites');
             $table->dropColumn('cart');
             $table->dropColumn('remember_token');
+            $table->dropColumn('isAdmin');
         });
     }
 
@@ -39,6 +40,7 @@ class RemoveUnusedColumnsFromCompaniesTable extends Migration
             $table->string('password');
             $table->string('favorites', 8000)->default('a:0:{}');
             $table->mediumText('cart')->nullable();
+            $table->boolean('isAdmin')->default(false);
             $table->rememberToken();
         });
     }
