@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler {
         }
 
         // Send reportable errors with level 'Error'
-        if ($this->shouldReport($e)) {
+        if ($this->shouldReport($e) && app()->environment('production')) {
             $sentry->captureException($e);
         // Else send them with warning and only if someone is logged in
         } else if (auth()->check()) {
@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler {
 		$trace = $e->getTraceAsString();
 		$class = get_class($e);
 
-		if ( env('APP_ENV') === "production" && 
+		if ( app()->environment("production") &&
              !$e instanceof ModelNotFoundException &&
 		     !$e instanceof MethodNotAllowedHttpException &&
 			 !$e instanceof TokenMismatchException &&

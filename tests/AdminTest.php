@@ -17,13 +17,13 @@ class AdminTest extends TestCase
      */
     public function testEditUserGetUserDetailsWithExistingUser()
     {
+        $this->createCompany();
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=12345')
-            ->seeJsonEquals([
-                'message' => 'User details for user 12345',
-                'payload' => $user->toArray()
+            ->get('/admin/api/company?id=12345')
+            ->seeJson([
+                'message' => 'User details for user 12345'
             ])
             ->assertResponseStatus(200);
     }
@@ -38,7 +38,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user')
+            ->get('/admin/api/company')
             ->seeJsonEquals([
                 'message' => "Missing request parameter: `id`"
             ])
@@ -55,7 +55,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=54321')
+            ->get('/admin/api/company?id=54321')
             ->seeJsonEquals([
                 'message' => 'No user found with login 54321'
             ])
@@ -72,7 +72,7 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=1234')
+            ->get('/admin/api/company?id=1234')
             ->seeJsonEquals([
                 'message' => 'No user found with login 1234'
             ])

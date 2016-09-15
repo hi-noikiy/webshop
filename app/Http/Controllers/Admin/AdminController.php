@@ -306,6 +306,24 @@ class AdminController extends Controller
             'active' => 'required',
         ]);
 
+        if ($validator->passes()) {
+            if ($request->has('delete')) {
+                //Company::whereL
+            } elseif ($request->has('update')) {
+
+            } else {
+                return redirect()
+                    ->back()
+                    ->withInput($request->input())
+                    ->withErrors('Geen actie opgegeven (update of verwijderen)');
+            }
+        } else {
+            return redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors($validator->errors());
+        }
+
 
         if (!$validator->fails()) {
             if ($request->input('delete') === '') {

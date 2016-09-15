@@ -26,16 +26,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      *
      * @return App\Company
      */
-    protected function createCompany()
+    protected function createCompany($login = '12345', $name = 'Test Company', $active = true)
     {
         $company = new Company;
 
-        $company->login = '12345';
-        $company->street = 'Teststraat 23';
-        $company->postcode = '1234 XX';
-        $company->city = 'City';
-        $company->email = 'Test@example.com';
-        $company->active = true;
+        $company->login = $login;
+        $company->company = $name;
+        $company->active = $active;
 
         $company->save();
 
