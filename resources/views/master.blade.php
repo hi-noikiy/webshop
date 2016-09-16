@@ -122,12 +122,6 @@
 
     @include('components.notifications')
 
-    @if(app()->environment('staging'))
-        <div class="local-dev"> TESTING </div>
-    @elseif(app()->environment('local'))
-        <div class="local-dev"> LOCAL DEVELOPMENT </div>
-    @endif
-
     <header class="page-header hidden-xs">
         <div class="container">
             <div class="col-md-5 header-logo">
