@@ -201,7 +201,7 @@
                     </tr>
                     <tr>
                         <td><b>Prijs per</b></td>
-                        <td>{{ $product->prijs_per_str }}</td>
+                        <td>{{ $product->price_per_str }}</td>
                     </tr>
                 </table>
             </div>

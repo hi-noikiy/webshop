@@ -4,21 +4,12 @@ use App\Product;
 use App\Order;
 use DB, Cart, Auth, Input, Session, Request, Redirect, App, Helper;
 
+/**
+ * Class WebshopController
+ * @package App\Http\Controllers
+ */
 class WebshopController extends Controller
 {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Webshop Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller will process the requests for the pages:
-    |       - (admin) Login/Logout
-    |       - Reset Password
-    |       - Main pages
-    |       - Product page
-    |       - Search
-    */
 
     /**
      * The main webshop page

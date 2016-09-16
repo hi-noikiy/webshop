@@ -3,6 +3,10 @@
 use App\Product;
 use Illuminate\Http\Request;
 
+/**
+ * Class SearchController
+ * @package App\Http\Controllers
+ */
 class SearchController extends Controller {
 
     /**

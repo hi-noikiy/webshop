@@ -10,6 +10,10 @@ use App\Order;
 use App\Address;
 use Auth, Session, Cart;
 
+/**
+ * Class CartController
+ * @package App\Http\Controllers
+ */
 class CartController extends Controller {
 
     /**
@@ -56,7 +60,7 @@ class CartController extends Controller {
                 'price' => $product->real_price,
                 'options' => [
                     'special' => (bool) Pack::where('product_number', $product->number)->count(),
-                    'korting' => Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number)
+                    'korting' => $product->discount
                 ]
             ];
 
@@ -89,9 +93,9 @@ class CartController extends Controller {
      */
     public function update(Request $request)
     {
-        $rowId  = $request->get('rowId');
-        $qty    = $request->get('qty');
-        $artNr  = $request->get('productId');
+        $rowId  = $request->input('rowId');
+        $qty    = $request->input('qty');
+        $artNr  = $request->input('productId');
 
         $validator = \Validator::make($request->all(), [
             'rowId' => 'required',

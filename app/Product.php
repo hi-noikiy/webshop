@@ -79,7 +79,7 @@ class Product extends Model {
 	protected $guarded = ['id'];
 
     /**
-     * Check if the product if a pack
+     * Check if the product is a pack
      *
      * @return bool
      */
@@ -87,21 +87,6 @@ class Product extends Model {
     {
         return Pack::where('product_number', $this->number)->count() === 1;
     }
-
-	/**
-	 * Get the discount for a product
-	 *
-	 * @return int
-	 */
-//	public function discount()
-//	{
-//		$discount = Discount::select([DB::raw('MAX(discount) as value')])->where('User_id', \Auth::user()->login)->where(function ($query) {
-//			$query->whereProduct($this->number);
-//			$query->orWhere('product', $this->group);
-//		})->first();
-//
-//		return (int) $discount->value;
-//	}
 
     /**
      * Calculate the real price
@@ -111,9 +96,9 @@ class Product extends Model {
 	public function getRealPriceAttribute()
     {
         if ($this->isAction()) {
-            return (double) number_format($this->special_price, 2, ".", "");
+            return number_format($this->special_price, 2, ".", "");
         } else {
-            return (double) number_format((preg_replace("/\,/", ".", $this->price) * $this->refactor) / $this->price_per, 2, ".", "");
+            return number_format((preg_replace("/\,/", ".", $this->price) * $this->refactor) / $this->price_per, 2, ".", "");
         }
     }
 
@@ -122,7 +107,7 @@ class Product extends Model {
      */
     public function getPricePerStrAttribute()
     {
-        return ($this->refactor == 1 ? Helper::price_per($this->registered_per) : Helper::price_per($this->packed_per));
+        return ($this->refactor === 1 ? Helper::price_per($this->registered_per) : Helper::price_per($this->packed_per));
     }
 
     /**
