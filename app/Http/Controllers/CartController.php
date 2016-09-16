@@ -46,7 +46,7 @@ class CartController extends Controller
             'qty'       => 'required|numeric|min:1',
         ]);
 
-        if (!$validator->fails()) {
+        if (! $validator->fails()) {
             // Load the product data
             $product = Product::where('number', $number)->firstOrFail();
             // Load the user cart data
@@ -151,7 +151,7 @@ class CartController extends Controller
      */
     public function destroy()
     {
-        if (!Cart::destroy()) {
+        if (! Cart::destroy()) {
             $user = Auth::user();
             $user->cart = null;
             $user->save();

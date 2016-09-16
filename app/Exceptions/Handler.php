@@ -62,10 +62,10 @@ class Handler extends ExceptionHandler
         $class = get_class($e);
 
         if (app()->environment('production') &&
-             !$e instanceof ModelNotFoundException &&
-             !$e instanceof MethodNotAllowedHttpException &&
-             !$e instanceof TokenMismatchException &&
-             !$e instanceof NotFoundHttpException) {
+             ! $e instanceof ModelNotFoundException &&
+             ! $e instanceof MethodNotAllowedHttpException &&
+             ! $e instanceof TokenMismatchException &&
+             ! $e instanceof NotFoundHttpException) {
             \Mail::send('email.exception', ['trace' => $trace, 'class' => $class], function ($message) {
                 $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 

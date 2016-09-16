@@ -128,7 +128,7 @@ class UserController extends Controller
             'digFactuur' => 'email',
         ]);
 
-        if (!$validator->fails()) {
+        if (! $validator->fails()) {
             $data['corContactName'] = $request->input('corContactName');
             $data['corName'] = $request->input('corName');
             $data['corAddress'] = $request->input('corAddress');
@@ -187,7 +187,7 @@ class UserController extends Controller
      */
     public function registerSent()
     {
-        if (!Session::has('registrationData')) {
+        if (! Session::has('registrationData')) {
             return redirect('/register');
         }
 

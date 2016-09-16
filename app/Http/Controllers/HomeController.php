@@ -89,7 +89,7 @@ class HomeController extends Controller
     {
         $path = public_path().'/dl/'.$filename;
 
-        if (!\File::exists($path)) {
+        if (! \File::exists($path)) {
             abort(404);
         } else {
             if (\File::mimeType($path) === 'application/pdf') {

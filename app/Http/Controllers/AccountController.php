@@ -249,7 +249,7 @@ class AccountController extends Controller
                 ->where('User_id', Auth::user()->company_id)
                 ->first();
 
-            if (!empty($address)) {
+            if (! empty($address)) {
                 $address->delete();
 
                 return redirect('account/addresslist')
