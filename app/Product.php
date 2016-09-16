@@ -93,13 +93,51 @@ class Product extends Model {
 	 *
 	 * @return int
 	 */
-	public function discount()
-	{
-		$discount = Discount::select([DB::raw('MAX(discount) as value')])->where('User_id', \Auth::user()->login)->where(function ($query) {
-			$query->whereProduct($this->number);
-			$query->orWhere('product', $this->group);
-		})->first();
+//	public function discount()
+//	{
+//		$discount = Discount::select([DB::raw('MAX(discount) as value')])->where('User_id', \Auth::user()->login)->where(function ($query) {
+//			$query->whereProduct($this->number);
+//			$query->orWhere('product', $this->group);
+//		})->first();
+//
+//		return (int) $discount->value;
+//	}
 
-		return (int) $discount->value;
-	}
+    /**
+     * Calculate the real price
+     *
+     * @return string
+     */
+	public function getRealPriceAttribute()
+    {
+        if ($this->isAction()) {
+            return (double) number_format($this->special_price, 2, ".", "");
+        } else {
+            return (double) number_format((preg_replace("/\,/", ".", $this->price) * $this->refactor) / $this->price_per, 2, ".", "");
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getPricePerStrAttribute()
+    {
+        return ($this->refactor == 1 ? Helper::price_per($this->registered_per) : Helper::price_per($this->packed_per));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAction()
+    {
+        return $this->special_price !== '0.00';
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getDiscountAttribute()
+    {
+        return $this->isAction() ? 0 : Helper::getProductDiscount(\Auth::user()->company_id, $this->group, $this->number);
+    }
 }

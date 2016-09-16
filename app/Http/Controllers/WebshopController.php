@@ -2,9 +2,7 @@
 
 use App\Product;
 use App\Order;
-use Carbon\Carbon;
-
-use DB, Cart, Auth, Input, Session, Request, Redirect, Validator, App, Helper;
+use DB, Cart, Auth, Input, Session, Request, Redirect, App, Helper;
 
 class WebshopController extends Controller
 {
@@ -112,7 +110,7 @@ class WebshopController extends Controller
                     'id' => $product->number,
                     'name' => $product->name,
                     'qty' => $item['qty'],
-                    'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                    'price' => $product->real_price,
                     'options' => [
                         'special' => false,
                         'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number)

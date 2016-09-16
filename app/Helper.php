@@ -75,12 +75,12 @@ class Helper {
     /**
      * Get all the discounts for a specific user
      *
-     * @param $userId
-     * @param int $group
-     * @param int $product
-     * @return array
+     * @param  $userId
+     * @param  int $group
+     * @param  int $product
+     * @return array|int
      */
-    public static function getProductDiscount($userId, $group = 0 , $product = 0)
+    public static function getProductDiscount($userId, $group = 0, $product = 0)
     {
         $discountarray = [];
 

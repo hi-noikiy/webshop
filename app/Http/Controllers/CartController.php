@@ -53,7 +53,7 @@ class CartController extends Controller {
                 'id' => $product->number,
                 'name' => $product->name,
                 'qty' => $qty,
-                'price' => number_format((preg_replace("/\,/", ".", $product->price) * $product->refactor) / $product->price_per, 2, ".", ""),
+                'price' => $product->real_price,
                 'options' => [
                     'special' => (bool) Pack::where('product_number', $product->number)->count(),
                     'korting' => Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number)
@@ -187,7 +187,7 @@ class CartController extends Controller {
                         ->where('User_id', Auth::user()->company_id)
                         ->first();
                 } else {
-                    return redirect('/cart')
+                    return redirect('cart')
                         ->withErrors('Het opgegeven adres hoort niet bij uw account');
                 }
 
@@ -234,9 +234,9 @@ class CartController extends Controller {
                 $user->cart = "a:0:{}";
                 $user->save();
 
-                return redirect('/cart/order/finished');
+                return redirect('cart/order/finished');
             } else {
-                return redirect('/cart')
+                return redirect('cart')
                     ->withErrors('Geen adres opgegeven');
             }
         } else {
