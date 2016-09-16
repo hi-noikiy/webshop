@@ -49,7 +49,6 @@
             </div>
         </div>
 
-        {{--
         <hr />
 
         <div class="form-group">
@@ -71,7 +70,7 @@
             <div class="col-sm-10">
                 <input class="form-control" placeholder="Plaats" type="text" name="city" id="inputCity" value="{{ old('city') }}" required="">
             </div>
-        </div> --}}
+        </div>
 
         <hr />
 
@@ -115,9 +114,9 @@
         var $form = $('#addUserForm');
         var $companyId = $form.find('#inputCompanyId');
         var $companyName = $form.find('#inputCompanyName');
-//        var $address = $form.find('#inputAddress');
-//        var $postcode = $form.find('#inputPostcode');
-//        var $city = $form.find('#inputCity');
+        var $address = $form.find('#inputAddress');
+        var $postcode = $form.find('#inputPostcode');
+        var $city = $form.find('#inputCity');
         var $username = $form.find('#inputUsername');
         var $email = $form.find('#inputEmail');
         var $active = $form.find('#inputActive');
@@ -140,9 +139,9 @@
 
                         if (value == $companyId.val() && data != null) {
                             $companyName.val(data.company);
-//                            $address.val(data.street);
-//                            $postcode.val(data.postcode);
-//                            $city.val(data.city);
+                            $address.val(data.street);
+                            $postcode.val(data.postcode);
+                            $city.val(data.city);
                             $email.val(data.main_user.email);
                             $active.val(data.active);
 
@@ -152,9 +151,9 @@
                     error: function() {
                         if (value == $companyId.val()) {
                             $companyName.val('');
-//                            $address.val('');
-//                            $postcode.val('');
-//                            $city.val('');
+                            $address.val('');
+                            $postcode.val('');
+                            $city.val('');
                             $email.val('');
                             $active.val(0);
 

@@ -10,20 +10,12 @@ use App\Company;
 use App\User;
 use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Helper, Analytics;
 
+/**
+ * Class AdminController
+ * @package App\Http\Controllers\Admin
+ */
 class AdminController extends Controller
 {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller will process the requests for the pages:
-    |       - Admin
-    |       - Import
-    |       - Edit content
-    |       - Generate
-    */
 
     /**
      * The admin overview page
@@ -299,9 +291,9 @@ class AdminController extends Controller
             'company_id' => 'required|integer|between:10000,99999',
             'company_name' => 'required|string',
 
-//            'address' => 'required',
-//            'postcode' => 'required',
-//            'city' => 'required',
+            'address' => 'required',
+            'postcode' => 'required',
+            'city' => 'required',
 
             'email' => 'required|email',
             'active' => 'required',
@@ -333,6 +325,9 @@ class AdminController extends Controller
 
                     $company->login = $request->input('company_id');
                     $company->company = $request->input('company_name');
+                    $company->street = $request->input('address');
+                    $company->postcode = $request->input('postcode');
+                    $company->city = $request->input('city');
                     $company->active = $request->input('active');
 
                     $company->save();
@@ -359,6 +354,9 @@ class AdminController extends Controller
 
                     $company->login = $request->input('company_id');
                     $company->company = $request->input('company_name');
+                    $company->street = $request->input('address');
+                    $company->postcode = $request->input('postcode');
+                    $company->city = $request->input('city');
                     $company->active = $request->input('active');
 
                     $company->save();
