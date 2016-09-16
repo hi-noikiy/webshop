@@ -25,7 +25,7 @@ class CartController extends Controller {
     {
         return view('webshop.cart', [
             'cart' => Cart::content(),
-            'addresses' => Auth::user()->addresses()
+            'addresses' => Auth::user()->addresses
         ]);
     }
 
@@ -95,7 +95,6 @@ class CartController extends Controller {
     {
         $rowId  = $request->input('rowId');
         $qty    = $request->input('qty');
-        $artNr  = $request->input('productId');
 
         $validator = \Validator::make($request->all(), [
             'rowId' => 'required',

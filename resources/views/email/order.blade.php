@@ -1,28 +1,28 @@
 <table style="border: 1px solid #ccc; width: 100%">
     <thead>
-    	<th style="text-align: left;">Adres Bedrijf</th>
+    	<th style="text-align: left;">Bedrijf</th>
     	<th style="text-align: left;">Afleveradres</th>
     </thead>
 
     <tbody style="text-align: left;">
         <tr>
-			<td>{{ Auth::user()->login }}</td>
+			<td>{{ Auth::user()->company_id }}</td>
 			<td></td>
         </tr>
     	<tr>
-    		<td>{{ Auth::user()->company }}</td>
+    		<td>{{ Auth::user()->company->company }}</td>
     		<td>{{ $address->name }}</td>
     	</tr>
     	<tr>
-    		<td>{{ Auth::user()->street }}</td>
+    		<td>{{ Auth::user()->email }}</td>
     		<td>{{ $address->street }}</td>
     	</tr>
     	<tr>
-    		<td>{{ Auth::user()->postcode }} {{ Auth::user()->city }}</td>
+    		<td></td>
     		<td>{{ $address->postcode }} {{ $address->city }}</td>
     	</tr>
     	<tr>
-    		<td>{{ Auth::user()->email }}</td>
+    		<td></td>
     		<td>{{ $address->telephone }}</td>
     	</tr>
         <tr>
