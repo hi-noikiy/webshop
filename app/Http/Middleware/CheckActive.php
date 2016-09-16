@@ -1,4 +1,6 @@
-<?php namespace App\Http\Middleware;
+<?php
+
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
@@ -15,7 +17,7 @@ class CheckActive
     /**
      * Create a new filter instance.
      *
-     * @param  Guard  $auth
+     * @param Guard $auth
      */
     public function __construct(Guard $auth)
     {
@@ -25,8 +27,9 @@ class CheckActive
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -50,6 +53,6 @@ class CheckActive
         $this->auth->logout();
 
         return redirect('/')
-            ->withErrors("Dit account is niet actief, als u denkt dat dit een fout is, neem dan contact met ons op");
+            ->withErrors('Dit account is niet actief, als u denkt dat dit een fout is, neem dan contact met ons op');
     }
 }

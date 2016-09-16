@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddAddressAndCommentColumnsToOrdersTable extends Migration
 {
@@ -13,8 +13,8 @@ class AddAddressAndCommentColumnsToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string("comment")->default("");
-            $table->integer("addressId")->default(-1);
+            $table->string('comment')->default('');
+            $table->integer('addressId')->default(-1);
         });
     }
 
@@ -26,8 +26,8 @@ class AddAddressAndCommentColumnsToOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn("comment");
-            $table->dropColumn("addressId");
+            $table->dropColumn('comment');
+            $table->dropColumn('addressId');
         });
     }
 }

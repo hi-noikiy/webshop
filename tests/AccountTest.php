@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
 
 class AccountTest extends TestCase
 {
@@ -56,5 +53,4 @@ class AccountTest extends TestCase
 
         $this->assertFalse(\Auth::validate(['username' => '12345', 'company_id' => 12345, 'password' => 'new_password']));
     }
-
 }

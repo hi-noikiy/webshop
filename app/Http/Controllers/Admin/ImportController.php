@@ -1,18 +1,22 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers\Admin;
+
 use App\Content;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Validator, Redirect, Helper;
+use Helper;
+use Illuminate\Http\Request;
+use Redirect;
+use Validator;
 
 class ImportController extends Controller
 {
-
     /**
-     * Product import handler
+     * Product import handler.
      *
      * @param Request $request
+     *
      * @return $this|Redirect
      */
     public function product(Request $request)
@@ -20,30 +24,32 @@ class ImportController extends Controller
         if ($request->hasFile('productFile')) {
             $file = $request->file('productFile');
 
-            $file->move(storage_path() . "/import", "products.csv");
+            $file->move(storage_path().'/import', 'products.csv');
 
-            $runTime = new \DateTime("Europe/Amsterdam");
-            $runTime->setTimestamp(strtotime('+' . Helper::timeToNextCronJob() . " minutes"));
+            $runTime = new \DateTime('Europe/Amsterdam');
+            $runTime->setTimestamp(strtotime('+'.Helper::timeToNextCronJob().' minutes'));
 
             Content::where('name', 'admin.product_import')->update([
-                'content' => 'Er is een import ingepland voor ' . $runTime->format('H:i'),
+                'content'    => 'Er is een import ingepland voor '.$runTime->format('H:i'),
                 'updated_at' => Carbon::now('Europe/Amsterdam'),
-                'error' => false
+                'error'      => false,
             ]);
 
             return redirect('admin/import/success')->with([
-                'type' => 'product'
+                'type' => 'product',
             ]);
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors('Geen bestand geselecteerd');
+        }
     }
 
     /**
-     * This function will handle the discount import
+     * This function will handle the discount import.
      *
      * @param Request $request
+     *
      * @return $this|Redirect
      */
     public function discount(Request $request)
@@ -51,60 +57,62 @@ class ImportController extends Controller
         if ($request->hasFile('discountFile')) {
             $file = $request->file('discountFile');
 
-            $file->move(storage_path() . "/import", "discounts.csv");
+            $file->move(storage_path().'/import', 'discounts.csv');
 
-            $runTime = new \DateTime("Europe/Amsterdam");
-            $runTime->setTimestamp(strtotime('+' . Helper::timeToNextCronJob() . " minutes"));
+            $runTime = new \DateTime('Europe/Amsterdam');
+            $runTime->setTimestamp(strtotime('+'.Helper::timeToNextCronJob().' minutes'));
 
             Content::where('name', 'admin.discount_import')->update([
-                'content' => 'Er is een import ingepland voor ' . $runTime->format('H:i'),
+                'content'    => 'Er is een import ingepland voor '.$runTime->format('H:i'),
                 'updated_at' => Carbon::now('Europe/Amsterdam'),
-                'error' => false
+                'error'      => false,
             ]);
 
             return redirect('admin/import/success')->with([
-                'type' => 'korting'
+                'type' => 'korting',
             ]);
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors('Geen bestand geselecteerd');
+        }
     }
 
     /**
-     * This function will handle the image import
+     * This function will handle the image import.
      *
      * @param Request $request
+     *
      * @return $this|Redirect
      */
     public function image(Request $request)
     {
         if ($request->hasFile('imageFile') && $request->file('imageFile')->isValid()) {
-            $file       = $request->file('imageFile');
-            $fileName   = $file->getClientOriginalName();
-            $fileMime   = $file->getMimeType();
-            $startTime  = microtime(true);
-            $validator  = Validator::make(
+            $file = $request->file('imageFile');
+            $fileName = $file->getClientOriginalName();
+            $fileMime = $file->getMimeType();
+            $startTime = microtime(true);
+            $validator = Validator::make(
                 ['fileType' => $file],
                 ['fileType' => 'required|mimes:zip,jpg,png,gif,jpeg']
             );
 
-            if ($validator->fails())
+            if ($validator->fails()) {
                 return redirect()
                     ->back()
                     ->withErrors('Geen geldig bestand geuploaded. Het bestand mag een afbeeling of Zip bestand zijn');
-            else {
-                if ($fileMime === "application/zip") {
+            } else {
+                if ($fileMime === 'application/zip') {
                     // Unzip the files to the product image folder
-                    \Zipper::make($file->getRealPath())->extractTo(public_path() . "/img/products");
+                    \Zipper::make($file->getRealPath())->extractTo(public_path().'/img/products');
 
                     // This is used to count the number of files in the zip
-                    $zip = new \ZipArchive;
+                    $zip = new \ZipArchive();
                     $zip->open($file->getRealPath());
                     $count = $zip->numFiles;
                 } else {
                     // If it's an image file, move it directly to the product image folder
-                    $file->move(public_path() . "/img/products", $fileName);
+                    $file->move(public_path().'/img/products', $fileName);
 
                     $count = 1;
                 }
@@ -113,20 +121,22 @@ class ImportController extends Controller
 
                 return redirect('admin/import/success')->with([
                     'count' => $count,
-                    'time' => $endTime,
-                    'type' => 'afbeelding'
+                    'time'  => $endTime,
+                    'type'  => 'afbeelding',
                 ]);
             }
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors('Geen bestand geselecteerd of de afbeelding is ongeldig');
+        }
     }
 
     /**
-     * This function will handle the downloads import
+     * This function will handle the downloads import.
      *
      * @param Request $request
+     *
      * @return $this|Redirect
      */
     public function download(Request $request)
@@ -142,12 +152,12 @@ class ImportController extends Controller
                 ['fileType' => 'required|mimes:zip,pdf']
             );
 
-            if ($validator->fails())
+            if ($validator->fails()) {
                 return redirect()
                     ->back()
                     ->withErrors('Geen geldig bestand geuploaded. Het bestand mag een Zip of PDF bestand zijn');
-            else {
-                $file->move(public_path() . "/dl", $fileName);
+            } else {
+                $file->move(public_path().'/dl', $fileName);
 
                 $count = 1;
 
@@ -155,13 +165,14 @@ class ImportController extends Controller
 
                 return redirect('admin/import/success')->with([
                     'count' => $count,
-                    'time' => $endTime,
-                    'type' => 'download'
+                    'time'  => $endTime,
+                    'type'  => 'download',
                 ]);
             }
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
+        }
     }
 }

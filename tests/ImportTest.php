@@ -1,17 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Product;
 use App\Discount;
+use App\Product;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * Test importing without a discount csv
+     * Test importing without a discount csv.
      *
      * @return void
      */
@@ -23,7 +21,7 @@ class ImportTest extends TestCase
     }
 
     /**
-     * Test importing without a product csv
+     * Test importing without a product csv.
      *
      * @return void
      */
@@ -35,7 +33,7 @@ class ImportTest extends TestCase
     }
 
     /**
-     * Test importing with all fields in products
+     * Test importing with all fields in products.
      *
      * @return void
      */
@@ -55,7 +53,7 @@ class ImportTest extends TestCase
     }
 
     /**
-     * Test importing with all fields in discounts
+     * Test importing with all fields in discounts.
      *
      * @return void
      */
@@ -75,7 +73,7 @@ class ImportTest extends TestCase
     }
 
     /**
-     * Test importing with missing fields in products
+     * Test importing with missing fields in products.
      *
      * @return void
      */
@@ -95,7 +93,7 @@ class ImportTest extends TestCase
     }
 
     /**
-     * Test importing with missing fields in discounts
+     * Test importing with missing fields in discounts.
      *
      * @return void
      */

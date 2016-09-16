@@ -1,16 +1,18 @@
-<?php namespace App;
+<?php
+
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Product
+ * Class Product.
  *
- * @package App
  * @mixin \Eloquent
- * @property integer $id
+ *
+ * @property int $id
  * @property string $name
- * @property integer $number
- * @property integer $group
+ * @property int $number
+ * @property int $group
  * @property string $altNumber
  * @property string $stockCode
  * @property string $registered_per
@@ -22,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $image
  * @property string $length
  * @property string $price
- * @property integer $vat
+ * @property int $vat
  * @property string $brand
  * @property string $series
  * @property string $type
@@ -34,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property string $catalog_group
  * @property string $catalog_index
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Product whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Product whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Product whereNumber($value)
@@ -62,24 +65,25 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Product whereCatalogGroup($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Product whereCatalogIndex($value)
  */
-class Product extends Model {
+class Product extends Model
+{
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'products';
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'products';
-
-	/**
- 	 * The guarded columns in the table
- 	 *
-	 * @var array
-	 */
-	protected $guarded = ['id'];
+    /**
+     * The guarded columns in the table.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
 
     /**
      * @param $number
+     *
      * @return Model|static
      */
     public static function findByNumber($number)
@@ -88,7 +92,7 @@ class Product extends Model {
     }
 
     /**
-     * Check if the product is a pack
+     * Check if the product is a pack.
      *
      * @return bool
      */
@@ -98,16 +102,16 @@ class Product extends Model {
     }
 
     /**
-     * Calculate the real price
+     * Calculate the real price.
      *
      * @return string
      */
-	public function getRealPriceAttribute()
+    public function getRealPriceAttribute()
     {
         if ($this->isAction()) {
-            return number_format($this->special_price, 2, ".", "");
+            return number_format($this->special_price, 2, '.', '');
         } else {
-            return number_format((preg_replace("/\,/", ".", $this->price) * $this->refactor) / $this->price_per, 2, ".", "");
+            return number_format((preg_replace("/\,/", '.', $this->price) * $this->refactor) / $this->price_per, 2, '.', '');
         }
     }
 
@@ -116,7 +120,7 @@ class Product extends Model {
      */
     public function getPricePerStrAttribute()
     {
-        return ($this->refactor === 1 ? Helper::price_per($this->registered_per) : Helper::price_per($this->packed_per));
+        return $this->refactor === 1 ? Helper::price_per($this->registered_per) : Helper::price_per($this->packed_per);
     }
 
     /**
@@ -140,6 +144,6 @@ class Product extends Model {
      */
     public function getShortNameAttribute()
     {
-        return (strlen($this->name) > 50 ? substr($this->name, 0, 47) . "..." : $this->name);
+        return strlen($this->name) > 50 ? substr($this->name, 0, 47).'...' : $this->name;
     }
 }

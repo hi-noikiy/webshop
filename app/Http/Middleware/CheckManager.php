@@ -1,4 +1,6 @@
-<?php namespace App\Http\Middleware;
+<?php
+
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
@@ -15,7 +17,7 @@ class CheckManager
     /**
      * Create a new filter instance.
      *
-     * @param  Guard  $auth
+     * @param Guard $auth
      */
     public function __construct(Guard $auth)
     {
@@ -25,8 +27,9 @@ class CheckManager
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -36,6 +39,6 @@ class CheckManager
         }
 
         return redirect('account')
-            ->withErrors("Dit account heeft geen manager rechten");
+            ->withErrors('Dit account heeft geen manager rechten');
     }
 }

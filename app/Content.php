@@ -1,22 +1,25 @@
-<?php namespace App;
+<?php
+
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Content
+ * Class Content.
  *
- * @package App
  * @mixin \Eloquent
- * @property integer $id
+ *
+ * @property int $id
  * @property string $name
  * @property string $title
  * @property string $page
  * @property mixed $content
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property boolean $visible
- * @property boolean $hidden
- * @property boolean $error
+ * @property bool $visible
+ * @property bool $hidden
+ * @property bool $error
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Content whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Content whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Content whereTitle($value)
@@ -28,8 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Content whereHidden($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Content whereError($value)
  */
-class Content extends Model {
-
+class Content extends Model
+{
     /**
      * The database table used by the model.
      *
@@ -38,10 +41,9 @@ class Content extends Model {
     protected $table = 'text';
 
     /**
-     * The guarded columns in the table
+     * The guarded columns in the table.
      *
      * @var array
      */
     protected $guarded = ['id', 'name'];
-
 }

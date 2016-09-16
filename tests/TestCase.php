@@ -3,8 +3,8 @@
 use App\Company;
 use App\User;
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase {
-
+class TestCase extends Illuminate\Foundation\Testing\TestCase
+{
     protected $baseUrl = 'http://localhost';
 
     /**
@@ -22,14 +22,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     /**
-     * Create a test company
+     * Create a test company.
      *
-     * @param  array $params
+     * @param array $params
+     *
      * @return App\Company
      */
     protected function createCompany($params = [])
     {
-        $company = new Company;
+        $company = new Company();
 
         $company->login = isset($params['login']) ? $params['login'] : '12345';
         $company->company = isset($params['name']) ? $params['name'] : 'Test Company';
@@ -41,17 +42,18 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     /**
-     * Create a test user
+     * Create a test user.
      *
-     * @param  bool $admin
-     * @param  bool $manager
-     * @param  string $username
-     * @param  string $company
+     * @param bool   $admin
+     * @param bool   $manager
+     * @param string $username
+     * @param string $company
+     *
      * @return App\User
      */
     protected function createUser($admin = false, $manager = true, $username = '12345', $company = '12345')
     {
-        $user = new User;
+        $user = new User();
 
         $user->username = $username;
         $user->company_id = $company;
@@ -66,7 +68,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     /**
-     * Create some content to test with
+     * Create some content to test with.
      */
     protected function createContent()
     {
@@ -74,12 +76,12 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
             'name'      => 'test.page',
             'title'     => 'Test page',
             'page'      => 'Test',
-            'content'   => 'This is some freaking awesome content!'
+            'content'   => 'This is some freaking awesome content!',
         ]);
     }
 
     /**
-     * Create a product for testing
+     * Create a product for testing.
      *
      * @return $this
      */
@@ -97,7 +99,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
             'registered_per'   => $data[8],
             'packed_per'       => $data[9],
             'price_per'        => $data[10],
-            'refactor'         => preg_replace("/\,/", ".", $data[12]),
+            'refactor'         => preg_replace("/\,/", '.', $data[12]),
             'supplier'         => $data[13],
             'ean'              => $data[14],
             'image'            => $data[15],
@@ -107,7 +109,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
             'brand'            => $data[21],
             'series'           => $data[22],
             'type'             => $data[23],
-            'special_price'    => ($data[24] === "" ? "0.00" : preg_replace("/\,/", ".", $data[24])),
+            'special_price'    => ($data[24] === '' ? '0.00' : preg_replace("/\,/", '.', $data[24])),
             'action_type'      => $data[25],
             'keywords'         => $data[26],
             'related_products' => $data[27],
@@ -119,7 +121,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     /**
-     * Create a product for testing
+     * Create a product for testing.
      *
      * @return $this
      */
@@ -138,5 +140,4 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
         return $this;
     }
-
 }

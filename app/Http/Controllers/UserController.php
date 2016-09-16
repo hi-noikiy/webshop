@@ -1,37 +1,42 @@
-<?php namespace App\Http\Controllers;
+<?php
 
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
+
+use Auth;
 use Carbon\Carbon;
-use Auth, Cart, Log, Session;
+use Cart;
+use Illuminate\Http\Request;
+use Log;
+use Session;
 
 class UserController extends Controller
 {
-
     /**
      * The user will be redirected to the previous page with
-     * a message indicating whether the login was successful or not
+     * a message indicating whether the login was successful or not.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'company' => 'required',
+            'company'  => 'required',
             'username' => 'required',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         // Is all the data entered
         if ($validator->passes()) {
             $user_data = [
                 'company_id' => $request->input('company'),
-                'username' => $request->input('username'),
-                'password' => $request->input('password')
+                'username'   => $request->input('username'),
+                'password'   => $request->input('password'),
             ];
 
             // Try to log the user in
-            if (Auth::attempt($user_data, ($request->input('remember_me') === "on" ? true : false))) {
+            if (Auth::attempt($user_data, ($request->input('remember_me') === 'on' ? true : false))) {
                 Log::info("User [{$request->input('username')}] logged in successfully");
 
                 if (Auth::user()->cart) {
@@ -62,7 +67,7 @@ class UserController extends Controller
     }
 
     /**
-     * The user will be redirected to the main page if the logout was successful
+     * The user will be redirected to the main page if the logout was successful.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -73,7 +78,7 @@ class UserController extends Controller
         Cart::destroy();
         Auth::logout();
 
-        Log::info("User [" . $user . "] logged out successfully");
+        Log::info('User ['.$user.'] logged out successfully');
 
         return redirect()
             ->intended('/')
@@ -81,7 +86,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the registration page
+     * Show the registration page.
      *
      * @return mixed
      */
@@ -93,31 +98,32 @@ class UserController extends Controller
     }
 
     /**
-     * Verify the registration page
+     * Verify the registration page.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     public function register_check(Request $request)
     {
         $validator = \Validator::make($request->input(), [
             'corContactName' => 'required',
-            'corName' => 'required',
-            'corAddress' => 'required',
-            'corPostcode' => 'required',
-            'corCity' => 'required',
-            'corPhone' => 'required',
-            'corEmail' => 'required|email',
-            'corSite' => 'url',
+            'corName'        => 'required',
+            'corAddress'     => 'required',
+            'corPostcode'    => 'required',
+            'corCity'        => 'required',
+            'corPhone'       => 'required',
+            'corEmail'       => 'required|email',
+            'corSite'        => 'url',
 
-            'delAddress' => 'required',
+            'delAddress'  => 'required',
             'delPostcode' => 'required',
-            'delCity' => 'required',
-            'delPhone' => 'required',
+            'delCity'     => 'required',
+            'delPhone'    => 'required',
 
             'betIBAN' => 'required',
-            'betKvK' => 'required',
-            'betBTW' => 'required',
+            'betKvK'  => 'required',
+            'betBTW'  => 'required',
 
             'digFactuur' => 'email',
         ]);
@@ -130,9 +136,9 @@ class UserController extends Controller
             $data['corCity'] = $request->input('corCity');
             $data['corContactPhone'] = $request->input('corContactPhone');
             $data['corPhone'] = $request->input('corPhone');
-            $data['corFax'] = ($request->input('corFax') !== false ? $request->input('corFax') : "");
+            $data['corFax'] = ($request->input('corFax') !== false ? $request->input('corFax') : '');
             $data['corEmail'] = $request->input('corEmail');
-            $data['corSite'] = ($request->input('corSite') !== false ? $request->input('corSite') : "");
+            $data['corSite'] = ($request->input('corSite') !== false ? $request->input('corSite') : '');
 
             $data['corIsDel'] = $request->input('corIsDel');
 
@@ -140,7 +146,7 @@ class UserController extends Controller
             $data['delPostcode'] = ($data['corIsDel'] ? $data['corPostcode'] : $request->input('delPostcode'));
             $data['delCity'] = ($data['corIsDel'] ? $data['corCity'] : $request->input('delCity'));
             $data['delPhone'] = ($data['corIsDel'] ? $data['corPhone'] : $request->input('delPhone'));
-            $data['delFax'] = ($data['corIsDel'] ? $data['corFax'] : ($request->input('delFax') !== false ? $request->input('delFax') : ""));
+            $data['delFax'] = ($data['corIsDel'] ? $data['corFax'] : ($request->input('delFax') !== false ? $request->input('delFax') : ''));
 
             $data['betIBAN'] = $request->input('betIBAN');
             $data['betKvK'] = $request->input('betKvK');
@@ -153,9 +159,9 @@ class UserController extends Controller
             Session::flash('registrationData', $data);
 
             \DB::table('registrations')->insert([
-                'company' => $data['corName'],
-                'formdata' => json_encode($data),
-                'created_at' => Carbon::now()
+                'company'    => $data['corName'],
+                'formdata'   => json_encode($data),
+                'created_at' => Carbon::now(),
             ]);
 
             \Mail::send('email.registration', $data, function ($message) {
@@ -167,14 +173,15 @@ class UserController extends Controller
             });
 
             return redirect('/register/sent');
-        } else
+        } else {
             return redirect()->back()
                 ->withErrors($validator->errors())
                 ->withInput($request->input());
+        }
     }
 
     /**
-     * Show the registration success page
+     * Show the registration success page.
      *
      * @return mixed
      */
@@ -186,5 +193,4 @@ class UserController extends Controller
 
         return view('webshop.registerSent');
     }
-
 }

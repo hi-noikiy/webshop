@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class ChangePacksTableColumns extends Migration
 {
@@ -29,7 +29,7 @@ class ChangePacksTableColumns extends Migration
     {
         Schema::table('packs', function (Blueprint $table) {
             $table->dropColumn('product_number');
-            
+
             $table->string('name');
             $table->string('image');
         });
