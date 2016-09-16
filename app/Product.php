@@ -79,6 +79,15 @@ class Product extends Model {
 	protected $guarded = ['id'];
 
     /**
+     * @param $number
+     * @return Model|static
+     */
+    public static function findByNumber($number)
+    {
+        return self::whereNumber($number)->first();
+    }
+
+    /**
      * Check if the product is a pack
      *
      * @return bool
@@ -124,5 +133,13 @@ class Product extends Model {
     public function getDiscountAttribute()
     {
         return $this->isAction() ? 0 : Helper::getProductDiscount(\Auth::user()->company_id, $this->group, $this->number);
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortNameAttribute()
+    {
+        return (strlen($this->name) > 50 ? substr($this->name, 0, 47) . "..." : $this->name);
     }
 }

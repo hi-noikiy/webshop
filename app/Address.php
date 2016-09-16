@@ -54,4 +54,12 @@ class Address extends Model {
 	{
 		return $this->belongsTo('App\User', 'User_id', 'login');
 	}
+
+    /**
+     * @return string
+     */
+	public function getAddressLineAttribute()
+    {
+        return $this->name . ", " . $this->street . ", " . $this->postcode . ", " . $this->city;
+    }
 }
