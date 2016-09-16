@@ -1,14 +1,14 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Request;
 use Helper;
 
 class CacheController extends Controller
 {
-
     /**
-     * View cache information
+     * View cache information.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -16,15 +16,15 @@ class CacheController extends Controller
     {
         $opcache = opcache_get_status();
 
-        $opcache_stats    = collect($opcache['opcache_statistics']);
+        $opcache_stats = collect($opcache['opcache_statistics']);
 
-        $free_memory    = $opcache['memory_usage']['free_memory'];
-        $used_memory    = $opcache['memory_usage']['used_memory'];
-        $wasted_memory  = $opcache['memory_usage']['wasted_memory'];
+        $free_memory = $opcache['memory_usage']['free_memory'];
+        $used_memory = $opcache['memory_usage']['used_memory'];
+        $wasted_memory = $opcache['memory_usage']['wasted_memory'];
 
-        $total_memory   = $free_memory + $used_memory + $wasted_memory;
+        $total_memory = $free_memory + $used_memory + $wasted_memory;
 
-        /**
+        /*
          * Calculate opcache memory in MB
          */
         $opcache_memory = collect([
@@ -43,7 +43,7 @@ class CacheController extends Controller
     }
 
     /**
-     * Reset the cache
+     * Reset the cache.
      *
      * @return mixed
      */
@@ -65,5 +65,4 @@ class CacheController extends Controller
                 ->withErrors('Er is een fout opgetreden tijdens het resetten van de cache. De \'OpCache module is niet geinstalleerd.\'');
         }
     }
-
 }

@@ -5,25 +5,27 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Company
+ * App\Company.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  * @mixin \Eloquent
- * @property integer $id
+ *
+ * @property int $id
  * @property string $login
  * @property string $company
  * @property string $street
  * @property string $postcode
  * @property string $city
  * @property string $email
- * @property boolean $active
- * @property boolean $isAdmin
+ * @property bool $active
+ * @property bool $isAdmin
  * @property string $password
  * @property string $favorites
  * @property string $cart
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Company whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Company whereLogin($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Company whereCompany($value)
@@ -42,7 +44,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Company extends Model
 {
-
     /**
      * The users that belong to the company.
      *
@@ -54,7 +55,7 @@ class Company extends Model
     }
 
     /**
-     * The main user for the account
+     * The main user for the account.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -62,5 +63,4 @@ class Company extends Model
     {
         return $this->hasOne(User::class, 'username', 'login');
     }
-
 }

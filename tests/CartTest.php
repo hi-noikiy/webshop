@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
 
 /**
- * Class CartTest
+ * Class CartTest.
  */
 class CartTest extends TestCase
 {
@@ -51,5 +48,4 @@ class CartTest extends TestCase
             ->press('Toevoegen')
             ->see('Aantal dient minimaal 1 te zijn');
     }
-    
 }

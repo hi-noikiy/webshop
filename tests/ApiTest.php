@@ -1,17 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ApiTest extends TestCase
 {
     use WithoutMiddleware,
         DatabaseTransactions;
 
-
     /**
-     * Test the product method with an existing product
+     * Test the product method with an existing product.
      *
      * @return void
      */
@@ -22,13 +20,13 @@ class ApiTest extends TestCase
         $this->get('/admin/api/product/9999999')
             ->seeJson([
                 'message' => 'Details for product: 9999999',
-                'status' => 'success'
+                'status'  => 'success',
             ])
             ->assertResponseStatus(200);
     }
 
     /**
-     * Test the product method with a non-existing product
+     * Test the product method with a non-existing product.
      *
      * @return void
      */
@@ -37,13 +35,13 @@ class ApiTest extends TestCase
         $this->get('/admin/api/product/9999999')
             ->seeJson([
                 'message' => 'No details for product: 9999999',
-                'status' => 'failure'
+                'status'  => 'failure',
             ])
             ->assertResponseStatus(404);
     }
 
     /**
-     * Test the content method with an existing page
+     * Test the content method with an existing page.
      *
      * @return void
      */
@@ -59,7 +57,7 @@ class ApiTest extends TestCase
     }
 
     /**
-     * Test the content method with a non-existing page
+     * Test the content method with a non-existing page.
      *
      * @return void
      */
@@ -73,7 +71,7 @@ class ApiTest extends TestCase
     }
 
     /**
-     * Test the content method with a non-existing page
+     * Test the content method with a non-existing page.
      *
      * @return void
      */

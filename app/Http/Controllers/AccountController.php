@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Address;
 use App\Order;
 use App\Product;
-use DB, Auth, File, Response, Session, Mail, Helper;
+use Auth;
+use DB;
+use File;
+use Helper;
+use Illuminate\Http\Request;
+use Mail;
+use Response;
+use Session;
 
 /**
- * Class AccountController
- * @package App\Http\Controllers
+ * Class AccountController.
  */
-class AccountController extends Controller {
-
+class AccountController extends Controller
+{
     /**
-     * The overview for the account page
+     * The overview for the account page.
      *
      * @return \Illuminate\View\View
      */
@@ -24,24 +29,24 @@ class AccountController extends Controller {
         $orderCount = Order::where('User_id', Auth::user()->username)->count();
 
         return view('account.overview', [
-            'orderCount' => $orderCount
+            'orderCount' => $orderCount,
         ]);
     }
 
     /**
      * This will fetch the favorites list from the database and
-     * transform it into a list categorised by series
+     * transform it into a list categorised by series.
      *
      * @return \Illuminate\View\View
      */
     public function favorites()
     {
         $favoritesArray = unserialize(Auth::user()->favorites);
-        $seriesData     = [];
-        $productGroup   = [];
+        $seriesData = [];
+        $productGroup = [];
 
         // Get the product data
-        $productData    = Product::whereIn('number', $favoritesArray)->get();
+        $productData = Product::whereIn('number', $favoritesArray)->get();
 
         // Store each series from the products in a separate array for categorisation
         foreach ($productData as $product) {
@@ -63,14 +68,15 @@ class AccountController extends Controller {
         return view('account.favorites', [
             'favorites'     => $productData,
             'discounts'     => Helper::getProductDiscount(Auth::user()->login),
-            'groupData'     => $productGroup
+            'groupData'     => $productGroup,
         ]);
     }
 
     /**
-     * Update the favourites from a user
+     * Update the favourites from a user.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|string
      */
     public function modFav(Request $request)
@@ -124,9 +130,10 @@ class AccountController extends Controller {
     }
 
     /**
-     * Check if the product is in the favorites array
+     * Check if the product is in the favorites array.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|string
      */
     public function isFav(Request $request)
@@ -158,7 +165,7 @@ class AccountController extends Controller {
     }
 
     /**
-     * This page will show the order history
+     * This page will show the order history.
      *
      * @return \Illuminate\View\View
      */
@@ -169,12 +176,12 @@ class AccountController extends Controller {
             ->paginate(15);
 
         return view('account.orderhistory', [
-            'orderlist' => $orderList
+            'orderlist' => $orderList,
         ]);
     }
 
     /**
-     * The address list page
+     * The address list page.
      *
      * @return \Illuminate\View\View
      */
@@ -183,14 +190,15 @@ class AccountController extends Controller {
         $addressList = Address::where('User_id', Auth::user()->company_id)->get();
 
         return view('account.addresslist', [
-            'addresslist' => $addressList
+            'addresslist' => $addressList,
         ]);
     }
 
     /**
-     * Handle the add address request
+     * Handle the add address request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function addAddress(Request $request)
@@ -201,19 +209,19 @@ class AccountController extends Controller {
             'postcode'      => 'required|regex:/^[a-zA-Z0-9\s]+$/|between:6,8',
             'city'          => 'required|regex:/^[a-zA-Z\s]+$/',
             'telephone'     => 'regex:/^[0-9\s\-]+$/',
-            'mobile'        => 'regex:/^[0-9\s\-]+$/'
+            'mobile'        => 'regex:/^[0-9\s\-]+$/',
         ]);
 
         if ($validator->passes()) {
-            $address = new Address;
+            $address = new Address();
 
-            $address->name          = $request->input('name');
-            $address->street        = $request->input('street');
-            $address->postcode      = $request->input('postcode');
-            $address->city          = $request->input('city');
-            $address->telephone     = ($request->input('telephone') ?: '');
-            $address->mobile        = ($request->input('mobile') ?: '');
-            $address->User_id       = Auth::user()->company_id;
+            $address->name = $request->input('name');
+            $address->street = $request->input('street');
+            $address->postcode = $request->input('postcode');
+            $address->city = $request->input('city');
+            $address->telephone = ($request->input('telephone') ?: '');
+            $address->mobile = ($request->input('mobile') ?: '');
+            $address->User_id = Auth::user()->company_id;
 
             $address->save();
 
@@ -228,9 +236,10 @@ class AccountController extends Controller {
     }
 
     /**
-     * This function handles the removal of an address
+     * This function handles the removal of an address.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function removeAddress(Request $request)
@@ -256,7 +265,7 @@ class AccountController extends Controller {
     }
 
     /**
-     * The user is able to download their discounts file from here in ICC and CSV format
+     * The user is able to download their discounts file from here in ICC and CSV format.
      *
      * @return \Illuminate\View\View
      */
@@ -266,10 +275,11 @@ class AccountController extends Controller {
     }
 
     /**
-     * This will handle the requests for the generation of the discounts file
+     * This will handle the requests for the generation of the discounts file.
      *
-     * @param  string $type
-     * @param  string $method
+     * @param string $type
+     * @param string $method
+     *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function generateFile($type, $method)
@@ -277,60 +287,59 @@ class AccountController extends Controller {
         if ($type === 'icc') {
             if ($method === 'download') {
                 // Create a filesystem link to the temp file
-                $filename = storage_path('icc_data' . Auth::user()->company_id . '.txt');
+                $filename = storage_path('icc_data'.Auth::user()->company_id.'.txt');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
                 // File the file with discount data
-                File::put($filename, AccountController::discountICC());
+                File::put($filename, self::discountICC());
 
                 // Return the data as a downloadable file: 'icc_data.txt'
-                return Response::download($filename, 'icc_data' . Auth::user()->company_id . '.txt');
+                return Response::download($filename, 'icc_data'.Auth::user()->company_id.'.txt');
             } elseif ($method === 'mail') {
-                $filename = storage_path('icc_data' . Auth::user()->company_id . '.txt');
+                $filename = storage_path('icc_data'.Auth::user()->company_id.'.txt');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
-                File::put($filename, AccountController::discountICC());
+                File::put($filename, self::discountICC());
 
-                Mail::send('email.discountfile', [], function($message) use ($filename) {
+                Mail::send('email.discountfile', [], function ($message) use ($filename) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
                     $message->to(Auth::user()->email);
 
                     $message->subject('WTG Webshop ICC kortingen');
 
-                    $message->attach($filename, ['as' => 'icc_data' . Auth::user()->company_id . '.txt']);
+                    $message->attach($filename, ['as' => 'icc_data'.Auth::user()->company_id.'.txt']);
                 });
 
-                return redirect('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                return redirect('account/discountfile')->with('status', 'Het kortingsbestand is verzonden naar '.Auth::user()->email);
             } else {
                 return redirect('account/discountfile')
-                    ->withErrors( 'Geen verzendmethode opgegeven');
+                    ->withErrors('Geen verzendmethode opgegeven');
             }
         } elseif ($type === 'csv') {
             if ($method === 'download') {
                 // Create a filesystem link to the temp file
-                $filename = storage_path('/icc_data' . Auth::user()->company_id . '.csv');
+                $filename = storage_path('/icc_data'.Auth::user()->company_id.'.csv');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
-                File::put($filename, AccountController::discountCSV());
+                File::put($filename, self::discountCSV());
 
-                return Response::download($filename, 'icc_data' . Auth::user()->company_id . '.csv');
-
+                return Response::download($filename, 'icc_data'.Auth::user()->company_id.'.csv');
             } elseif ($method === 'mail') {
-                $filename = storage_path('/icc_data' . Auth::user()->company_id . '.csv');
+                $filename = storage_path('/icc_data'.Auth::user()->company_id.'.csv');
 
                 // Store the path in flash data so the middleware can delete the file afterwards
                 Session::flash('file.download', $filename);
 
-                File::put($filename, AccountController::discountCSV());
+                File::put($filename, self::discountCSV());
 
-                Mail::send('email.discountfile', [], function($message) use ($filename) {
+                Mail::send('email.discountfile', [], function ($message) use ($filename) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
                     $message->to(Auth::user()->email);
@@ -338,12 +347,12 @@ class AccountController extends Controller {
                     $message->subject('WTG Webshop CSV kortingen');
 
                     $message->attach($filename, [
-                        'as' => 'icc_data' . Auth::user()->company_id . '.csv'
+                        'as' => 'icc_data'.Auth::user()->company_id.'.csv',
                     ]);
                 });
 
                 return redirect('account/discountfile')
-                    ->with('status', 'Het kortingsbestand is verzonden naar ' . Auth::user()->email);
+                    ->with('status', 'Het kortingsbestand is verzonden naar '.Auth::user()->email);
             } else {
                 return redirect('account/discountfile')
                     ->withErrors('Geen verzendmethode opgegeven');
@@ -362,13 +371,13 @@ class AccountController extends Controller {
      */
 
     /**
-     * This function will generate the data for the ICC file
+     * This function will generate the data for the ICC file.
      *
      * @return string
      */
     private function discountICC()
     {
-        /**
+        /*
          * These variables are static.
          * We only need to set them once
          */
@@ -412,16 +421,16 @@ class AccountController extends Controller {
                 $groepsnummer .= ' ';
             }
             $artikelnummer = '                    '; //20 empty positions
-            $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->group_desc);
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+            $korting1 = '0'.preg_replace("/\,/", '', $korting->discount);
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
 
-            $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+            $text .= $groepsnummer.$artikelnummer.$omschrijving.$korting1.$korting2.$korting3.$nettoprijs.$startdatum.$einddatum."\r\n";
         }
 
         /*
@@ -430,7 +439,7 @@ class AccountController extends Controller {
         $query = DB::table('discounts')
             ->where('table', 'VA-221')
             ->where('group_desc', '!=', 'Vervallen')
-            ->whereNotIn('product', function($query) use ($debiteur) {
+            ->whereNotIn('product', function ($query) use ($debiteur) {
                 $query->select('product')
                     ->from('discounts')
                     ->where('table', 'VA-220')
@@ -446,16 +455,16 @@ class AccountController extends Controller {
                 $groepsnummer .= ' ';
             }
             $artikelnummer = '                    '; //20 empty positions
-            $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->group_desc);
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+            $korting1 = '0'.preg_replace("/\,/", '', $korting->discount);
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
 
-            $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+            $text .= $groepsnummer.$artikelnummer.$omschrijving.$korting1.$korting2.$korting3.$nettoprijs.$startdatum.$einddatum."\r\n";
         }
 
         /*
@@ -463,7 +472,7 @@ class AccountController extends Controller {
          */
         $query = DB::table('discounts')
             ->where('table', 'VA-261')
-            ->whereNotIn('product', function($query) use ($debiteur) {
+            ->whereNotIn('product', function ($query) use ($debiteur) {
                 $query->select('product')
                     ->from('discounts')
                     ->where('table', 'VA-260')
@@ -479,16 +488,16 @@ class AccountController extends Controller {
             while (strlen($artikelnummer) < 20) {
                 $artikelnummer .= ' ';
             }
-            $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->product_desc);
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+            $korting1 = '0'.preg_replace("/\,/", '', $korting->discount);
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
 
-            $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+            $text .= $groepsnummer.$artikelnummer.$omschrijving.$korting1.$korting2.$korting3.$nettoprijs.$startdatum.$einddatum."\r\n";
         }
 
         /*
@@ -507,41 +516,41 @@ class AccountController extends Controller {
             while (strlen($artikelnummer) < 20) {
                 $artikelnummer .= ' ';
             }
-            $omschrijving = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->product_desc);
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = '0' . preg_replace("/\,/", "", $korting->discount);
+            $korting1 = '0'.preg_replace("/\,/", '', $korting->discount);
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
 
-            $text .= $groepsnummer . $artikelnummer . $omschrijving . $korting1 . $korting2 . $korting3 . $nettoprijs . $startdatum . $einddatum . "\r\n";
+            $text .= $groepsnummer.$artikelnummer.$omschrijving.$korting1.$korting2.$korting3.$nettoprijs.$startdatum.$einddatum."\r\n";
         }
 
         /*
          * Prepend the first row last so the count doesnt mess up.
          */
         $count = sprintf("%'06d", $count);
-        $text = $GLN . $empty1 . $debiteur . $empty2 . $date . $count . $version . $name . "\r\n" . $text;
+        $text = $GLN.$empty1.$debiteur.$empty2.$date.$count.$version.$name."\r\n".$text;
 
         return $text;
     }
 
     /**
-     * This function will generate the data for the CSV file
+     * This function will generate the data for the CSV file.
      *
      * @return string
      */
     private function discountCSV()
     {
         // Static variables
-        $firstRow 	= 'Artikelnr;Omschrijving;Kortingspercentage;ingangsdatum' . "\r\n";
-        $debiteur 	= Auth::user()->company_id;
-        $date		= date('Y-m-d');
-        $delimiter	= ';';
+        $firstRow = 'Artikelnr;Omschrijving;Kortingspercentage;ingangsdatum'."\r\n";
+        $debiteur = Auth::user()->company_id;
+        $date = date('Y-m-d');
+        $delimiter = ';';
 
-        $text 		= $firstRow;
+        $text = $firstRow;
 
         /*
          * Append the "Groepsgebonden" discounts to the CSV file
@@ -554,11 +563,11 @@ class AccountController extends Controller {
         $groep_korting = $query->get();
 
         foreach ($groep_korting as $korting) {
-            $groepsnummer 	= $korting->product;
-            $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
-            $korting1 	    = $korting->discount . "%";
+            $groepsnummer = $korting->product;
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->group_desc);
+            $korting1 = $korting->discount.'%';
 
-            $text 	       .= $groepsnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+            $text .= $groepsnummer.$delimiter.$omschrijving.$delimiter.$korting1.$delimiter.$date."\r\n";
         }
 
         /*
@@ -567,7 +576,7 @@ class AccountController extends Controller {
         $query = DB::table('discounts')
             ->where('table', 'VA-221')
             ->where('group_desc', '!=', 'Vervallen')
-            ->whereNotIn('product', function($query) use ($debiteur) {
+            ->whereNotIn('product', function ($query) use ($debiteur) {
                 $query->select('product')
                     ->from('discounts')
                     ->where('table', 'VA-220')
@@ -577,11 +586,11 @@ class AccountController extends Controller {
         $default_korting = $query->get();
 
         foreach ($default_korting as $korting) {
-            $groepsnummer 	= $korting->product;
-            $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->group_desc);
-            $korting1 	= $korting->discount . "%";
+            $groepsnummer = $korting->product;
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->group_desc);
+            $korting1 = $korting->discount.'%';
 
-            $text 	       .= $groepsnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+            $text .= $groepsnummer.$delimiter.$omschrijving.$delimiter.$korting1.$delimiter.$date."\r\n";
         }
 
         /*
@@ -589,7 +598,7 @@ class AccountController extends Controller {
          */
         $query = DB::table('discounts')
             ->where('table', 'VA-261')
-            ->whereNotIn('product', function($query) use ($debiteur) {
+            ->whereNotIn('product', function ($query) use ($debiteur) {
                 $query->select('product')
                     ->from('discounts')
                     ->where('table', 'VA-260')
@@ -600,10 +609,10 @@ class AccountController extends Controller {
 
         foreach ($product_korting as $korting) {
             $artikelnummer = $korting->product;
-            $omschrijving  = preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
-            $korting1      = $korting->discount . "%";
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->product_desc);
+            $korting1 = $korting->discount.'%';
 
-            $text .= $artikelnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+            $text .= $artikelnummer.$delimiter.$omschrijving.$delimiter.$korting1.$delimiter.$date."\r\n";
         }
 
         /*
@@ -616,11 +625,11 @@ class AccountController extends Controller {
         $product_korting = $query->get();
 
         foreach ($product_korting as $korting) {
-            $artikelnummer 	= $korting->product;
-            $omschrijving 	= preg_replace("/(\r)|(\n)/", "", $korting->product_desc);
-            $korting1 	    = $korting->discount . "%";
+            $artikelnummer = $korting->product;
+            $omschrijving = preg_replace("/(\r)|(\n)/", '', $korting->product_desc);
+            $korting1 = $korting->discount.'%';
 
-            $text 	       .= $artikelnummer . $delimiter . $omschrijving . $delimiter . $korting1 . $delimiter . $date . "\r\n";
+            $text .= $artikelnummer.$delimiter.$omschrijving.$delimiter.$korting1.$delimiter.$date."\r\n";
         }
 
         return $text;

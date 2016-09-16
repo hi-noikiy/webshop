@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LoginTest extends TestCase
@@ -9,7 +7,7 @@ class LoginTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Check the default user login
+     * Check the default user login.
      *
      * @return void
      */
@@ -28,7 +26,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * Check inactive user login
+     * Check inactive user login.
      *
      * @return void
      */
@@ -47,7 +45,7 @@ class LoginTest extends TestCase
 //    }
 
     /**
-     * Check admin user login
+     * Check admin user login.
      *
      * @return void
      */
@@ -66,7 +64,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * Check login with wrong username
+     * Check login with wrong username.
      *
      * @return void
      */
@@ -84,7 +82,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * Check login with wrong password
+     * Check login with wrong password.
      *
      * @return void
      */
@@ -102,7 +100,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * Check login with wrong password
+     * Check login with wrong password.
      *
      * @return void
      */
@@ -120,7 +118,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * Check login with empty password
+     * Check login with empty password.
      *
      * @return void
      */
@@ -133,5 +131,4 @@ class LoginTest extends TestCase
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
-
 }

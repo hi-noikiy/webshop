@@ -5,16 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Pack
+ * Class Pack.
  *
- * @package App
  * @property-read \App\Product $product
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\PackProduct[] $products
  * @mixin \Eloquent
- * @property integer $id
+ *
+ * @property int $id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property integer $product_number
+ * @property int $product_number
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Pack whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Pack whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Pack whereUpdatedAt($value)
@@ -23,14 +24,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pack extends Model
 {
     /**
-     * Guarded columns
+     * Guarded columns.
      *
      * @var array
      */
     protected $guarded = ['id'];
 
     /**
-     * The main product representing this pack
+     * The main product representing this pack.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -40,7 +41,7 @@ class Pack extends Model
     }
 
     /**
-     * List of products
+     * List of products.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

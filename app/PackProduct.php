@@ -1,20 +1,23 @@
-<?php namespace App;
+<?php
+
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class PackProduct
+ * Class PackProduct.
  *
- * @package App
  * @property-read \App\Pack $pack
  * @property-read \App\Product $details
  * @mixin \Eloquent
- * @property integer $id
- * @property integer $pack_id
+ *
+ * @property int $id
+ * @property int $pack_id
  * @property string $product
- * @property integer $amount
+ * @property int $amount
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\PackProduct whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\PackProduct wherePackId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\PackProduct whereProduct($value)
@@ -25,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 class PackProduct extends Model
 {
     /**
-     * Return the parent pack
+     * Return the parent pack.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -35,7 +38,7 @@ class PackProduct extends Model
     }
 
     /**
-     * Product details
+     * Product details.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

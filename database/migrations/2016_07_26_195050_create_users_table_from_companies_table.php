@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Company;
 use App\User;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUsersTableFromCompaniesTable extends Migration
 {
@@ -32,7 +32,7 @@ class CreateUsersTableFromCompaniesTable extends Migration
         $companies = Company::all();
 
         foreach ($companies as $company) {
-            $user = new User;
+            $user = new User();
 
             $user->username = $company->login;
             $user->password = $company->password;

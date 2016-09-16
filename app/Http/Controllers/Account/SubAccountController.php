@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers\Account;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
-use Auth, Response;
+use Auth;
+use Illuminate\Http\Request;
+use Response;
 
 class SubAccountController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('manager');
     }
 
     /**
-     * Get the sub accounts
+     * Get the sub accounts.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         return view('account.sub_accounts', [
-            'accounts' => Auth::user()->subAccounts()
+            'accounts' => Auth::user()->subAccounts(),
         ]);
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -39,7 +39,7 @@ class SubAccountController extends Controller
         $validator = \Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required|confirmed',
-            'email' => 'required|email'
+            'email'    => 'required|email',
         ]);
 
         if ($validator->passes()) {
@@ -50,17 +50,17 @@ class SubAccountController extends Controller
                     ->withErrors('Er bestaat al een sub account met deze login naam.');
             }
 
-            $user = new User;
+            $user = new User();
 
-            $user->username     = $request->input('username');
-            $user->company_id   = Auth::user()->company_id;
-            $user->email        = $request->input('email');
-            $user->isAdmin      = false;
-            $user->manager      = ($request->input('manager') ? true : false);
-            $user->password     = bcrypt($request->input('password'));
+            $user->username = $request->input('username');
+            $user->company_id = Auth::user()->company_id;
+            $user->email = $request->input('email');
+            $user->isAdmin = false;
+            $user->manager = ($request->input('manager') ? true : false);
+            $user->password = bcrypt($request->input('password'));
 
             if ($user->save()) {
-                \Log::info('Created a sub account for user ' . Auth::user()->username);
+                \Log::info('Created a sub account for user '.Auth::user()->username);
 
                 return redirect('account/accounts')
                     ->with('status', 'Het sub account is aangemaakt.');
@@ -81,16 +81,17 @@ class SubAccountController extends Controller
     }
 
     /**
-     * Delete a sub account
+     * Delete a sub account.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'delete' => 'required',
-            'username' => 'required'
+            'delete'   => 'required',
+            'username' => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -100,7 +101,7 @@ class SubAccountController extends Controller
 
             if ($user) {
                 if ($user->isMain()) {
-                    \Log::warning('User: ' . Auth::id() . ' tried to delete their main account');
+                    \Log::warning('User: '.Auth::id().' tried to delete their main account');
 
                     return redirect()
                         ->back()
@@ -108,7 +109,7 @@ class SubAccountController extends Controller
                 }
 
                 if (Auth::user()->username === $user->username) {
-                    \Log::warning('User: ' . Auth::id() . ' tried to delete their own account');
+                    \Log::warning('User: '.Auth::id().' tried to delete their own account');
 
                     return redirect()
                         ->back()
@@ -116,21 +117,21 @@ class SubAccountController extends Controller
                 } else {
                     $user->delete();
 
-                    \Log::info('User: ' . Auth::id() . ' deleted a sub account');
+                    \Log::info('User: '.Auth::id().' deleted a sub account');
 
                     return redirect()
                         ->back()
                         ->with('status', 'Het sub account is verwijderd');
                 }
             } else {
-                \Log::warning('User: ' . Auth::id() . ' tried to delete a sub account that does not belong to them');
+                \Log::warning('User: '.Auth::id().' tried to delete a sub account that does not belong to them');
 
                 return redirect()
                     ->back()
                     ->withErrors('Geen sub account gevonden die bij uw account hoort');
             }
         } else {
-            \Log::warning('Failed to update sub account. Errors: ' . json_encode($validator->errors()));
+            \Log::warning('Failed to update sub account. Errors: '.json_encode($validator->errors()));
 
             return redirect()
                 ->back()
@@ -140,9 +141,10 @@ class SubAccountController extends Controller
     }
 
     /**
-     * Toggle manager status for a sub account
+     * Toggle manager status for a sub account.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update($id)
@@ -155,11 +157,11 @@ class SubAccountController extends Controller
             $user->save();
 
             return Response::json([
-                'message' => 'Toggled manager status'
+                'message' => 'Toggled manager status',
             ]);
         } else {
             return Response::json([
-                'message' => 'The user with the given id does not belong to your account'
+                'message' => 'The user with the given id does not belong to your account',
             ], 403);
         }
     }

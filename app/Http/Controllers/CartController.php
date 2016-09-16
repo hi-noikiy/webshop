@@ -2,47 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Address;
+use App\Order;
 use App\Pack;
 use App\Product;
-use App\Helper;
-use App\Order;
-use App\Address;
-use Auth, Session, Cart;
+use Auth;
+use Cart;
+use Illuminate\Http\Request;
+use Session;
 
 /**
- * Class CartController
- * @package App\Http\Controllers
+ * Class CartController.
  */
-class CartController extends Controller {
-
+class CartController extends Controller
+{
     /**
-     * Show the cart
+     * Show the cart.
      *
      * @return mixed
      */
     public function view()
     {
         return view('webshop.cart', [
-            'cart' => Cart::content(),
-            'addresses' => Auth::user()->addresses
+            'cart'      => Cart::content(),
+            'addresses' => Auth::user()->addresses,
         ]);
     }
 
     /**
-     * Add a product to the cart
+     * Add a product to the cart.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function addProduct(Request $request)
     {
         $number = $request->get('product');
-        $qty    = $request->get('qty');
+        $qty = $request->get('qty');
 
         $validator = \Validator::make($request->all(), [
             'product'   => 'required|digits:7',
-            'qty'       => 'required|numeric|min:1'
+            'qty'       => 'required|numeric|min:1',
         ]);
 
         if (!$validator->fails()) {
@@ -54,14 +55,14 @@ class CartController extends Controller {
             // Add the product data to the cart data
             $cartArray[$number] =
             $productData = [
-                'id' => $product->number,
-                'name' => $product->name,
-                'qty' => $qty,
-                'price' => $product->real_price,
+                'id'      => $product->number,
+                'name'    => $product->name,
+                'qty'     => $qty,
+                'price'   => $product->real_price,
                 'options' => [
                     'special' => (bool) Pack::where('product_number', $product->number)->count(),
-                    'korting' => $product->discount
-                ]
+                    'korting' => $product->discount,
+                ],
             ];
 
             // Add the product to the cart
@@ -86,23 +87,24 @@ class CartController extends Controller {
     }
 
     /**
-     * Modify or remove a product from the cart
+     * Modify or remove a product from the cart.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function update(Request $request)
     {
-        $rowId  = $request->input('rowId');
-        $qty    = $request->input('qty');
+        $rowId = $request->input('rowId');
+        $qty = $request->input('qty');
 
         $validator = \Validator::make($request->all(), [
             'rowId' => 'required',
-            'qty' => 'required|numeric|min:1'
+            'qty'   => 'required|numeric|min:1',
         ]);
 
         if ($validator->passes()) {
-            if ($request->input('edit') === "") {
+            if ($request->input('edit') === '') {
                 // Load the user cart data
                 $cartArray = unserialize(Auth::user()->cart);
 
@@ -117,8 +119,7 @@ class CartController extends Controller {
 
                 return redirect('cart')
                     ->with('status', 'Uw winkelwagen is geupdatet');
-
-            } elseif ($request->input('remove') === "") {
+            } elseif ($request->input('remove') === '') {
                 // Load the user cart data
                 $cartArray = unserialize(Auth::user()->cart);
 
@@ -144,7 +145,7 @@ class CartController extends Controller {
     }
 
     /**
-     * To destroy or not to destroy
+     * To destroy or not to destroy.
      *
      * @return mixed
      */
@@ -152,7 +153,7 @@ class CartController extends Controller {
     {
         if (!Cart::destroy()) {
             $user = Auth::user();
-            $user->cart = NULL;
+            $user->cart = null;
             $user->save();
 
             return redirect('/')
@@ -164,9 +165,10 @@ class CartController extends Controller {
     }
 
     /**
-     * Mail the order to the company
+     * Mail the order to the company.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function order(Request $request)
@@ -184,8 +186,7 @@ class CartController extends Controller {
                     $address->city = '';
                     $address->telephone = '';
                     $address->mobile = '';
-
-                } else if (Address::where('id', $addressId)->where('User_id', Auth::user()->company_id)->first()) {
+                } elseif (Address::where('id', $addressId)->where('User_id', Auth::user()->company_id)->first()) {
                     $address = Address::where('id', $addressId)
                         ->where('User_id', Auth::user()->company_id)
                         ->first();
@@ -201,7 +202,7 @@ class CartController extends Controller {
                 \Mail::send('email.order', $data, function ($message) {
                     $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-                    if (Auth::user()->company_id === "99999") {
+                    if (Auth::user()->company_id === '99999') {
                         $message->to('gfw@wiringa.nl');
                     } else {
                         $message->to('verkoop@wiringa.nl');
@@ -214,9 +215,9 @@ class CartController extends Controller {
 
                 foreach (Cart::content() as $item) {
                     $items[] = [
-                        'id' => $item->id,
+                        'id'   => $item->id,
                         'name' => $item->name,
-                        'qty' => $item->qty
+                        'qty'  => $item->qty,
                     ];
                 }
 
@@ -234,7 +235,7 @@ class CartController extends Controller {
                 Cart::destroy();
 
                 $user = Auth::user();
-                $user->cart = "a:0:{}";
+                $user->cart = 'a:0:{}';
                 $user->save();
 
                 return redirect('cart/order/finished');
@@ -247,5 +248,4 @@ class CartController extends Controller {
                 ->withErrors('Er zitten geen producten in uw winkelwagen!');
         }
     }
-
 }

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ProductTest extends TestCase
@@ -9,7 +7,7 @@ class ProductTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Test the product page with an existing product
+     * Test the product page with an existing product.
      */
     public function testExistingProduct()
     {
@@ -21,12 +19,11 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Test the product page with a missing product
+     * Test the product page with a missing product.
      */
     public function testMissingProduct()
     {
         $this->get('/product/9999999')
             ->assertResponseStatus(404);
     }
-
 }

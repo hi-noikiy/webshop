@@ -1,25 +1,28 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+
+namespace App\Http\Controllers\Admin;
 
 use App\Company;
-use App\Http\Controllers\Controller;
-use App\Product;
-use App\Order;
-use App\User;
 use App\Content;
+use App\Http\Controllers\Controller;
+use App\Order;
+use App\Product;
+use App\User;
+use DB;
 use Illuminate\Http\Request;
-use Response, DB;
+use Response;
 use Spatie\Analytics\Period;
 
 /**
- * Class ApiController
- * @package App\Http\Controllers\Admin
+ * Class ApiController.
  */
-class ApiController extends Controller {
-
+class ApiController extends Controller
+{
     /**
-     * Return the CPU load
+     * Return the CPU load.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function cpu(Request $request)
@@ -31,39 +34,41 @@ class ApiController extends Controller {
 
         $data = [
             'load' => $load[0],
-            'max' => $max,
+            'max'  => $max,
         ];
 
         return Response::json($data);
     }
 
     /**
-     * Return the RAM usage
+     * Return the RAM usage.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function ram(Request $request)
     {
-        $total = preg_replace("/\D/", "", exec("grep 'MemTotal' /proc/meminfo"));
-        $free = preg_replace("/\D/", "", exec("grep 'MemFree' /proc/meminfo"));
+        $total = preg_replace("/\D/", '', exec("grep 'MemTotal' /proc/meminfo"));
+        $free = preg_replace("/\D/", '', exec("grep 'MemFree' /proc/meminfo"));
 
         $freePercentage = exec("free -t | grep 'buffers/cache' | awk '{print $4/($3+$4) * 100}'");
 
         $data = [
-            'total' => $total,
+            'total'          => $total,
             'freePercentage' => $freePercentage,
-            'free' => $free
+            'free'           => $free,
         ];
 
         return Response::json($data);
     }
 
     /**
-     * Get data for a chart.js chart
+     * Get data for a chart.js chart.
      *
-     * @param  Request $request
-     * @param  string $type
+     * @param Request $request
+     * @param string  $type
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function chart(Request $request, string $type)
@@ -77,27 +82,28 @@ class ApiController extends Controller {
 
             return Response::json([
                 'message' => "Chart data for chart '{$type}'",
-                'payload' => $groupedOrders
+                'payload' => $groupedOrders,
             ]);
         } elseif ($type === 'browsers') {
             $days = $request->input('days');
 
             return Response::json([
                 'message' => "Chart data for chart '{$type}'",
-                'payload' => \Analytics::fetchTopBrowsers(Period::days($days))
+                'payload' => \Analytics::fetchTopBrowsers(Period::days($days)),
             ]);
         } else {
             return Response::json([
-                'message' => 'Unknown chart type'
+                'message' => 'Unknown chart type',
             ], 400);
         }
     }
 
     /**
-     * Return a single product
+     * Return a single product.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param  $id
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function product(Request $request, $id)
@@ -108,20 +114,21 @@ class ApiController extends Controller {
             return Response::json([
                 'status'    => 'success',
                 'payload'   => $product,
-                'message'   => "Details for product: {$id}"
+                'message'   => "Details for product: {$id}",
             ]);
         } else {
             return Response::json([
                 'status'    => 'failure',
-                'message'   => "No details for product: {$id}"
+                'message'   => "No details for product: {$id}",
             ], 404);
         }
     }
 
     /**
-     * Get some user details
+     * Get some user details.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     public function companyDetails(Request $request)
@@ -131,12 +138,12 @@ class ApiController extends Controller {
 
             if ($company !== null) {
                 return Response::json([
-                    'message' => 'User details for user ' . $company->login,
-                    'payload' => $company
+                    'message' => 'User details for user '.$company->login,
+                    'payload' => $company,
                 ]);
             } else {
                 return Response::json([
-                    'message' => 'No user found with login ' . $request->input('id'),
+                    'message' => 'No user found with login '.$request->input('id'),
                 ], 404);
             }
         } else {
@@ -147,9 +154,10 @@ class ApiController extends Controller {
     }
 
     /**
-     * Get the content that belongs to the page/field
+     * Get the content that belongs to the page/field.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     public function content(Request $request)
@@ -159,18 +167,18 @@ class ApiController extends Controller {
 
             if ($data) {
                 return Response::json([
-                    'message' => 'Content for page ' . $request->input('page'),
-                    'payload' => $data
+                    'message' => 'Content for page '.$request->input('page'),
+                    'payload' => $data,
                 ]);
             } else {
                 return Response::json([
-                    'message' => 'No content found for page: ' . $request->input('page'),
+                    'message' => 'No content found for page: '.$request->input('page'),
                 ], 404);
             }
-
-        } else
+        } else {
             return Response::json([
                 'message' => 'Missing request parameter: `page`',
             ], 400);
+        }
     }
 }

@@ -2,22 +2,24 @@
 
 namespace App\Http\Middleware;
 
-use Closure, Response;
+use Closure;
+use Response;
 
 class CheckAjaxRequest
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         if (!$request->ajax()) {
             return Response::json([
-                'message' => 'Only ajax requests are allowed'
+                'message' => 'Only ajax requests are allowed',
             ], 405);
         }
 

@@ -1,24 +1,34 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Spatie\Analytics\Period;
-use App\Product;
-use App\Content;
+namespace App\Http\Controllers\Admin;
+
+use Analytics;
+use App;
 use App\Carousel;
 use App\Company;
+use App\Content;
+use App\Http\Controllers\Controller;
+use App\Product;
 use App\User;
-use App, DB, Response, Redirect, Input, Validator, Session, File, Storage, Helper, Analytics;
+use DB;
+use File;
+use Helper;
+use Illuminate\Http\Request;
+use Input;
+use Redirect;
+use Response;
+use Session;
+use Spatie\Analytics\Period;
+use Storage;
+use Validator;
 
 /**
- * Class AdminController
- * @package App\Http\Controllers\Admin
+ * Class AdminController.
  */
 class AdminController extends Controller
 {
-
     /**
-     * The admin overview page
+     * The admin overview page.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -40,12 +50,12 @@ class AdminController extends Controller
             'product_import'    => $product_import,
             'discount_import'   => $discount_import,
             'years'             => $groupedOrders->toArray(),
-            'browsers'          => $analytics
+            'browsers'          => $analytics,
         ]);
     }
 
     /**
-     * Display a fancy phpinfo page
+     * Display a fancy phpinfo page.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -55,7 +65,7 @@ class AdminController extends Controller
     }
 
     /**
-     * The import page
+     * The import page.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -64,24 +74,25 @@ class AdminController extends Controller
         return view('admin.import');
     }
 
-
     /**
-     * The import was successful :D
+     * The import was successful :D.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function importSuccess()
     {
         // The type must be set
-        if (Session::has('type'))
+        if (Session::has('type')) {
             return view('admin.importsuccess');
+        }
         // Or you will be redirected
-        else
+        else {
             return redirect('admin/import');
+        }
     }
 
     /**
-     * Content management page
+     * Content management page.
      *
      * @return $this
      */
@@ -93,7 +104,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Save the content to the database
+     * Save the content to the database.
      *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
@@ -106,12 +117,13 @@ class AdminController extends Controller
             Content::where('name', $field)->update(['content' => $content]);
 
             return redirect('admin/managecontent')->with('status', 'De content is aangepast');
-        } else
+        } else {
             return redirect()->back()->withErrors('Content of Field veld leeg');
+        }
     }
 
     /**
-     * Show the generate page
+     * Show the generate page.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -120,18 +132,18 @@ class AdminController extends Controller
         $content = Content::where('name', 'catalog.footer')->first();
 
         return view('admin.generate', [
-            'currentFooter' => $content->content
+            'currentFooter' => $content->content,
         ]);
     }
 
     /**
-     * Generate the catalog PDF file
+     * Generate the catalog PDF file.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function generateCatalog()
     {
-        if (Input::get('footer') !== "") {
+        if (Input::get('footer') !== '') {
             $footer = Content::where('name', 'catalog.footer')->first();
 
             $footer->content = Input::get('footer');
@@ -154,15 +166,15 @@ class AdminController extends Controller
             ->where('catalog_index', '!=', '')
             ->get();
 
-        File::put(base_path() . "/resources/assets/catalog.html", view('templates.catalogus', ['products' => $productData]));
+        File::put(base_path().'/resources/assets/catalog.html', view('templates.catalogus', ['products' => $productData]));
 
-        exec('wkhtmltopdf --dump-outline "' . base_path() . '/resources/assets/tocStyle.xml" -B 15mm --footer-center "' . $footer->content . '" --footer-right [page] --footer-font-size 7 "' . base_path() . '/resources/assets/catalog.html" toc --xsl-style-sheet "' . base_path() . '/resources/assets/tocStyle.xsl" "' . public_path() . '/dl/Wiringa Catalogus.pdf"');
+        exec('wkhtmltopdf --dump-outline "'.base_path().'/resources/assets/tocStyle.xml" -B 15mm --footer-center "'.$footer->content.'" --footer-right [page] --footer-font-size 7 "'.base_path().'/resources/assets/catalog.html" toc --xsl-style-sheet "'.base_path().'/resources/assets/tocStyle.xsl" "'.public_path().'/dl/Wiringa Catalogus.pdf"');
 
         return Redirect::intended('/dl/Wiringa Catalogus.pdf');
     }
 
     /**
-     * Carousel manager
+     * Carousel manager.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -174,14 +186,13 @@ class AdminController extends Controller
     }
 
     /**
-     * Add a carousel slide
+     * Add a carousel slide.
      *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function addSlide()
     {
         if (Input::has('title') && Input::has('caption') && Input::hasFile('image')) {
-
             $image = Input::file('image');
             $title = Input::get('title');
             $caption = Input::get('caption');
@@ -191,10 +202,10 @@ class AdminController extends Controller
                 ['image' => 'required|image']
             );
 
-            if ($validator->fails())
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->errors());
-            else {
-                $slide = new Carousel;
+            } else {
+                $slide = new Carousel();
 
                 $slide->Image = $image->getClientOriginalName();
                 $slide->Title = $title;
@@ -203,22 +214,24 @@ class AdminController extends Controller
 
                 $slide->save();
 
-                Input::file('image')->move(public_path("img/carousel"), $image->getClientOriginalName());
+                Input::file('image')->move(public_path('img/carousel'), $image->getClientOriginalName());
 
                 return redirect()
                     ->back()
-                    ->with('status', "De slide is toegevoegd aan de carousel");
+                    ->with('status', 'De slide is toegevoegd aan de carousel');
             }
-        } else
+        } else {
             return redirect()
                 ->back()
-                ->withErrors("Een of meer velden zijn niet ingevuld");
+                ->withErrors('Een of meer velden zijn niet ingevuld');
+        }
     }
 
     /**
-     * Remove a slide from the carousel
+     * Remove a slide from the carousel.
      *
      * @param $id
+     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function removeSlide($id)
@@ -226,24 +239,27 @@ class AdminController extends Controller
         if (isset($id) && Carousel::where('id', $id)->count() === 1) {
             $slide = Carousel::find($id);
 
-            if (Storage::disk('local')->exists('/public/img/carousel/' . $slide->Image))
-                Storage::disk('local')->delete('/public/img/carousel/' . $slide->Image);
+            if (Storage::disk('local')->exists('/public/img/carousel/'.$slide->Image)) {
+                Storage::disk('local')->delete('/public/img/carousel/'.$slide->Image);
+            }
 
             Carousel::destroy($id);
 
             return redirect()
                 ->back()
-                ->with('status', "De slide is verwijderd uit de carousel");
-        } else
+                ->with('status', 'De slide is verwijderd uit de carousel');
+        } else {
             return redirect()
                 ->back()
                 ->withErrors("De slide met id $id bestaat niet");
+        }
     }
 
     /**
-     * Edit the slide order number
+     * Edit the slide order number.
      *
      * @param $id
+     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function editSlide($id)
@@ -258,19 +274,21 @@ class AdminController extends Controller
 
                 return redirect()
                     ->back()
-                    ->with('status', "Het slide nummer is aangepast");
-            } else
+                    ->with('status', 'Het slide nummer is aangepast');
+            } else {
                 return redirect()
                     ->back()
                     ->withErrors('Er is een ongeldig slide nummer opgegeven');
-        } else
+            }
+        } else {
             return redirect()
                 ->back()
                 ->withErrors("De slide met id $id bestaat niet");
+        }
     }
 
     /**
-     * Show the user manager
+     * Show the user manager.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -280,22 +298,23 @@ class AdminController extends Controller
     }
 
     /**
-     * Add/update a user
+     * Add/update a user.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function updateCompany(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'company_id' => 'required|integer|between:10000,99999',
+            'company_id'   => 'required|integer|between:10000,99999',
             'company_name' => 'required|string',
 
-            'address' => 'required',
+            'address'  => 'required',
             'postcode' => 'required',
-            'city' => 'required',
+            'city'     => 'required',
 
-            'email' => 'required|email',
+            'email'  => 'required|email',
             'active' => 'required',
         ]);
 
@@ -318,11 +337,10 @@ class AdminController extends Controller
                     return redirect()
                         ->back()
                         ->withInput($request->input())
-                        ->withErrors('Geen bedrijf gevonden met login naam ' . $request->input('company_id'));
+                        ->withErrors('Geen bedrijf gevonden met login naam '.$request->input('company_id'));
                 }
             } elseif ($request->get('update') === '') {
                 if ($company = Company::whereLogin($request->input('company_id'))->first()) {
-
                     $company->login = $request->input('company_id');
                     $company->company = $request->input('company_name');
                     $company->street = $request->input('address');
@@ -332,21 +350,21 @@ class AdminController extends Controller
 
                     $company->save();
 
-                    \Log::info('Company ' . $company->login . ' has been updated by an admin');
+                    \Log::info('Company '.$company->login.' has been updated by an admin');
 
                     $user = $company->mainUser;
 
-                    $user->username     = $request->input('company_id');
-                    $user->company_id   = $request->input('company_id');
-                    $user->email        = $request->input('email');
+                    $user->username = $request->input('company_id');
+                    $user->company_id = $request->input('company_id');
+                    $user->email = $request->input('email');
 
                     $user->save();
 
-                    \Log::info('User ' . $user->username . ' has been updated by an admin');
+                    \Log::info('User '.$user->username.' has been updated by an admin');
 
                     return redirect()
                         ->back()
-                        ->with('status', 'Bedrijf ' . $company->company_id . ' is aangepast');
+                        ->with('status', 'Bedrijf '.$company->company_id.' is aangepast');
                 } else {
                     $pass = mt_rand(100000, 999999);
 
@@ -363,11 +381,11 @@ class AdminController extends Controller
 
                     $user = new User();
 
-                    $user->username     = $request->input('company_id');
-                    $user->company_id   = $request->input('company_id');
-                    $user->email        = $request->input('email');
-                    $user->manager      = true;
-                    $user->password     = bcrypt($pass);
+                    $user->username = $request->input('company_id');
+                    $user->company_id = $request->input('company_id');
+                    $user->email = $request->input('email');
+                    $user->manager = true;
+                    $user->password = bcrypt($pass);
 
                     $user->save();
 
@@ -391,29 +409,30 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the user added page
+     * Show the user added page.
      *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function userAdded()
     {
-        if (Session::has('password') && Session::has('input'))
+        if (Session::has('password') && Session::has('input')) {
             return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
-        else
+        } else {
             return redirect('admin/usermanager');
+        }
     }
 
     /**
-     * Generate a pricelist for a specific user
+     * Generate a pricelist for a specific user.
      *
      * @return $this|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function generate_pricelist()
     {
         $validator = Validator::make(Input::all(), [
-            'user_id' => 'required',
+            'user_id'   => 'required',
             'separator' => 'required',
-            'position' => 'required'
+            'position'  => 'required',
         ]);
 
         if (!$validator->fails() && Input::hasFile('file')) {
@@ -421,11 +440,11 @@ class AdminController extends Controller
             $file = Input::file('file');
             $separator = Input::get('separator');
             $position = Input::get('position');
-            $skip = (int)Input::get('skip');
+            $skip = (int) Input::get('skip');
             $count = 0;
 
             // Create a filesystem link to the temp file
-            $filename = storage_path() . '/prijslijst_' . $user_id . '.txt';
+            $filename = storage_path().'/prijslijst_'.$user_id.'.txt';
 
             // Store the path in flash data so the middleware can delete the file afterwards
             Session::flash('file.download', $filename);
@@ -444,12 +463,12 @@ class AdminController extends Controller
                         if ($product !== null) {
                             if ($product->special_price === '0.00') {
                                 $discount = 1 - (Helper::getProductDiscount($user_id, $product->group, $product->number) / 100);
-                                $price = number_format(preg_replace("/\,/", ".", $product->price) * $discount, 2, ",", "");
+                                $price = number_format(preg_replace("/\,/", '.', $product->price) * $discount, 2, ',', '');
                             } else {
-                                $price = number_format(preg_replace("/\,/", ".", $product->special_price), 2, ",", "");
+                                $price = number_format(preg_replace("/\,/", '.', $product->special_price), 2, ',', '');
                             }
 
-                            $string .= $product->number . ";" . $price . ";" . $product->price_per . ";" . $product->registered_per . "\r\n";
+                            $string .= $product->number.';'.$price.';'.$product->price_per.';'.$product->registered_per."\r\n";
                         }
                     }
                 }
@@ -461,10 +480,10 @@ class AdminController extends Controller
             File::put($filename, $string);
 
             // Return the data as a downloadable file: 'icc_data.txt'
-            return Response::download($filename, 'prijslijst_' . $user_id . '.txt');
+            return Response::download($filename, 'prijslijst_'.$user_id.'.txt');
         } else {
             return redirect('admin/generate')
-                ->withErrors((Input::hasFile('file') === false ? "Geen bestand geuploaded" : $validator->errors()))
+                ->withErrors((Input::hasFile('file') === false ? 'Geen bestand geuploaded' : $validator->errors()))
                 ->withInput(Input::all());
         }
     }
