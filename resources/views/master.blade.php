@@ -179,5 +179,9 @@
             @yield('extraJS')
         </footer>
     </div>
+
+    @if(app()->environment() !== 'production')
+        <div style="position: fixed;bottom: 20px;right: 20px;background-color: red;color:#333;padding:5px;border:3px solid #333;">{{ ucfirst(app()->environment()) }}</div>
+    @endif
 </body>
 </html>
