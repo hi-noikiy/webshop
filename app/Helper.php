@@ -125,7 +125,7 @@ class Helper
         if ($group === 0 && $product === 0) {
             return $discountarray;
         } else {
-            if (!isset($discountarray[$product]) && !isset($discountarray[$group])) {
+            if (! isset($discountarray[$product]) && ! isset($discountarray[$group])) {
                 abort(500, 'Geen korting gevonden voor product: '.$product);
             } else {
                 return isset($discountarray[$product]) ? $discountarray[$product] : $discountarray[$group];

@@ -435,7 +435,7 @@ class AdminController extends Controller
             'position'  => 'required',
         ]);
 
-        if (!$validator->fails() && Input::hasFile('file')) {
+        if (! $validator->fails() && Input::hasFile('file')) {
             $user_id = Input::get('user_id');
             $file = Input::file('file');
             $separator = Input::get('separator');

@@ -42,7 +42,7 @@ class AuthenticateAdmin
             } else {
                 return redirect()->guest('/#login');
             }
-        } elseif (!$this->auth->user()->isAdmin) {
+        } elseif (! $this->auth->user()->isAdmin) {
             return redirect()->to('/account')->with('error', 'Dit account heeft geen admin rechten');
         }
 

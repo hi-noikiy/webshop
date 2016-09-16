@@ -17,7 +17,7 @@ class CheckAjaxRequest
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             return Response::json([
                 'message' => 'Only ajax requests are allowed',
             ], 405);

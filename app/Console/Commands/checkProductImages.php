@@ -47,7 +47,7 @@ class checkProductImages extends Command
         foreach ($products as $product) {
             $bar->setMessage($product->number, 'product');
 
-            if (!\File::exists(public_path().'/img/products/'.$product->image)) {
+            if (! \File::exists(public_path().'/img/products/'.$product->image)) {
                 $errors[] = ['Product number' => $product->number, 'Image' => $product->image];
             }
 
