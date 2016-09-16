@@ -14,15 +14,15 @@
     		<td>{{ $address->name }}</td>
     	</tr>
     	<tr>
-    		<td>{{ Auth::user()->email }}</td>
+    		<td>{{ Auth::user()->company->street }}</td>
     		<td>{{ $address->street }}</td>
     	</tr>
     	<tr>
-    		<td></td>
+    		<td>{{ Auth::user()->company->postcode }} {{ Auth::user()->company->city }}</td>
     		<td>{{ $address->postcode }} {{ $address->city }}</td>
     	</tr>
     	<tr>
-    		<td></td>
+    		<td>{{ Auth::user()->email }}</td>
     		<td>{{ $address->telephone }}</td>
     	</tr>
         <tr>
