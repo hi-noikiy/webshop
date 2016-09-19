@@ -119,7 +119,7 @@
                 </div>
             @endif
 
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     @if (Auth::check())
                         <div class="row">
@@ -164,6 +164,13 @@
                         </div>
                     @endif
                 </div>
+
+                @if ($product->description->value)
+                    <div class="panel-body">
+                        {!! $product->description->value !!}
+                    </div>
+                @endif
+
                 <table class="table">
                     <tr>
                         <td><b>Product nummer</b></td>
@@ -267,14 +274,6 @@
             </div>
         @endif
     </div>
-@endsection
-
-@section('extraCSS')
-    <style type="text/css">
-        .panel-body {
-            padding: 0 !important;
-        }
-    </style>
 @endsection
 
 @section('extraJS')

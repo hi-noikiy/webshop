@@ -146,4 +146,14 @@ class Product extends Model
     {
         return strlen($this->name) > 50 ? substr($this->name, 0, 47).'...' : $this->name;
     }
+
+    /**
+     * Detailed product description
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function description()
+    {
+        return $this->hasOne(Description::class, 'product_id', 'number');
+    }
 }

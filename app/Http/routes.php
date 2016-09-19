@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('addCarouselSlide', 'AdminController@addSlide');            // Try to add a carousel slide
         Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');        // Edit the slide order
         Route::post('updateCompany', 'AdminController@updateCompany');          // Update/add the user
+        Route::post('updateDescription', 'AdminController@updateDescription')->name('update_description');
         Route::post('pricelist', [
             'middleware' => 'RemoveTempFile',                                   // Middleware to remove the temp csv file after download
             'uses'       => 'AdminController@generate_pricelist',                      // Generate a downloadable pricelist for a specified user
@@ -80,6 +81,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('product/{product}', 'ApiController@product');    // Get product data
             Route::get('company', 'ApiController@companyDetails');       // Get user details
             Route::get('content', 'ApiController@content');                // Get the content for a field
+            Route::get('description', 'ApiController@description');
         });
 
         Route::group(['prefix' => 'packs'], function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Company;
 use App\Content;
+use App\Description;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Product;
@@ -178,6 +179,28 @@ class ApiController extends Controller
         } else {
             return Response::json([
                 'message' => 'Missing request parameter: `page`',
+            ], 400);
+        }
+    }
+
+    public function description(Request $request)
+    {
+        if ($request->has('product')) {
+            $product = Product::findByNumber($request->input('product'));
+
+            if ($product->description) {
+                return Response::json([
+                    'message' => 'Description for product ' . $request->input('product'),
+                    'payload' => $product->description,
+                ]);
+            } else {
+                return Response::json([
+                    'message' => 'No description found for page: ' . $request->input('product'),
+                ], 404);
+            }
+        } else {
+            return Response::json([
+                'message' => 'Missing request parameter: `product`',
             ], 400);
         }
     }

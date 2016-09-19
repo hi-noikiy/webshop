@@ -10,6 +10,7 @@ use App\Content;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\User;
+use App\Description;
 use DB;
 use File;
 use Helper;
@@ -119,6 +120,39 @@ class AdminController extends Controller
             return redirect('admin/managecontent')->with('status', 'De content is aangepast');
         } else {
             return redirect()->back()->withErrors('Content of Field veld leeg');
+        }
+    }
+
+    /**
+     * Save the product description
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateDescription(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'product' => 'required'
+        ]);
+
+        if ($validator->passes()) {
+            $content = $request->input('content');
+            $product = $request->input('product');
+
+            $description = Description::firstOrCreate([
+                'product_id' => $product
+            ]);
+
+            $description->value = $content;
+            $description->save();
+
+            return redirect()
+                ->back()
+                ->with('status', 'De product omschrijving is aangepast');
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator->errors());
         }
     }
 
