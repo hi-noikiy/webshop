@@ -10,7 +10,7 @@
             <div id="slideshow" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @for($i=0; $i < count($carouselSlides); $i++)
-                        <li data-target="#slideshow" data-slide-to="{{ $i }}}" class="{{ ($i === 0 ? 'active' : '') }}"></li>
+                        <li data-target="#slideshow" data-slide-to="{{ $i }}" class="{{ ($i === 0 ? 'active' : '') }}"></li>
                     @endfor
                 </ol>
 
