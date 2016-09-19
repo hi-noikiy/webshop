@@ -165,7 +165,7 @@
                     @endif
                 </div>
 
-                @if ($product->description->value)
+                @if ($product->description)
                     <div class="panel-body">
                         {!! $product->description->value !!}
                     </div>
