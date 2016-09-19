@@ -2,6 +2,7 @@
 
 use App\Company;
 use App\User;
+use App\Description;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -139,5 +140,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         ]);
 
         return $this;
+    }
+
+    protected function createDescription()
+    {
+        $d = new Description;
+
+        $d->product_id = 9999999;
+        $d->value = "This is a test description";
+
+        $d->save();
     }
 }
