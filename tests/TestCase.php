@@ -147,7 +147,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $d = new Description;
 
         $d->product_id = 9999999;
-        $d->value = "This is a test description";
+        $d->value = 'This is a test description';
 
         $d->save();
     }

@@ -124,7 +124,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Save the product description
+     * Save the product description.
      *
      * @param  \Illuminate\Http\Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -132,7 +132,7 @@ class AdminController extends Controller
     public function updateDescription(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'product' => 'required'
+            'product' => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -140,7 +140,7 @@ class AdminController extends Controller
             $product = $request->input('product');
 
             $description = Description::firstOrCreate([
-                'product_id' => $product
+                'product_id' => $product,
             ]);
 
             $description->value = $content;

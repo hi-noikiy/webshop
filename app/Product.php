@@ -148,7 +148,7 @@ class Product extends Model
     }
 
     /**
-     * Detailed product description
+     * Detailed product description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
