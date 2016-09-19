@@ -190,12 +190,12 @@ class ApiController extends Controller
 
             if ($product->description) {
                 return Response::json([
-                    'message' => 'Description for product ' . $request->input('product'),
+                    'message' => 'Description for product '.$request->input('product'),
                     'payload' => $product->description,
                 ]);
             } else {
                 return Response::json([
-                    'message' => 'No description found for page: ' . $request->input('product'),
+                    'message' => 'No description found for page: '.$request->input('product'),
                 ], 404);
             }
         } else {

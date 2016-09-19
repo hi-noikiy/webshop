@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Description extends Model
 {
-
     /**
      * @var array
      */
     protected $fillable = [
-        'product_id'
+        'product_id',
     ];
 
     /**
-     * Product the description belongs to
+     * Product the description belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

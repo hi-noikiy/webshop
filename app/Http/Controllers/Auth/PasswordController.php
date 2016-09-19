@@ -47,12 +47,12 @@ class PasswordController extends Controller
     {
         $this->validate($request, [
             'company_id' => 'required',
-            'username' => 'required'
+            'username' => 'required',
         ]);
 
         $user_details = [
             'username' => $request->input('username'),
-            'company_id' => $request->input('company_id')
+            'company_id' => $request->input('company_id'),
         ];
 
         $response = Password::sendResetLink($user_details, function (Message $message) {
