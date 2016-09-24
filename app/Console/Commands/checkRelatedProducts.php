@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Product;
+use Illuminate\Console\Command;
 
 class checkRelatedProducts extends Command
 {
@@ -38,7 +38,7 @@ class checkRelatedProducts extends Command
      */
     public function handle()
     {
-        $errors = "";
+        $errors = '';
         $products = Product::select(['number', 'related_products'])->where('related_products', '!=', '')->get();
         $bar = $this->output->createProgressBar(count($products));
         $bar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %memory:6s% %product%');
@@ -48,10 +48,11 @@ class checkRelatedProducts extends Command
             $bar->setMessage($product->number, 'product');
 
             // Loop though the related products to check if they exist
-            foreach (explode(",", $product->related_products) as $related_product) {
+            foreach (explode(',', $product->related_products) as $related_product) {
                 // Throw an error in the user's face if the related product does not exist
-                if (Product::where('number', $related_product)->count() === 0)
-                    $errors .= "Product " . $product->number . " has a non-existing related product: " . $related_product . "\r\n";
+                if (Product::where('number', $related_product)->count() === 0) {
+                    $errors .= 'Product '.$product->number.' has a non-existing related product: '.$related_product."\r\n";
+                }
             }
 
             $bar->advance();
@@ -61,10 +62,11 @@ class checkRelatedProducts extends Command
 
         $this->line("\r\n");
 
-        if ($errors !== "")
-            $this->error("\r\n \r\n" . $errors);
-        else
+        if ($errors !== '') {
+            $this->error("\r\n \r\n".$errors);
+        } else {
             $this->info("\r\nEr zijn geen fouten gevonden");
+        }
 
         $this->line("\r\n");
     }

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Product;
+use Illuminate\Console\Command;
 
 class checkProductImages extends Command
 {
@@ -47,8 +47,9 @@ class checkProductImages extends Command
         foreach ($products as $product) {
             $bar->setMessage($product->number, 'product');
 
-            if (!\File::exists(public_path() . "/img/products/" . $product->image))
+            if (! \File::exists(public_path().'/img/products/'.$product->image)) {
                 $errors[] = ['Product number' => $product->number, 'Image' => $product->image];
+            }
 
             $bar->advance();
         }
@@ -57,10 +58,11 @@ class checkProductImages extends Command
 
         $this->line("\r\n");
 
-        if (count($errors) === 0)
+        if (count($errors) === 0) {
             $this->info("\r\nAlle afbeeldingen zijn geuploaded");
-        else
+        } else {
             $this->table(['Product number', 'Image'], $errors);
+        }
 
         $this->line("\r\n");
     }

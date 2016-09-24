@@ -1,43 +1,50 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
-use DB;
 
-class SearchController extends Controller {
-
+/**
+ * Class SearchController.
+ */
+class SearchController extends Controller
+{
     /**
-     * The search page
+     * The search page.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function search(Request $request)
     {
-        $str    = $request->get('q');
-        $query  = DB::table('products');
-
-        $query->where(function ($query) use ($request) {
-            if ($request->has('brand')) $query->where('brand', $request->get('brand'));
-            if ($request->has('serie')) $query->where('series', $request->get('serie'));
-            if ($request->has('type')) $query->where('type', $request->get('type'));
-        });
-
-        if ($request->has('q')) {
-            $query->where(function ($query) use ($str, $request) {
-                $query->orWhere('number', 'LIKE', '%' . $str . '%')
-                    ->orWhere('group', 'LIKE', '%' . $str . '%')
-                    ->orWhere('altNumber', 'LIKE', '%' . $str . '%')
-                    ->orWhere('ean', 'LIKE', '%' . $str . '%');
+        $str = $request->get('q');
+        $query = Product::where(function ($query) use ($request) {
+            if ($request->has('brand')) {
+                $query->where('brand', $request->input('brand'));
+            }
+            if ($request->has('serie')) {
+                $query->where('series', $request->input('serie'));
+            }
+            if ($request->has('type')) {
+                $query->where('type', $request->input('type'));
+            }
+        })->where(function ($query) use ($str, $request) {
+            if ($request->has('q')) {
+                $query->orWhere('number', 'LIKE', '%'.$str.'%')
+                    ->orWhere('group', 'LIKE', '%'.$str.'%')
+                    ->orWhere('altNumber', 'LIKE', '%'.$str.'%')
+                    ->orWhere('ean', 'LIKE', '%'.$str.'%');
 
                 $query->orWhere(function ($query) use ($request) {
-                    foreach (explode(' ', $request->get('q')) as $word) {
+                    foreach (explode(' ', $request->input('q')) as $word) {
                         // Split the input so the order of the search query doesn't matter
-                        $query->where(DB::raw('CONCAT(name, " ", keywords)'), "LIKE", "%{$word}%");
+                        $query->where(\DB::raw('CONCAT(name, " ", keywords)'), 'LIKE', "%{$word}%");
                     }
                 });
-            });
-        }
+            }
+        });
 
         // Get all the results to filter the brands, series and types from it
         $allResults = $query->orderBy('number', 'asc')->get();
@@ -64,16 +71,16 @@ class SearchController extends Controller {
 
         // Return the search view with the fetched data
         return view('webshop.search', [
-            'results' => $results,
-            'brands' => array_unique($brands),
-            'series' => array_unique($series),
-            'types' => array_unique($types),
-            'scriptTime' => round(microtime(true) - LARAVEL_START, 4)
+            'results'    => $results,
+            'brands'     => array_unique($brands),
+            'series'     => array_unique($series),
+            'types'      => array_unique($types),
+            'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
         ]);
     }
 
     /**
-     * Specials
+     * Specials.
      *
      * @return mixed
      */
@@ -87,28 +94,26 @@ class SearchController extends Controller {
         // Return the search view with the fetched data
         return view('webshop.specials', [
             'results'    => $products,
-            'scriptTime' => round(microtime(true) - LARAVEL_START, 4)
+            'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
         ]);
     }
 
     /**
-     * A search page only searching for the clearance products
+     * A search page only searching for the clearance products.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function clearance()
     {
-        $results = \DB::table('products')
-            ->where('action_type', 'Opruiming')
+        $results = Product::where('action_type', 'Opruiming')
             ->orderBy('number', 'asc')
             ->paginate(25);
 
         // Return the search view with the fetched data
-        return view('webshop.altSearch', [
-            'results' => $results,
-            'title' => 'Opruiming',
-            'scriptTime' => round(microtime(true) - LARAVEL_START, 4)
+        return view('webshop.clearance', [
+            'results'    => $results,
+            'title'      => 'Opruiming',
+            'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
         ]);
     }
-
 }

@@ -2,12 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Carbon\Carbon;
-use File, Validator, DB, Helper;
-use App\Product;
 use App\Content;
 use App\Exceptions\InvalidColumnCountException;
+use App\Product;
+use Carbon\Carbon;
+use DB;
+use File;
+use Helper;
+use Illuminate\Console\Command;
+use Validator;
 
 class importProducts extends Command
 {
@@ -26,7 +29,7 @@ class importProducts extends Command
     protected $description = 'Read the products file and import the new products';
 
     /**
-     * This will hold the path to the products csv file
+     * This will hold the path to the products csv file.
      *
      * @var string
      */
@@ -51,8 +54,7 @@ class importProducts extends Command
      */
     public function handle()
     {
-        if (File::exists($this->filePath))
-        {
+        if (File::exists($this->filePath)) {
             ini_set('memory_limit', '1G');
 
             $validator = Validator::make(
@@ -60,14 +62,13 @@ class importProducts extends Command
                 ['fileType' => 'required|string:text/plain|string:text/csv']
             );
 
-            if ($validator->fails())
-                $this->error("Invalid CSV file!");
-            else
-            {
+            if ($validator->fails()) {
+                $this->error('Invalid CSV file!');
+            } else {
                 $startTime = microtime(true);
-                $fh        = fopen($this->filePath, 'r');
+                $fh = fopen($this->filePath, 'r');
                 $lineCount = count(file($this->filePath));
-                $bar       = $this->output->createProgressBar($lineCount);
+                $bar = $this->output->createProgressBar($lineCount);
                 $products_with_related_products = [];
 
                 $bar->setRedrawFrequency(100);
@@ -77,12 +78,11 @@ class importProducts extends Command
 
                 try {
                     // Truncate the products table
-                    (new Product)->newQuery()->delete();
+                    (new Product())->newQuery()->delete();
 
                     $line = 1;
 
-                    while(!feof($fh))
-                    {
+                    while (! feof($fh)) {
                         //$data = preg_replace('/;$/', '', fgets($fh));
                         $data = str_getcsv(fgets($fh), ';');
                         $columnCount = count($data);
@@ -91,7 +91,6 @@ class importProducts extends Command
                             $this->info("Skipping empty line {$line}");
                         // Make sure column count is 30
                         } elseif ($columnCount === 30) {
-
                             $bar->setMessage($data[3], 'product');
 
                             DB::table('products')->insert([
@@ -103,7 +102,7 @@ class importProducts extends Command
                                 'registered_per'   => $data[8],
                                 'packed_per'       => $data[9],
                                 'price_per'        => $data[10],
-                                'refactor'         => preg_replace("/\,/", ".", $data[12]),
+                                'refactor'         => preg_replace("/\,/", '.', $data[12]),
                                 'supplier'         => $data[13],
                                 'ean'              => $data[14],
                                 'image'            => $data[15],
@@ -113,7 +112,7 @@ class importProducts extends Command
                                 'brand'            => $data[21],
                                 'series'           => $data[22],
                                 'type'             => $data[23],
-                                'special_price'    => ($data[24] === "" ? "0.00" : preg_replace("/\,/", ".", $data[24])),
+                                'special_price'    => ($data[24] === '' ? '0.00' : preg_replace("/\,/", '.', $data[24])),
                                 'action_type'      => $data[25],
                                 'keywords'         => $data[26],
                                 'related_products' => $data[27],
@@ -124,9 +123,8 @@ class importProducts extends Command
                             $line++;
 
                             // Save the products with related products in an array for verification
-                            if ($data[27] != "")
-                            {
-                                $products_with_related_products[ $data[3] ] = $data[27];
+                            if ($data[27] != '') {
+                                $products_with_related_products[$data[3]] = $data[27];
                             }
 
                             $bar->advance();
@@ -146,45 +144,46 @@ class importProducts extends Command
                 } catch (\Exception $e) {
                     DB::rollback();
 
-                    $errorMessage = "Er is een fout opgetreden, de database is niet aangepast: <br />" . $e->getMessage();
+                    $errorMessage = 'Er is een fout opgetreden, de database is niet aangepast: <br />'.$e->getMessage();
 
                     unlink($this->filePath);
                     $this->error($errorMessage);
 
                     Content::where('name', 'admin.product_import')->update([
-                        'content' => $errorMessage,
+                        'content'    => $errorMessage,
                         'updated_at' => Carbon::now('Europe/Amsterdam'),
-                        'error' => true
+                        'error'      => true,
                     ]);
 
-                    \Mail::send('email.import_error_notice', ['error' => $errorMessage, 'type' => 'product'], function($message)
-        			{
-        				$message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+                    \Mail::send('email.import_error_notice', ['error' => $errorMessage, 'type' => 'product'], function ($message) {
+                        $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-        				$message->to('gfw@wiringa.nl');
+                        $message->to('gfw@wiringa.nl');
 
-        				$message->subject('[WTG Webshop] Product import error');
-        			});
+                        $message->subject('[WTG Webshop] Product import error');
+                    });
 
                     return 2;
                 }
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                $this->info($line . " products were imported in " . $endTime . " seconds using " . number_format(memory_get_peak_usage() / 1000000, 2) . " MBs of memory");
+                $this->info($line.' products were imported in '.$endTime.' seconds using '.number_format(memory_get_peak_usage() / 1000000, 2).' MBs of memory');
 
                 Content::where('name', 'admin.product_import')->update([
-                    'content' => $line . " producten zijn geimporteerd. <br />Geheugen gebruik: " . number_format(memory_get_peak_usage() / 1000000, 2) . " MB",
+                    'content'    => $line.' producten zijn geimporteerd. <br />Geheugen gebruik: '.number_format(memory_get_peak_usage() / 1000000, 2).' MB',
                     'updated_at' => Carbon::now('Europe/Amsterdam'),
-                    'error' => false
+                    'error'      => false,
                 ]);
             }
 
             // Always remove the file at the end of the import to make sure that it doesn't get parsed twice
             unlink($this->filePath);
+
             return 0;
         } else {
             $this->warn('No products file found.');
+
             return 1;
         }
     }

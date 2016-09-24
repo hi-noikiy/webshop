@@ -1,25 +1,27 @@
-<?php namespace App\Exceptions;
+<?php
 
-use Redirect;
+namespace App\Exceptions;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Session\TokenMismatchException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Redirect;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Handler extends ExceptionHandler {
-
-	/**
+class Handler extends ExceptionHandler
+{
+    /**
      * A list of the exception types that should not be reported.
      *
      * @var array
      */
     protected $dontReport = [
-		NotFoundHttpException::class,
+        NotFoundHttpException::class,
         HttpException::class,
         ModelNotFoundException::class,
-        ProductNotFoundException::class
+        ProductNotFoundException::class,
     ];
 
     /**
@@ -27,8 +29,10 @@ class Handler extends ExceptionHandler {
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
-     * @throws \Exception  $e
+     * @param \Exception $e
+     *
+     * @throws \Exception $e
+     *
      * @return void
      */
     public function report(\Exception $e)
@@ -40,38 +44,36 @@ class Handler extends ExceptionHandler {
         if (auth()->check()) {
             $sentry->user_context([
                 'id'        => auth()->user()->login,
-                'username'  => auth()->user()->company
+                'username'  => auth()->user()->company,
             ]);
         }
 
         // Send reportable errors with level 'Error'
-        if ($this->shouldReport($e)) {
+        if ($this->shouldReport($e) && app()->environment('production')) {
             $sentry->captureException($e);
         // Else send them with warning and only if someone is logged in
-        } else if (auth()->check()) {
+        } elseif (auth()->check()) {
             $sentry->captureException($e, [
-                'level' => 'warning'
+                'level' => 'warning',
             ]);
         }
 
-		$trace = $e->getTraceAsString();
-		$class = get_class($e);
+        $trace = $e->getTraceAsString();
+        $class = get_class($e);
 
-		if ( env('APP_ENV') === "production" && 
-             !$e instanceof ModelNotFoundException &&
-		     !$e instanceof MethodNotAllowedHttpException &&
-			 !$e instanceof TokenMismatchException &&
-			 !$e instanceof NotFoundHttpException)
-		{
-			\Mail::send('email.exception', ['trace' => $trace, 'class' => $class], function($message)
-			{
-					$message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
+        if (app()->environment('production') &&
+             ! $e instanceof ModelNotFoundException &&
+             ! $e instanceof MethodNotAllowedHttpException &&
+             ! $e instanceof TokenMismatchException &&
+             ! $e instanceof NotFoundHttpException) {
+            \Mail::send('email.exception', ['trace' => $trace, 'class' => $class], function ($message) {
+                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
 
-					$message->to('thomas.wiringa@gmail.com');
+                $message->to('thomas.wiringa@gmail.com');
 
-					$message->subject('[WTG Webshop] Whoops, looks like something went wrong');
-			});
-		}
+                $message->subject('[WTG Webshop] Whoops, looks like something went wrong');
+            });
+        }
 
         return parent::report($e);
     }
@@ -79,8 +81,9 @@ class Handler extends ExceptionHandler {
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $e
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, \Exception $e)
@@ -89,10 +92,10 @@ class Handler extends ExceptionHandler {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
-		if ($e instanceof TokenMismatchException) {
-			return redirect('/')
-                ->withErrors("Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw");
-		}
+        if ($e instanceof TokenMismatchException) {
+            return redirect('/')
+                ->withErrors('Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw');
+        }
 
         if ($this->isUnauthorizedException($e)) {
             $e = new HttpException(403, $e->getMessage());
@@ -102,7 +105,7 @@ class Handler extends ExceptionHandler {
             return $this->toIlluminateResponse($this->renderHttpException($e), $e);
         } else {
             // Display a custom 500 error screen if the app is in production
-            if (app()->environment() === "production") {
+            if (app()->environment() === 'production') {
                 return response()->view('errors.500', ['exception' => $e], 500);
             } else {
                 return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);

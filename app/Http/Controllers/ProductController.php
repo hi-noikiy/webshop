@@ -1,20 +1,25 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use App\Exceptions\ProductNotFoundException;
-use App\PackProduct;
 use App\Pack;
-use Illuminate\Http\Request;
+use App\PackProduct;
 use App\Product;
-use Session, Auth, Helper;
+use Auth;
+use Helper;
+use Illuminate\Http\Request;
+use Session;
 
-class ProductController extends Controller {
-
+class ProductController extends Controller
+{
     /**
      * The product page
-     * Will throw 404 error when no product matches the product id
+     * Will throw 404 error when no product matches the product id.
      *
      * @param Request $request
-     * @param int $product_Id
+     * @param int     $product_Id
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showProduct(Request $request, $product_Id = null)
@@ -23,12 +28,12 @@ class ProductController extends Controller {
         Session::flash('product_id', $product_Id);
 
         try {
-            $product  = Product::where('number', $product_Id)->firstOrFail();
+            $product = Product::where('number', $product_Id)->firstOrFail();
         } catch (\Exception $e) {
             throw new ProductNotFoundException($product_Id);
         }
 
-        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number) : null);
+        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
         $prevPage = $request->get('ref');
         $related_products = [];
         $pack_list = [];
@@ -45,7 +50,7 @@ class ProductController extends Controller {
             $pack_list = Pack::whereIn('id', $pack)->get();
         }
 
-        if (preg_match("/(search|clearance|specials)/", $request->server('HTTP_REFERER'))) {
+        if (preg_match('/(search|clearance|specials)/', $request->server('HTTP_REFERER'))) {
             Session::put('continueShopping', $request->server('HTTP_REFERER'));
         }
 
@@ -54,8 +59,7 @@ class ProductController extends Controller {
             'discount'          => $discount,
             'related_products'  => $related_products,
             'prevPage'          => $prevPage,
-            'pack_list'         => $pack_list
+            'pack_list'         => $pack_list,
         ]);
     }
-
 }
