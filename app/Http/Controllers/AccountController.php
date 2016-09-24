@@ -425,8 +425,8 @@ class AccountController extends Controller
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = preg_replace("/\,/", "", $korting->discount);
-            $korting1 = ($korting1 < 10 ? '00' : '0') . $korting1;
+            $korting1 = preg_replace("/\,/", '', $korting->discount);
+            $korting1 = ($korting1 < 10 ? '00' : '0').$korting1;
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
@@ -460,8 +460,8 @@ class AccountController extends Controller
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = preg_replace("/\,/", "", $korting->discount);
-            $korting1 = ($korting1 < 10 ? '00' : '0') . $korting1;
+            $korting1 = preg_replace("/\,/", '', $korting->discount);
+            $korting1 = ($korting1 < 10 ? '00' : '0').$korting1;
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
@@ -494,8 +494,8 @@ class AccountController extends Controller
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = preg_replace("/\,/", "", $korting->discount);
-            $korting1 = ($korting1 < 10 ? '00' : '0') . $korting1;
+            $korting1 = preg_replace("/\,/", '', $korting->discount);
+            $korting1 = ($korting1 < 10 ? '00' : '0').$korting1;
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
@@ -523,8 +523,8 @@ class AccountController extends Controller
             while (strlen($omschrijving) < 50) {
                 $omschrijving .= ' ';
             }
-            $korting1 = preg_replace("/\,/", "", $korting->discount);
-            $korting1 = ($korting1 < 10 ? '00' : '0') . $korting1;
+            $korting1 = preg_replace("/\,/", '', $korting->discount);
+            $korting1 = ($korting1 < 10 ? '00' : '0').$korting1;
             while (strlen($korting1) < 5) {
                 $korting1 .= '0';
             }
