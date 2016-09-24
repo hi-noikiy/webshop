@@ -1,4 +1,6 @@
-# Laravel WTG [![Build Status](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop.svg?branch=master)](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop)
+# Laravel WTG 
+[![Build Status](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop.svg?branch=master)](https://travis-ci.org/Wiringa-Technische-Groothandel/webshop)
+[![StyleCI](https://styleci.io/repos/61391805/shield?branch=master)](https://styleci.io/repos/61391805)
 
 * * *
 
