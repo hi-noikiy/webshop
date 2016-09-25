@@ -7,7 +7,7 @@
 @section('content')
     <div class="alert alert-danger" role="alert">
         @if (!$exception->getMessage())
-            De opgevraagde pagina <code>{{ $_SERVER['REQUEST_URI'] }}</code> is niet gevonden op de server.
+            De opgevraagde pagina <code>{{ request()->getUri() }}</code> is niet gevonden op de server.
         @else
             {{ $exception->getMessage() }}
         @endif

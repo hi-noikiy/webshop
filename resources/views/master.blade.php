@@ -122,12 +122,6 @@
 
     @include('components.notifications')
 
-    @if(app()->environment('staging'))
-        <div class="local-dev"> TESTING </div>
-    @elseif(app()->environment('local'))
-        <div class="local-dev"> LOCAL DEVELOPMENT </div>
-    @endif
-
     <header class="page-header hidden-xs">
         <div class="container">
             <div class="col-md-5 header-logo">
@@ -179,5 +173,9 @@
             @yield('extraJS')
         </footer>
     </div>
+
+    @if(app()->environment() !== 'production')
+        <div style="position: fixed;bottom: 20px;right: 20px;background-color: red;color:#333;padding:5px;border:3px solid #333;">{{ ucfirst(app()->environment()) }}</div>
+    @endif
 </body>
 </html>

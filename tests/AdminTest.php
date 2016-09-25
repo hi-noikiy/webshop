@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class AdminTest extends TestCase
 {
@@ -17,13 +16,13 @@ class AdminTest extends TestCase
      */
     public function testEditUserGetUserDetailsWithExistingUser()
     {
+        $this->createCompany();
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=13370')
-            ->seeJsonEquals([
-                'message' => 'User details for user 13370',
-                'payload' => $user->toArray()
+            ->get('/admin/api/company?id=12345')
+            ->seeJson([
+                'message' => 'User details for user 12345',
             ])
             ->assertResponseStatus(200);
     }
@@ -38,9 +37,9 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user')
+            ->get('/admin/api/company')
             ->seeJsonEquals([
-                'message' => "Missing request parameter: `id`"
+                'message' => 'Missing request parameter: `id`',
             ])
             ->assertResponseStatus(400);
     }
@@ -55,9 +54,9 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=07331')
+            ->get('/admin/api/company?id=54321')
             ->seeJsonEquals([
-                'message' => 'No user found with login 07331'
+                'message' => 'No user found with login 54321',
             ])
             ->assertResponseStatus(404);
     }
@@ -72,27 +71,10 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->get('/admin/api/user?id=1337')
+            ->get('/admin/api/company?id=1234')
             ->seeJsonEquals([
-                'message' => 'No user found with login 1337'
+                'message' => 'No user found with login 1234',
             ])
             ->assertResponseStatus(404);
-    }
-
-    /**
-     * Create an admin user
-     *
-     * @return mixed
-     */
-    private function createUser()
-    {
-        User::create([
-            'login' => '13370',
-            'password' => bcrypt('password'),
-            'company' => 'company',
-            'isAdmin' => 1
-        ]);
-
-        return User::whereLogin('13370')->first();
     }
 }

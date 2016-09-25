@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LoginTest extends TestCase
@@ -9,162 +7,128 @@ class LoginTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Check the default user login
+     * Check the default user login.
      *
      * @return void
      */
     public function testSuccessfulUserLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createCompany();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('test', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
             ->dontSee('Admin');
     }
 
     /**
-     * Check inactive user login
+     * Check inactive user login.
      *
      * @return void
      */
-    public function testInactiveUserLogin()
-    {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '0',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
-
-        $this->visit('/')
-            ->type('user', 'username')
-            ->type('test', 'password')
-            ->press('Login')
-            ->see('Gebruikersnaam en/of wachtwoord onjuist')
-            ->dontSee('Admin');
-    }
+//    public function testInactiveUserLogin()
+//    {
+//        $this->createCompany(['active' => false]);
+//        $this->createUser(false, true);
+//
+//        $this->visit('/')
+//            ->type('12345', 'username')
+//            ->type('12345', 'company')
+//            ->type('password', 'password')
+//            ->press('Login')
+//            ->see('Gebruikersnaam en/of wachtwoord onjuist')
+//            ->dontSee('Admin');
+//    }
 
     /**
-     * Check admin user login
+     * Check admin user login.
      *
      * @return void
      */
     public function testAdminUserLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '1',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createCompany();
+        $this->createUser(true);
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('test', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('U bent nu ingelogd')
             ->see('Admin');
     }
 
     /**
-     * Check login with wrong username
+     * Check login with wrong username.
      *
      * @return void
      */
     public function testIncorrectUsernameLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createCompany();
+        $this->createUser();
 
         $this->visit('/')
             ->type('baduser', 'username')
-            ->type('test', 'password')
+            ->type('12345', 'company')
+            ->type('password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
 
     /**
-     * Check login with wrong password
+     * Check login with wrong password.
+     *
+     * @return void
+     */
+    public function testIncorrectCompanyLogin()
+    {
+        $this->createCompany();
+        $this->createUser();
+
+        $this->visit('/')
+            ->type('12345', 'username')
+            ->type('badcompany', 'company')
+            ->type('password', 'password')
+            ->press('Login')
+            ->see('Gebruikersnaam en/of wachtwoord onjuist');
+    }
+
+    /**
+     * Check login with wrong password.
      *
      * @return void
      */
     public function testIncorrectPasswordLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createCompany();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('wrongpassword', 'password')
+            ->type('12345', 'username')
+            ->type('12345', 'company')
+            ->type('bad_password', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
 
     /**
-     * Check login with empty password
+     * Check login with empty password.
      *
      * @return void
      */
     public function testEmptyFormLogin()
     {
-        DB::table('users')->insert([
-            'login'     => 'user',
-            'company'   => 'company',
-            'street'    => 'Test drv. 69',
-            'postcode'  => '1337 GG',
-            'city'      => 'somewhere',
-            'email'     => 'test@example.com',
-            'active'    => '1',
-            'isAdmin'   => '0',
-            'password'  => bcrypt('test')
-        ]);
+        $this->createCompany();
+        $this->createUser();
 
         $this->visit('/')
-            ->type('user', 'username')
-            ->type('', 'password')
             ->press('Login')
             ->see('Gebruikersnaam en/of wachtwoord onjuist');
     }
-
 }

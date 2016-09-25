@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Pack;
@@ -6,69 +8,73 @@ use App\PackProduct;
 use App\Product;
 use Illuminate\Http\Request;
 
-class PacksController extends Controller {
-
+class PacksController extends Controller
+{
     /**
-     * Overview of special product packs
+     * Overview of special product packs.
      *
      * @return mixed
      */
     public function index()
     {
         return view('admin/packs/overview', [
-            'packs' => Pack::all()
+            'packs' => Pack::all(),
         ]);
     }
 
     /**
-     * Edit a special product pack
+     * Edit a special product pack.
      *
      * @param int $id
+     *
      * @return mixed
      */
     public function edit(int $id)
     {
         return view('admin/packs/edit', [
-            'pack' => Pack::find($id)
+            'pack' => Pack::find($id),
         ]);
     }
 
     /**
-     * Save the product pack to the database
+     * Save the product pack to the database.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function create(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'product'  => 'required'
+            'product'  => 'required',
         ]);
 
         if ($validator->passes()) {
             $pack = Pack::firstOrCreate([
-                'product_number' => $request->get('product')
+                'product_number' => $request->get('product'),
             ]);
 
             return redirect()
-                ->intended('admin/packs/edit/' . $pack->id)
+                ->intended('admin/packs/edit/'.$pack->id)
                 ->with('status', 'Actiepakket is aangemaakt');
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator->errors());
+        }
     }
 
     /**
-     * Remove a product pack and the associated products
+     * Remove a product pack and the associated products.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function destroy(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'pack' => 'required'
+            'pack' => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -81,21 +87,23 @@ class PacksController extends Controller {
                 return redirect()
                     ->back()
                     ->with('status', 'Het actiepakket is verwijderd');
-            } else
+            } else {
                 return redirect()
                     ->back()
                     ->withErrors("Geen actiepakket gevonden met id: {$pack}");
-
-        } else
+            }
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator->errors());
+        }
     }
 
     /**
-     * Add a product to a pack
+     * Add a product to a pack.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function addProduct(Request $request)
@@ -103,44 +111,46 @@ class PacksController extends Controller {
         $validator = \Validator::make($request->all(), [
             'product'   => 'required',
             'amount'    => 'required',
-            'pack'      => 'required'
+            'pack'      => 'required',
         ]);
 
         if ($validator->passes()) {
             if (Product::where('number', $request->get('product'))->count() === 1) {
-                $pp = new PackProduct;
+                $pp = new PackProduct();
 
-                $pp->pack_id    = $request->get('pack');
-                $pp->product    = $request->get('product');
-                $pp->amount     = $request->get('amount');
+                $pp->pack_id = $request->get('pack');
+                $pp->product = $request->get('product');
+                $pp->amount = $request->get('amount');
 
                 $pp->save();
 
                 return redirect()
-                    ->intended('admin/packs/edit/' . $request->get('pack'))
+                    ->intended('admin/packs/edit/'.$request->get('pack'))
                     ->with('status', 'Product is toegevoegd');
             } else {
                 return redirect()
                     ->back()
                     ->withErrors("Product {$request->get('product')} bestaat niet");
             }
-        } else
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator->errors());
+        }
     }
 
     /**
-     * Remove a product from a pack
+     * Remove a product from a pack.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function removeProduct(Request $request)
     {
         $validator = \Validator::make($request->all(), [
             'product'   => 'required',
-            'pack'      => 'required'
+            'pack'      => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -150,13 +160,15 @@ class PacksController extends Controller {
                 return redirect()
                     ->back()
                     ->with('status', 'Het product is verwijderd');
-            } else
+            } else {
                 return redirect()
                     ->back()
                     ->withErrors('Het opgevraagde product behoort niet tot dit actiepakket');
-        } else
+            }
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator->errors());
+        }
     }
 }
