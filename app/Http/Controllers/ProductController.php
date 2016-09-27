@@ -11,16 +11,22 @@ use Helper;
 use Illuminate\Http\Request;
 use Session;
 
+/**
+ * Class ProductController
+ * @package App\Http\Controllers
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class ProductController extends Controller
 {
+
     /**
      * The product page
      * Will throw 404 error when no product matches the product id.
      *
-     * @param Request $request
-     * @param int     $product_Id
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  Request $request
+     * @param  int  $product_Id
+     * @throws ProductNotFoundException
+     * @return \Illuminate\View\View
      */
     public function showProduct(Request $request, $product_Id = null)
     {
@@ -62,4 +68,5 @@ class ProductController extends Controller
             'pack_list'         => $pack_list,
         ]);
     }
+
 }

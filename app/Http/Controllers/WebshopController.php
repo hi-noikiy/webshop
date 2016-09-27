@@ -14,14 +14,16 @@ use Request;
 use Session;
 
 /**
- * Class WebshopController.
+ * Class WebshopController
+ * @package App\Http\Controllers
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class WebshopController extends Controller
 {
     /**
      * The main webshop page.
      *
-     * @return mixed
+     * @return \Illuminate\View\View
      */
     public function main()
     {
@@ -53,9 +55,8 @@ class WebshopController extends Controller
      * The product page
      * Will throw 404 error when no product matches the product id.
      *
-     * @param bool $product_Id
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  bool  $product_Id
+     * @return \Illuminate\View\View
      */
     public function showProduct($product_Id = false)
     {
@@ -94,9 +95,8 @@ class WebshopController extends Controller
     /**
      * Add the products from a previous order to the cart.
      *
-     * @param $orderId
-     *
-     * @return mixed
+     * @param  int  $orderId
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function reorder($orderId)
     {
@@ -140,7 +140,7 @@ class WebshopController extends Controller
     /**
      * Show the order finished screen.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|Redirect
+     * @return \Illuminate\View\View|Redirect
      */
     public function orderFinished()
     {

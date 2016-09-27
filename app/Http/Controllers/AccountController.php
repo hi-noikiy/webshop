@@ -15,7 +15,9 @@ use Response;
 use Session;
 
 /**
- * Class AccountController.
+ * Class AccountController
+ * @package App\Http\Controllers
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class AccountController extends Controller
 {
@@ -75,8 +77,7 @@ class AccountController extends Controller
     /**
      * Update the favourites from a user.
      *
-     * @param Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|string
      */
     public function modFav(Request $request)
@@ -132,8 +133,7 @@ class AccountController extends Controller
     /**
      * Check if the product is in the favorites array.
      *
-     * @param Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|string
      */
     public function isFav(Request $request)
@@ -197,8 +197,7 @@ class AccountController extends Controller
     /**
      * Handle the add address request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function addAddress(Request $request)
@@ -238,8 +237,7 @@ class AccountController extends Controller
     /**
      * This function handles the removal of an address.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function removeAddress(Request $request)
@@ -277,9 +275,8 @@ class AccountController extends Controller
     /**
      * This will handle the requests for the generation of the discounts file.
      *
-     * @param string $type
-     * @param string $method
-     *
+     * @param  string  $type
+     * @param  string  $method
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function generateFile($type, $method)

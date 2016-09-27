@@ -10,14 +10,18 @@ use Illuminate\Http\Request;
 use Redirect;
 use Validator;
 
+/**
+ * Class ImportController
+ * @package App\Http\Controllers\Admin
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class ImportController extends Controller
 {
     /**
      * Product import handler.
      *
-     * @param Request $request
-     *
-     * @return $this|Redirect
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function product(Request $request)
     {
@@ -48,9 +52,8 @@ class ImportController extends Controller
     /**
      * This function will handle the discount import.
      *
-     * @param Request $request
-     *
-     * @return $this|Redirect
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function discount(Request $request)
     {
@@ -81,9 +84,8 @@ class ImportController extends Controller
     /**
      * This function will handle the image import.
      *
-     * @param Request $request
-     *
-     * @return $this|Redirect
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function image(Request $request)
     {
@@ -135,9 +137,8 @@ class ImportController extends Controller
     /**
      * This function will handle the downloads import.
      *
-     * @param Request $request
-     *
-     * @return $this|Redirect
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function download(Request $request)
     {

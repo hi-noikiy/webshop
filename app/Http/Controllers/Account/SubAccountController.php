@@ -8,6 +8,11 @@ use Auth;
 use Illuminate\Http\Request;
 use Response;
 
+/**
+ * Class SubAccountController
+ * @package App\Http\Controllers\Account
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class SubAccountController extends Controller
 {
     public function __construct()
@@ -18,7 +23,7 @@ class SubAccountController extends Controller
     /**
      * Get the sub accounts.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -30,8 +35,7 @@ class SubAccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -83,8 +87,7 @@ class SubAccountController extends Controller
     /**
      * Delete a sub account.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
@@ -143,8 +146,7 @@ class SubAccountController extends Controller
     /**
      * Toggle manager status for a sub account.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update($id)
