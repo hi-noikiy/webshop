@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Class PasswordController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class PasswordController extends Controller
 {
     /**
@@ -20,8 +24,7 @@ class PasswordController extends Controller
     /**
      * Change the password.
      *
-     * @param Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function doChangePassword(Request $request)

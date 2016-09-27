@@ -9,15 +9,18 @@ use Illuminate\Http\Request;
 use Log;
 use Session;
 
+/**
+ * Class UserController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class UserController extends Controller
 {
     /**
      * The user will be redirected to the previous page with
      * a message indicating whether the login was successful or not.
      *
-     * @param Request $request
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
     {
@@ -37,7 +40,7 @@ class UserController extends Controller
 
             // Try to log the user in
             if (Auth::attempt($user_data, ($request->input('remember_me') === 'on' ? true : false))) {
-                Log::info("User [{$request->input('username')}] logged in successfully");
+                Log::info("[Login] User: [{$request->input('username')}] - Company [{$request->input('company')}] - success");
 
                 if (Auth::user()->cart) {
                     Log::info("Loading shopping cart from database for user [{$request->input('username')}]");
@@ -57,7 +60,7 @@ class UserController extends Controller
             }
         }
 
-        Log::info("User [{$request->input('username')}] failed to log in");
+        Log::info("[Login] User: [{$request->input('username')}] - Company [{$request->input('company')}] - failed");
 
         // The input field(s) is/are empty, go back to the previous page with an error message
         return redirect()
@@ -73,12 +76,12 @@ class UserController extends Controller
      */
     public function logout()
     {
-        $user = Auth::user()->username;
+        $user = Auth::user();
 
         Cart::destroy();
         Auth::logout();
 
-        Log::info('User ['.$user.'] logged out successfully');
+        Log::info("[Logout] User: [{$user->username}] - Company [{$user->company_id}] - success");
 
         return redirect()
             ->intended('/')
@@ -88,7 +91,7 @@ class UserController extends Controller
     /**
      * Show the registration page.
      *
-     * @return mixed
+     * @return \Illuminate\View\View
      */
     public function register()
     {
@@ -99,10 +102,10 @@ class UserController extends Controller
 
     /**
      * Verify the registration page.
+     * TODO: make this code prettier.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function register_check(Request $request)
     {
