@@ -25,13 +25,14 @@ use Validator;
 
 /**
  * Class AdminController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class AdminController extends Controller
 {
     /**
      * The admin overview page.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function overview()
     {
@@ -58,7 +59,7 @@ class AdminController extends Controller
     /**
      * Display a fancy phpinfo page.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function phpinfo()
     {
@@ -68,7 +69,7 @@ class AdminController extends Controller
     /**
      * The import page.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function import()
     {
@@ -78,7 +79,7 @@ class AdminController extends Controller
     /**
      * The import was successful :D.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View|Redirect
      */
     public function importSuccess()
     {
@@ -95,7 +96,7 @@ class AdminController extends Controller
     /**
      * Content management page.
      *
-     * @return $this
+     * @return \Illuminate\View\View
      */
     public function contentManager()
     {
@@ -107,7 +108,7 @@ class AdminController extends Controller
     /**
      * Save the content to the database.
      *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function saveContent()
     {
@@ -126,8 +127,8 @@ class AdminController extends Controller
     /**
      * Save the product description.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateDescription(Request $request)
     {
@@ -159,7 +160,7 @@ class AdminController extends Controller
     /**
      * Show the generate page.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function generate()
     {
@@ -173,14 +174,15 @@ class AdminController extends Controller
     /**
      * Generate the catalog PDF file.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function generateCatalog()
+    public function generateCatalog(Request $request)
     {
-        if (Input::get('footer') !== '') {
+        if ($request->input('footer') !== '') {
             $footer = Content::where('name', 'catalog.footer')->first();
 
-            $footer->content = Input::get('footer');
+            $footer->content = $request->input('footer');
 
             $footer->save();
 
@@ -210,7 +212,7 @@ class AdminController extends Controller
     /**
      * Carousel manager.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function carousel()
     {
@@ -222,7 +224,7 @@ class AdminController extends Controller
     /**
      * Add a carousel slide.
      *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function addSlide()
     {
@@ -237,7 +239,9 @@ class AdminController extends Controller
             );
 
             if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator->errors());
+                return redirect()
+                    ->back()
+                    ->withErrors($validator->errors());
             } else {
                 $slide = new Carousel();
 
@@ -264,9 +268,8 @@ class AdminController extends Controller
     /**
      * Remove a slide from the carousel.
      *
-     * @param $id
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function removeSlide($id)
     {
@@ -292,9 +295,8 @@ class AdminController extends Controller
     /**
      * Edit the slide order number.
      *
-     * @param $id
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function editSlide($id)
     {
@@ -324,7 +326,7 @@ class AdminController extends Controller
     /**
      * Show the user manager.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function userManager()
     {
@@ -334,9 +336,8 @@ class AdminController extends Controller
     /**
      * Add/update a user.
      *
-     * @param Request $request
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateCompany(Request $request)
     {
@@ -445,12 +446,16 @@ class AdminController extends Controller
     /**
      * Show the user added page.
      *
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function userAdded()
     {
         if (Session::has('password') && Session::has('input')) {
-            return view('admin.userAdded')->with(['password' => Session::pull('password'), 'input' => Session::get('input')]);
+            return view('admin.userAdded')
+                ->with([
+                    'password' => Session::pull('password'),
+                    'input' => Session::get('input'),
+                ]);
         } else {
             return redirect('admin/usermanager');
         }
@@ -459,7 +464,7 @@ class AdminController extends Controller
     /**
      * Generate a pricelist for a specific user.
      *
-     * @return $this|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function generate_pricelist()
     {

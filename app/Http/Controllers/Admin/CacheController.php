@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Helper;
 
+/**
+ * Class CacheController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class CacheController extends Controller
 {
     /**
      * View cache information.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function stats()
     {
@@ -45,7 +49,7 @@ class CacheController extends Controller
     /**
      * Reset the cache.
      *
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function reset()
     {

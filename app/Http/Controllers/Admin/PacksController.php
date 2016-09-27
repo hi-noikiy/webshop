@@ -8,12 +8,16 @@ use App\PackProduct;
 use App\Product;
 use Illuminate\Http\Request;
 
+/**
+ * Class PacksController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class PacksController extends Controller
 {
     /**
      * Overview of special product packs.
      *
-     * @return mixed
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -25,9 +29,8 @@ class PacksController extends Controller
     /**
      * Edit a special product pack.
      *
-     * @param int $id
-     *
-     * @return mixed
+     * @param  int  $id
+     * @return \Illuminate\View\View
      */
     public function edit(int $id)
     {
@@ -39,9 +42,8 @@ class PacksController extends Controller
     /**
      * Save the product pack to the database.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
@@ -67,9 +69,8 @@ class PacksController extends Controller
     /**
      * Remove a product pack and the associated products.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -102,9 +103,8 @@ class PacksController extends Controller
     /**
      * Add a product to a pack.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function addProduct(Request $request)
     {
@@ -142,9 +142,8 @@ class PacksController extends Controller
     /**
      * Remove a product from a pack.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function removeProduct(Request $request)
     {

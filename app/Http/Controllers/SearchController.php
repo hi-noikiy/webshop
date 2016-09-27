@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 
 /**
  * Class SearchController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class SearchController extends Controller
 {
     /**
      * The search page.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  Request  $request
+     * @return \Illuminate\View\View
      */
     public function search(Request $request)
     {
@@ -82,7 +82,7 @@ class SearchController extends Controller
     /**
      * Specials.
      *
-     * @return mixed
+     * @return \Illuminate\View\View
      */
     public function specials()
     {
@@ -101,7 +101,7 @@ class SearchController extends Controller
     /**
      * A search page only searching for the clearance products.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function clearance()
     {
