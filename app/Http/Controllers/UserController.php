@@ -10,8 +10,7 @@ use Log;
 use Session;
 
 /**
- * Class UserController
- * @package App\Http\Controllers
+ * Class UserController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class UserController extends Controller
@@ -103,7 +102,7 @@ class UserController extends Controller
 
     /**
      * Verify the registration page.
-     * TODO: make this code prettier
+     * TODO: make this code prettier.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse

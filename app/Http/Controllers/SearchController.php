@@ -6,8 +6,7 @@ use App\Product;
 use Illuminate\Http\Request;
 
 /**
- * Class SearchController
- * @package App\Http\Controllers
+ * Class SearchController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class SearchController extends Controller

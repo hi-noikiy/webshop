@@ -6,8 +6,7 @@ use App\Carousel;
 use App\Content;
 
 /**
- * Class HomeController
- * @package App\Http\Controllers
+ * Class HomeController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class HomeController extends Controller

@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 /**
- * Class PasswordController
- * @package App\Http\Controllers\Account
+ * Class PasswordController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class PasswordController extends Controller

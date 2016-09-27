@@ -9,8 +9,7 @@ use App\Product;
 use Illuminate\Http\Request;
 
 /**
- * Class PacksController
- * @package App\Http\Controllers\Admin
+ * Class PacksController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class PacksController extends Controller
