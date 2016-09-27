@@ -12,13 +12,11 @@ use Illuminate\Http\Request;
 use Session;
 
 /**
- * Class ProductController
- * @package App\Http\Controllers
+ * Class ProductController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class ProductController extends Controller
 {
-
     /**
      * The product page
      * Will throw 404 error when no product matches the product id.
@@ -68,5 +66,4 @@ class ProductController extends Controller
             'pack_list'         => $pack_list,
         ]);
     }
-
 }

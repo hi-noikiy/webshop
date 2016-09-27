@@ -11,8 +11,7 @@ use Redirect;
 use Validator;
 
 /**
- * Class ImportController
- * @package App\Http\Controllers\Admin
+ * Class ImportController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class ImportController extends Controller

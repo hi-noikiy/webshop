@@ -12,8 +12,7 @@ use Illuminate\Http\Request;
 use Session;
 
 /**
- * Class CartController
- * @package App\Http\Controllers
+ * Class CartController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class CartController extends Controller

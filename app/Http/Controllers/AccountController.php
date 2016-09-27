@@ -15,8 +15,7 @@ use Response;
 use Session;
 
 /**
- * Class AccountController
- * @package App\Http\Controllers
+ * Class AccountController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class AccountController extends Controller

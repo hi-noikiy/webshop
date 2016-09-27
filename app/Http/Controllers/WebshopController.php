@@ -14,8 +14,7 @@ use Request;
 use Session;
 
 /**
- * Class WebshopController
- * @package App\Http\Controllers
+ * Class WebshopController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class WebshopController extends Controller

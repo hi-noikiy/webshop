@@ -15,8 +15,7 @@ use Response;
 use Spatie\Analytics\Period;
 
 /**
- * Class ApiController
- * @package App\Http\Controllers\Admin
+ * Class ApiController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class ApiController extends Controller
@@ -180,7 +179,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Get the description of a product
+     * Get the description of a product.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse

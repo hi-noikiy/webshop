@@ -14,7 +14,6 @@ use App\Description;
 use DB;
 use File;
 use Helper;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
@@ -25,8 +24,7 @@ use Storage;
 use Validator;
 
 /**
- * Class AdminController
- * @package App\Http\Controllers\Admin
+ * Class AdminController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class AdminController extends Controller
@@ -456,7 +454,7 @@ class AdminController extends Controller
             return view('admin.userAdded')
                 ->with([
                     'password' => Session::pull('password'),
-                    'input' => Session::get('input')
+                    'input' => Session::get('input'),
                 ]);
         } else {
             return redirect('admin/usermanager');

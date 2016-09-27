@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Helper;
 
 /**
- * Class CacheController
- * @package App\Http\Controllers\Admin
+ * Class CacheController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class CacheController extends Controller

@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Response;
 
 /**
- * Class SubAccountController
- * @package App\Http\Controllers\Account
+ * Class SubAccountController.
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class SubAccountController extends Controller
