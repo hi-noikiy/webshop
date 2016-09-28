@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 class LogException extends \Exception
 {
-
     /**
      * Create a new LogException.
      *
@@ -16,5 +15,4 @@ class LogException extends \Exception
     {
         parent::__construct($message, $code, $previous);
     }
-
 }

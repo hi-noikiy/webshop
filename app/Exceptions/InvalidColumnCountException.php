@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 class InvalidColumnCountException extends \Exception
 {
-
     /**
      * InvalidColumnCountException constructor.
      *
@@ -20,5 +19,4 @@ class InvalidColumnCountException extends \Exception
 
         parent::__construct($message, $code, $previous);
     }
-
 }
