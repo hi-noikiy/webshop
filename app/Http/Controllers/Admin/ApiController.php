@@ -189,7 +189,7 @@ class ApiController extends Controller
         if ($request->has('product')) {
             $product = Product::findByNumber($request->input('product'));
 
-            if (!is_null($product)) {
+            if (! is_null($product)) {
                 if ($product->description) {
                     return Response::json([
                         'message' => 'Description for product '.$request->input('product'),
