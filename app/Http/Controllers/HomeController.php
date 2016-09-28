@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Carousel;
 use App\Content;
 
+/**
+ * Class HomeController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
+ */
 class HomeController extends Controller
 {
     /**
      * Homepage.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function home()
     {
@@ -23,7 +27,7 @@ class HomeController extends Controller
     /**
      * About us.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function about()
     {
@@ -33,7 +37,7 @@ class HomeController extends Controller
     /**
      * Assortment page.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function assortment()
     {
@@ -47,7 +51,7 @@ class HomeController extends Controller
     /**
      * Contact info.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function contact()
     {
@@ -57,7 +61,7 @@ class HomeController extends Controller
     /**
      * Downloads.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function downloads()
     {
@@ -71,7 +75,7 @@ class HomeController extends Controller
     /**
      * Licenses.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function licenses()
     {
@@ -83,7 +87,7 @@ class HomeController extends Controller
      *
      * @param $filename
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download($filename)
     {

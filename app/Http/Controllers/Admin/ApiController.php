@@ -16,15 +16,15 @@ use Spatie\Analytics\Period;
 
 /**
  * Class ApiController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class ApiController extends Controller
 {
     /**
      * Return the CPU load.
      *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function cpu(Request $request)
     {
@@ -44,9 +44,8 @@ class ApiController extends Controller
     /**
      * Return the RAM usage.
      *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function ram(Request $request)
     {
@@ -67,10 +66,9 @@ class ApiController extends Controller
     /**
      * Get data for a chart.js chart.
      *
-     * @param Request $request
-     * @param string  $type
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @param  string  $type
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function chart(Request $request, string $type)
     {
@@ -102,10 +100,9 @@ class ApiController extends Controller
     /**
      * Return a single product.
      *
-     * @param Request $request
-     * @param  $id
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function product(Request $request, $id)
     {
@@ -128,9 +125,8 @@ class ApiController extends Controller
     /**
      * Get some user details.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function companyDetails(Request $request)
     {
@@ -157,9 +153,8 @@ class ApiController extends Controller
     /**
      * Get the content that belongs to the page/field.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function content(Request $request)
     {
@@ -183,6 +178,12 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Get the description of a product.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function description(Request $request)
     {
         if ($request->has('product')) {

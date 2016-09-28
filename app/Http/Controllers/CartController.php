@@ -13,13 +13,14 @@ use Session;
 
 /**
  * Class CartController.
+ * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class CartController extends Controller
 {
     /**
      * Show the cart.
      *
-     * @return mixed
+     * @return \Illuminate\View\View
      */
     public function view()
     {
@@ -32,9 +33,8 @@ class CartController extends Controller
     /**
      * Add a product to the cart.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function addProduct(Request $request)
     {
@@ -89,9 +89,8 @@ class CartController extends Controller
     /**
      * Modify or remove a product from the cart.
      *
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
@@ -147,7 +146,7 @@ class CartController extends Controller
     /**
      * To destroy or not to destroy.
      *
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy()
     {
@@ -167,9 +166,8 @@ class CartController extends Controller
     /**
      * Mail the order to the company.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function order(Request $request)
     {
