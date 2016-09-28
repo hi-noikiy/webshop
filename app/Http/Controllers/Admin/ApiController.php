@@ -189,14 +189,20 @@ class ApiController extends Controller
         if ($request->has('product')) {
             $product = Product::findByNumber($request->input('product'));
 
-            if ($product->description) {
-                return Response::json([
-                    'message' => 'Description for product '.$request->input('product'),
-                    'payload' => $product->description,
-                ]);
+            if (! is_null($product)) {
+                if ($product->description) {
+                    return Response::json([
+                        'message' => 'Description for product '.$request->input('product'),
+                        'payload' => $product->description,
+                    ]);
+                } else {
+                    return Response::json([
+                        'message' => 'No description found for product: '.$request->input('product'),
+                    ], 404);
+                }
             } else {
                 return Response::json([
-                    'message' => 'No description found for page: '.$request->input('product'),
+                    'message' => 'No product found with id: '.$request->input('product'),
                 ], 404);
             }
         } else {
