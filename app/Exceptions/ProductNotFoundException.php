@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class ProductNotFoundException extends HttpException
 {
-
     /**
      * ProductNotFoundException constructor.
      *
@@ -24,5 +23,4 @@ class ProductNotFoundException extends HttpException
 
         parent::__construct(404, $message, $previous, $headers, $code);
     }
-
 }
