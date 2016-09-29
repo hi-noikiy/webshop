@@ -27,7 +27,8 @@
 
                     {!! csrf_field() !!}
 
-                    <input type="text" class="hidden" name="rowId" value="{{ $item->rowid }}">
+                    <input type="hidden" name="rowId" value="{{ $item->rowid }}">
+                    <input type="hidden" name="artNr" value="{{ $product->number }}">
 
                     <div class="panel panel-primary">
                         <div class="panel-heading">
