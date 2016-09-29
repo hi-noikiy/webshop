@@ -117,7 +117,7 @@ class CartController extends Controller
                 $user->save();
 
                 Cart::update($rowId, [
-                    'qty' => $qty
+                    'qty' => $qty,
                 ]);
 
                 return redirect('cart')
