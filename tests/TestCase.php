@@ -94,7 +94,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $data = str_getcsv($contents, ';');
 
         $product = new Product;
-        
+
         $product->name = $data[0];
         $product->number = $data[3];
         $product->group = $data[4];
@@ -119,7 +119,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $product->related_products = $data[27];
         $product->catalog_group = $data[28];
         $product->catalog_index = $data[29];
-        
+
         $product->save();
 
         return $product;
