@@ -96,10 +96,12 @@ class CartController extends Controller
     {
         $rowId = $request->input('rowId');
         $qty = $request->input('qty');
+        $artNr = $request->input('artNr');
 
         $validator = \Validator::make($request->all(), [
             'rowId' => 'required',
             'qty'   => 'required|numeric|min:1',
+            'artNr' => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -114,7 +116,9 @@ class CartController extends Controller
                 $user->cart = serialize($cartArray);
                 $user->save();
 
-                Cart::update($rowId, ['qty' => $qty]);
+                Cart::update($rowId, [
+                    'qty' => $qty,
+                ]);
 
                 return redirect('cart')
                     ->with('status', 'Uw winkelwagen is geupdatet');
