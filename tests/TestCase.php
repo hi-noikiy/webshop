@@ -2,7 +2,9 @@
 
 use App\Company;
 use App\User;
+use App\Product;
 use App\Description;
+use App\Discount;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -91,7 +93,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $contents = 'Someproduct;NE;BDY;9999999;10900100;20020658;1;A;Stk;Stk;1;HG;1;Dyka;8716936000541;zw0042005.jpg;1;;0,02;21;8716936000008;Dyka;Dyka krimpmoffen;O ringen voor krimpmoffen;;;Dijka;;A. Vuil en hemelwater leidingsystemen;O ringen voor krimpmoffen';
         $data = str_getcsv($contents, ';');
 
-        DB::table('products')->insert([
+        return Product::create([
             'name'             => $data[0],
             'number'           => $data[3],
             'group'            => $data[4],
@@ -117,8 +119,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             'catalog_group'    => $data[28],
             'catalog_index'    => $data[29],
         ]);
-
-        return $this;
     }
 
     /**
@@ -128,7 +128,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected function createDiscount()
     {
-        DB::table('discounts')->insert([
+        return Discount::create([
             'table'         => 'VA-220',
             'User_id'       => 12345,
             'product'       => 9999999,
@@ -138,8 +138,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             'group_desc'    => 'Onderdelen',
             'product_desc'  => '',
         ]);
-
-        return $this;
     }
 
     protected function createDescription()
