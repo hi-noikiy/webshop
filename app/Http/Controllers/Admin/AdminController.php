@@ -140,6 +140,12 @@ class AdminController extends Controller
             $content = $request->input('content');
             $product = $request->input('product');
 
+            if (null === Product::findByNumber($product)) {
+                return redirect()
+                    ->back()
+                    ->withErrors('Geen product gevonden met nummer ' . $product);
+            }
+
             $description = Description::firstOrCreate([
                 'product_id' => $product,
             ]);
