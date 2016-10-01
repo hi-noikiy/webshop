@@ -233,11 +233,14 @@
                     }
                 });
             }
+
+            $(document).ready(function() {
+                getBrowserChartData();
+            });
         @endif
 
         $(document).ready(function() {
             getOrderChartData();
-
         });
     </script>
 
@@ -288,9 +291,9 @@
             });
         }
 
-        //setInterval(function() {
-            //getServerLoad();
-        //}, 5000);
-        //getServerLoad();
+        setInterval(function() {
+            getServerLoad();
+        }, 5000);
+        getServerLoad();
     </script>
 @endsection
