@@ -9,7 +9,7 @@ class InvalidColumnCountException extends \Exception
      *
      * @param  string  $line
      * @param  int  $got
-     * @param  \Exception  $expect
+     * @param  int  $expect
      * @param  int  $code
      * @param  \Exception|null  $previous
      */

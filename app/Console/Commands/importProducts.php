@@ -142,7 +142,7 @@ class importProducts extends Command
 
                     DB::commit();
                 } catch (\Exception $e) {
-                    DB::rollback();
+                    DB::rollBack();
 
                     $errorMessage = 'Er is een fout opgetreden, de database is niet aangepast: <br />'.$e->getMessage();
 
