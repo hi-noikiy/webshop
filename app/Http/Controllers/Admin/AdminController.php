@@ -143,7 +143,7 @@ class AdminController extends Controller
             if (null === Product::findByNumber($product)) {
                 return redirect()
                     ->back()
-                    ->withErrors('Geen product gevonden met nummer ' . $product);
+                    ->withErrors('Geen product gevonden met nummer '.$product);
             }
 
             $description = Description::firstOrCreate([
