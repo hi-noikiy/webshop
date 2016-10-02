@@ -20,6 +20,9 @@ class Kernel extends ConsoleKernel
         Commands\importProducts::class,
         Commands\importDiscounts::class,
         Commands\resendOrder::class,
+        Commands\CreateElasticIndex::class,
+        Commands\ReindexElastic::class,
+        Commands\DeleteElasticIndex::class
     ];
 
     /**
