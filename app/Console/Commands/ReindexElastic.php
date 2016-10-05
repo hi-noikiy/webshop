@@ -47,7 +47,18 @@ class ReindexElastic extends Command
             $index = $this->argument('index') . '_' . date('YmdHis');
 
             // All products
-            $products = Product::all()->toArray();
+            $products = Product::all([
+                'id',
+                'name',
+                'number',
+                'group',
+                'altNumber',
+                'ean',
+                'brand',
+                'series',
+                'type',
+                'keywords'
+            ]);
 
             // Progress bar
             $bar = $this->output->createProgressBar(count($products));
@@ -57,15 +68,23 @@ class ReindexElastic extends Command
             $params = [];
 
             // Counter
-            $count = 1;
+            $count = 0;
 
             // Create the new index
             $client->indices()->create([
-                'index' => $index
+                'index' => $index,
+                'body' => [
+                    'settings' => [
+                        'number_of_shards' => 5,
+                        'number_of_replicas' => 1
+                    ]
+                ]
             ]);
 
             // Loop through each product
             foreach ($products as $product) {
+                $count++;
+
                 // Send the products to elastic every 1000 products
                 if ($count % 1000 === 0) {
                     try {
@@ -86,14 +105,22 @@ class ReindexElastic extends Command
                     'index' => [
                         '_index' => $index,
                         '_type' => 'product',
-                        '_id' => $product['number']
+                        '_id' => $product->id
                     ]
                 ];
 
-                $params['body'][] = $product;
+                $array = array_except($product->toArray(), [
+                    'id',
+                    'number',
+                    'group'
+                ]);
+
+                $array['number'] = (string) $product->number;
+                $array['group'] = (string) $product->group;
+
+                $params['body'][] = $array;
 
                 $bar->advance();
-                $count++;
             }
 
             if (!empty($params['body'])) {
