@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Company;
 use App\Content;
-use App\Description;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Product;
-use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Response;

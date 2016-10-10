@@ -6,6 +6,7 @@ use App\Product;
 use App\Elastic\Search;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 /**
  * Class SearchController.
@@ -21,23 +22,51 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-        $str = $request->get('q');
+        $appends = [];
+        $brands = [];
+        $series = [];
+        $types = [];
 
-        $search = Search::text($str);
+        $str = $request->get('q');
+        $page = (request('page') ?? 1);
+        $perPage = (request('perPage') ?? 15);
+
+        $search = Search::text($str, $page, $perPage);
 
         $productCollection = $search['products'];
         $totalHits = $search['total'];
 
-//        dd($productCollection);
+        if (request('brand')) {
+            $appends['brand'] = request('brand');
+        }
+        if (request('serie')) {
+            $appends['serie'] = request('serie');
+        }
+        if (request('type')) {
+            $appends['type'] = request('type');
+        }
+        if (request('perPage')) {
+            $appends['perPage'] = request('perPage');
+        }
+        $appends['q'] = request('q');
 
-        $results = new LengthAwarePaginator($productCollection, $totalHits, 20, request('page'));
+        $paginator = (new LengthAwarePaginator($productCollection, $totalHits, $perPage, $page, [
+            'path' => '/search'
+        ]))->appends($appends);
+
+        foreach ($productCollection as $item) {
+            $brands[] = $item->brand;
+            $series[] = $item->series;
+            $types[] = $item->type;
+        }
 
         // Return the search view with the fetched data
         return view('webshop.search', [
-            'results'    => $results,
-            'brands'     => $productCollection->unique('brand')->values()->sortBy('brand')->pluck('brand'),
-            'series'     => $productCollection->unique('series')->values()->sortBy('series')->pluck('series'),
-            'types'      => $productCollection->unique('type')->values()->sortBy('type')->pluck('type'),
+            'paginator'  => $paginator,
+            'products'   => $productCollection->forPage($page, $perPage),
+            'brands'     => collect($brands)->unique()->sort(),
+            'series'     => collect($series)->unique()->sort(),
+            'types'      => collect($types)->unique()->sort(),
             'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
         ]);
     }

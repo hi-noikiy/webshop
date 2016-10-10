@@ -5,13 +5,13 @@
 @endsection
 
 @section('content')
-    @if ($results->total() === 0)
+    @if ($paginator->total() === 0)
         <div class="alert alert-warning" role="alert">
             Er zijn geen resultaten gevonden voor deze zoekopdracht
         </div>
     @else
         <div class="alert alert-success" role="alert">
-            {{ $results->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
+            {{ $paginator->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
         </div>
 
         <div class="panel panel-primary visible-xs">
@@ -25,7 +25,7 @@
                     {!! csrf_field() !!}
 
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Zoeken" value="{{ Input::get('q') }}" name="q" required="">
+                        <input type="text" class="form-control" placeholder="Zoeken" value="{{ request('q') }}" name="q" required="">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
                         </span>
@@ -51,7 +51,7 @@
                                     <select onchange="wtg.quickSearch();" name="brand" class="form-control">
                                         <option value="">----------</option>
                                         @foreach($brands as $brand)
-                                            <option @if(Input::get('brand') === $brand) selected @endif value="{{ $brand }}">{{ $brand }}</option>
+                                            <option @if(request('brand') === $brand) selected @endif value="{{ $brand }}">{{ $brand }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,7 +64,7 @@
                                     <select onchange="wtg.quickSearch();" name="serie" class="form-control">
                                         <option value="">----------</option>
                                         @foreach($series as $serie)
-                                            <option @if(Input::get('serie') === $serie) selected @endif value="{{ $serie }}">{{ $serie }}</option>
+                                            <option @if(request('serie') === $serie) selected @endif value="{{ $serie }}">{{ $serie }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -77,14 +77,14 @@
                                     <select onchange="wtg.quickSearch();" name="type" class="form-control">
                                         <option value="">----------</option>
                                         @foreach($types as $type)
-                                            <option @if(Input::get('type') === $type) selected @endif value="{{ $type }}">{{ $type }}</option>
+                                            <option @if(request('type') === $type) selected @endif value="{{ $type }}">{{ $type }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <input name="q" type="hidden" value="{{ Input::get('q') }}">
+                    <input name="q" type="hidden" value="{{ request('q') }}">
                 </form>
 
                 <a href="/webshop" class="btn btn-default col-sm-4"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar zoek pagina</a>
@@ -107,7 +107,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($results as $product)
+            @foreach($products as $product)
                 <tr {{ ($product->isAction() ? 'class=success' : '') }}>
                     <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
                     <td class="hidden-xs">{{ $product->number }}</td>
@@ -124,7 +124,7 @@
         </table>
 
         <div class="text-center">
-            {!! $results->appends(array('brand' => request('brand'), 'serie' => request('serie'), 'type' => request('type'), 'q' => request('q')))->render() !!}
+            {!! $paginator->render() !!}
         </div>
     @endif
 @endsection

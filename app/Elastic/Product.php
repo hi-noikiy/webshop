@@ -8,11 +8,6 @@ class Product
 {
 
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $name;
@@ -94,6 +89,12 @@ class Product
         return $this->model;
     }
 
+    /**
+     * If the attribute is not found, get it from the Eloquent model
+     *
+     * @param $name
+     * @return mixed
+     */
     public function __get($name)
     {
         if ($name === 'model') {
@@ -101,6 +102,21 @@ class Product
         }
 
         return $this->$name ?? $this->getModel()->$name;
+    }
+
+    /**
+     * Forward function calls to the model
+     *
+     * @param $name
+     * @param $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        if ($name !== 'getModel') {
+            call_user_func_array(function () use ($name) {
+                return $this->getModel()->$name();
+            }, $arguments);
+        }
     }
 
 }

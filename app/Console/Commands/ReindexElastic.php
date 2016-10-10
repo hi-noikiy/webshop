@@ -41,7 +41,7 @@ class ReindexElastic extends Command
     {
         if ($this->argument('index')) {
             // Elasticsearch client
-            $client = ClientBuilder::create()->setHosts(config('elasticsearch.hosts'))->build();
+            $client = app('elastic');
 
             // Index name
             $index = $this->argument('index') . '_' . date('YmdHis');
@@ -153,6 +153,8 @@ class ReindexElastic extends Command
 
 
             $bar->finish();
+
+            $this->info("\n\n".$count.' products have been indexed.'."\n");
         }
     }
 }
