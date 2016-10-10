@@ -32,7 +32,7 @@
             <div class="col-sm-8">
                 <h4><a href="{{ url("/product/{$product->number}") }}">{{ $product->name }}</a></h4>
 
-                <small>Artikelnummer: {{ $product->number }} | {{ ($product->isAction() ? 'Actieproduct' : 'Korting: ' . $product->discount . '%') }}</small>
+                <small>Artikelnummer: {{ $product->number }} @if(Auth::check())| {{ ($product->isAction() ? 'Actieproduct' : 'Korting: ' . $product->discount . '%') }}@endif</small>
             </div>
 
             <div class="col-sm-2 text-right">

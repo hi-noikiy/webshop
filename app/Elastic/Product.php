@@ -92,7 +92,7 @@ class Product
     /**
      * If the attribute is not found, get it from the Eloquent model
      *
-     * @param $name
+     * @param string  $name
      * @return mixed
      */
     public function __get($name)
@@ -101,21 +101,34 @@ class Product
             $this->getModel();
         }
 
-        return $this->$name ?? $this->getModel()->$name;
+        try {
+            return $this->$name ?? $this->getModel()->$name;
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage(), $e->getTrace());
+
+            return null;
+        }
     }
 
     /**
      * Forward function calls to the model
      *
-     * @param $name
-     * @param $arguments
+     * @param  string  $name
+     * @param  array  $arguments
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
         if ($name !== 'getModel') {
-            call_user_func_array(function () use ($name) {
-                return $this->getModel()->$name();
-            }, $arguments);
+            try {
+                return call_user_func_array(function () use ($name) {
+                    return $this->getModel()->$name();
+                }, $arguments);
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage(), $e->getTrace());
+
+                return null;
+            }
         }
     }
 
