@@ -18,41 +18,42 @@ class SearchController extends Controller
      * The search page.
      *
      * @param  Request  $request
+     * @param  int  $page
      * @return \Illuminate\View\View
      */
-    public function search(Request $request)
+    public function search(Request $request, $page = 1)
     {
-        $appends = [];
+        return view('webshop.search');
+    }
+
+    public function filter(Request $request)
+    {
         $brands = [];
         $series = [];
         $types = [];
 
         $str = $request->get('q');
         $page = (request('page') ?? 1);
-        $perPage = (request('perPage') ?? 15);
+        $perPage = (request('perPage') ?? 10);
 
         $search = Search::text($str, $page, $perPage);
 
         $productCollection = $search['products'];
         $totalHits = $search['total'];
+        $hash = '#q=' . request('q');
 
         if (request('brand')) {
-            $appends['brand'] = request('brand');
+            $hash .= '&brand=' . request('brand');
         }
         if (request('serie')) {
-            $appends['serie'] = request('serie');
+            $hash .= '&serie=' . request('serie');
         }
         if (request('type')) {
-            $appends['type'] = request('type');
+            $hash .= '&type=' . request('type');
         }
         if (request('perPage')) {
-            $appends['perPage'] = request('perPage');
+            $hash .= '&perPage=' . request('perPage');
         }
-        $appends['q'] = request('q');
-
-        $paginator = (new LengthAwarePaginator($productCollection, $totalHits, $perPage, $page, [
-            'path' => '/search'
-        ]))->appends($appends);
 
         foreach ($productCollection as $item) {
             $brands[] = $item->brand;
@@ -60,14 +61,34 @@ class SearchController extends Controller
             $types[] = $item->type;
         }
 
-        // Return the search view with the fetched data
-        return view('webshop.search', [
+        $paginator = (new LengthAwarePaginator($productCollection, $totalHits, $perPage, $page, [
+            'path' => '/search' . $hash
+        ]));
+
+        $resultsHtml = view('webshop.partials.results', [
             'paginator'  => $paginator,
             'products'   => $productCollection->forPage($page, $perPage),
-            'brands'     => collect($brands)->unique()->sort(),
-            'series'     => collect($series)->unique()->sort(),
-            'types'      => collect($types)->unique()->sort(),
             'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
+        ])->render();
+
+        $brandsHtml = view('webshop.partials.filters.brands', [
+            'brands' => collect($brands)->unique()->sort()
+        ])->render();
+
+        $seriesHtml = view('webshop.partials.filters.series', [
+            'series' => collect($series)->unique()->sort()
+        ])->render();
+
+        $typesHtml = view('webshop.partials.filters.types', [
+            'types' => collect($types)->unique()->sort()
+        ])->render();
+
+        // Return the search view with the fetched data
+        return \Response::json([
+            'results' => $resultsHtml,
+            'brands'  => $brandsHtml,
+            'series'  => $seriesHtml,
+            'types'   => $typesHtml
         ]);
     }
 

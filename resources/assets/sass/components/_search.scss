@@ -1,0 +1,49 @@
+@import '../helpers/variables';
+
+.search-filter {
+  width: 100%;
+  border: 1px solid #666;
+  border-radius: 3px;
+
+  option {
+    padding: 5px;
+
+    &:first-child {
+      border-bottom: 1px solid #999;
+    }
+  }
+}
+
+.search-limit {
+  background-color: white;
+  border: 1px solid #666;
+  border-radius: 3px;
+
+  option {
+    padding: 5px;
+
+    &:first-child {
+      border-bottom: 1px solid #999;
+    }
+  }
+}
+
+#search-wrapper {
+  position: relative;
+}
+
+#filter-overlay {
+  background-color: white;
+  opacity: 0.7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  text-align: center;
+
+  i {
+    margin-top: 50px;
+  }
+}

@@ -5,136 +5,101 @@
 @endsection
 
 @section('content')
-    @if ($paginator->total() === 0)
-        <div class="alert alert-warning" role="alert">
-            Er zijn geen resultaten gevonden voor deze zoekopdracht
-        </div>
-    @else
-        <div class="alert alert-success" role="alert">
-            {{ $paginator->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
+    <div class="row" id="search-wrapper">
+        <div id="filter-overlay">
+            <i class="fa fa-refresh fa-4x fa-spin" aria-hidden="true"></i>
         </div>
 
-        <div class="panel panel-primary visible-xs">
-            <div class="panel-heading">
-                <h4 class="panel-title text-center">
-                    Zoeken
-                </h4>
-            </div>
-            <div class="panel-body">
-                <form action="/search" method="GET" class="form col-xs-12" role="search">
-                    {!! csrf_field() !!}
+        <div class="col-md-3" id="filters-wrapper">
+            <?php $perPage = request('perPage') ?? 10; ?>
+            <h4>
+                Resultaten per pagina:
+                <select id="results-per-page" class="search-limit">
+                    @for ($i = 5; $i <= 20; $i+=5)
+                        <option value="{{ $i }}" {{ ($perPage === $i ? 'selected' : '') }}>{{ $i }}</option>
+                    @endfor
+                </select>
+            </h4>
 
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Zoeken" value="{{ request('q') }}" name="q" required="">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
-                        </span>
-                    </div>
-                </form>
-            </div>
+            <hr />
+
+            <div id="brand-filter-wrapper"></div>
+
+            <hr />
+
+            <div id="serie-filter-wrapper"></div>
+
+            <hr />
+
+            <div id="type-filter-wrapper"></div>
         </div>
 
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title text-center">
-                    Filter resultaten
-                </h4>
-            </div>
-            <div class="panel-body">
-                <form action="/search" method="GET" role="search" class="form-horizontal" name="advancedsearch" id="searchForm">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Merk</label>
-                                <div class="col-sm-10">
-                                    <select onchange="wtg.quickSearch();" name="brand" class="form-control">
-                                        <option value="">----------</option>
-                                        @foreach($brands as $brand)
-                                            <option @if(request('brand') === $brand) selected @endif value="{{ $brand }}">{{ $brand }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Serie</label>
-                                <div class="col-sm-10">
-                                    <select onchange="wtg.quickSearch();" name="serie" class="form-control">
-                                        <option value="">----------</option>
-                                        @foreach($series as $serie)
-                                            <option @if(request('serie') === $serie) selected @endif value="{{ $serie }}">{{ $serie }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Type</label>
-                                <div class="col-sm-10">
-                                    <select onchange="wtg.quickSearch();" name="type" class="form-control">
-                                        <option value="">----------</option>
-                                        @foreach($types as $type)
-                                            <option @if(request('type') === $type) selected @endif value="{{ $type }}">{{ $type }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input name="q" type="hidden" value="{{ request('q') }}">
-                </form>
-
-                <a href="/webshop" class="btn btn-default col-sm-4"><span class="glyphicon glyphicon-chevron-left"></span> Terug naar zoek pagina</a>
-            </div>
+        <div class="col-md-9" id="results-wrapper">
         </div>
+    </div>
 
+    <script>
+        $(document).ready(function () {
+            var hash = top.location.hash.replace('#', '');
+            var params = hash.split('&');
+            var hashParams = {};
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th></th>
-                <th class="hidden-xs">Artikelnummer</th>
-                <th>Omschrijving</th>
-
-                @if(Auth::check())
-                    <th class="hidden-xs">Bruto prijs</th>
-                    <th class="hidden-xs">Korting</th>
-                    <th>Netto prijs</th>
-                @endif
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($products as $product)
-                <tr {{ ($product->isAction() ? 'class=success' : '') }}>
-                    <td class="product-thumbnail"><img src="/img/products/{{ $product->image }}" alt="{{ $product->image }}"></td>
-                    <td class="hidden-xs">{{ $product->number }}</td>
-                    <td><a href="/product/{{ $product->number }}">{{ $product->name }}</a></td>
-
-                    @if(Auth::check())
-                        <td class="hidden-xs">&euro;{{ $product->real_price }}</td>
-                        <td class="hidden-xs">{{ ($product->isAction() ? 'Actie' : $product->discount . '%') }}</td>
-                        <td>&euro;{{ number_format($product->real_price * ((100-$product->discount) / 100), 2, ".", "") }}</td>
-                    @endif
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-
-        <div class="text-center">
-            {!! $paginator->render() !!}
-        </div>
-    @endif
-@endsection
-
-@section('extraJS')
-    <script type="text/javascript">
-        var wtg = {
-            quickSearch : function() {
-                document.advancedsearch.submit();
+            for(var i = 0; i < params.length; i++){
+                var propval = params[i].split('=');
+                hashParams[propval[0]] = propval[1];
             }
+
+            window.hashParams = hashParams;
+
+            $.post({
+                url: '{{ url('search/filter') }}',
+                data: {
+                    brand : hashParams.brand,
+                    serie : hashParams.serie,
+                    type : hashParams.type,
+                    page : '{{ request('page') ?? 1 }}'
+                },
+                success: function (response) {
+                    $('#results-wrapper').html(response.results);
+                    $('#brand-filter-wrapper').html(response.brands);
+                    $('#serie-filter-wrapper').html(response.series);
+                    $('#type-filter-wrapper').html(response.types);
+
+                    $('#filter-overlay').fadeOut(300);
+                },
+                errors: function () {
+                    alert('Er is een fout opgetreden tijdens het laden van de resultaten');
+                    $('#filter-overlay').fadeOut(300);
+                }
+            });
+        });
+
+        function filter () {
+            $('#filter-overlay').fadeIn(300);
+
+            var data = {
+                brand : $('#brand-filter').val(),
+                serie : $('#serie-filter').val(),
+                type : $('#type-filter').val(),
+                page : window.page
+            };
+
+            $.post({
+                url: '{{ url('search/filter') }}',
+                data: data,
+                success: function (response) {
+                    $('#results-wrapper').html(response.results);
+                    $('#brand-filter-wrapper').html(response.brands);
+                    $('#serie-filter-wrapper').html(response.series);
+                    $('#type-filter-wrapper').html(response.types);
+
+                    $('#filter-overlay').fadeOut(300);
+                },
+                errors: function () {
+                    alert('Er is een fout opgetreden tijdens het laden van de resultaten');
+                    $('#filter-overlay').fadeOut(300);
+                }
+            });
         }
     </script>
 @endsection

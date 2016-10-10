@@ -41,6 +41,20 @@ class Search
             'group'
         ];
 
+        $queryParams = [
+            'filter' => $filter
+        ];
+
+        if (request('q')) {
+            $queryParams['must'] = [
+                'multi_match' => [
+                    'fields' => $queryFields,
+                    'query' => $query,
+                    'fuzziness' => 'AUTO'
+                ]
+            ];
+        }
+
         $results = $client->search([
             'index' => 'wiringa_local',
             'type' => 'product',
@@ -48,16 +62,7 @@ class Search
                 'from' => 0,
                 'size' => 20000,
                 'query' => [
-                    'bool' => [
-                        'must' => [
-                            'multi_match' => [
-                                'fields' => $queryFields,
-                                'query' => $query,
-                                'fuzziness' => 'AUTO'
-                            ]
-                        ],
-                        'filter' => $filter
-                    ]
+                    'bool' => $queryParams
                 ]
             ],
         ]);
