@@ -1,13 +1,7 @@
-<hr />
-
 @if ($paginator->total() > 0)
-    <div class="alert alert-success" role="alert">
-        {{ $paginator->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
-    </div>
+    <h5>{{ number_format($paginator->total(), 0, ",", ".") }} resultaten gevonden</h5>
 @else
-    <div class="alert alert-warning" role="alert">
-        Geen resultaten gevonden.
-    </div>
+    <h5>Geen resultaten gevonden</h5>
 @endif
 
 <hr />

@@ -1,33 +1,31 @@
 @import '../helpers/variables';
 
 .search-filter {
-  height: 200px;
-  overflow: scroll;
-  border: 1px solid #666;
-  border-radius: 3px;
+  height: 250px;
+  overflow-y: scroll;
+  border: 1px solid #ddd;
 
-  .list-group-item:first-child,
-  .list-group-item:last-child {
-    border-radius: 0;
-  }
-}
+  .list-group-item {
+    padding: 5px 10px;
 
-.search-limit {
-  background-color: white;
-  border: 1px solid #666;
-  border-radius: 3px;
+    &.active {
+      background-color: #82B1FF;
+      color: white;
+    }
 
-  option {
-    padding: 5px;
-
-    &:first-child {
-      border-bottom: 1px solid #999;
+    &:first-child,
+    &:last-child {
+      border-radius: 0;
     }
   }
 }
 
 #results-wrapper {
-  border-left: 1px solid #999;
+  border-left: 1px solid #ddd;
+
+  .pagination {
+    margin: 0;
+  }
 }
 
 #search-wrapper {

@@ -21,3 +21,12 @@
 		color: white;
 	}
 }
+
+.wtg-panel-info {
+	border-color: $info-color;
+
+	.panel-heading {
+		background-color: $info-color;
+		color: white;
+	}
+}

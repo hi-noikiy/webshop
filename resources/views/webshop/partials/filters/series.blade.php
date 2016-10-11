@@ -1,10 +1,13 @@
-<h4>Series</h4>
-<div id="serie-filter" class="list-group search-filter">
-    <a data-filter="" href="#" class="list-group-item {{ (!request('serie') ? 'active' : '') }}">Geen serie filter</a>
+<div class="panel wtg-panel-info">
+    <div class="panel-heading text-center">Series</div>
 
-    @foreach($series as $serie)
-        <a data-filter="{{ $serie }}" href="#" class="list-group-item {{ (request('serie') === $serie ? 'active' : '') }}">{{ $serie }}</a>
-    @endforeach
+    <div id="serie-filter" class="list-group search-filter">
+        <a data-filter="" href="#" class="list-group-item {{ (!request('serie') ? 'active' : '') }}">Geen serie filter</a>
+
+        @foreach($series as $serie)
+            <a data-filter="{{ $serie }}" href="#" class="list-group-item {{ (request('serie') === $serie ? 'active' : '') }}">{{ $serie }}</a>
+        @endforeach
+    </div>
 </div>
 
 <script type="text/javascript">

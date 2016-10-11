@@ -11,18 +11,6 @@
         </div>
 
         <div class="col-md-3" id="filters-wrapper">
-            <?php $perPage = request('perPage') ?? 10; ?>
-            <h4>
-                Resultaten per pagina:
-                <select id="results-per-page" class="search-limit">
-                    @for ($i = 5; $i <= 20; $i+=5)
-                        <option value="{{ $i }}" {{ ($perPage === $i ? 'selected' : '') }}>{{ $i }}</option>
-                    @endfor
-                </select>
-            </h4>
-
-            <hr />
-
             <div id="brand-filter-wrapper"></div>
 
             <hr />
