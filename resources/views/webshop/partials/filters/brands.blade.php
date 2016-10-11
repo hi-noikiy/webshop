@@ -1,14 +1,16 @@
 <h4>Merken</h4>
-<select id="brand-filter" class="search-filter" size="5">
-    <option value="" {{ (!request('brand') ? 'selected' : '') }}>Geen merk filter</option>
+<div id="brand-filter" class="list-group search-filter">
+    <a data-filter="" href="#" class="list-group-item {{ (!request('brand') ? 'active' : '') }}">Geen merk filter</a>
 
     @foreach($brands as $brand)
-        <option {{ (request('brand') === $brand ? 'selected' : '') }} value="{{ $brand }}">{{ $brand }}</option>
+        <a data-filter="{{ $brand }}" href="#" class="list-group-item {{ (request('brand') === $brand ? 'active' : '') }}">{{ $brand }}</a>
     @endforeach
-</select>
+</div>
 
 <script type="text/javascript">
-    $('#brand-filter').on('change', function (e) {
+    $('#brand-filter a').on('click', function (e) {
+        e.preventDefault();
+        window.brandFilter = $(this).data('filter');
         filter();
     });
 </script>

@@ -1,14 +1,16 @@
 <h4>Series</h4>
-<select id="serie-filter" class="search-filter" size="5">
-    <option value="" {{ (!request('serie') ? 'selected' : '') }}>Geen serie filter</option>
+<div id="serie-filter" class="list-group search-filter">
+    <a data-filter="" href="#" class="list-group-item {{ (!request('serie') ? 'active' : '') }}">Geen serie filter</a>
 
     @foreach($series as $serie)
-        <option {{ (request('serie') === $serie ? 'selected' : '') }} value="{{ $serie }}">{{ $serie }}</option>
+        <a data-filter="{{ $serie }}" href="#" class="list-group-item {{ (request('serie') === $serie ? 'active' : '') }}">{{ $serie }}</a>
     @endforeach
-</select>
+</div>
 
 <script type="text/javascript">
-    $('#serie-filter').on('change', function (e) {
+    $('#serie-filter a').on('click', function (e) {
+        e.preventDefault();
+        window.serieFilter = $(this).data('filter');
         filter();
     });
 </script>

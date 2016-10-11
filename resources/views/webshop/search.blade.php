@@ -34,8 +34,7 @@
             <div id="type-filter-wrapper"></div>
         </div>
 
-        <div class="col-md-9" id="results-wrapper">
-        </div>
+        <div class="col-md-9" id="results-wrapper"></div>
     </div>
 
     <script>
@@ -78,9 +77,9 @@
             $('#filter-overlay').fadeIn(300);
 
             var data = {
-                brand : $('#brand-filter').val(),
-                serie : $('#serie-filter').val(),
-                type : $('#type-filter').val(),
+                brand : window.brandFilter,
+                serie : window.serieFilter,
+                type : window.typeFilter,
                 page : window.page
             };
 
