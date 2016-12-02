@@ -112,7 +112,7 @@ class UserController extends Controller
         $data = $request->input();
 
         if ($request->has('corSite')) {
-            $data['corSite'] = (strpos($data['corSite'], "http") === 0 ? '' : "http://") . $data['corSite'];
+            $data['corSite'] = (strpos($data['corSite'], 'http') === 0 ? '' : 'http://').$data['corSite'];
         }
 
         $validator = \Validator::make($data, [
