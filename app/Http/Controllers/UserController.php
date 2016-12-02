@@ -109,7 +109,13 @@ class UserController extends Controller
      */
     public function register_check(Request $request)
     {
-        $validator = \Validator::make($request->input(), [
+        $data = $request->input();
+
+        if ($request->has('corSite')) {
+            $data['corSite'] = (strpos($data['corSite'], 'http') === 0 ? '' : 'http://').$data['corSite'];
+        }
+
+        $validator = \Validator::make($data, [
             'corContactName' => 'required',
             'corName'        => 'required',
             'corAddress'     => 'required',
