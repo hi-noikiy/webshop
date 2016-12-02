@@ -59,6 +59,10 @@
                     $('#filter-overlay').fadeOut(300);
                 }
             });
+
+            $('#filters-wrapper .active').each(function () {
+                console.log($(this).scrollTop());
+            });
         });
 
         function filter () {

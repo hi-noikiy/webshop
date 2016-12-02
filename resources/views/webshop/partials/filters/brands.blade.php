@@ -2,10 +2,10 @@
     <div class="panel-heading text-center">Merken</div>
 
     <div id="brand-filter" class="list-group search-filter">
-        <a data-filter="" href="#" class="list-group-item {{ (!request('brand') ? 'active' : '') }}">Geen merk filter</a>
+        <a data-filter="" href="#" class="list-group-item">Geen merk filter</a>
 
         @foreach($brands as $brand)
-            <a data-filter="{{ $brand }}" href="#" class="list-group-item {{ (request('brand') === $brand ? 'active' : '') }}">{{ $brand }}</a>
+            <a data-filter="{{ $brand }}" href="#" class="list-group-item">{{ $brand }}</a>
         @endforeach
     </div>
 </div>

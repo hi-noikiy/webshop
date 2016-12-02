@@ -2,10 +2,10 @@
     <div class="panel-heading text-center">Types</div>
 
     <div id="type-filter" class="list-group search-filter">
-        <a data-filter="" href="#" class="list-group-item {{ (!request('type') ? 'active' : '') }}">Geen type filter</a>
+        <a data-filter="" href="#" class="list-group-item">Geen type filter</a>
 
         @foreach($types as $type)
-            <a data-filter="{{ $type }}" href="#" class="list-group-item {{ (request('type') === $type ? 'active' : '') }}">{{ $type }}</a>
+            <a data-filter="{{ $type }}" href="#" class="list-group-item">{{ $type }}</a>
         @endforeach
     </div>
 </div>
