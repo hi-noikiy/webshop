@@ -1,14 +1,7 @@
-@extends('master', ['pagetitle' => 'Admin / Actiepaket / Aanpassen'])
+@extends('admin.master')
 
-@section('title')
-    <h3>Admin <small>actiepaket aanpassen</small></h3>
-@endsection
-
-@section('content')
-
-    @include('admin.nav')
-
-    <form action="{{ url('admin/packs/addProduct') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
+@section('document_start')
+    <form action="{{ route('admin.packs::add') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="#addProductLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -17,7 +10,7 @@
                         <h4 class="modal-title" id="addProductLabel">Product aan actiepakket toevoegen</h4>
                     </div>
                     <div class="modal-body">
-                        {!! csrf_field() !!}
+                        {{ csrf_field() }}
 
                         <input type="hidden" value="{{ $pack->id }}" name="pack">
 
@@ -77,50 +70,51 @@
             </div>
         </div>
     </form>
-
-    <div class="text-center">
-        <h3>{{ $pack->product->name }}</h3>
-    </div>
-
-    <hr />
-
-    <a data-toggle="modal" data-target="#addProductModal" class="btn btn-link btn-block btn-lg"><i class="fa fa-plus"></i> Product toevoegen</a>
-
-    <hr />
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Product</th>
-            <th>Naam</th>
-            <th>Aantal</th>
-            <th class="text-center">Verwijderen</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-        @foreach($pack->products as $prod)
-            <tr>
-                <td class="product-thumbnail"><img src="/img/products/{{ $prod->details->image }}"></td>
-                <td>{{ $prod->details->number }}</td>
-                <td><a href="/product/{{ $prod->details->number }}">{{ $prod->details->name }}</a></td>
-                <td>{{ $prod->amount }}</td>
-                <td class="no-padding"><button onclick="showConfirmationModal(this)" data-product-id="{{ $prod->id }}" data-product-number="{{ $prod->details->number }}" class="btn btn-danger delete-button"><i class="fa fa-remove"></i></button></td>
-            </tr>
-        @endforeach
-
-        </tbody>
-    </table>
-
-    <hr />
-
-    <a href="{{ url('admin/packs') }}" class="btn btn-success btn-block btn-lg">Terug naar overzicht</a>
-
 @endsection
 
-@section('extraJS')
+@section('content')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                <div class="card card-2">
+                    <h3>{{ $pack->product->name }}</h3>
+
+                    <hr />
+
+                    <a data-toggle="modal" data-target="#addProductModal" class="btn btn-link btn-block btn-lg"><i class="fa fa-plus"></i> Product toevoegen</a>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Product</th>
+                                <th>Naam</th>
+                                <th>Aantal</th>
+                                <th class="text-center">Verwijderen</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($pack->products as $prod)
+                                <tr>
+                                    <td class="product-thumbnail"><img src="/img/products/{{ $prod->details->image }}"></td>
+                                    <td>{{ $prod->details->number }}</td>
+                                    <td><a href="/product/{{ $prod->details->number }}">{{ $prod->details->name }}</a></td>
+                                    <td>{{ $prod->amount }}</td>
+                                    <td class="no-padding"><button onclick="showConfirmationModal(this)" data-product-id="{{ $prod->id }}" data-product-number="{{ $prod->details->number }}" class="btn btn-danger delete-button"><i class="fa fa-remove"></i></button></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <a href="{{ route('admin.packs') }}" class="btn btn-success btn-block btn-lg">Terug naar overzicht</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('document_end')
     <script>
         function getProductName(sender) {
             var val     = $(sender).val();
@@ -153,7 +147,7 @@
     </script>
 @endsection
 
-@section('extraCSS')
+@section('head_end')
     <style>
         .no-padding {
             padding: 0 !important;

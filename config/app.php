@@ -2,6 +2,8 @@
 
 return [
 
+    'name' => "WTG Webshop",
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -146,6 +148,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Snowfire\Beautymail\BeautymailServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,

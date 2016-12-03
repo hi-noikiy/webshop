@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Helper;
+use App\Helper;
 
 /**
- * Class CacheController.
+ * Class CacheController
+ *
+ * @package WTG
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class CacheController extends Controller
 {
+
     /**
-     * View cache information.
+     * Cache dashboard.
      *
      * @return \Illuminate\View\View
      */
-    public function stats()
+    public function view()
     {
         $opcache = opcache_get_status();
 
@@ -38,7 +40,7 @@ class CacheController extends Controller
             'wasted' => Helper::convertByte($wasted_memory),
         ]);
 
-        return view('admin.cache', [
+        return view('admin.cache.index', [
             'opcache_enabled'       => $opcache['opcache_enabled'],
             'opcache_full'          => $opcache['cache_full'],
             'opcache_stats'         => $opcache_stats,
@@ -69,4 +71,5 @@ class CacheController extends Controller
                 ->withErrors('Er is een fout opgetreden tijdens het resetten van de cache. De \'OpCache module is niet geinstalleerd.\'');
         }
     }
+
 }

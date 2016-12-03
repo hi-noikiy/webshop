@@ -2,20 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Content;
-use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use Helper;
 use Illuminate\Http\Request;
-use Redirect;
+use Carbon\Carbon;
+use App\Content;
 use Validator;
+use Helper;
 
 /**
  * Class ImportController.
+ *
+ * @package WTG
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class ImportController extends Controller
 {
+
+    /**
+     * The import page.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view()
+    {
+        return view('admin.import.index');
+    }
+
     /**
      * Product import handler.
      *
@@ -175,4 +186,5 @@ class ImportController extends Controller
                 ->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
         }
     }
+
 }
