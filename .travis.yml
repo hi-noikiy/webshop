@@ -16,7 +16,6 @@ install:
 - yarn
 - composer install --no-interaction
 - php artisan migrate
-- travis_retry npm install
 - node_modules/.bin/gulp
 
 script: vendor/bin/phpunit
