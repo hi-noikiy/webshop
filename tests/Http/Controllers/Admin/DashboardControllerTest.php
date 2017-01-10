@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\Controller as AdminController;
 use App\Http\Controllers\Admin\DashboardController;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class DashboardControllerTest extends TestCase
 {
