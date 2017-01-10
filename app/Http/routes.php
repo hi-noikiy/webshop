@@ -41,69 +41,8 @@ Route::get('search', 'SearchController@search');                                
 Route::get('specials', 'SearchController@specials');                               // Show only the specials
 Route::get('clearance', 'SearchController@clearance');                             // Show only the clearance products
 
-Route::group(['middleware' => 'auth.admin'], function () {
-    Route::get('phpinfo', 'Admin\AdminController@phpinfo');                     // Display the phpinfo stuff
-
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-        Route::get('/', 'AdminController@overview');                            // Admin overview
-        Route::get('managecontent', 'AdminController@contentManager');            // Content manager
-        Route::get('generate', 'AdminController@generate');                        // Generate page
-        Route::get('carousel', 'AdminController@carousel');                        // Carousel manager
-        Route::get('removeCarouselSlide/{id}', 'AdminController@removeSlide');    // Try to remove a carousel slide
-        Route::get('usermanager', 'AdminController@userManager');                // Simple user manager
-        Route::get('userAdded', 'AdminController@userAdded');                    // The user added page
-
-        Route::post('saveContent', 'AdminController@saveContent');               // Save the page content
-        Route::post('catalog', 'AdminController@generateCatalog');                // Generate the catalog
-        Route::post('addCarouselSlide', 'AdminController@addSlide');            // Try to add a carousel slide
-        Route::post('editCarouselSlide/{id}', 'AdminController@editSlide');        // Edit the slide order
-        Route::post('updateCompany', 'AdminController@updateCompany');          // Update/add the user
-        Route::post('updateDescription', 'AdminController@updateDescription')->name('update_description');
-        Route::post('pricelist', [
-            'middleware' => 'RemoveTempFile',                                   // Middleware to remove the temp csv file after download
-            'uses'       => 'AdminController@generate_pricelist',                      // Generate a downloadable pricelist for a specified user
-        ]);
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', 'AdminController@import');                          // The page where the user can upload a CSV file with the products
-            Route::get('success', 'AdminController@importSuccess');             // Import success page
-
-            Route::post('product', 'ImportController@product');                   // Handle the product import
-            Route::post('discount', 'ImportController@discount');                 // Handle the discount import
-            Route::post('image', 'ImportController@image');                     // Handle the image import
-            Route::post('download', 'ImportController@download');                 // Handle the download file import
-        });
-
-        Route::group(['prefix' => 'api', 'middleware' => 'ajax'], function () {
-            Route::get('cpu', 'ApiController@cpu');                      // Get CPU Load
-            Route::get('ram', 'ApiController@ram');                      // Get RAM Load
-            Route::get('chart/{type}', 'ApiController@chart');           // Get data for a chart
-            Route::get('product/{product}', 'ApiController@product');    // Get product data
-            Route::get('company', 'ApiController@companyDetails');       // Get user details
-            Route::get('content', 'ApiController@content');                // Get the content for a field
-            Route::get('description', 'ApiController@description');
-        });
-
-        Route::group(['prefix' => 'packs'], function () {
-            Route::get('/', 'PacksController@index');
-            Route::get('edit/{id}', 'PacksController@edit');
-
-            Route::post('add', 'PacksController@create');
-            Route::post('addProduct', 'PacksController@addProduct');
-            Route::post('remove', 'PacksController@destroy');
-            Route::post('removeProduct', 'PacksController@removeProduct');
-        });
-
-        Route::group(['prefix' => 'cache'], function () {
-            Route::get('/', 'CacheController@stats');                         // Get information about cache usage
-
-            Route::post('reset', 'CacheController@reset');                    // Reset the OpCache cache
-        });
-    });
-});
-
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('logout', 'UserController@logout');                              // Logout the current user
+    Route::get('logout', 'UserController@logout')->name('auth.logout'); // Logout the current user
     Route::get('reorder/{order_id}', 'WebshopController@reorder');                // Add the items from a previous order to the cart again
 
     Route::group(['prefix' => 'cart'], function () {

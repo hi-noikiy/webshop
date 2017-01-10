@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Pack;
 use App\PackProduct;
 use App\Product;
@@ -10,6 +9,8 @@ use Illuminate\Http\Request;
 
 /**
  * Class PacksController.
+ *
+ * @package WTG
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class PacksController extends Controller
@@ -19,9 +20,9 @@ class PacksController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function view()
     {
-        return view('admin/packs/overview', [
+        return view('admin.packs.index', [
             'packs' => Pack::all(),
         ]);
     }
