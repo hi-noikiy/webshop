@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Order;
 use App\Content;
-use Spatie\Analytics\Period;
 use Illuminate\Http\Request;
 
 /**
@@ -63,7 +62,7 @@ class DashboardController extends Controller
      *
      * @return array
      */
-    private function disk()
+    protected function disk()
     {
         return [
             'total' => disk_total_space('/'),
@@ -76,7 +75,7 @@ class DashboardController extends Controller
      *
      * @return array
      */
-    private function cpu()
+    protected function cpu()
     {
         $uptime = exec('uptime');
 
@@ -94,7 +93,7 @@ class DashboardController extends Controller
      *
      * @return array
      */
-    public function ram()
+    protected function ram()
     {
         $total = preg_replace("/\D/", '', exec("grep 'MemTotal' /proc/meminfo"));
         $free = preg_replace("/\D/", '', exec("grep 'MemFree' /proc/meminfo"));
@@ -127,13 +126,6 @@ class DashboardController extends Controller
             return response()->json([
                 'message' => "Chart data for chart '{$type}'",
                 'payload' => $groupedOrders,
-            ]);
-        } elseif ($type === 'browsers') {
-            $days = $request->input('days');
-
-            return response()->json([
-                'message' => "Chart data for chart '{$type}'",
-                'payload' => \Analytics::fetchTopBrowsers(Period::days($days)),
             ]);
         } else {
             return response()->json([
