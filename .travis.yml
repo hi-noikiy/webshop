@@ -9,9 +9,11 @@ before_install:
 - cp .env.travis .env
 - mysql -e 'create database testing;'
 - composer self-update
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+- nvm install 6
+- npm i -g yarn
 
 install:
+- yarn
 - composer install --no-interaction
 - php artisan migrate
 - travis_retry npm install
