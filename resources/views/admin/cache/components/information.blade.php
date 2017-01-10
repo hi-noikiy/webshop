@@ -13,7 +13,7 @@
             </tr>
 
             <tr>
-                <td>Cache full</td>
+                <td>Cache vol</td>
                 <td class="text-right"><span class="label label-{{ !$opcache_full ? 'success' : 'danger' }}">{{ !$opcache_full ? 'No' : 'Yes' }}</span></td>
             </tr>
             </tbody>
@@ -22,7 +22,7 @@
 
     <div class="col-sm-6">
         <table class="table table-striped">
-            <thead><tr><th colspan="2" class="text-center">Statistics</th></tr></thead>
+            <thead><tr><th colspan="2" class="text-center">Statistieken</th></tr></thead>
             <tbody>
             <tr>
                 <td>Cached scripts</td>

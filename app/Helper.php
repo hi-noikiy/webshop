@@ -181,8 +181,12 @@ class Helper
      *
      * @return float
      */
-    public static function convertByte(int $bytes, $to = 'MB')
+    public static function convertByte(int $bytes = null, $to = 'MB')
     {
+        if ($bytes === null) {
+            return 0.0;
+        }
+
         switch (strtoupper($to)) {
             case 'KB':
                 $ret = $bytes / pow(10, 3);
