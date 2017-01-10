@@ -20,6 +20,12 @@ class CacheController extends Controller
     {
         $opcache = opcache_get_status();
 
+        if ($opcache === false) {
+            return view('admin.cache.index', [
+                'opcache_enabled'       => false,
+            ]);
+        }
+
         $opcache_stats = collect($opcache['opcache_statistics']);
 
         $free_memory = $opcache['memory_usage']['free_memory'];

@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\Controller as AdminController;
 
 class DashboardControllerTest extends TestCase
 {
+    /**
+     * @var App\User
+     */
     private $user;
 
     public function setUp()
