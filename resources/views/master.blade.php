@@ -17,9 +17,8 @@
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="mask-icon" href="{{ asset('img/WTG-icon.svg') }}" color="red">
-    <link rel="apple-touch-icon" href="{{ asset('img/WTG-icon.svg') }}">
+    
+    <meta name="theme-color" content="#c2272d">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
