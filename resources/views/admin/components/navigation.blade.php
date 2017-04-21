@@ -1,7 +1,9 @@
 <div id="navigation-wrapper">
     <div id="navigation">
         <div class="title">
-            <img src="{{ asset('img/logo.png') }}" />
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('img/logo.png') }}" />
+            </a>
         </div>
 
         <ul class="nav nav-pills nav-stacked animated fadeIn">

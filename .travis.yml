@@ -1,9 +1,5 @@
 language: php
 
-matrix:
-  allow_failures:
-  - php: 7.1
-
 php:
 - 7.0
 - 7.1
@@ -21,7 +17,7 @@ install:
 - yarn
 - composer install --no-interaction
 - php artisan migrate
-- node_modules/.bin/gulp
+- yarn run production
 
 script: vendor/bin/phpunit
 

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Auth;
 use Cart;
 use Session;
-use App\Pack;
-use App\Order;
-use App\Address;
-use App\Product;
+use App\Models\Pack;
+use App\Models\Order;
+use App\Models\Address;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 /**
@@ -24,10 +24,9 @@ class CartController extends Controller
      */
     public function view()
     {
-        return view('webshop.cart', [
-            'cart'      => Cart::content(),
-            'addresses' => Auth::user()->addresses,
-        ]);
+        $quote_items = \Auth::user()->getQuote()->items;
+
+        return view('checkout.cart', compact('quote_items'));
     }
 
     /**
@@ -103,7 +102,7 @@ class CartController extends Controller
             'qty'   => 'required|numeric|min:1',
             'artNr' => 'required',
         ]);
-
+dd($request->input());
         if ($validator->passes()) {
             if ($request->input('edit') === '') {
                 // Load the user cart data

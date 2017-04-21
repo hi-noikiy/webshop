@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Helper;
 use Validator;
-use App\Content;
+use App\Models\Content;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,7 +39,7 @@ class ImportController extends Controller
             $file->move(storage_path().'/import', 'products.csv');
 
             $runTime = new \DateTime('Europe/Amsterdam');
-            $runTime->setTimestamp(strtotime('+'.Helper::timeToNextCronJob().' minutes'));
+            $runTime->setTimestamp(strtotime('+'.app('helper')->timeToNextCronJob().' minutes'));
 
             Content::where('name', 'admin.product_import')->update([
                 'content'    => 'Er is een import ingepland voor '.$runTime->format('H:i'),
@@ -47,7 +47,7 @@ class ImportController extends Controller
                 'error'      => false,
             ]);
 
-            return redirect('admin/import/success')->with([
+            return redirect(route('admin.import::success'))->with([
                 'type' => 'product',
             ]);
         } else {
@@ -71,7 +71,7 @@ class ImportController extends Controller
             $file->move(storage_path().'/import', 'discounts.csv');
 
             $runTime = new \DateTime('Europe/Amsterdam');
-            $runTime->setTimestamp(strtotime('+'.Helper::timeToNextCronJob().' minutes'));
+            $runTime->setTimestamp(strtotime('+'.app('helper')->timeToNextCronJob().' minutes'));
 
             Content::where('name', 'admin.discount_import')->update([
                 'content'    => 'Er is een import ingepland voor '.$runTime->format('H:i'),
@@ -79,7 +79,7 @@ class ImportController extends Controller
                 'error'      => false,
             ]);
 
-            return redirect('admin/import/success')->with([
+            return redirect(route('admin.import::success'))->with([
                 'type' => 'korting',
             ]);
         } else {
@@ -129,7 +129,7 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('admin/import/success')->with([
+                return redirect(route('admin.import::success'))->with([
                     'count' => $count,
                     'time'  => $endTime,
                     'type'  => 'afbeelding',
@@ -172,7 +172,7 @@ class ImportController extends Controller
 
                 $endTime = round(microtime(true) - $startTime, 4);
 
-                return redirect('admin/import/success')->with([
+                return redirect(route('admin.import::success'))->with([
                     'count' => $count,
                     'time'  => $endTime,
                     'type'  => 'download',
@@ -182,6 +182,24 @@ class ImportController extends Controller
             return redirect()
                 ->back()
                 ->withErrors('Geen bestand geselecteerd of het bestand is ongeldig');
+        }
+    }
+
+    /**
+     * The import was successful :D.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function success()
+    {
+        // The type must be set
+        if (session()->has('type')) {
+            return view('admin.import.success');
+        }
+
+        // Or you will be redirected
+        else {
+            return redirect(route('admin.import'));
         }
     }
 }

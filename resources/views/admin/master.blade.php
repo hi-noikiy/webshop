@@ -15,7 +15,7 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="{{ elixir('css/admin/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('css/admin/app.css') }}">
 
         @yield('head_end')
     </head>
@@ -42,7 +42,7 @@
 
         @include('admin.components.notifications')
 
-        <script src="{{ elixir('js/admin/app.js') }}"></script>
+        <script src="{{ mix('js/admin/app.js') }}"></script>
         <script>
             function makeChart (context, type, data, options) {
                 options = options ? options : {};

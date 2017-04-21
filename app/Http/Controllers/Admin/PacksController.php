@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Pack;
-use App\Product;
-use App\PackProduct;
+use App\Models\Pack;
+use App\Models\Product;
+use App\Models\PackProduct;
 use Illuminate\Http\Request;
 
 /**

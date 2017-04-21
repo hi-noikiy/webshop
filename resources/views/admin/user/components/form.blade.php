@@ -72,17 +72,17 @@
 
     <div class="form-group">
         <div class="col-sm-4">
-            <button id="deleteCompanyButton"
+            <a id="deleteCompanyButton"
                     type="button"
                     class="btn btn-block btn-lg btn-danger"
                     disabled="disabled"
                     data-toggle="modal"
                     data-target="#deleteUserModal">
                 <i class="fa fa-remove"></i> Verwijderen
-            </button>
+            </a>
         </div>
         <div class="col-sm-8">
-            <button type="submit" class="btn btn-block btn-lg btn-success" name="update">
+            <button type="submit" class="btn btn-block btn-lg btn-success">
                 Toevoegen/wijzigen
             </button>
         </div>

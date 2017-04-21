@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use Helper;
 use Session;
-use App\Pack;
-use App\Product;
-use App\PackProduct;
+use App\Models\Pack;
+use App\Models\Product;
+use App\Models\PackProduct;
 use Illuminate\Http\Request;
 use App\Exceptions\ProductNotFoundException;
 
@@ -37,7 +37,7 @@ class ProductController extends Controller
             throw new ProductNotFoundException($product_Id);
         }
 
-        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
+        $discount = (Auth::check() ? app('helper')->getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
         $prevPage = $request->get('ref');
         $related_products = [];
         $pack_list = [];
@@ -51,7 +51,7 @@ class ProductController extends Controller
         }
 
         if ($pack = PackProduct::select(['pack_id'])->where('product', $product_Id)->get()->toArray()) {
-            $pack_list = Pack::whereIn('id', $pack)->get();
+            $pack_list = Pack::has('product')->whereIn('id', $pack)->get();
         }
 
         if (preg_match('/(search|clearance|specials)/', $request->server('HTTP_REFERER'))) {

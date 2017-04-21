@@ -1,31 +1,54 @@
-@extends('master', ['pagetitle' => 'Home'])
+@extends('layouts.home', ['pagetitle' => 'Home'])
 
 @section('title')
-    <h1>Welkom op de website van Wiringa Technische Groothandel</h1>
+    <h2>Welkom op de webshop van Wiringa Technische Groothandel</h2>
 @endsection
 
 @section('content')
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-6">
             <div id="slideshow" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    @for($i=0; $i < count($carouselSlides); $i++)
-                        <li data-target="#slideshow" data-slide-to="{{ $i }}" class="{{ ($i === 0 ? 'active' : '') }}"></li>
-                    @endfor
+                    {{--@foreach($carouselSlides as $carouselSlide)--}}
+                    {{--<li data-target="#slideshow" data-slide-to="{{ $loop->index }}"--}}
+                    {{--class="{{ ($loop->first ? 'active' : '') }}"></li>--}}
+                    <li data-target="#slideshow" data-slide-to="0"></li>
+                    <li data-target="#slideshow" data-slide-to="1"></li>
+                    <li data-target="#slideshow" data-slide-to="2"></li>
+                    {{--@endforeach--}}
                 </ol>
 
                 <div class="carousel-inner">
-                    <?php $count = 1; ?>
-                    @foreach ($carouselSlides as $slide)
-                        <div class="item {{ ($count === 1 ? 'active' : '') }}">
-                            <img src="/img/carousel/{{ $slide->Image }}" alt="{{ $slide->Image }}" style="height: 300px">
-                            <div class="carousel-caption">
-                                <h3>{{ $slide->Title }}</h3>
-                                <p>{{ $slide->Caption }}</p>
-                            </div>
+                    {{--@foreach ($carouselSlides as $slide)--}}
+                    {{--<div class="item {{ ($loop->first ? 'active' : '') }}">--}}
+                    {{--<img src="/img/carousel/{{ $slide->Image }}" alt="{{ $slide->Image }}" style="height: 300px">--}}
+                    {{--<div class="carousel-caption">--}}
+                    {{--<h3>{{ $slide->Title }}</h3>--}}
+                    {{--<p>{{ $slide->Caption }}</p>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    <div class="item active">
+                        <img src="https://lorempixel.com/450/300/cats" alt="" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Foo</h3>
+                            <p>Lorem ipsum dolor sit amet</p>
                         </div>
-                        <?php $count++; ?>
-                    @endforeach
+                    </div>
+                    <div class="item">
+                        <img src="https://lorempixel.com/300/300/cats" alt="" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Foo</h3>
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="https://lorempixel.com/150/300/cats" alt="" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Foo</h3>
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                    {{--@endforeach--}}
                 </div>
 
                 <a class="carousel-control left" href="#slideshow" data-slide="prev"><span class="icon-prev"></span></a>
@@ -33,40 +56,18 @@
             </div>
         </div>
 
-        <div class="col-lg-7">
-            @if(Auth::check())
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Nieuws</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            {!! $news->content !!}
-                        </p>
-                    </div>
-                </div>
-            @else
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Nieuws</h3>
-                            </div>
-                            <div class="panel-body">
-                                <p>
-                                    {!! $news->content !!}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well well-sm text-center">
-                            <h3>Klant worden?</h3>
-                            <a class="btn btn-block btn-success" href="/register">Ja, ik wil klant worden!</a>
-                        </div>
-                    </div>
-                </div>
-            @endif
+        <div class="col-lg-6">
+            <div class="news">
+                <h3 class="text-center news-header">Nieuws</h3>
+
+                @if($news)
+                    {!! $news !!}
+                @else
+                    <p>
+                        Er is op dit moment geen nieuws
+                    </p>
+                @endif
+            </div>
         </div>
     </div>
 @endsection

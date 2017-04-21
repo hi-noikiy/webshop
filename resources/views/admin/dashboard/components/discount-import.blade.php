@@ -11,14 +11,18 @@
 <hr />
 
 <table class="table">
+    <colgroup>
+        <col width="15%">
+        <col width="85%">
+    </colgroup>
     <tbody>
-    <tr>
-        <td>Laatste update</td>
-        <td>{{ $discount_import->updated_at->getTimestamp() === -62169984000 ? $discount_import->created_at : $discount_import->updated_at }}</td>
-    </tr>
-    <tr>
-        <td>Status</td>
-        <td>{!! $discount_import->content !!}</td>
-    </tr>
+        <tr>
+            <td>Laatste update</td>
+            <td>{{ $discount_import->updated_at->getTimestamp() === -62169984000 ? $discount_import->created_at : $discount_import->updated_at }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{!! $discount_import->content !!}</td>
+        </tr>
     </tbody>
 </table>

@@ -10,8 +10,8 @@ use Helper;
 use Request;
 use Session;
 use Redirect;
-use App\Order;
-use App\Product;
+use App\Models\Order;
+use App\Models\Product;
 
 /**
  * Class WebshopController.
@@ -26,9 +26,9 @@ class WebshopController extends Controller
      */
     public function main()
     {
-        $brands = DB::table('products')->select('brand')->distinct()->get();
-        $series = DB::table('products')->select('series')->distinct()->get();
-        $types = DB::table('products')->select('type')->distinct()->get();
+        $brands = DB::table('products')->select('brand')->distinct()->get()->toArray();
+        $series = DB::table('products')->select('series')->distinct()->get()->toArray();
+        $types = DB::table('products')->select('type')->distinct()->get()->toArray();
 
         // Sort the object arrays
         usort($brands, function ($a, $b) {
@@ -66,7 +66,7 @@ class WebshopController extends Controller
         Session::flash('product_id', $product_Id);
 
         $product = Product::where('number', $product_Id)->firstOrFail();
-        $discount = (Auth::check() ? Helper::getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
+        $discount = (Auth::check() ? app('helper')->getProductDiscount(Auth::user()->company_id, $product->group, $product->number) : null);
         $prevPage = Input::get('ref');
 
         if ($product->related_products) {
@@ -88,51 +88,6 @@ class WebshopController extends Controller
                 'prevPage'         => $prevPage,
             ]
         );
-    }
-
-    /**
-     * Add the products from a previous order to the cart.
-     *
-     * @param  int  $orderId
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function reorder($orderId)
-    {
-        $order = Order::where('User_id', Auth::user()->company_id)
-            ->where('id', $orderId)
-            ->firstOrFail();
-
-        $order = unserialize($order->products);
-        $errors = false;
-
-        foreach ($order as $item) {
-            if (Product::where('number', $item['id'])->count()) {
-                $product = Product::where('number', $item['id'])->firstOrFail();
-                $cartData = [
-                    'id'      => $product->number,
-                    'name'    => $product->name,
-                    'qty'     => $item['qty'],
-                    'price'   => $product->real_price,
-                    'options' => [
-                        'special' => false,
-                        'korting' => Helper::getProductDiscount(Auth::user()->login, $product->group, $product->number),
-                    ],
-                ];
-
-                // Add the product to the cart
-                Cart::add($cartData);
-            } else {
-                $errors = true;
-            }
-        }
-
-        if ($errors) {
-            return redirect('cart')
-                ->withErrors('Sommige producten konden niet toegevoegd worden aan uw winkelmandje');
-        } else {
-            return redirect('cart')
-                ->with('status', 'De order producten zijn in uw winkelmandje geplaatst.');
-        }
     }
 
     /**

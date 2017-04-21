@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper;
-use App\Content;
-use App\Product;
+use App\Models\Content;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 /**
@@ -108,7 +108,7 @@ class ExportController extends Controller
 
                         if ($product !== null) {
                             if ($product->special_price === '0.00') {
-                                $discount = 1 - (Helper::getProductDiscount($user_id, $product->group, $product->number) / 100);
+                                $discount = 1 - (app('helper')->getProductDiscount($user_id, $product->group, $product->number) / 100);
                                 $price = number_format(preg_replace("/\,/", '.', $product->price) * $discount, 2, ',', '');
                             } else {
                                 $price = number_format(preg_replace("/\,/", '.', $product->special_price), 2, ',', '');

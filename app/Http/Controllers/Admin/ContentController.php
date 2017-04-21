@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Content;
-use App\Product;
-use App\Description;
+use App\Models\Description;
+use WTG\Block\Models\Block;
 use Illuminate\Http\Request;
+use WTG\Catalog\Models\Product;
 
 /**
  * Class ContentController.
@@ -21,9 +21,11 @@ class ContentController extends Controller
      */
     public function view()
     {
-        return view('admin.content.index', [
-            'data' => Content::where('hidden', '0')->get(),
-        ]);
+        $blocks = Block::editable()->get()->sortBy(function ($block) {
+            return $block->getName();
+        });
+
+        return view('admin.content.index', compact('blocks'));
     }
 
     /**
@@ -34,22 +36,22 @@ class ContentController extends Controller
      */
     public function content(Request $request)
     {
-        if ($request->has('page')) {
-            $data = Content::where('name', $request->input('page'))->first();
+        if ($request->has('block')) {
+            $data = Block::getByTag($request->input('block'));
 
             if ($data) {
                 return response()->json([
-                    'message' => 'Content for page '.$request->input('page'),
+                    'message' => 'Content for block '.$request->input('block'),
                     'payload' => $data,
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'No content found for page: '.$request->input('page'),
+                    'message' => 'No content found for block: '.$request->input('block'),
                 ], 404);
             }
         } else {
             return response()->json([
-                'message' => 'Missing request parameter: `page`',
+                'message' => 'Missing request parameter: `block`',
             ], 400);
         }
     }
@@ -96,11 +98,13 @@ class ContentController extends Controller
      */
     public function savePage(Request $request)
     {
-        if ($request->has('field') && $request->has('content')) {
+        if ($request->has('block') && $request->has('content')) {
             $content = $request->input('content');
-            $field = $request->input('field');
+            $block = $request->input('block');
 
-            Content::where('name', $field)->update(['content' => $content]);
+            $block = Block::getByTag($block);
+            $block->setContent($content);
+            $block->save();
 
             return redirect()
                 ->back()

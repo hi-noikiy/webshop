@@ -40,10 +40,13 @@ class AuthenticateAdmin
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('/#login');
+                return redirect()
+                    ->guest(route('auth.login'));
             }
-        } elseif (! $this->auth->user()->isAdmin) {
-            return redirect()->to('/account')->with('error', 'Dit account heeft geen admin rechten');
+        } elseif (! $this->auth->user()->isAdmin()) {
+            return redirect()
+                ->to(route('account.dashboard'))
+                ->with('error', 'Dit account heeft geen admin rechten');
         }
 
         return $next($request);

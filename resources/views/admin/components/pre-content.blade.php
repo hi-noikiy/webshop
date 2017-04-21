@@ -8,7 +8,7 @@
                     <th class="title">Orders</th>
                 </tr>
                 <tr>
-                    <td class="value">{{ app('format')->number(\App\Order::count())  }}</td>
+                    <td class="value">{{ app('format')->number(\WTG\Checkout\Models\Order::count()) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -22,7 +22,7 @@
                     <th class="title">Gebruikers</th>
                 </tr>
                 <tr>
-                    <td class="value">{{ app('format')->number(\App\User::count()) }}</td>
+                    <td class="value">{{ app('format')->number(\WTG\Customer\Models\Company::count()) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -36,7 +36,7 @@
                     <th class="title">Producten</th>
                 </tr>
                 <tr>
-                    <td class="value">{{ app('format')->number(\App\Product::count()) }}</td>
+                    <td class="value">{{ app('format')->number(\WTG\Catalog\Models\Product::count()) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -50,7 +50,7 @@
                     <th class="title">Kortingen</th>
                 </tr>
                 <tr>
-                    <td class="value">{{ app('format')->number(\App\Discount::count()) }}</td>
+                    <td class="value">{{ app('format')->number(\WTG\Catalog\Models\Discount::count()) }}</td>
                 </tr>
                 </tbody>
             </table>

@@ -1,4 +1,4 @@
-@extends('master', ['pagetitle' => 'Home / Contact'])
+@extends('layouts.main', ['pagetitle' => 'Home / Contact'])
 
 @section('title')
     <h3>Contact</h3>

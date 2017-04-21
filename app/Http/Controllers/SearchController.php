@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\Elastic\ProductSearch;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class SearchController.
+ *
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
 class SearchController extends Controller
@@ -19,62 +22,32 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-        $str = $request->get('q');
-        $query = Product::where(function ($query) use ($request) {
-            if ($request->has('brand')) {
-                $query->where('brand', $request->input('brand'));
-            }
-            if ($request->has('serie')) {
-                $query->where('series', $request->input('serie'));
-            }
-            if ($request->has('type')) {
-                $query->where('type', $request->input('type'));
-            }
-        })->where(function ($query) use ($str, $request) {
-            if ($request->has('q')) {
-                $query->orWhere('number', 'LIKE', '%'.$str.'%')
-                    ->orWhere('group', 'LIKE', '%'.$str.'%')
-                    ->orWhere('altNumber', 'LIKE', '%'.$str.'%')
-                    ->orWhere('ean', 'LIKE', '%'.$str.'%');
+        $page = $request->input('page');
 
-                $query->orWhere(function ($query) use ($request) {
-                    foreach (explode(' ', $request->input('q')) as $word) {
-                        // Split the input so the order of the search query doesn't matter
-                        $query->where(\DB::raw('CONCAT(name, " ", keywords)'), 'LIKE', "%{$word}%");
-                    }
-                });
-            }
-        });
+        $terms = [];
+        $terms['brand'] = $request->input('brand');
+        $terms['series'] = $request->input('serie');
+        $terms['type'] = $request->input('type');
 
-        // Get all the results to filter the brands, series and types from it
-        $allResults = $query->orderBy('number', 'asc')->get();
+        $search = new ProductSearch($request->input('q'), $terms);
+        $products = $search->getItems();
+        $totalItems = $search->getTotal();
+        $filters = $search->getFilters();
+        $suggestions = $search->getSuggestions();
 
-        // Get the paginated results
-        $results = $query->paginate(25);
-
-        // Initialize $brands, $series, $types as array
-        $brands =
-        $series =
-        $types = [];
-
-        // Get the brands, series and types from the search results
-        foreach ($allResults as $product) {
-            $brands[] = $product->brand;
-            $series[] = $product->series;
-            $types[] = $product->type;
-        }
-
-        // Sort the arrays (Case Insensitive)
-        sort($brands);
-        sort($series);
-        sort($types);
+        $paginator = new LengthAwarePaginator(
+            $products->forPage($page, 15),
+            $totalItems,
+            15,
+            $page
+        );
+        $paginator->setPath('search');
 
         // Return the search view with the fetched data
         return view('webshop.search', [
-            'results'    => $results,
-            'brands'     => array_unique($brands),
-            'series'     => array_unique($series),
-            'types'      => array_unique($types),
+            'paginator'  => $paginator,
+            'suggestions' => $suggestions,
+            'filters'    => $filters,
             'scriptTime' => round(microtime(true) - LARAVEL_START, 4),
         ]);
     }

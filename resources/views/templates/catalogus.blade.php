@@ -199,7 +199,7 @@
 		<td>{!! $product->name !!}</td>
 		<td>{!! $product->group !!}</td>
 		<td>{!! $product->altNumber !!}</td>
-		<td>{!! ($product->refactor == 1 ? Helper::price_per($product->registered_per) : Helper::price_per($product->packed_per)) !!}</td>
+		<td>{!! ($product->refactor == 1 ? app('helper')->price_per($product->registered_per) : app('helper')->price_per($product->packed_per)) !!}</td>
 		<td>&euro;{!! $price !!}</td>
 	</tr>
 

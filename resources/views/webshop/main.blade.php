@@ -1,4 +1,4 @@
-@extends('master', ['pagetitle' => 'Webshop / Home'])
+@extends('layouts.main', ['pagetitle' => 'Webshop / Home'])
 
 @section('title')
         <h3>Webshop</h3>

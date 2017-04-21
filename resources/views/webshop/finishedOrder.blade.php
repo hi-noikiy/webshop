@@ -1,4 +1,4 @@
-@extends('master', ['pagetitle' => 'Webshop / Bestelling verstuurd'])
+@extends('layouts.main', ['pagetitle' => 'Webshop / Bestelling verstuurd'])
 
 @section('title')
         <h3>Bedankt voor uw bestelling!</h3>

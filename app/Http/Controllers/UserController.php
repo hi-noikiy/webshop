@@ -16,13 +16,23 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
+     * Show the login form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getLogin()
+    {
+        return view('auth.login');
+    }
+
+    /**
      * The user will be redirected to the previous page with
      * a message indicating whether the login was successful or not.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
+    public function postLogin(Request $request)
     {
         $validator = \Validator::make($request->all(), [
             'company'  => 'required',
@@ -55,8 +65,8 @@ class UserController extends Controller
                 }
 
                 return redirect()
-                    ->back()
-                    ->with('status', 'U bent nu ingelogd');
+                    ->intended()
+                    ->with('status', 'U bent nu ingelogd.');
             }
         }
 
@@ -83,8 +93,7 @@ class UserController extends Controller
 
         Log::info("[Logout] User: [{$user->username}] - Company [{$user->company_id}] - success");
 
-        return redirect()
-            ->intended('/')
+        return redirect('/')
             ->with('status', 'U bent nu uitgelogd');
     }
 

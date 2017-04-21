@@ -1,0 +1,39 @@
+.product-listing {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 10px 0;
+
+  .add-to-cart {
+    margin: 5px 0;
+    max-width: 320px;
+    display: inline-table;
+  }
+
+  .prices > div {
+    display: inline-block;
+    padding-left: 30px;
+
+    p {
+      margin: 5px 0 0;
+      font-weight: 600;
+    }
+    div {
+      font-style: italic;
+    }
+  }
+
+  .product-thumbnail {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+@media only screen and (max-width: $screen-xs-max) {
+  .product-listing {
+    text-align: center;
+  }
+}

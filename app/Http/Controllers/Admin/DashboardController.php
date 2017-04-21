@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Order;
-use App\Content;
+use App\Models\Order;
+use App\Models\Content;
 use Illuminate\Http\Request;
+use WTG\Block\Models\Block;
 
 /**
  * Class DashboardController.
@@ -20,20 +21,18 @@ class DashboardController extends Controller
      */
     public function view()
     {
-        $product_import = Content::where('name', 'admin.product_import')->first();
-        $discount_import = Content::where('name', 'admin.discount_import')->first();
+        $years = request('years', null);
+        if (is_null($years) || is_array($years)) {
+            $product_import = Block::getByTag('admin.product_import');
+            $discount_import = Block::getByTag('admin.discount_import');
+            $orderData = $this->getOrderData($years);
+            $orders = $orderData->get('orders');
+            $averagePerMonth = $orderData->get('average');
 
-        // SELECT COUNT(id) FROM orders GROUP BY YEAR(created_at), MONTH(created_at);
-        $groupedOrders = Order::select(\DB::raw("YEAR(created_at) as 'year'"))
-            ->groupBy(\DB::raw('YEAR(created_at)'))
-            ->orderBy('year', 'DESC')
-            ->get();
-
-        return view('admin.dashboard.index', [
-            'product_import'    => $product_import,
-            'discount_import'   => $discount_import,
-            'years'             => $groupedOrders->toArray(),
-        ]);
+            return view('admin.dashboard.index', compact('product_import', 'discount_import', 'orders', 'averagePerMonth'));
+        } else {
+            return redirect(route('admin.dashboard'));
+        }
     }
 
     /**
@@ -106,29 +105,50 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get data for a chart.js chart.
+     * Get the order data
      *
-     * @param  string  $type
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  array|null  $years
+     * @return \Illuminate\Support\Collection
      */
-    public function chart(Request $request, $type)
+    protected function getOrderData(array $years = null)
     {
-        // Get the count, year and month
-        if ($type === 'orders') {
-            $groupedOrders = Order::select(\DB::raw("COUNT(id) as 'count', YEAR(created_at) as 'year', MONTH(created_at) as 'month'"))
-                ->where(\DB::raw('YEAR(created_at)'), $request->input('year'))
-                ->groupBy(\DB::raw('YEAR(created_at), MONTH(created_at)'))
-                ->get();
+        $averagePerMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-            return response()->json([
-                'message' => "Chart data for chart '{$type}'",
-                'payload' => $groupedOrders,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Unknown chart type',
-            ], 400);
-        }
+        $orders = Order::get()
+            ->groupBy(function ($item, $key) {
+                return $item->created_at->format('Y');
+            })
+            ->map(function ($item, $key) use (&$averagePerMonth, $years) {
+                if ($years !== null) {
+                    if (!in_array($key, $years)) {
+                        return;
+                    }
+                }
+
+                return $item->groupBy(function ($item, $key) {
+                    return $item->created_at->format('n');
+                })->map(function ($item, $key) use (&$averagePerMonth) {
+                    $averagePerMonth[$key-1] += $item->count();
+
+                    return $item->count();
+                });
+            });
+
+        $averagePerMonth = collect($averagePerMonth)->map(function ($item, $key) use ($orders) {
+            $count = $orders->filter(function ($item) {
+                return $item !== null;
+            })->keys()->count();
+
+            if ($count === 0) {
+                return 0;
+            }
+
+            return $item / $count;
+        });
+
+        return collect([
+            'average' => $averagePerMonth,
+            'orders' => $orders
+        ]);
     }
 }

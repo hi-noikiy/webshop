@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
-use App\Company;
+use App\Models\User;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 /**
@@ -71,6 +71,44 @@ class UserController extends Controller
     }
 
     /**
+     * Remove a user
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(Request $request)
+    {
+        if (!$request->has('company_id')) {
+            return redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors('Geen debiteurnummer opgegeven');
+        }
+
+        // Get the company
+        $company = Company::whereLogin($request->input('company_id'))->first();
+
+        if ($company) {
+            // Remove associated users
+            $company->users->each(function ($user) {
+                $user->delete();
+            });
+
+            // Remove the company
+            $company->delete();
+
+            return redirect()
+                ->back()
+                ->with('status', 'Het bedrijf en bijbehorende gegevens zijn verwijderd');
+        } else {
+            return redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors('Geen bedrijf gevonden met login naam '.$request->input('company_id'));
+        }
+    }
+
+    /**
      * Add/update a user.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,89 +129,60 @@ class UserController extends Controller
         ]);
 
         if ($validator->passes()) {
-            if ($request->get('delete') === '') {
-                // Get the company
-                $company = Company::whereLogin($request->input('company_id'))->first();
+            if ($company = Company::whereLogin($request->input('company_id'))->first()) {
+                $company->login = $request->input('company_id');
+                $company->company = $request->input('company_name');
+                $company->street = $request->input('address');
+                $company->postcode = $request->input('postcode');
+                $company->city = $request->input('city');
+                $company->active = $request->input('active');
 
-                if ($company) {
-                    // Remove associated users
-                    $company->users->each(function ($user) {
-                        $user->delete();
-                    });
+                $company->save();
 
-                    // Remove the company
-                    $company->delete();
+                \Log::info('Company '.$company->login.' has been updated by an admin');
 
-                    return redirect()
-                        ->back()
-                        ->with('status', 'Het bedrijf en bijbehorende gegevens zijn verwijderd');
-                } else {
-                    return redirect()
-                        ->back()
-                        ->withInput($request->input())
-                        ->withErrors('Geen bedrijf gevonden met login naam '.$request->input('company_id'));
-                }
-            } elseif ($request->get('update') === '') {
-                if ($company = Company::whereLogin($request->input('company_id'))->first()) {
-                    $company->login = $request->input('company_id');
-                    $company->company = $request->input('company_name');
-                    $company->street = $request->input('address');
-                    $company->postcode = $request->input('postcode');
-                    $company->city = $request->input('city');
-                    $company->active = $request->input('active');
+                $user = $company->mainUser;
 
-                    $company->save();
+                $user->username = $request->input('company_id');
+                $user->company_id = $request->input('company_id');
+                $user->email = $request->input('email');
 
-                    \Log::info('Company '.$company->login.' has been updated by an admin');
+                $user->save();
 
-                    $user = $company->mainUser;
+                \Log::info('User '.$user->username.' has been updated by an admin');
 
-                    $user->username = $request->input('company_id');
-                    $user->company_id = $request->input('company_id');
-                    $user->email = $request->input('email');
-
-                    $user->save();
-
-                    \Log::info('User '.$user->username.' has been updated by an admin');
-
-                    return redirect()
-                        ->back()
-                        ->with('status', 'Bedrijf '.$company->company_id.' is aangepast');
-                } else {
-                    $pass = mt_rand(100000, 999999);
-
-                    $company = new Company();
-
-                    $company->login = $request->input('company_id');
-                    $company->company = $request->input('company_name');
-                    $company->street = $request->input('address');
-                    $company->postcode = $request->input('postcode');
-                    $company->city = $request->input('city');
-                    $company->active = $request->input('active');
-
-                    $company->save();
-
-                    $user = new User();
-
-                    $user->username = $request->input('company_id');
-                    $user->company_id = $request->input('company_id');
-                    $user->email = $request->input('email');
-                    $user->manager = true;
-                    $user->password = bcrypt($pass);
-
-                    $user->save();
-
-                    \Session::flash('password', $pass);
-                    \Session::flash('input', $request->all());
-
-                    return redirect()
-                        ->route('admin.user::added');
-                }
-            } else {
                 return redirect()
                     ->back()
-                    ->withInput($request->input())
-                    ->withErrors('Geen actie opgegeven (update of verwijderen)');
+                    ->with('status', 'Bedrijf '.$company->company_id.' is aangepast');
+            } else {
+                $pass = mt_rand(100000, 999999);
+
+                $company = new Company();
+
+                $company->login = $request->input('company_id');
+                $company->company = $request->input('company_name');
+                $company->street = $request->input('address');
+                $company->postcode = $request->input('postcode');
+                $company->city = $request->input('city');
+                $company->active = $request->input('active');
+
+                $company->save();
+
+                $user = new User();
+
+                $user->username = $request->input('company_id');
+                $user->company_id = $request->input('company_id');
+                $user->email = $request->input('email');
+                $user->manager = true;
+                $user->password = bcrypt($pass);
+
+                $user->save();
+
+                \Session::flash('password', $pass);
+                \Session::flash('input', $request->all());
+
+                return redirect()
+                    ->route('admin.user::added');
             }
         } else {
             return redirect()

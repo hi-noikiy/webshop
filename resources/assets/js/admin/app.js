@@ -1,21 +1,11 @@
-// I have no idea what this is, but it's here anyway. Deal with it!
-window._ = require('lodash');
 
-// jQuery
-window.$ = window.jQuery = require('jquery');
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
 
-// Random material color generator
-window.randomMC = require('random-material-color');
-window.randomColor = function () {
-    return randomMC.getColor();
-};
-
-// Boostrap
-require('bootstrap-sass');
-
-// ChartJS
-window.Chart = require('chart.js');
-window.Chart.defaults.global.maintainAspectRatio = false;
+require('./bootstrap');
 
 // Names of the months
 window.months = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];

@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use Redirect;
+use Exception;
+use Illuminate\Auth\AuthenticationException;
+use GrahamCampbell\Exceptions\NewExceptionHandler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
@@ -18,95 +16,83 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        NotFoundHttpException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ProductNotFoundException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
+        \App\Exceptions\ProductNotFoundException::class,
     ];
 
     /**
      * Report or log an exception.
+     *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
-     * @throws \Exception $e
+     * @param  \Exception  $exception
      * @return void
      */
-    public function report(\Exception $e)
+    public function report(Exception $exception)
     {
-        // Create a sentry variable
-        $sentry = app('sentry');
+        try {
+            // Create a sentry variable
+            $sentry = app('sentry');
 
-        // Add the user login if someone is logged in
-        if (auth()->check()) {
-            $sentry->user_context([
-                'id'        => auth()->user()->company_id,
-                'username'  => auth()->user()->username,
-            ]);
+            // Add the user login if someone is logged in
+            if (auth()->check()) {
+                $sentry->user_context([
+                    'id'        => auth()->user()->company_id,
+                    'username'  => auth()->user()->username,
+                ]);
+            }
+
+            $sentry->captureException($exception);
+        } catch (\ReflectionException $e) {
+            \Log::error('An error occurred while trying to capture an exception with Sentry: '.$e->getMessage());
         }
 
-        // Send reportable errors with level 'Error'
-        if ($this->shouldReport($e) && app()->environment('production')) {
-            $sentry->captureException($e);
-        // Else send them with warning and only if someone is logged in
-        } elseif (auth()->check()) {
-            $sentry->captureException($e, [
-                'level' => 'warning',
-            ]);
-        }
 
-        $trace = $e->getTraceAsString();
-        $class = get_class($e);
-
-        if (app()->environment('production') &&
-             ! $e instanceof ModelNotFoundException &&
-             ! $e instanceof MethodNotAllowedHttpException &&
-             ! $e instanceof TokenMismatchException &&
-             ! $e instanceof ProductNotFoundException &&
-             ! $e instanceof NotFoundHttpException) {
-            \Mail::send('email.exception', ['trace' => $trace, 'class' => $class], function ($message) {
-                $message->from('verkoop@wiringa.nl', 'Wiringa Webshop');
-
-                $message->to('thomas.wiringa@gmail.com');
-
-                $message->subject('[WTG Webshop] Whoops, looks like something went wrong');
-            });
-        }
-
-        return parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, \Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof ModelNotFoundException || $e instanceof MethodNotAllowedHttpException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
+        if (
+            $exception instanceof AuthenticationException ||
+            $exception instanceof TokenMismatchException
+        ) {
+            return $this->unauthenticated($request, $exception);
         }
 
-        if ($e instanceof TokenMismatchException) {
-            return redirect('/')
-                ->withErrors('Uw sessie is verlopen, ververs de pagina of log opnieuw in, en probeer het opnieuw');
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return redirect()->back();
         }
 
-        if ($this->isUnauthorizedException($e)) {
-            $e = new HttpException(403, $e->getMessage());
+        return parent::render($request, $exception);
+    }
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        if ($this->isHttpException($e)) {
-            return $this->toIlluminateResponse($this->renderHttpException($e), $e);
-        } else {
-            // Display a custom 500 error screen if the app is in production
-            if (app()->environment() === 'production') {
-                return response()->view('errors.500', ['exception' => $e], 500);
-            } else {
-                return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
-            }
-        }
+        return redirect()
+            ->guest(route('auth.login'))
+            ->withErrors('U moet ingelogd zijn om deze url te benaderen. Als u ingelogd was is uw sessie mogelijk verlopen.');
     }
 }

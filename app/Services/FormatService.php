@@ -3,11 +3,11 @@
 namespace App\Services;
 
 /**
- * Class FormatService.
+ * Format service
  *
  * @author  Thomas Wiringa <thomas.wiringa@gmail.com>
  */
-class FormatService
+class FormatService extends Service
 {
     /**
      * Number formatter.
@@ -21,6 +21,17 @@ class FormatService
     public function number($number, $decimals = 0, $decimal_point = ',', $thousand_separator = '.')
     {
         return number_format($number, $decimals, $decimal_point, $thousand_separator);
+    }
+
+    /**
+     * Format a price
+     *
+     * @param  float  $number
+     * @return string
+     */
+    public function price($number)
+    {
+        return number_format($number, 2, ',', '.');
     }
 
     /**

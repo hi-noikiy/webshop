@@ -13,25 +13,35 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\createUser::class,
-        Commands\setAdmin::class,
-        Commands\checkRelatedProducts::class,
-        Commands\checkProductImages::class,
-        Commands\importProducts::class,
-        Commands\importDiscounts::class,
-        Commands\resendOrder::class,
+        Commands\CreateUser::class,
+        Commands\SetAdmin::class,
+        Commands\CheckRelatedProducts::class,
+        Commands\CheckProductImages::class,
+        Commands\ImportProducts::class,
+        Commands\ImportDiscounts::class,
+        Commands\ResendOrder::class,
+        Commands\ReindexProducts::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
-     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('import:products')->everyTenMinutes();
         $schedule->command('import:discounts')->everyTenMinutes();
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
     }
 }

@@ -38,10 +38,10 @@ class CacheController extends Controller
          * Calculate opcache memory in MB
          */
         $opcache_memory = collect([
-            'total'  => Helper::convertByte($total_memory),
-            'free'   => Helper::convertByte($free_memory),
-            'used'   => Helper::convertByte($used_memory),
-            'wasted' => Helper::convertByte($wasted_memory),
+            'total'  => app('helper')->convertByte($total_memory),
+            'free'   => app('helper')->convertByte($free_memory),
+            'used'   => app('helper')->convertByte($used_memory),
+            'wasted' => app('helper')->convertByte($wasted_memory),
         ]);
 
         return view('admin.cache.index', [

@@ -1,4 +1,4 @@
-@if ($discount_import->error)
+@if ($product_import->error)
     <h3>
         <i class="fa fa-fw fa-exclamation-triangle"></i> Product import
     </h3>
@@ -11,14 +11,18 @@
 <hr />
 
 <table class="table">
+    <colgroup>
+        <col width="15%">
+        <col width="85%">
+    </colgroup>
     <tbody>
-    <tr>
-        <td>Laatste update</td>
-        <td>{{ $product_import->updated_at->getTimestamp() === -62169984000 ? $product_import->created_at : $product_import->updated_at }}</td>
-    </tr>
-    <tr>
-        <td>Status</td>
-        <td>{!! $product_import->content !!}</td>
-    </tr>
+        <tr>
+            <td>Laatste update</td>
+            <td>{{ $product_import->updated_at->getTimestamp() === -62169984000 ? $product_import->created_at : $product_import->updated_at }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{!! $product_import->getContent() !!}</td>
+        </tr>
     </tbody>
 </table>
