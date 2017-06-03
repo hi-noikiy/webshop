@@ -1,24 +1,26 @@
-@import "../helpers/variables";
-
 .btn-wtg {
-	border-color: #ccc;
-	color: white;
-	background-color: $navbar-bg;
+  border-color: #ccc;
+  color: white;
+  background-color: $navbar-default-bg;
 
-	&:hover,
-	&:focus {
-		border-color: #420d0f;
-		background-color: white;
-		color: #420d0f;
-	}
+  &:hover,
+  &:focus {
+    border-color: #420d0f;
+    background-color: white;
+    color: #420d0f;
+  }
 
-	.disclaimer {
-		font-size: 13px;
-		margin: 10px 0;
-	}
+  .disclaimer {
+    font-size: 13px;
+    margin: 10px 0;
+  }
 }
 
 .btn-default .badge {
-	color: white;
-	background-color: #999;
+  color: white;
+  background-color: #999;
+}
+
+#favorite-button {
+  color: $brand-danger;
 }

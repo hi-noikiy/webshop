@@ -1,23 +1,21 @@
-@import "../helpers/variables";
-
 .panel {
-	background-color: transparent;
+  background-color: transparent;
 }
 
 .wtg-panel-danger {
-	border-color: $danger-color;
+  border-color: $brand-danger;
 
-	.panel-heading {
-		background-color: $danger-color;
-		color: white;
-	}
+  .panel-heading {
+    background-color: $brand-danger;
+    color: white;
+  }
 }
 
 .wtg-panel-success {
-	border-color: $success-color;
+  border-color: $brand-success;
 
-	.panel-heading {
-		background-color: $success-color;
-		color: white;
-	}
+  .panel-heading {
+    background-color: $brand-success;
+    color: white;
+  }
 }

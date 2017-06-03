@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Providers;
+namespace WTG\Providers;
 
-use App\Services\FormatService;
 use Illuminate\Support\ServiceProvider;
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Barryvdh\Debugbar\ServiceProvider as DebugbarServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,21 +21,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      *
-     * This service provider is a great spot to register your various container
-     * bindings with the application. As you can see, we are registering our
-     * "Registrar" implementation here. You can add your own bindings too!
-     *
      * @return void
      */
     public function register()
     {
-        $this->app->bind(
-            'Illuminate\Contracts\Auth\Registrar',
-            'App\Services\Registrar'
-        );
-
-        $this->app->bind('format', function () {
-            return new FormatService;
-        });
+        if (app()->environment() !== "production") {
+            $this->app->register(DebugbarServiceProvider::class);
+            $this->app->register(IdeHelperServiceProvider::class);
+        }
     }
 }
