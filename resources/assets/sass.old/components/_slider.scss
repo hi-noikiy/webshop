@@ -1,0 +1,23 @@
+#manufacturer-slider {
+  padding: 20px 0;
+
+  .slider-item {
+    height: 70px;
+    text-align: center;
+
+    a {
+      display: inline-block;
+      line-height: 70px;
+
+      img {
+        max-height: 70px;
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+div[aria-label="Carousel Pagination"] button[data-action="stop"],
+div[aria-label="Carousel Pagination"] button[data-action="start"] {
+  display: none;
+}
