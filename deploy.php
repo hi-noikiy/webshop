@@ -32,7 +32,7 @@ set('bin/composer', 'composer');
 host('artemis')
     ->stage('staging')
     ->set('deploy_path', '/httpdocs')
-    ->set('branch', 'release');
+    ->set('branch', 'development');
 
 // Tasks
 //
