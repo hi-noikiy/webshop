@@ -1,17 +1,17 @@
 <?php
 
-namespace WTG\Contracts;
+namespace WTG\Contracts\Models;
 
 /**
- * Favorite contract.
+ * Address contract.
  *
  * @package     WTG\Contracts
  * @author      Thomas Wiringa  <thomas.wiringa@gmail.com>
  */
-interface FavoriteContract
+interface AddressContract
 {
     /**
-     * Get or set the product identifier.
+     * Address identifier.
      *
      * @param  null|string  $id
      * @return string

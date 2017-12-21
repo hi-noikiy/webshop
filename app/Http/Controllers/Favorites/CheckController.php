@@ -5,8 +5,8 @@ namespace WTG\Http\Controllers\Favorites;
 use WTG\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use WTG\Contracts\CustomerContract;
 use WTG\Http\Controllers\Controller;
+use WTG\Contracts\Models\CustomerContract;
 
 /**
  * Favorites check controller.

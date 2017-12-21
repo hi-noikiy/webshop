@@ -3,14 +3,11 @@
 namespace WTG\Http\Controllers\Checkout;
 
 use Illuminate\Http\Request;
-use WTG\Models\Product;
-use WTG\Contracts\CartContract;
 use Illuminate\Http\JsonResponse;
-use WTG\Contracts\ProductContract;
 use WTG\Http\Controllers\Controller;
-use WTG\Http\Requests\AddToCartRequest;
-use WTG\Http\Requests\UpdateCartRequest;
-use WTG\Http\Requests\DeleteItemFromCartRequest;
+use WTG\Contracts\Services\CartServiceContract;
+use WTG\Http\Requests\Checkout\Cart\UpdateRequest;
+use WTG\Http\Requests\Checkout\Cart\AddProductRequest;
 
 /**
  * Cart controller.
@@ -21,6 +18,21 @@ use WTG\Http\Requests\DeleteItemFromCartRequest;
  */
 class CartController extends Controller
 {
+    /**
+     * @var CartServiceContract
+     */
+    protected $cartService;
+
+    /**
+     * CartController constructor.
+     *
+     * @param  CartServiceContract  $cartService
+     */
+    public function __construct(CartServiceContract $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     /**
      * Cart overview page.
      *
@@ -40,26 +52,25 @@ class CartController extends Controller
     /**
      * Add a product to the cart.
      *
-     * @param  AddToCartRequest  $request
-     * @param  CartContract  $cart
+     * @param  AddProductRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function putAction(AddToCartRequest $request, CartContract $cart)
+    public function putAction(AddProductRequest $request): JsonResponse
     {
-        $sku = $request->input('product');
-        $product = $this->findProduct($sku);
+        $cartItem = $this->cartService->addProductBySku(
+            $request->user(),
+            $request->input('product'),
+            $request->input('quantity')
+        );
 
-        if (! $product) {
-            return $this->productNotFoundResponse($sku);
+        if (! $cartItem) {
+            return $this->productNotFoundResponse($request->input('product'));
         }
 
-        $cart->loadForCustomer($request->user());
-        $cart->addProduct($product, $request->input('quantity'));
-
-        return response([
+        return response()->json([
             'message' => __('Het product is toegevoegd aan uw winkelwagen.'),
             'success' => true,
-            'count' => $cart->count(),
+            'count' => $this->cartService->getItemCount($request->user()),
             'code' => 200
         ]);
     }
@@ -67,23 +78,22 @@ class CartController extends Controller
     /**
      * Update the cart.
      *
-     * @param  UpdateCartRequest  $request
-     * @param  CartContract  $cart
+     * @param  UpdateRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function patchAction(UpdateCartRequest $request, CartContract $cart)
+    public function patchAction(UpdateRequest $request)
     {
-        $sku = $request->input('sku');
-        $product = $this->findProduct($sku);
+        $cartItem = $this->cartService->updateProductBySku(
+            $request->user(),
+            $request->input('sku'),
+            $request->input('quantity')
+        );
 
-        if (! $product) {
-            return $this->productNotFoundResponse($sku);
+        if (! $cartItem) {
+            return $this->productNotFoundResponse($request->input('sku'));
         }
 
-        $cart->loadForCustomer($request->user());
-        $cart->updateProduct($product, $request->input('quantity'));
-
-        return response([
+        return response()->json([
             'success' => true,
             'code' => 200
         ]);
@@ -93,37 +103,25 @@ class CartController extends Controller
      * Remove an item from the cart.
      *
      * @param  Request  $request
-     * @param  CartContract  $cart
      * @param  string  $sku
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteAction(Request $request, CartContract $cart, string $sku)
+    public function deleteAction(Request $request, string $sku)
     {
-        $product = $this->findProduct($sku);
+        $isSuccess = $this->cartService->deleteProductBySku(
+            $request->user(),
+            $sku
+        );
 
-        if (! $product) {
+        if (! $isSuccess) {
             return $this->productNotFoundResponse($sku);
         }
 
-        $cart->loadForCustomer($request->user());
-        $cart->removeProduct($product);
-
-        return response([
+        return response()->json([
             'message' => __('Het product is verwijderd uit uw winkelwagen.'),
             'success' => true,
             'code' => 200
         ]);
-    }
-
-    /**
-     * Find a product.
-     *
-     * @param  string  $sku
-     * @return null|Product
-     */
-    protected function findProduct(string $sku): ?Product
-    {
-        return app()->make(ProductContract::class)->findBySku($sku);
     }
 
     /**
@@ -134,7 +132,7 @@ class CartController extends Controller
      */
     protected function productNotFoundResponse(string $sku): JsonResponse
     {
-        return response([
+        return response()->json([
             'message' => __('Geen product gevonden met sku :sku', ['sku' => $sku]),
             'success' => false,
             'code' => 400

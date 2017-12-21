@@ -3,8 +3,8 @@
 namespace WTG\Providers;
 
 use WTG\Models\Product;
-use WTG\Contracts\ProductContract;
 use Illuminate\Support\ServiceProvider;
+use WTG\Contracts\Models\ProductContract;
 
 /**
  * Catalog service provider.

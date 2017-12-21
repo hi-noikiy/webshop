@@ -2,8 +2,8 @@
 
 namespace WTG\Models;
 
-use WTG\Contracts\AddressContract;
 use Illuminate\Database\Eloquent\Model;
+use WTG\Contracts\Models\AddressContract;
 
 /**
  * Address model.

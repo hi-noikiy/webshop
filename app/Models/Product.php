@@ -3,8 +3,8 @@
 namespace WTG\Models;
 
 use Laravel\Scout\Searchable;
-use WTG\Contracts\ProductContract;
 use Illuminate\Database\Eloquent\Model;
+use WTG\Contracts\Models\ProductContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**

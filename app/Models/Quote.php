@@ -2,14 +2,14 @@
 
 namespace WTG\Models;
 
-use WTG\Contracts\CartContract;
-use WTG\Contracts\AddressContract;
-use WTG\Contracts\ProductContract;
 use Illuminate\Support\Collection;
-use WTG\Contracts\CartItemContract;
-use WTG\Contracts\CustomerContract;
+use WTG\Contracts\Models\CartContract;
 use Illuminate\Database\Eloquent\Model;
 use WTG\Exceptions\CartUpdateException;
+use WTG\Contracts\Models\AddressContract;
+use WTG\Contracts\Models\ProductContract;
+use WTG\Contracts\Models\CartItemContract;
+use WTG\Contracts\Models\CustomerContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -70,8 +70,9 @@ class Quote extends Model implements CartContract
         $address = $this->getAttribute('address');
 
         if (! $address) {
+            /** @var Customer $customer */
             $customer = $this->getAttribute('customer');
-            $address = $customer->getDefaultAddress();
+            $address = $customer->getContact()->defaultAddress();
         }
 
         return $address;

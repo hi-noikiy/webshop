@@ -2,11 +2,12 @@
 
 namespace WTG\Http\Controllers\Auth;
 
-use WTG\Models\Company;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use WTG\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use WTG\Contracts\Models\CompanyContract;
+use WTG\Contracts\Services\AuthServiceContract as AuthService;
 
 /**
  * Login controller.
@@ -27,10 +28,9 @@ class LoginController extends Controller
     /**
      * Request handler.
      *
-     * @param  Request  $request
      * @return View
      */
-    public function getAction(Request $request)
+    public function getAction(): View
     {
         return view('pages.auth.login');
     }
@@ -39,29 +39,18 @@ class LoginController extends Controller
      * Attempt to login.
      *
      * @param  Request  $request
+     * @param  AuthService  $authService
      * @return RedirectResponse
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request, AuthService $authService): RedirectResponse
     {
-        /** @var Company $company */
-        $company = Company::customerNumber($request->input('company'))->first();
+        $customer = $authService->authenticateByRequest($request);
 
-        if ($company === null) {
+        if (! $customer) {
             return $this->failedAuthentication();
         }
 
-        $login_data = [
-            'company_id' => $company->getAttribute('id'),
-            'username' => $request->input('username'),
-            'password' => $request->input('password'),
-            'active' => true
-        ];
-
-        if (!$this->attemptLogin($login_data, $request->input('remember', false))) {
-            return $this->failedAuthentication();
-        }
-
-        return $this->successAuthentication($company);
+        return $this->successAuthentication($customer->getCompany());
     }
 
     /**
@@ -80,26 +69,14 @@ class LoginController extends Controller
     /**
      * Login success handler.
      *
-     * @param  Company  $company
+     * @param  CompanyContract  $company
      * @return RedirectResponse
      */
-    protected function successAuthentication(Company $company)
+    protected function successAuthentication(CompanyContract $company)
     {
         \Log::info("[Login] Customer '".request('company')."' - '".request('username')."' has logged in");
 
         return redirect(request('toUrl') ?: route('home'))
-            ->with('status', trans('auth.login.success', ['name' => $company->getAttribute('name')]));
-    }
-
-    /**
-     * Attempt the login.
-     *
-     * @param  array  $data
-     * @param  bool  $remember
-     * @return bool
-     */
-    protected function attemptLogin(array $data, bool $remember = false)
-    {
-        return auth()->attempt($data, $remember);
+            ->with('status', trans('auth.login.success', ['name' => $company->name()]));
     }
 }

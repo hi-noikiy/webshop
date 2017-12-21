@@ -2,13 +2,16 @@
 
 namespace WTG\Http\Controllers\Account;
 
-use WTG\Models\Address;
 use WTG\Models\Customer;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use WTG\Http\Controllers\Controller;
-use WTG\Http\Requests\CreateAddressRequest;
-use WTG\Http\Requests\UpdateDefaultAddressRequest;
-use WTG\Services\Contracts\AddressServiceContract as AddressService;
+use Illuminate\Http\RedirectResponse;
+use WTG\Contracts\Services\AddressServiceContract;
+use WTG\Http\Requests\Account\Address\CreateRequest;
+use WTG\Http\Requests\Account\Address\DeleteRequest;
+use WTG\Http\Requests\Account\Address\UpdateDefaultRequest;
 
 /**
  * Address controller.
@@ -20,36 +23,45 @@ use WTG\Services\Contracts\AddressServiceContract as AddressService;
 class AddressController extends Controller
 {
     /**
+     * @var AddressServiceContract
+     */
+    protected $addressService;
+
+    /**
+     * AddressController constructor.
+     *
+     * @param  AddressServiceContract  $addressService
+     */
+    public function __construct(AddressServiceContract $addressService)
+    {
+        $this->addressService = $addressService;
+    }
+
+    /**
      * The address list.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
-    public function getAction(Request $request)
+    public function getAction(Request $request): View
     {
         /** @var Customer $customer */
         $customer = $request->user();
-        $addresses = $customer->company->getAttribute('addresses');
+        $addresses = $this->addressService->getAddressesForCustomer($customer);
+        $defaultAddress = $this->addressService->getDefaultAddressIdForCustomer($customer);
 
-        return view('pages.account.addresses', compact('customer', 'addresses'));
+        return view('pages.account.addresses', compact('customer', 'addresses', 'defaultAddress'));
     }
 
     /**
      * Create a new address.
      *
-     * @param  CreateAddressRequest  $request
-     * @param  AddressService  $addressService
+     * @param  CreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function putAction(CreateAddressRequest $request, AddressService $addressService)
+    public function putAction(CreateRequest $request): RedirectResponse
     {
-        $data = $request->only([
-            'name', 'address', 'postcode', 'city', 'phone', 'mobile'
-        ]);
-
-        $data['company_id'] = $request->user()->getAttribute('company_id');
-
-        if ($addressService->create($data)) {
+        if ($this->addressService->createFromRequest($request)) {
             return back()->with('status', __("Het adres is toegevoegd."));
         }
 
@@ -61,31 +73,33 @@ class AddressController extends Controller
     /**
      * Change the default address.
      *
-     * @param  UpdateDefaultAddressRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  UpdateDefaultRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function patchAction(UpdateDefaultAddressRequest $request)
+    public function patchAction(UpdateDefaultRequest $request): JsonResponse
     {
-        $isSuccess = $request->user()->setDefaultAddress($request->input('address-id'));
+        $isSuccess = $this->addressService->setDefaultForCustomer($request->user(), $request->input('address'));
 
-        if ($isSuccess) {
-            return back()->with('status', __("Het standaard adres is aangepast."));
-        }
-
-        return back()
-            ->withErrors(__("Er is een fout opgetreden tijdens het aanpassen van het adres."));
+        return response()->json([
+            'success' => $isSuccess,
+            'message' => $isSuccess ?
+                __("Het standaard adres is aangepast.") :
+                __("Er is een fout opgetreden tijdens het aanpassen van het adres."),
+            'code' => 200
+        ]);
     }
 
     /**
      * Remove an address.
      *
-     * @param  Request  $request
-     * @param  Address  $address
+     * @param  DeleteRequest  $request
+     * @param  string  $addressId
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function delete(Request $request, Address $address)
+    public function delete(DeleteRequest $request, string $addressId): RedirectResponse
     {
-        if ($address->delete()) {
+        if ($this->addressService->deleteForCustomer($request->user(), $addressId)) {
             return back()->with("status", __("Het adres is verwijderd."));
         } else {
             return back()

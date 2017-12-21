@@ -17,11 +17,15 @@ import Notification from './components/NotificationComponent'
 import Footer from './components/FooterComponent'
 import Logs from './components/LogComponent'
 
+import ContactEmail from './components/Account/ContactEmailComponent';
+import AddressList from './components/Account/AddressListComponent';
+
 import Price from './components/Catalog/PriceComponent'
 
 import Cart from './components/Checkout/CartComponent'
 import AddToCart from './components/Checkout/AddToCartComponent'
 import MiniCart from './components/Checkout/MiniCartComponent'
+import CartAddress from './components/Checkout/Address/CartAddressComponent'
 
 import FavoritesButton from './components/Favorites/ButtonComponent'
 
@@ -36,7 +40,6 @@ Vue.use(VueGoogleMaps, {
 });
 
 window.vm = new Vue({
-    props: ['loggedIn'],
     el: '#app',
     components: {
         'price': Price,
@@ -46,7 +49,10 @@ window.vm = new Vue({
         'favorites-button': FavoritesButton,
         'notification': Notification,
         'footer-block': Footer,
-        'logs': Logs
+        'logs': Logs,
+        'contact-email': ContactEmail,
+        'address-list': AddressList,
+        'cart-address': CartAddress
     },
     data () {
         return {
@@ -78,7 +84,7 @@ window.vm = new Vue({
         });
     },
     mounted () {
-        if (window.Laravel.isLoggedIn) {
+        if (window.Laravel.isLoggedIn && this.$data.skus.length > 0) {
             this.fetchPrices();
         }
     }

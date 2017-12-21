@@ -2,10 +2,10 @@
 
 namespace WTG\Models;
 
-use WTG\Contracts\CartContract;
-use WTG\Contracts\ProductContract;
-use WTG\Contracts\CartItemContract;
+use WTG\Contracts\Models\CartContract;
 use Illuminate\Database\Eloquent\Model;
+use WTG\Contracts\Models\ProductContract;
+use WTG\Contracts\Models\CartItemContract;
 
 /**
  * Quote item model.

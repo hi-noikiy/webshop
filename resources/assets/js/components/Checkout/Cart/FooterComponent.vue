@@ -10,7 +10,7 @@
 
             <div class="col-5 col-sm-2">
                 <div class="cart-grand-total text-right">
-                    &euro; {{ grandTotal }}
+                    <i class="far fa-fw fa-euro-sign"></i> {{ grandTotal }}
                 </div>
             </div>
         </div>
@@ -18,18 +18,18 @@
         <div class="row cart-footer-buttons">
             <div class="col-12 col-md-4 order-2 order-md-1 mb-3">
                 <button class="btn btn-outline-danger d-block d-sm-inline">
-                    <i class="fa fa-trash-o"></i> Winkelwagen legen
+                    <i class="fal fa-fw fa-trash-alt"></i> Winkelwagen legen
                 </button>
             </div>
 
             <div class="col-12 col-md-8 mr-auto order-1 order-md-2 mb-3 text-right">
                 <div class="btn-group">
                     <a class="btn btn-outline-primary d-block d-sm-inline" :href="continueUrl">
-                        <i class="fa fa-arrow-circle-left"></i> Verder winkelen
+                        <i class="fal fa-fw fa-chevron-left"></i> Verder winkelen
                     </a>
 
                     <a class="btn btn-outline-success d-block d-sm-inline" href="/checkout/address">
-                        Volgende stap <i class="fa fa-arrow-circle-right fa-fw"></i>
+                        Volgende stap <i class="fal fa-fw fa-chevron-right"></i>
                     </a>
                 </div>
             </div>

@@ -3,10 +3,11 @@
 namespace WTG\Models;
 
 use Illuminate\Support\Collection;
-use WTG\Contracts\ContactContract;
-use WTG\Contracts\ProductContract;
-use WTG\Contracts\CustomerContract;
 use Spatie\Permission\Traits\HasRoles;
+use WTG\Contracts\Models\CompanyContract;
+use WTG\Contracts\Models\ContactContract;
+use WTG\Contracts\Models\ProductContract;
+use WTG\Contracts\Models\CustomerContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -122,6 +123,16 @@ class Customer extends Authenticatable implements CustomerContract
     }
 
     /**
+     * Get the company.
+     *
+     * @return CompanyContract
+     */
+    public function getCompany(): CompanyContract
+    {
+        return $this->getAttribute('company');
+    }
+
+    /**
      * Get the favorites.
      *
      * @return Collection
@@ -162,54 +173,5 @@ class Customer extends Authenticatable implements CustomerContract
     public function removeFavorite(ProductContract $product): void
     {
         $this->favorites()->detach($product->identifier());
-    }
-
-    /**
-     * Get the default address.
-     *
-     * @return Address|null
-     */
-    public function getDefaultAddress(): ?Address
-    {
-        return $this->getAttribute('company')->addresses()->where('is_default', true)->first();
-    }
-
-    /**
-     * Get the current or a new quote for the customer.
-     *
-     * @return Quote
-     */
-    public function getActiveQuote(): Quote
-    {
-        $quote = $this->quote()->with(['items', 'items.product'])->first();
-
-        if ($quote === null) {
-            $quote = new Quote;
-            $quote->setAttribute('customer_id', $this->getAttribute('id'));
-            $quote->save();
-        }
-
-        return $quote;
-    }
-
-    /**
-     * Set the default address.
-     *
-     * @param  int|Address  $address
-     * @return bool
-     */
-    public function setDefaultAddress($address): bool
-    {
-        return $this->company->setDefaultAddress($address);
-    }
-
-    /**
-     * Get the customer number.
-     *
-     * @return string
-     */
-    public function getCustomerNumber(): string
-    {
-        return $this->company->getAttribute('customer_number');
     }
 }

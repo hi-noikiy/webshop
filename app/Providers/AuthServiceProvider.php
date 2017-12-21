@@ -2,7 +2,8 @@
 
 namespace WTG\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use WTG\Services\AuthService;
+use WTG\Contracts\Services\AuthServiceContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +26,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->app->bind(AuthServiceContract::class, AuthService::class);
     }
 }

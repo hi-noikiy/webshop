@@ -1,10 +1,17 @@
 <?php
 
-namespace WTG\Http\Requests;
+namespace WTG\Http\Requests\Checkout\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartRequest extends FormRequest
+/**
+ * Add product to cart request.
+ *
+ * @package     WTG\Http
+ * @subpackage  Requests\Checkout\Cart
+ * @author      Thomas Wiringa  <thomas.wiringa@gmail.com>
+ */
+class AddProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +31,8 @@ class UpdateCartRequest extends FormRequest
     public function rules()
     {
         return [
-            'sku' => ['required'],
-            'quantity' => ['required']
+            'product' => ['required'],
+            'quantity' => ['required', 'numeric', 'min:1']
         ];
     }
 }

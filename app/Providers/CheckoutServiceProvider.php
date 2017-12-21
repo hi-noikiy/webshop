@@ -4,10 +4,13 @@ namespace WTG\Providers;
 
 use WTG\Models\Quote;
 use WTG\Models\QuoteItem;
-use WTG\Contracts\CartContract;
-use WTG\Contracts\CartItemContract;
+use WTG\Services\CartService;
 use Illuminate\Support\Facades\View;
+use WTG\Contracts\Models\CartContract;
 use Illuminate\Support\ServiceProvider;
+use WTG\Contracts\Models\CartItemContract;
+use WTG\Contracts\Models\CustomerContract;
+use WTG\Contracts\Services\CartServiceContract;
 
 /**
  * Checkout service provider.
@@ -32,6 +35,7 @@ class CheckoutServiceProvider extends ServiceProvider
     {
         $this->app->bind(CartContract::class, Quote::class);
         $this->app->bind(CartItemContract::class, QuoteItem::class);
+        $this->app->bind(CartServiceContract::class, CartService::class);
 
         $this->app->singleton(CartContract::class, function () {
             return new Quote();
@@ -39,7 +43,10 @@ class CheckoutServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             if (auth()->check()) {
-                $view->with('cart', app()->make(CartContract::class)->loadForCustomer(auth()->user()));
+                /** @var CustomerContract $customer */
+                $customer = auth()->user();
+
+                $view->with('cart', app()->make(CartContract::class)->loadForCustomer($customer));
             }
         });
     }

@@ -2,9 +2,10 @@
 
 namespace WTG\Models;
 
-use WTG\Contracts\ContactContract;
 use Illuminate\Database\Eloquent\Model;
-use WTG\Contracts\CustomerContract;
+use WTG\Contracts\Models\AddressContract;
+use WTG\Contracts\Models\ContactContract;
+use WTG\Contracts\Models\CustomerContract;
 
 /**
  * Contact model.
@@ -26,6 +27,17 @@ class Contact extends Model implements ContactContract
     }
 
     /**
+     * Address relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function address()
+    {
+        return $this->belongsTo(Address::class)
+            ->where('company_id', $this->getCustomer()->getCompany()->identifier());
+    }
+
+    /**
      * Get the identifier
      *
      * @param null|string $id
@@ -44,5 +56,50 @@ class Contact extends Model implements ContactContract
     public function getCustomer(): CustomerContract
     {
         return $this->getAttribute('customer');
+    }
+
+    /**
+     * Get or set the contact email.
+     *
+     * @param  null|string  $email
+     * @return null|string
+     */
+    public function contactEmail(?string $email = null): ?string
+    {
+        if ($email) {
+            $this->setAttribute('contact_email', $email);
+        }
+
+        return $this->getAttribute('contact_email');
+    }
+
+    /**
+     * Get or set the order email.
+     *
+     * @param  null|string  $email
+     * @return null|string
+     */
+    public function orderEmail(?string $email = null): ?string
+    {
+        if ($email) {
+            $this->setAttribute('order_email', $email);
+        }
+
+        return $this->getAttribute('order_email');
+    }
+
+    /**
+     * Get or set the default address.
+     *
+     * @param  null|string  $addressId
+     * @return null|AddressContract
+     */
+    public function defaultAddress(?string $addressId = null): ?AddressContract
+    {
+        if ($addressId) {
+            $this->address()->associate($addressId);
+        }
+
+        return $this->getAttribute('address');
     }
 }

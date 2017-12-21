@@ -17,7 +17,8 @@
 
     <div class="row my-4">
         <div class="col-6">
-            @include('components.account.dashboard.contact-email')
+            <contact-email email="{{ $customer->getContact()->contactEmail() }}"
+                submit-url="{{ route('account.contactEmail') }}"></contact-email>
         </div>
 
         <div class="col-6">

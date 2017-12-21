@@ -1,6 +1,6 @@
 <?php
 
-namespace WTG\Contracts;
+namespace WTG\Contracts\Models;
 
 use Illuminate\Support\Collection;
 
@@ -19,6 +19,20 @@ interface CustomerContract
      * @return string
      */
     public function identifier(?string $id = null): string;
+
+    /**
+     * Get the contact.
+     *
+     * @return ContactContract
+     */
+    public function getContact(): ContactContract;
+
+    /**
+     * Get the company.
+     *
+     * @return CompanyContract
+     */
+    public function getCompany(): CompanyContract;
 
     /**
      * Get the favorites.

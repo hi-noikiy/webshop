@@ -3,11 +3,9 @@
 namespace WTG\Providers;
 
 use League\Flysystem\Filesystem;
-use WTG\Services\AddressService;
 use WTG\Soap\Service as SoapService;
 use League\Flysystem\Sftp\SftpAdapter;
 use Illuminate\Support\ServiceProvider;
-use WTG\Services\Contracts\AddressServiceContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,7 +39,5 @@ class AppServiceProvider extends ServiceProvider
                     'exceptions' => false
                 ]);
             });
-
-        $this->app->bind(AddressServiceContract::class, AddressService::class);
     }
 }

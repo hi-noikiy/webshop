@@ -4,9 +4,9 @@ namespace WTG\Http\Controllers\Checkout\Cart;
 
 use WTG\Models\Customer;
 use Illuminate\Http\Request;
-use WTG\Contracts\CartContract;
-use WTG\Contracts\CartItemContract;
 use WTG\Http\Controllers\Controller;
+use WTG\Contracts\Models\CartContract;
+use WTG\Contracts\Models\CartItemContract;
 use WTG\Soap\GetProductPricesAndStocks\Response;
 
 /**
@@ -35,7 +35,7 @@ class ItemsController extends Controller
         $products = $items->pluck('product');
 
         /** @var Response $response */
-        $response = app('soap')->getProductPricesAndStocks($products, $customer->getCustomerNumber());
+        $response = app('soap')->getProductPricesAndStocks($products, $customer->getCompany()->customerNumber());
 
         if ($response->code !== 200) {
             return response()->json([
@@ -54,7 +54,7 @@ class ItemsController extends Controller
                 return $item;
             }
 
-            $item->setAttribute('price', $product->net_price);
+            $item->setAttribute('price', format_price($product->net_price));
             $item->setAttribute('subtotal', format_price($product->net_price * $item->getQuantity()));
 
             return $item;
@@ -64,7 +64,7 @@ class ItemsController extends Controller
             'payload' => [
                 'items' => $items,
                 'grandTotal' => format_price($items->sum(function (CartItemContract $item) {
-                    return $item->getAttribute('price') * $item->getQuantity();
+                    return str_replace(',', '.', $item->getAttribute('price')) * $item->getQuantity();
                 }))
             ]
         ]);

@@ -171,11 +171,11 @@ return [
          * Application Service Providers...
          */
         WTG\Providers\AppServiceProvider::class,
+        WTG\Providers\AccountServiceProvider::class,
         WTG\Providers\AuthServiceProvider::class,
         WTG\Providers\BladeServiceProvider::class,
         WTG\Providers\CheckoutServiceProvider::class,
         WTG\Providers\CatalogServiceProvider::class,
-        WTG\Providers\CustomerServiceProvider::class,
         WTG\Providers\LogServiceProvider::class,
         // WTG\Providers\BroadcastServiceProvider::class,
         WTG\Providers\EventServiceProvider::class,

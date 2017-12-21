@@ -1,10 +1,17 @@
 <?php
 
-namespace WTG\Http\Requests;
+namespace WTG\Http\Requests\Account\Address;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateDefaultAddressRequest extends FormRequest
+/**
+ * Delete address request.
+ *
+ * @package     WTG\Http
+ * @subpackage  Requests\Account\Address
+ * @author      Thomas Wiringa  <thomas.wiringa@gmail.com>
+ */
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,16 +20,7 @@ class UpdateDefaultAddressRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user() === null) {
-            return false;
-        }
-
-        return $this
-            ->user()
-            ->company
-            ->addresses()
-            ->where('id', $this->input('address-id'))
-            ->exists();
+        return auth()->check();
     }
 
     /**

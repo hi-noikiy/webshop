@@ -12,14 +12,14 @@
             <div class="col-2 col-sm-1 order-sm-2">
                 <div class="cart-item-delete text-right">
                     <button class="btn btn-link" v-on:click="this.delete">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <i class="fal fa-fw fa-trash-alt"></i>
                     </button>
                 </div>
             </div>
 
             <div class="col-4 col-sm-2 order-sm-1 d-none d-md-block d-lg-block d-xl-block">
                 <div class="cart-item-price text-left">
-                    &euro; {{ item.price }}
+                    <i class="far fa-fw fa-euro-sign"></i> {{ item.price }}
                 </div>
             </div>
 
@@ -32,7 +32,7 @@
 
             <div class="col-4 col-sm-2 order-sm-1">
                 <div class="cart-item-subtotal text-right">
-                    &euro; {{ item.subtotal }}
+                    <i class="far fa-fw fa-euro-sign"></i> {{ item.subtotal }}
                 </div>
             </div>
         </div>

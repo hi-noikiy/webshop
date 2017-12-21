@@ -17,9 +17,21 @@
         },
         methods: {
             addMessage (success, message) {
+                let text;
+
+                if (message.constructor === Object) {
+                    message = Object.values(message);
+                }
+
+                if (message.constructor === Array) {
+                    text = message.join('<br />');
+                } else {
+                    text = message;
+                }
+
                 let notification = {
                     success: success,
-                    text: message,
+                    text: text,
                     show: true
                 };
 

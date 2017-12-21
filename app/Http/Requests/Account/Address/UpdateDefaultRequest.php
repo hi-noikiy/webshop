@@ -1,17 +1,17 @@
 <?php
 
-namespace WTG\Http\Requests;
+namespace WTG\Http\Requests\Account\Address;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Create address request.
+ * update default address request.
  *
  * @package     WTG\Http
- * @subpackage  Requests
+ * @subpackage  Requests\Account\Address
  * @author      Thomas Wiringa  <thomas.wiringa@gmail.com>
  */
-class CreateAddressRequest extends FormRequest
+class UpdateDefaultRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +20,7 @@ class CreateAddressRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() !== null;
+        return auth()->check();
     }
 
     /**
@@ -31,12 +31,7 @@ class CreateAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      => ['required'],
-            'address'   => ['required'],
-            'postcode'  => ['required'],
-            'city'      => ['required'],
-            'phone'     => [],
-            'mobile'    => []
+            'address' => ['required', 'exists:addresses,id']
         ];
     }
 }

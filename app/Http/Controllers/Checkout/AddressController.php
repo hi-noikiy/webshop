@@ -5,10 +5,10 @@ namespace WTG\Http\Controllers\Checkout;
 use WTG\Models\Address;
 use WTG\Models\Customer;
 use Illuminate\Http\Request;
-use WTG\Contracts\CartContract;
 use WTG\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Collection;
+use WTG\Contracts\Services\CartServiceContract;
 use WTG\Http\Requests\UpdateQuoteAddressRequest;
+use WTG\Contracts\Services\AddressServiceContract;
 
 /**
  * Address controller.
@@ -20,22 +20,39 @@ use WTG\Http\Requests\UpdateQuoteAddressRequest;
 class AddressController extends Controller
 {
     /**
+     * @var AddressServiceContract
+     */
+    protected $addressService;
+
+    /**
+     * @var CartServiceContract
+     */
+    protected $cartService;
+
+    /**
+     * AddressController constructor.
+     *
+     * @param  AddressServiceContract  $addressService
+     * @param  CartServiceContract  $cartService
+     */
+    public function __construct(AddressServiceContract $addressService, CartServiceContract $cartService)
+    {
+        $this->addressService = $addressService;
+        $this->cartService = $cartService;
+    }
+
+    /**
      * Address selection page.
      *
      * @param  Request  $request
-     * @param  CartContract  $cart
      * @return \Illuminate\View\View
      */
-    public function getAction(Request $request, CartContract $cart)
+    public function getAction(Request $request)
     {
         /** @var Customer $customer */
         $customer = $request->user();
-        /** @var Collection $addresses */
-        $addresses = $customer->getAttribute('company')->getAttribute('addresses');
-
-        $cart->loadForCustomer($customer);
-        /** @var Address $quoteAddress */
-        $quoteAddress = $cart->getAddress();
+        $addresses = $this->addressService->getAddressesForCustomer($customer);
+        $quoteAddress = $this->cartService->getDeliveryAddress($customer);
 
         return view('pages.checkout.address', compact('customer', 'addresses', 'quoteAddress'));
     }
@@ -51,24 +68,21 @@ class AddressController extends Controller
         /** @var Customer $customer */
         $customer = $request->user();
         /** @var Address $address */
-        $address = $customer
-            ->getAttribute('company')
-            ->addresses()
-            ->where('id', $request->input('addressId'))
-            ->first();
+        $address = $this->addressService->getAddressForCustomerById($customer, $request->input('addressId'));
 
         if (!$address) {
             return response()->json([
-                'error' => __("Het opgegeven adres is niet gevonden.")
+                'message' => __('Het opgegeven adres is niet gevonden.'),
+                'success' => false
             ], 400);
         }
 
-        $quote = $customer->getActiveQuote();
-        $quote->setAttribute('address_id', $address->getAttribute('id'));
-        $quote->save();
+        $isSuccess = $this->cartService->setDeliveryAddress($customer, $address);
 
         return response()->json([
-            'message' => __("Het adres is aangepast.")
+            'message' => $isSuccess ? __('Het afleveradres is aangepast.') : __('Er is een fout opgetreden tijdens het aanpassen van het afleveradres.'),
+            'address' => $address,
+            'success' => $isSuccess
         ]);
     }
 }

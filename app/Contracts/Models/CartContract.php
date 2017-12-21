@@ -1,6 +1,6 @@
 <?php
 
-namespace WTG\Contracts;
+namespace WTG\Contracts\Models;
 
 use Illuminate\Support\Collection;
 

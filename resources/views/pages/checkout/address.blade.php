@@ -37,11 +37,7 @@
                                 {{ __("Afleveradres") }}
                             </div>
                             <div class="card-body">
-                                <address id="delivery-address">
-                                    <b>{{ $quoteAddress->getAttribute('name') }}</b><br />
-                                    {{ $quoteAddress->getAttribute('street') }} <br />
-                                    {{ $quoteAddress->getAttribute('postcode') }} {{ $quoteAddress->getAttribute('city') }}
-                                </address>
+                                <cart-address :address="{{ $quoteAddress ?: 0 }}"></cart-address>
 
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#change-address-modal">
                                     {{ __("Adres wijzigen") }}
@@ -70,11 +66,13 @@
                         </a>
                     </div>
 
-                    <div class="col-12 col-md-6 mr-auto order-1 order-md-2 mb-3 text-right">
-                        <button class="btn btn-outline-success d-block d-sm-inline" type="submit">
-                            {{ __('Bestelling afronden') }} <i class="fa fa-arrow-circle-right fa-fw"></i>
-                        </button>
-                    </div>
+                    @if ($quoteAddress)
+                        <div class="col-12 col-md-6 mr-auto order-1 order-md-2 mb-3 text-right">
+                            <button class="btn btn-outline-success d-block d-sm-inline" type="submit">
+                                {{ __('Bestelling afronden') }} <i class="fa fa-arrow-circle-right fa-fw"></i>
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </form>

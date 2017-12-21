@@ -1,7 +1,7 @@
 <template>
     <div id="cart-item-container">
         <div id="cart-overlay" v-if="showOverlay">
-            <i class="fa fa-3x fa-spinner fa-spin"></i>
+            <i class="fal fa-3x fa-sync fa-spin"></i>
         </div>
 
         <cart-header></cart-header>

@@ -93,6 +93,7 @@ Route::group([
     Route::post('order-history', 'OrderHistoryController@postAction');
     Route::post('discount', 'DiscountController@postAction');
 
+    Route::put('contactEmail', 'Dashboard\ContactEmailController@putAction')->name('contactEmail');
     Route::put('accounts', 'SubAccountController@putAction');
     Route::put('addresses', 'AddressController@putAction');
     Route::put('favorites/cart', 'FavoritesController@putAction')->name('favorites.addToCart');
