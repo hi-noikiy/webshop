@@ -280,6 +280,8 @@ class AccountController extends Controller
      */
     public function generateFile($type, $method)
     {
+        return back()->withErrors('Het genereren van kortingsbestanden is tijdelijk niet mogelijk.');
+
         if ($type === 'icc') {
             if ($method === 'download') {
                 // Create a filesystem link to the temp file
