@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         Commands\importProducts::class,
         Commands\importDiscounts::class,
         Commands\resendOrder::class,
+        Commands\convertSkus::class,
     ];
 
     /**

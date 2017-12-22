@@ -130,7 +130,7 @@
         });
 
         $productNumberInput.change(function () {
-            if (this.value.length == 7) {
+            if (this.value.length > 6) {
                 $.ajax({
                     url: '/admin/api/description',
                     data: { product: this.value },
