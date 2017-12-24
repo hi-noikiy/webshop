@@ -36,43 +36,53 @@ class Helper
     }
 
     /**
-     * @param $code
-     *
+     * @param  string  $code
      * @return string
      */
     public static function price_per($code)
     {
         switch ($code) {
-            case 'Stk':
-                return 'Stuk';
-                break;
-            case 'Mtr':
-                return 'Meter';
-                break;
-            case 'Ds':
-                return 'Doos';
-                break;
-            case 'Plt':
-                return 'Plaat';
-                break;
-            case 'Stl':
-                return 'Stel';
-                break;
-            case 'Mt2':
-                return 'Meter&sup2;';
-                break;
-            case 'Str':
-                return 'Streng';
-                break;
-            case 'Pr':
-                return 'Paar';
-                break;
-            case 'Lgt':
-                return 'Lengte';
-                break;
+            case 'STK':
+                return __('Stuk');
+            case 'LGT':
+                return __('Lengte');
+            case 'ROL':
+                return __('Rol');
+            case 'SET':
+                return __('Set');
+            case 'DS':
+            case 'BOX':
+                return __('Doos');
+            case 'ZAK':
+                return __('Zak');
+            case 'M2':
+                return __('Vierkante meter');
+            case 'MTR':
+                return __('Meter');
+            case 'TB':
+                return __('Tube');
+            case 'PL':
+                return __('Plaat');
+            case 'NVP':
+                return __('Niet verpakt');
+            case 'BND':
+                return __('Bundel');
+            case 'BLI':
+            case 'BLK2':
+                return __('Blik');
+            case 'KRF':
+                return __('Krimpfolie');
+            case 'JER':
+            case 'JER2':
+                return __('Jerrycan');
+            case 'EM':
+                return __('Emmer');
+            case 'SPB':
+                return __('Spuitbus');
+            case 'FLES':
+                return __('Fles');
             default:
                 return $code;
-                break;
         }
     }
 
