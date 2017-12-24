@@ -43,44 +43,44 @@ class Helper
     {
         switch ($code) {
             case 'STK':
-                return __('Stuk');
+                return 'Stuk';
             case 'LGT':
-                return __('Lengte');
+                return 'Lengte';
             case 'ROL':
-                return __('Rol');
+                return 'Rol';
             case 'SET':
-                return __('Set');
+                return 'Set';
             case 'DS':
             case 'BOX':
-                return __('Doos');
+                return 'Doos';
             case 'ZAK':
-                return __('Zak');
+                return 'Zak';
             case 'M2':
-                return __('Vierkante meter');
+                return 'Vierkante meter';
             case 'MTR':
-                return __('Meter');
+                return 'Meter';
             case 'TB':
-                return __('Tube');
+                return 'Tube';
             case 'PL':
-                return __('Plaat');
+                return 'Plaat';
             case 'NVP':
-                return __('Niet verpakt');
+                return 'Niet verpakt';
             case 'BND':
-                return __('Bundel');
+                return 'Bundel';
             case 'BLI':
             case 'BLK2':
-                return __('Blik');
+                return 'Blik';
             case 'KRF':
-                return __('Krimpfolie');
+                return 'Krimpfolie';
             case 'JER':
             case 'JER2':
-                return __('Jerrycan');
+                return 'Jerrycan';
             case 'EM':
-                return __('Emmer');
+                return 'Emmer';
             case 'SPB':
-                return __('Spuitbus');
+                return 'Spuitbus';
             case 'FLES':
-                return __('Fles');
+                return 'Fles';
             default:
                 return $code;
         }
