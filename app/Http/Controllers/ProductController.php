@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ProductNotFoundException;
-use App\Pack;
-use App\PackProduct;
-use App\Product;
 use Auth;
 use Helper;
-use Illuminate\Http\Request;
 use Session;
+use App\Pack;
+use App\Product;
+use App\PackProduct;
+use Illuminate\Http\Request;
+use App\Exceptions\ProductNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProductController.
@@ -28,6 +29,34 @@ class ProductController extends Controller
      */
     public function showProduct(Request $request, $product_Id = null)
     {
+        if (strlen($product_Id) === 7) {
+            $productMap = \Cache::remember('old-skus', 3600, function () {
+                $productMap = [];
+                $handle = fopen(storage_path('app/sku-conversion.csv'), 'r');
+
+                while(($data = fgetcsv($handle, 0, ';')) !== false) {
+                    $oldSku = $data[0] ?? false;
+                    $newSku = $data[1] ?? false;
+
+                    if (!$oldSku || !$newSku) {
+                        continue;
+                    }
+
+                    $productMap[$oldSku] = (int) $newSku;
+                }
+
+                return $productMap;
+            });
+
+            if (isset($productMap[$product_Id])) {
+                $newSku = $productMap[$product_Id];
+
+                return redirect('product/'.$newSku, Response::HTTP_MOVED_PERMANENTLY);
+            } else {
+                abort(Response::HTTP_GONE, "Het opgevraagde productnummer is ongeldig of bestaat niet meer.");
+            }
+        }
+
         // Store the product id in the session
         Session::flash('product_id', $product_Id);
 
