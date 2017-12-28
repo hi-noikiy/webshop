@@ -13,7 +13,7 @@
                 <form>
                     <div class="input-group">
                         <input name="query" type="text" class="form-control" placeholder="{{ __('Zoeken') }}" value="{{ request('query') }}">
-                        <span class="input-group-btn"><button class="btn btn-outline-primary" type="button"><i class="fa fa-fw fa-search"></i></button></span>
+                        <span class="input-group-btn"><button class="btn btn-outline-primary" type="button"><i class="fal fa-fw fa-search"></i></button></span>
                     </div>
 
                     <hr />
@@ -31,48 +31,14 @@
                     @include('components.catalog.products')
                 @endif
 
-                <div class="my-3">
+                <div class="my-3 d-none d-sm-block">
                     {{ $results->get('products')->links('pagination::bootstrap-4') }}
+                </div>
+
+                <div class="my-3 d-block d-sm-none text-center">
+                    {{ $results->get('products')->links('pagination::simple-bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('extraJS')
-    <script>
-        var skus = [];
-        var priceElements = $("[id^='price-']");
-
-        priceElements.each(function () {
-            var sku = this.id.replace('price-', '');
-
-            skus.push(sku);
-        });
-
-        axios.post('{{ routeIf('catalog.fetchPrice') }}', { skus: skus })
-            .then(function (response) {
-                var data = response.data;
-
-                data.payload.forEach(function (item) {
-                    var $product = $('#price-' + item.sku);
-
-                    if (!$product) {
-                        return;
-                    }
-
-                    $product.find('#gross-price-' + item.sku).html(item.gross_price);
-                    $product.find('#net-price-' + item.sku).html(item.net_price);
-
-                    $product.removeClass('price-loading').addClass('price-loaded');
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-
-                priceElements.each(function () {
-                    $(this).html('Geen prijs info beschikbaar');
-                });
-            });
-    </script>
 @endsection

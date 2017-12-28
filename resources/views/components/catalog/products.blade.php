@@ -1,5 +1,3 @@
-<hr />
-
 @foreach ($results->get('products') as $product)
     <div class="product-listing" id="product-{{ $product->getAttribute('id') }}">
         <div class="row">

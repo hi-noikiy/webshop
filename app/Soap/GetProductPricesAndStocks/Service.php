@@ -118,12 +118,14 @@ class Service extends AbstractService
             $product->stock         = (float) $soapProduct->QtyStock;
             $product->refactor      = (int) $soapProduct->ConversionFactor;
 
-            if ($product->sales_unit === $product->price_unit) {
-                $pricePerString = sprintf('Prijs per %s %s',
-                    $product->price_per, unit_to_str($product->sales_unit, $product->price_per > 1));
+            if ($product->price_unit === 'DAG') {
+                $pricePerString = sprintf('Verhuurd per dag');
+            } elseif ($product->sales_unit === $product->price_unit) {
+                $pricePerString = sprintf('Prijs per %s',
+                    unit_to_str($product->price_unit, false));
             } else {
-                $pricePerString = sprintf('Prijs per %s %s van %s %s',
-                    $product->price_per, unit_to_str($product->sales_unit, $product->price_per > 1),
+                $pricePerString = sprintf('Prijs per %s van %s %s',
+                    unit_to_str($product->sales_unit, false),
                     $product->refactor, unit_to_str($product->price_unit, $product->refactor > 1)
                 );
             }

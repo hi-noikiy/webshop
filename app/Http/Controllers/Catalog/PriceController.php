@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use WTG\Http\Controllers\Controller;
 use WTG\Http\Requests\FetchPriceRequest;
+use WTG\Contracts\Models\CustomerContract;
 use Illuminate\Database\Eloquent\Collection;
 use WTG\Soap\GetProductPricesAndStocks\Response;
 
@@ -39,7 +40,9 @@ class PriceController extends Controller
             ], 404);
         }
 
-        $customerNumber = $request->user()->getCustomerNumber();
+        /** @var CustomerContract $customer */
+        $customer = $request->user();
+        $customerNumber = $customer->getCompany()->customerNumber();
         /** @var Response $response */
         $response = app('soap')->getProductPricesAndStocks($products, $customerNumber);
 
@@ -81,7 +84,9 @@ class PriceController extends Controller
             ], 400);
         }
 
-        $customerNumber = auth()->user()->getCustomerNumber();
+        /** @var CustomerContract $customer */
+        $customer = $request->user();
+        $customerNumber = $customer->getCompany()->customerNumber();
         $response = app('soap')->getProductPricesAndStocks($products, $customerNumber);
 
         return response()->json([

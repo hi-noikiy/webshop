@@ -34,6 +34,8 @@ Route::group([
     Route::get('search', 'SearchController@getAction')->name('search');
     Route::get('assortment', 'AssortmentController@getAction')->name('assortment');
 
+    Route::post('search', 'SearchController@postAction');
+
     Route::group([
         'middleware' => ['auth']
     ], function () {

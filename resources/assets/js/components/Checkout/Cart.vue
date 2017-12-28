@@ -15,9 +15,9 @@
 </template>
 
 <script>
-    import Header from './Cart/HeaderComponent';
-    import Item from './Cart/ItemComponent';
-    import Footer from './Cart/FooterComponent';
+    import Header from './Cart/Header';
+    import Item from './Cart/Item';
+    import Footer from './Cart/Footer';
 
     export default {
         props: ['itemsUrl', 'continueUrl'],

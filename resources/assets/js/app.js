@@ -13,21 +13,22 @@ doc.setAttribute('data-useragent', navigator.userAgent);
 // ChartJS Stuff
 Chart.defaults.global.defaultFontFamily = "'Titillium Web', sans-serif";
 
-import Notification from './components/NotificationComponent'
-import Footer from './components/FooterComponent'
-import Logs from './components/LogComponent'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
+import Logs from './components/Log'
 
-import ContactEmail from './components/Account/ContactEmailComponent';
-import AddressList from './components/Account/AddressListComponent';
+import ContactEmail from './components/Account/ContactEmail';
+import AddressList from './components/Account/AddressList';
 
-import Price from './components/Catalog/PriceComponent'
+import Price from './components/Catalog/Price'
+import FavoritesButton from './components/Catalog/Favorite'
 
-import Cart from './components/Checkout/CartComponent'
-import AddToCart from './components/Checkout/AddToCartComponent'
-import MiniCart from './components/Checkout/MiniCartComponent'
-import CartAddress from './components/Checkout/Address/CartAddressComponent'
+import Cart from './components/Checkout/Cart'
+import AddToCart from './components/Checkout/AddToCart'
+import MiniCart from './components/Checkout/MiniCart'
+import CartAddress from './components/Checkout/Address/CartAddress'
 
-import FavoritesButton from './components/Favorites/ButtonComponent'
+import QuickSearch from './components/Search/QuickSearch';
 
 import 'vue-googlemaps/dist/vue-googlemaps.css'
 import VueGoogleMaps from 'vue-googlemaps'
@@ -52,7 +53,8 @@ window.vm = new Vue({
         'logs': Logs,
         'contact-email': ContactEmail,
         'address-list': AddressList,
-        'cart-address': CartAddress
+        'cart-address': CartAddress,
+        'quick-search': QuickSearch
     },
     data () {
         return {

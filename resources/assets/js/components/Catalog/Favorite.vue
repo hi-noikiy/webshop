@@ -1,7 +1,7 @@
 <template>
     <div id="favorite-button">
         <button :class="{'btn': true, 'btn-default': !checked, 'btn-success': !isFavorite, 'btn-danger': isFavorite}" v-on:click="this.toggle">
-            <span class="fa fa-fw fa-heart"></span> <span v-if="checked">{{ buttonText}}</span>
+            <span class="far fa-fw fa-heart"></span> <span v-if="checked">{{ buttonText}}</span>
         </button>
     </div>
 </template>

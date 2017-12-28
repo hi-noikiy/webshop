@@ -12,19 +12,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <form class="form-inline my-2 my-lg-0" action="{{ url('search') }}" role="search">
-            <div class="input-group">
-                <input type="text" class="form-control" oninput="search.suggest(this)" name="query" placeholder="{{ __('Zoeken') }}"
-                       {{--value="{{ request('q') }}" data-suggest-url="{{ route('search::suggest') }}"--}}
-                       onblur="search.hideSuggest()" onfocus="search.suggest(this)" />
-
-                <span class="input-group-btn">
-                    <button class="btn btn-outline-success" type="button">
-                        <i class="fal fa-fw fa-search"></i>
-                    </button>
-                </span>
-            </div>
-            <div id="suggest-box" style="display: none;"></div>
-        </form>
+        <div class="my-2 my-lg-0">
+            <quick-search query="{{ request('request') }}" search-url="{{ route('catalog.search') }}"></quick-search>
+        </div>
     </div>
 </nav>

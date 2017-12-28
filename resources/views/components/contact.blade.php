@@ -1,11 +1,11 @@
-<div class="d-md-none">
+<div class="d-block d-sm-none">
     <address>
         <strong>Wiringa Technische Groothandel</strong><br />
         Bovenstreek 1<br />
         9731 DH Groningen<br />
-        <abbr title="Telefoon">T:</abbr> <a href="tel:0505445566">050-5445566</a><br />
-        <abbr title="Fax">F:</abbr> 050-5445565<br />
-        <abbr title="E-Mail">E:</abbr> <a href="mailto:verkoop@wiringa.nl">verkoop@wiringa.nl</a><br />
+        <i class="fal fa-fw fa-phone"></i> <a href="tel:0505445566">050-5445566</a><br />
+        <i class="fal fa-fw fa-fax"></i> 050-5445565<br />
+        <i class="fal fa-fw fa-at"></i> <a href="mailto:verkoop@wiringa.nl">verkoop@wiringa.nl</a><br />
         <hr />
         <strong>Openingstijden</strong><br />
         Maandag t/m Vrijdag<br />
@@ -14,7 +14,7 @@
     </address>
 </div>
 
-<div class="hidden-xs">
+<div class="d-none d-sm-block">
     <table class="table">
         <tbody>
         <tr>

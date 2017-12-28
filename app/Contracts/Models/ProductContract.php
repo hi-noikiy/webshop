@@ -35,6 +35,14 @@ interface ProductContract
     public function group(?string $group = null): string;
 
     /**
+     * Get or set the product name.
+     *
+     * @param  null|string  $name
+     * @return string
+     */
+    public function name(?string $name = null): string;
+
+    /**
      * Get or set the product sales unit.
      *
      * @param  null|string  $salesUnit

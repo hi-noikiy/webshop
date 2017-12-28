@@ -16942,6 +16942,26 @@ header #header-carousel .carousel-item .carousel-caption {
   height: 50px;
 }
 
+#navbar-first #quick-search {
+  position: relative;
+}
+
+#navbar-first #quick-search .card {
+  position: absolute;
+  top: 38px;
+  z-index: 1;
+  width: 200%;
+  margin-left: -100%;
+}
+
+#navbar-first #quick-search .card .card-header .fa-times {
+  margin-top: 5px;
+}
+
+#navbar-first #quick-search .card .card-header .fa-times:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 767px) {
   #navbar-first form {
     width: 100%;
@@ -16949,6 +16969,11 @@ header #header-carousel .carousel-item .carousel-caption {
 
   #navbar-first form .input-group {
     width: 100%;
+  }
+
+  #navbar-first #quick-search .card {
+    width: 100%;
+    margin-left: 0;
   }
 }
 

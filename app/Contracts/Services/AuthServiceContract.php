@@ -3,7 +3,7 @@
 namespace WTG\Contracts\Services;
 
 use Illuminate\Http\Request;
-use WTG\Contracts\CustomerContract;
+use WTG\Contracts\Models\CustomerContract;
 
 /**
  * Interface AuthServiceContract

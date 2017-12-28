@@ -4,7 +4,7 @@
         <input type="text" class="form-control" placeholder="Aantal" v-model="quantity">
         <span class="input-group-btn">
             <button class="btn btn-success" v-on:click="this.addToCart">
-                <span><i class="fa fa-fw fa-shopping-cart"></i></span>
+                <span><i class="fab fa-fw fa-cart-plus"></i></span>
             </button>
         </span>
     </div>

@@ -7,12 +7,41 @@
     height: 50px;
   }
 
+  #quick-search {
+    position: relative;
+
+    .card {
+      .card-header {
+        .fa-times {
+          margin-top: 5px;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      position: absolute;
+      top: 38px;
+      z-index: 1;
+      width: 200%;
+      margin-left: -100%;
+    }
+  }
+
   @include media-breakpoint-down(sm) {
     form {
       width: 100%;
 
       .input-group {
         width: 100%;
+      }
+    }
+
+    #quick-search {
+      .card {
+        width: 100%;
+        margin-left: 0;
       }
     }
   }

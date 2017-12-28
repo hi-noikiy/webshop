@@ -84,6 +84,8 @@ if (! function_exists('unit_to_str')) {
                 return $plural ? __('spuitbussen') : __('spuitbus');
             case 'FLES':
                 return $plural ? __('flessen') : __('fles');
+            case 'DAG':
+                return $plural ? __('dagen') : __('dag');
             default:
                 return $unit;
         }

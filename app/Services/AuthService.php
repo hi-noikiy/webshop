@@ -4,8 +4,8 @@ namespace WTG\Services;
 
 use WTG\Models\Company;
 use Illuminate\Http\Request;
-use WTG\Contracts\CompanyContract;
-use WTG\Contracts\CustomerContract;
+use WTG\Contracts\Models\CompanyContract;
+use WTG\Contracts\Models\CustomerContract;
 use WTG\Contracts\Services\AuthServiceContract;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 

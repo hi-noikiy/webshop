@@ -48,12 +48,40 @@ class SearchService
         }
 
         $results = $query->get();
+        $paginator = new LengthAwarePaginator($results->forPage($page, 10), $results->count(), 10, $page);
+        $paginator->withPath('search');
+        $paginator->appends($data);
 
         return collect([
-            'products' => new LengthAwarePaginator($results->forPage($page, 10), $results->count(), 10, $page),
-            'brands' => $query->orderBy('brand')->distinct()->pluck('brand'),
-            'series' => $query->orderBy('series')->distinct()->pluck('series'),
-            'types' => $query->orderBy('types')->distinct()->pluck('types'),
+            'products' => $paginator,
+            'brands' => $results->pluck('brand')->unique()->sort(),
+            'series' => $results->pluck('series')->unique()->sort(),
+            'types' => $results->pluck('types')->unique()->sort(),
         ]);
+    }
+
+    /**
+     * Quicksearch items.
+     *
+     * @param  string  $query
+     * @return Collection
+     */
+    public function suggestProducts(string $query): Collection
+    {
+        /** @var Collection $items */
+        $items = Product::search($query, function ($elastic, $query, $params) {
+            $params['body']['size'] = 5;
+
+            return $elastic->search($params);
+        })->get();
+
+        $items = $items->map(function (Product $product) {
+            return [
+                'url' => route('catalog.product', ['sku' => $product->sku()]),
+                'name' => $product->name()
+            ];
+        });
+
+        return $items;
     }
 }

@@ -42,4 +42,27 @@ class SearchController extends Controller
 
         return view('pages.catalog.search', compact('results'));
     }
+
+    /**
+     * Search page.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
+    public function postAction(Request $request)
+    {
+        $searchQuery = $request->input('query');
+
+        if (! $searchQuery) {
+            return back();
+        }
+
+        /** @var SearchService $service */
+        $service = app()->make(SearchService::class);
+        $results = $service->suggestProducts($searchQuery);
+
+        return response()->json([
+            'products' => $results
+        ]);
+    }
 }

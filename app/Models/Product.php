@@ -65,6 +65,21 @@ class Product extends Model implements ProductContract
     }
 
     /**
+     * Get or set the product name.
+     *
+     * @param  null|string  $name
+     * @return string
+     */
+    public function name(?string $name = null): string
+    {
+        if ($name) {
+            $this->setAttribute('name', $name);
+        }
+
+        return $this->getAttribute('name');
+    }
+
+    /**
      * Get or set the product sales unit.
      *
      * @param  null|string  $salesUnit
