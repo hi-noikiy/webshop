@@ -8,11 +8,11 @@
                             <b>{{ address.name }}</b><br />
                             {{ address.street }} <br />
                             {{ address.postcode }} {{ address.city }} <br />
-                            <abbr title="Telefoon">T:</abbr> {{ address.phone }} <br />
-                            <abbr title="Mobiel">M:</abbr> {{ address.phone }}
+                            <i class="fal fa-fw fa-phone" v-if="address.phone"></i> {{ address.phone }} <br />
+                            <i class="fal fa-fw fa-mobile" v-if="address.mobile"></i> {{ address.mobile }}
                         </address>
 
-                        <button @click="setDefault(address.id)" v-if="address.id !== defaultAddress"
+                        <button @click="setDefault(address.id)" v-if="address.id !== defaultAddressId"
                                 class="btn btn-secondary">
                             Maak standaard adres
                         </button>
@@ -41,19 +41,28 @@
                     address: addressId
                 })
                     .then((response) => {
+                        this.$data.defaultAddressId = addressId;
+
                         this.$root.$emit('send-notify', {
                             success: response.data.success,
-                            message: response.data.message
+                            text: response.data.message
                         });
                     })
                     .catch((error) => {
                         console.log(error);
 
-                        this.$root.$emit('send-notify', {
-                            success: error.response.data.success,
-                            message: error.response.data.message
-                        });
+                        if (error.response) {
+                            this.$root.$emit('send-notify', {
+                                success: false,
+                                text: error.response.data.message
+                            });
+                        }
                     });
+            }
+        },
+        data () {
+            return {
+                defaultAddressId: (this.defaultAddress ? parseInt(this.defaultAddress) : null)
             }
         }
     }

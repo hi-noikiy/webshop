@@ -13,6 +13,7 @@ doc.setAttribute('data-useragent', navigator.userAgent);
 // ChartJS Stuff
 Chart.defaults.global.defaultFontFamily = "'Titillium Web', sans-serif";
 
+import Carousel from './components/Carousel'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import Logs from './components/Log'
@@ -21,7 +22,8 @@ import ContactEmail from './components/Account/ContactEmail';
 import AddressList from './components/Account/AddressList';
 
 import Price from './components/Catalog/Price'
-import FavoritesButton from './components/Catalog/Favorite'
+
+import FavoritesToggleButton from './components/Favorites/ToggleButton'
 
 import Cart from './components/Checkout/Cart'
 import AddToCart from './components/Checkout/AddToCart'
@@ -43,11 +45,12 @@ Vue.use(VueGoogleMaps, {
 window.vm = new Vue({
     el: '#app',
     components: {
+        'carousel': Carousel,
         'price': Price,
         'cart': Cart,
         'add-to-cart': AddToCart,
         'mini-cart': MiniCart,
-        'favorites-button': FavoritesButton,
+        'favorites-toggle-button': FavoritesToggleButton,
         'notification': Notification,
         'footer-block': Footer,
         'logs': Logs,
@@ -71,7 +74,8 @@ window.vm = new Vue({
                         this.$root.$emit('price-fetched-' + item.sku, {
                             netPrice: item.net_price,
                             grossPrice: item.gross_price,
-                            pricePer: item.price_per_string
+                            pricePer: item.price_per_string,
+                            stock: item.stock_string,
                         });
                     });
                 })

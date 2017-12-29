@@ -13,13 +13,9 @@
 
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-success" data-toggle="modal" data-target="#address-modal">
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#address-modal">
                 {{ __("Adres toevoegen") }}
             </button>
-
-            {{--<div class="alert alert-warning mt-3">--}}
-                {{--<b>{{ __("Let op:") }}</b> {{ __("Als het standaard adres veranderd wordt, veranderd dit voor alle accounts die gekoppeld zijn aan het debiteurnummer.") }}--}}
-            {{--</div>--}}
         </div>
     </div>
 

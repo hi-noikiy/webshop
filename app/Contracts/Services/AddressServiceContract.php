@@ -34,12 +34,19 @@ interface AddressServiceContract
     public function getAddressForCustomerById(CustomerContract $customer, string $addressId): ?AddressContract;
 
     /**
-     * Create a new address from a request.
+     * Create a new address.
      *
-     * @param  CreateRequest  $request
+     * @param  CustomerContract  $customer
+     * @param  string  $name
+     * @param  string  $street
+     * @param  string  $postcode
+     * @param  string  $city
+     * @param  null|string  $phone
+     * @param  null|string  $mobile
      * @return bool
      */
-    public function createFromRequest(CreateRequest $request): bool;
+    public function createForCustomer(CustomerContract $customer, string $name, string $street, string $postcode,
+                                      string $city, ?string $phone = null, ?string $mobile = null): bool;
 
     /**
      * Delete an address for a customer.

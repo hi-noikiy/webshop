@@ -176,6 +176,7 @@ return [
         WTG\Providers\BladeServiceProvider::class,
         WTG\Providers\CheckoutServiceProvider::class,
         WTG\Providers\CatalogServiceProvider::class,
+        WTG\Providers\CarouselServiceProvider::class,
         WTG\Providers\LogServiceProvider::class,
         // WTG\Providers\BroadcastServiceProvider::class,
         WTG\Providers\EventServiceProvider::class,

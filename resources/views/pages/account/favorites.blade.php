@@ -15,7 +15,7 @@
                 <th width="40">
                     <button class="btn btn-primary btn-link p-0" data-url="{{ routeIf('account.favorites.addToCart') }}"
                             onclick="addSelectedToCart(this)">
-                        <i class="fa fa-cart-plus fa-fw fa-2x"></i>
+                        <i class="fal fa-cart-plus fa-fw fa-2x"></i>
                     </button>
                 </th>
                 <th>{{ __('Productnaam') }}</th>
@@ -31,18 +31,18 @@
                                data-product="{{ $favorite->getAttribute('id') }}">
                     </td>
                     <td>
-                        <a href="{{ routeIf('product', ['productId' => $favorite->getAttribute('productId')]) }}">
+                        <a href="{{ route('catalog.product', ['sku' => $favorite->getAttribute('sku')]) }}">
                             {{ $favorite->getAttribute('name') }}
                         </a>
                     </td>
-                    <td class="text-right">
-                        <form method="post">
+                    <td class="text-right" style="padding: 5px;">
+                        <form method="post" action="{{ route('favorites.delete') }}">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <input type="hidden" value="{{ $favorite->getAttribute('id') }}" name="favorite-id" />
+                            <input type="hidden" value="{{ $favorite->getAttribute('sku') }}" name="sku" />
 
-                            <button class="btn btn-danger btn-sm" type="submit">
-                                <i class="fa fa-fw fa-remove"></i>
+                            <button class="btn btn-link " type="submit">
+                                <i class="fal fa-fw fa-trash-alt"></i>
                             </button>
                         </form>
                     </td>

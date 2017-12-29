@@ -4,7 +4,7 @@
 
 @section('account.title')
     <h2 class="text-center block-title">
-        {{ trans('titles.account.change-password') }}
+        {{ __('titles.account.change-password') }}
     </h2>
 @endsection
 
@@ -38,7 +38,9 @@
                            placeholder="{{ __("Nieuw wachtwoord (bevestiging)") }}" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary pull-right">Wijzigen</button>
+                <button type="submit" class="btn btn-primary pull-right">
+                    {{ __('Wijzigen') }}
+                </button>
             </form>
         </div>
     </div>

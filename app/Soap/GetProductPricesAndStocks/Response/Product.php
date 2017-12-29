@@ -65,4 +65,9 @@ class Product
      * @var string
      */
     public $price_per_string;
+
+    /**
+     * @var string
+     */
+    public $stock_string;
 }

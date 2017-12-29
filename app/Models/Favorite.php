@@ -3,6 +3,9 @@
 namespace WTG\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use WTG\Contracts\Models\CustomerContract;
+use WTG\Contracts\Models\FavoriteContract;
+use WTG\Contracts\Models\ProductContract;
 
 /**
  * Favorite model.
@@ -11,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @subpackage  Models
  * @author      Thomas Wiringa  <thomas.wiringa@gmail.com>
  */
-class Favorite extends Model
+class Favorite extends Model implements FavoriteContract
 {
     /**
      * @var bool
@@ -41,5 +44,25 @@ class Favorite extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Get the product.
+     *
+     * @return null|ProductContract
+     */
+    public function getProduct(): ?ProductContract
+    {
+        return $this->getAttribute('product');
+    }
+
+    /**
+     * Get the customer.
+     *
+     * @return null|CustomerContract
+     */
+    public function getCustomer(): ?CustomerContract
+    {
+        return $this->getAttribute('customer');
     }
 }

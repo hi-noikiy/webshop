@@ -34,9 +34,9 @@
                                 </div>
 
                                 <div class="col-2">
-                                    <favorites-button sku="{{ $product->getAttribute('sku') }}"
+                                    <favorites-toggle-button sku="{{ $product->getAttribute('sku') }}"
                                                       check-url="{{ route('favorites.check') }}"
-                                                      toggle-url="{{ route('favorites.toggle') }}"></favorites-button>
+                                                      toggle-url="{{ route('favorites.toggle') }}"></favorites-toggle-button>
                                 </div>
                             </div>
                         </div>

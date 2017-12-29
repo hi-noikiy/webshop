@@ -8,19 +8,23 @@
         <div class="gross-price" v-if="grossPrice !== false">
             Bruto:
             <span class="d-block d-sm-inline">
-                <i class="fab fa-euro-sign"></i> <span>{{ grossPrice }}</span>
+                <i class="fas fa-euro-sign"></i> <span>{{ grossPrice }}</span>
             </span>
         </div>
 
         <div class="net-price" v-if="netPrice !== false">
             Netto:
             <span class="d-block d-sm-inline">
-                <i class="fab fa-euro-sign"></i> <span>{{ netPrice }}</span>
+                <i class="fas fa-euro-sign"></i> <span>{{ netPrice }}</span>
             </span>
         </div>
 
         <small class="form-text text-muted price-per" v-if="pricePer !== false">
             {{ pricePer }}
+        </small>
+
+        <small class="form-text text-muted stock" v-if="stock !== false">
+            {{ stock }}
         </small>
     </div>
 </template>
@@ -41,6 +45,10 @@
 
     .price-per {
         margin-top: 15px;
+    }
+
+    .stock,
+    .price-per {
         white-space: nowrap;
     }
 </style>
@@ -53,7 +61,8 @@
                 fetching: true,
                 netPrice: false,
                 grossPrice: false,
-                pricePer: false
+                pricePer: false,
+                stock: false
             }
         },
         created () {
@@ -64,6 +73,7 @@
                 this.$data.netPrice = data.netPrice.toFixed(2);
                 this.$data.grossPrice = data.grossPrice.toFixed(2);
                 this.$data.pricePer = data.pricePer;
+                this.$data.stock = data.stock;
             });
         }
     }

@@ -51,9 +51,11 @@ Route::group([
     'namespace' => 'Favorites',
     'middleware' => ['auth']
 ], function () {
-    Route::post('check', 'CheckController@postAction')->name('check');
+    Route::post('/', 'IndexController@postAction')->name('check');
 
-    Route::patch('toggle', 'ToggleController@patchAction')->name('toggle');
+    Route::patch('/', 'IndexController@patchAction')->name('toggle');
+
+    Route::delete('/', 'IndexController@deleteAction')->name('delete');
 });
 
 Route::group([

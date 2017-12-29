@@ -3,8 +3,8 @@
 namespace WTG\Soap\GetProductPrice;
 
 use Exception;
-use WTG\Contracts\ProductContract;
 use WTG\Soap\AbstractService;
+use WTG\Contracts\Models\ProductContract;
 
 /**
  * GetProductPrice service.

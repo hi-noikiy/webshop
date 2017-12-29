@@ -25,7 +25,7 @@ class DashboardController extends Controller
     {
         /** @var Customer $customer */
         $customer = $request->user();
-        $address = $customer->getDefaultAddress();
+        $address = $customer->getContact()->defaultAddress();
 
         return view('pages.account.dashboard', compact('customer', 'address'));
     }

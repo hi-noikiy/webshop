@@ -4,20 +4,20 @@
 
 @section('content')
     <h2 class="text-center block-title">
-        {{ __("Winkelwagen") }}
+        {{ __('Winkelwagen') }}
     </h2>
 
     <div class="container">
         @if ($cart->count() > 0)
             <div class="progress" style="height: 20px;">
                 <div class="progress-bar bg-primary" role="progressbar" style="width: 33%; height: 20px">
-                    {{ __("Overzicht") }}
+                    {{ __('Overzicht') }}
                 </div>
                 <div class="progress-bar bg-info" role="progressbar" style="width: 34%; height: 20px">
-                    {{ __("Adres") }}
+                    {{ __('Adres') }}
                 </div>
                 <div class="progress-bar bg-info" role="progressbar" style="width: 33%; height: 20px">
-                    {{ __("Afronden") }}
+                    {{ __('Afronden') }}
                 </div>
             </div>
 

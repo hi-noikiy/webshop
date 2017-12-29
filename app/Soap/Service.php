@@ -2,9 +2,9 @@
 
 namespace WTG\Soap;
 
-use WTG\Contracts\ProductContract;
 use Illuminate\Support\Collection;
 use WTG\Services\AbstractSoapService;
+use WTG\Contracts\Models\ProductContract;
 
 /**
  * Soap service.

@@ -3,13 +3,13 @@
         <div class="collapse navbar-collapse" id="navbar-links">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {{ Route::is('home') ? 'active' :'' }}">
-                    <a class="nav-link" href="{{ routeIf('home') }}">{{ trans('navigation.items.home') }}</a>
+                    <a class="nav-link" href="{{ route('home') }}">{{ trans('navigation.items.home') }}</a>
                 </li>
                 <li class="nav-item {{ Route::is('downloads') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ routeIf('downloads') }}">{{ trans('navigation.items.downloads') }}</a>
+                    <a class="nav-link" href="{{ route('downloads') }}">{{ trans('navigation.items.downloads') }}</a>
                 </li>
                 <li class="nav-item {{ Route::is('catalog.assortment') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ routeIf('catalog.assortment') }}">{{ trans('navigation.items.assortment') }}</a>
+                    <a class="nav-link" href="{{ route('catalog.assortment') }}">{{ trans('navigation.items.assortment') }}</a>
                 </li>
             </ul>
 
@@ -24,16 +24,16 @@
                                 <i class="far fa-fw fa-user"></i>
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ routeIf('account.dashboard') }}">
+                                <a class="dropdown-item" href="{{ route('account.dashboard') }}">
                                     <i class="far fa-fw fa-sliders-h"></i> {{ trans('navigation.items.dashboard') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ routeIf('account.favorites') }}">
+                                <a class="dropdown-item" href="{{ route('account.favorites') }}">
                                     <i class="far fa-fw fa-heart"></i> {{ trans('navigation.items.favorites') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ routeIf('account.order-history') }}">
+                                <a class="dropdown-item" href="{{ route('account.order-history') }}">
                                     <i class="far fa-fw fa-history"></i> {{ trans('navigation.items.order_history') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ routeIf('account.discountfile') }}">
+                                <a class="dropdown-item" href="{{ route('account.discount') }}">
                                     <i class="far fa-fw fa-percent"></i> {{ trans('navigation.items.discount_file') }}
                                 </a>
 
@@ -45,15 +45,15 @@
                             </div>
                         </li>
 
-                        <form class="hidden" action="{{ routeIf('auth.logout') }}" method="post" id="logout-form">
+                        <form class="hidden" action="{{ route('auth.logout') }}" method="post" id="logout-form">
                             {{ csrf_field() }}
                         </form>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link register-button" href="{{ routeIf('auth.register.form') }}">{{ trans('navigation.items.register') }}</a>
+                            <a class="nav-link register-button" href="{{ route('auth.register.form') }}">{{ trans('navigation.items.register') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ routeIf('auth.login', ['toUrl' => url()->current()]) }}">{{ trans('navigation.items.login') }}</a>
+                            <a class="nav-link" href="{{ route('auth.login', ['toUrl' => url()->current()]) }}">{{ trans('navigation.items.login') }}</a>
                         </li>
                     @endauth
                 </ul>

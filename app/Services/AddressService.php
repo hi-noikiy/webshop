@@ -9,6 +9,7 @@ use WTG\Contracts\Models\CustomerContract;
 use WTG\Contracts\Services\AddressServiceContract;
 use WTG\Http\Requests\Account\Address\CreateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use WTG\Models\Contact;
 
 /**
  * Address service.
@@ -49,20 +50,28 @@ class AddressService implements AddressServiceContract
     }
 
     /**
-     * Create a new address from a request.
+     * Create a new address.
      *
-     * @param  CreateRequest  $request
+     * @param  CustomerContract  $customer
+     * @param  string  $name
+     * @param  string  $street
+     * @param  string  $postcode
+     * @param  string  $city
+     * @param  null|string  $phone
+     * @param  null|string  $mobile
      * @return bool
      */
-    public function createFromRequest(CreateRequest $request): bool
+    public function createForCustomer(CustomerContract $customer, string $name, string $street, string $postcode,
+                                      string $city, ?string $phone = null, ?string $mobile = null): bool
     {
-        $data = $request->only([
-            'name', 'address', 'postcode', 'city', 'phone', 'mobile'
-        ]);
-
-        $data['company_id'] = $request->user()->getAttribute('company_id');
-
-        $address = new Address($data);
+        $address = new Address;
+        $address->company()->associate($customer->getCompany());
+        $address->name($name);
+        $address->street($street);
+        $address->postcode($postcode);
+        $address->city($city);
+        $address->phone($phone);
+        $address->mobile($mobile);
 
         return $address->save();
     }
@@ -96,11 +105,13 @@ class AddressService implements AddressServiceContract
      */
     public function setDefaultForCustomer(CustomerContract $customer, string $addressId): bool
     {
+        /** @var Contact $contact */
         $contact = $customer->getContact();
+        /** @var Address $address */
         $address = $contact->defaultAddress($addressId);
 
         if ($address && $address->identifier() === $addressId) {
-            return true;
+            return $contact->save();
         }
 
         return false;

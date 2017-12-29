@@ -8,17 +8,17 @@
                 <b>{{ $address->getAttribute('name') }}</b><br />
                 {{ $address->getAttribute('street') }} <br />
                 {{ $address->getAttribute('postcode') }} {{ $address->getAttribute('city') }} <br />
-                <abbr title="{{ __('Telefoon') }}">T:</abbr> {{ $address->getAttribute('phone') }} <br />
-                <abbr title="{{ __('Mobiel') }}">M:</abbr> {{ $address->getAttribute('mobile') }}
+                <i class="fal fa-fw fa-phone"></i> {{ $address->getAttribute('phone') }} <br />
+                <i class="fal fa-fw fa-mobile"></i> {{ $address->getAttribute('mobile') }}
             </address>
-
-            <a href="{{ routeIf('account.addresses') }}">
-                {{ __('Standaard adres wijzigen') }}
-            </a>
         @else
             <div class="alert alert-warning">
-                {{ __("U hebt nog geen adressen aan uw account gekoppeld. Als er geen adres is gekoppeld, kunt u geen bestelling plaatsen.") }}
+                {{ __('U hebt nog geen standaard afleveradres geselecteerd.') }}
             </div>
         @endif
+
+        <a href="{{ route('account.addresses') }}">
+            {{ __('Standaard adres wijzigen') }}
+        </a>
     </div>
 </div>

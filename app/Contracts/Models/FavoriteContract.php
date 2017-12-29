@@ -11,10 +11,16 @@ namespace WTG\Contracts\Models;
 interface FavoriteContract
 {
     /**
-     * Get or set the product identifier.
+     * Get the product.
      *
-     * @param  null|string  $id
-     * @return string
+     * @return null|ProductContract
      */
-    public function identifier(?string $id = null): string;
+    public function getProduct(): ?ProductContract;
+
+    /**
+     * Get the customer.
+     *
+     * @return null|CustomerContract
+     */
+    public function getCustomer(): ?CustomerContract;
 }

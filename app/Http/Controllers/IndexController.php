@@ -3,7 +3,7 @@
 namespace WTG\Http\Controllers;
 
 use Illuminate\View\View;
-use Illuminate\Http\Request;
+use WTG\Contracts\Services\CarouselServiceContract;
 
 /**
  * Index controller.
@@ -15,13 +15,29 @@ use Illuminate\Http\Request;
 class IndexController extends Controller
 {
     /**
+     * @var CarouselServiceContract
+     */
+    protected $carouselService;
+
+    /**
+     * IndexController constructor.
+     *
+     * @param  CarouselServiceContract  $carouselService
+     */
+    public function __construct(CarouselServiceContract $carouselService)
+    {
+        $this->carouselService = $carouselService;
+    }
+
+    /**
      * Handle the request.
      *
-     * @param  Request  $request
      * @return View
      */
-    public function getAction(Request $request)
+    public function getAction(): View
     {
-        return view('pages.index');
+        $slides = $this->carouselService->getOrderedSlides();
+
+        return view('pages.index', compact('slides'));
     }
 }

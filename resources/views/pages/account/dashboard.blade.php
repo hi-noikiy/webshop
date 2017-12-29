@@ -4,7 +4,7 @@
 
 @section('account.title')
     <h2 class="text-center block-title">
-        {{ trans('titles.account.dashboard', ['company' => $customer->company->getAttribute('name')]) }}
+        {{ trans('titles.account.dashboard', ['company' => $customer->getCompany()->getAttribute('name')]) }}
     </h2>
 @endsection
 

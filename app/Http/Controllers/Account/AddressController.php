@@ -61,12 +61,22 @@ class AddressController extends Controller
      */
     public function putAction(CreateRequest $request): RedirectResponse
     {
-        if ($this->addressService->createFromRequest($request)) {
-            return back()->with('status', __("Het adres is toegevoegd."));
+        $isSuccess = $this->addressService->createForCustomer(
+            $request->user(),
+            $request->input('name'),
+            $request->input('address'),
+            $request->input('postcode'),
+            $request->input('city'),
+            $request->input('phone', null),
+            $request->input('mobile', null)
+        );
+
+        if ($isSuccess) {
+            return back()->with('status', __('Het adres is toegevoegd.'));
         }
 
         return back()
-            ->withErrors(__("Er is een fout opgetreden tijdens het opslaan van het adres."))
+            ->withErrors(__('Er is een fout opgetreden tijdens het opslaan van het adres.'))
             ->withInput($request->all());
     }
 
@@ -83,8 +93,8 @@ class AddressController extends Controller
         return response()->json([
             'success' => $isSuccess,
             'message' => $isSuccess ?
-                __("Het standaard adres is aangepast.") :
-                __("Er is een fout opgetreden tijdens het aanpassen van het adres."),
+                __('Het standaard adres is aangepast.') :
+                __('Er is een fout opgetreden tijdens het aanpassen van het adres.'),
             'code' => 200
         ]);
     }
@@ -100,10 +110,10 @@ class AddressController extends Controller
     public function delete(DeleteRequest $request, string $addressId): RedirectResponse
     {
         if ($this->addressService->deleteForCustomer($request->user(), $addressId)) {
-            return back()->with("status", __("Het adres is verwijderd."));
+            return back()->with('status', __('Het adres is verwijderd.'));
         } else {
             return back()
-                ->withErrors(__("Er is een fout opgetreden tijdens het verwijderen van het adres."));
+                ->withErrors(__('Er is een fout opgetreden tijdens het verwijderen van het adres.'));
         }
     }
 }
