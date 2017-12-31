@@ -10,31 +10,27 @@
                         @include('account.sidebar')
                 </div>
                 <div class="col-md-9 text-center">
-                        <p class="lead">
-                                Het genereren van ICC en/of CSV kortingsbestanden is tijdelijk niet mogelijk. Deze functionaliteit zal op <b>8 Januari 2018</b> weer beschikbaar zijn.
-                        </p>
+                        <h3>ICC Bestand</h3>
+                        <div class="btn-group btn-group-justified">
+                                <div class="btn-group">
+                                        <a class="btn btn-default" href="/account/generate_icc/download">Downloaden</a>
+                                </div>
+                                <div class="btn-group">
+                                        <a class="btn btn-default" href="/account/generate_icc/mail">Mailen</a>
+                                </div>
+                        </div>
 
-                        {{--<h3>ICC Bestand</h3>--}}
-                        {{--<div class="btn-group btn-group-justified">--}}
-                                {{--<div class="btn-group">--}}
-                                        {{--<a class="btn btn-default" href="/account/generate_icc/download">Downloaden</a>--}}
-                                {{--</div>--}}
-                                {{--<div class="btn-group">--}}
-                                        {{--<a class="btn btn-default" href="/account/generate_icc/mail">Mailen</a>--}}
-                                {{--</div>--}}
-                        {{--</div>--}}
+                        <hr />
 
-                        {{--<hr />--}}
-
-                        {{--<h3>CSV Bestand</h3>--}}
-                        {{--<div class="btn-group btn-group-justified">--}}
-                                {{--<div class="btn-group">--}}
-                                        {{--<a class="btn btn-default" href="/account/generate_csv/download">Downloaden</a>--}}
-                                {{--</div>--}}
-                                {{--<div class="btn-group">--}}
-                                        {{--<a class="btn btn-default" href="/account/generate_csv/mail">Mailen</a>--}}
-                                {{--</div>--}}
-                        {{--</div>--}}
+                        <h3>CSV Bestand</h3>
+                        <div class="btn-group btn-group-justified">
+                                <div class="btn-group">
+                                        <a class="btn btn-default" href="/account/generate_csv/download">Downloaden</a>
+                                </div>
+                                <div class="btn-group">
+                                        <a class="btn btn-default" href="/account/generate_csv/mail">Mailen</a>
+                                </div>
+                        </div>
                 </div>
         </div>
 @endsection
