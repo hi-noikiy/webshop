@@ -21,9 +21,12 @@ Route::group([
     'namespace' => 'Auth'
 ], function () {
     Route::get('login', 'LoginController@getAction')->name('login');
-    Route::post('login', 'LoginController@postAction');
+    Route::get('register', 'RegistrationController@getAction')->name('register');
 
+    Route::post('login', 'LoginController@postAction');
     Route::post('logout', 'LogoutController@postAction')->name('logout');
+
+    Route::put('register', 'RegistrationController@putAction');
 });
 
 Route::group([

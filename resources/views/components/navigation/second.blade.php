@@ -50,7 +50,7 @@
                         </form>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link register-button" href="{{ route('auth.register.form') }}">{{ trans('navigation.items.register') }}</a>
+                            <a class="nav-link register-button" href="{{ route('auth.register') }}">{{ trans('navigation.items.register') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('auth.login', ['toUrl' => url()->current()]) }}">{{ trans('navigation.items.login') }}</a>
