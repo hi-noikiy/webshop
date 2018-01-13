@@ -3,12 +3,14 @@
 namespace WTG\Services;
 
 use WTG\Models\Quote;
+use Illuminate\Support\Collection;
 use WTG\Contracts\Models\CartContract;
 use WTG\Contracts\Models\AddressContract;
 use WTG\Contracts\Models\ProductContract;
 use WTG\Contracts\Models\CartItemContract;
 use WTG\Contracts\Models\CustomerContract;
 use WTG\Contracts\Services\CartServiceContract;
+use WTG\Soap\GetProductPricesAndStocks\Response;
 
 /**
  * Cart service.
@@ -106,6 +108,52 @@ class CartService implements CartServiceContract
         $this->cart->loadForCustomer($customer);
 
         return $this->cart->count();
+    }
+
+    /**
+     * Get the cart items.
+     *
+     * @param  CustomerContract  $customer
+     * @param  bool  $withPrices
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getItems(CustomerContract $customer, bool $withPrices = false): Collection
+    {
+        $this->cart->loadForCustomer($customer);
+        $items = $this->cart->items();
+
+        if (! $withPrices) {
+            return $items;
+        }
+
+        $products = $items->pluck('product');
+
+        /** @var Response $response */
+        $response = app('soap')->getProductPricesAndStocks($products, $customer->getCompany()->customerNumber());
+
+        if ($response->code !== 200) {
+            throw new \Exception('Failed to load prices for cart items.');
+        }
+
+        $products = collect($response->products);
+
+        $items->map(function (CartItemContract $item) use ($products) {
+            $product = $products->first(function ($product) use ($item) {
+                return $product->sku === $item->getProduct()->sku();
+            });
+
+            if (! $product) {
+                return $item;
+            }
+
+            $item->price(format_price($product->net_price));
+            $item->subtotal(format_price($product->net_price * $item->quantity()));
+
+            return $item;
+        });
+
+        return $items;
     }
 
     /**

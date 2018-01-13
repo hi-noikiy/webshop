@@ -13,46 +13,47 @@ interface CartItemContract
     /**
      * Set the product.
      *
-     * @param  ProductContract  $product
-     * @return ProductContract
+     * @param  ProductContract|null  $product
+     * @return ProductContract|null
      */
-    public function setProduct(ProductContract $product): ProductContract;
+    public function setProduct(ProductContract $product = null): ?ProductContract;
 
     /**
      * Get the product.
      *
-     * @return ProductContract
+     * @return null|ProductContract
      */
-    public function getProduct(): ProductContract;
+    public function getProduct(): ?ProductContract;
 
     /**
      * Set the cart.
      *
-     * @param  CartContract  $cart
+     * @param  CartContract|null  $cart
      * @return CartContract
      */
-    public function setCart(CartContract $cart): CartContract;
+    public function cart(CartContract $cart = null): CartContract;
 
     /**
-     * Get the cart.
+     * Get or set the item quantity.
      *
-     * @return CartContract
-     */
-    public function getCart(): CartContract;
-
-    /**
-     * Set the item quantity.
-     *
-     * @param  float  $quantity
-     * @param  bool  $replace  If false, the given qty should be added to the current qty.
+     * @param  float|null  $quantity
      * @return float
      */
-    public function setQuantity(float $quantity, bool $replace = true): float;
+    public function quantity(float $quantity = null): float;
 
     /**
-     * Get the item quantity.
+     * Get or set the price.
      *
-     * @return float
+     * @param  string|null  $price
+     * @return string
      */
-    public function getQuantity(): float;
+    public function price(string $price = null): string;
+
+    /**
+     * Get or set the subtotal.
+     *
+     * @param  string|null  $subtotal
+     * @return string
+     */
+    public function subtotal(string $subtotal = null): string;
 }

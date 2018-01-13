@@ -2,6 +2,7 @@
 
 namespace WTG\Contracts\Services;
 
+use Illuminate\Support\Collection;
 use WTG\Contracts\Models\AddressContract;
 use WTG\Contracts\Models\CartItemContract;
 use WTG\Contracts\Models\CustomerContract;
@@ -49,6 +50,15 @@ interface CartServiceContract
      * @return int
      */
     public function getItemCount(CustomerContract $customer): int;
+
+    /**
+     * Get the cart items.
+     *
+     * @param  CustomerContract  $customer
+     * @param  bool  $withPrices
+     * @return Collection
+     */
+    public function getItems(CustomerContract $customer, bool $withPrices = false): Collection;
 
     /**
      * Get the delivery address of the cart.

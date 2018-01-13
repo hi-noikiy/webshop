@@ -6,6 +6,7 @@ use WTG\Contracts\Models\CartContract;
 use Illuminate\Database\Eloquent\Model;
 use WTG\Contracts\Models\ProductContract;
 use WTG\Contracts\Models\CartItemContract;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Quote item model.
@@ -21,7 +22,7 @@ class QuoteItem extends Model implements CartItemContract
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function quote()
+    public function quote(): BelongsTo
     {
         return $this->belongsTo(Quote::class);
     }
@@ -31,82 +32,93 @@ class QuoteItem extends Model implements CartItemContract
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
     /**
-     * Set the product.
+     * Get or set the product.
      *
-     * @param  ProductContract  $product
-     * @return ProductContract
+     * @param  ProductContract|null  $product
+     * @return ProductContract|null
      */
-    public function setProduct(ProductContract $product): ProductContract
+    public function setProduct(ProductContract $product = null): ?ProductContract
     {
-        $this->product()->associate($product);
+        if ($product) {
+            $this->product()->associate($product);
+        }
 
-        return $product;
+        return $this->getAttribute('product');
     }
 
     /**
      * Get the product.
      *
-     * @return ProductContract
+     * @return null|ProductContract
      */
-    public function getProduct(): ProductContract
+    public function getProduct(): ?ProductContract
     {
         return $this->getAttribute('product');
     }
 
     /**
-     * Set the quantity.
+     * Get or set the quantity.
      *
-     * @param  float  $quantity
-     * @param  bool  $replace
+     * @param  float|null  $quantity
      * @return float
      */
-    public function setQuantity(float $quantity, bool $replace = true): float
+    public function quantity(float $quantity = null): float
     {
-        if (! $replace) {
-            $quantity += $this->getAttribute('qty');
+        if ($quantity !== null) {
+            $this->setAttribute('qty', $quantity);
         }
 
-        $this->setAttribute('qty', $quantity);
-
-        return $quantity;
-    }
-
-    /**
-     * Get the quantity.
-     *
-     * @return float
-     */
-    public function getQuantity(): float
-    {
         return $this->getAttribute('qty');
     }
 
     /**
-     * Set the cart.
+     * Get or set the cart.
      *
-     * @param  CartContract  $cart
+     * @param  CartContract|null  $cart
      * @return CartContract
      */
-    public function setCart(CartContract $cart): CartContract
+    public function cart(CartContract $cart = null): CartContract
     {
-        $this->quote()->associate($cart);
+        if ($cart) {
+            $this->quote()->associate($cart);
+        }
 
-        return $cart;
+        return $this->getAttribute('quote');
     }
 
     /**
-     * Get the cart.
+     * Get or set the price.
      *
-     * @return CartContract
+     * @param  string|null  $price
+     * @return string
      */
-    public function getCart(): CartContract
+    public function price(string $price = null): string
     {
-        return $this->getAttribute('quote');
+        if ($price !== null) {
+            $this->setAttribute('price', $price);
+        }
+
+        return $this->getAttribute('price');
+    }
+
+    /**
+     * Get or set the subtotal.
+     *
+     * @param  string|null  $subtotal
+     * @return string
+     */
+    public function subtotal(string $subtotal = null): string
+    {
+        if ($subtotal !== null) {
+            $this->setAttribute('subtotal', $subtotal);
+        }
+
+        return $this->getAttribute('subtotal');
     }
 }

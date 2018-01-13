@@ -134,13 +134,13 @@ class Quote extends Model implements CartContract
         $item = $this->findProduct($product);
 
         if ($item) {
-            $item->setQuantity($quantity, false);
+            $item->quantity($quantity + $item->quantity());
         } else {
             /** @var CartItemContract|Model $item */
             $item = app()->make(CartItemContract::class);
-            $item->setProduct($product);
-            $item->setQuantity($quantity);
-            $item->setCart($this);
+            $item->product($product);
+            $item->quantity($quantity);
+            $item->cart($this);
         }
 
         if ($item->save()) {
@@ -164,7 +164,7 @@ class Quote extends Model implements CartContract
     public function updateProduct(ProductContract $product, float $quantity): CartItemContract
     {
         $item = $this->findProduct($product);
-        $item->setQuantity($quantity);
+        $item->quantity($quantity);
 
         if ($item->save()) {
             // Update model timestamp to indicate the cart was updated.

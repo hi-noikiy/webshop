@@ -4,7 +4,7 @@
             <input type="text" class="form-control" placeholder="Zoeken" name="query"
                    v-model="inputQuery" @input="search" />
 
-            <span class="input-group-btn">
+            <span class="input-group-append">
                 <button class="btn btn-outline-success" type="submit">
                     <i class="far fa-fw fa-search"></i>
                 </button>
