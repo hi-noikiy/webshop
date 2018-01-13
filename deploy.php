@@ -12,7 +12,7 @@ set('repository', 'git@github.com:Wiringa-Technische-Groothandel/webshop');
 set('http_user', 'wiringa');
 
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true); 
+set('git_tty', false);
 
 // Laravel shared dirs
 set('shared_dirs', [
