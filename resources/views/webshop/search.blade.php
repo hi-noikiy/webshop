@@ -14,6 +14,12 @@
             {{ $results->total() }} resultaten gevonden in {{ $scriptTime }} seconden.
         </div>
 
+        @if (session()->has('changed-sku'))
+            <div class="alert alert-warning" role="alert">
+                Het lijkt erop dat u een oud productnummer ({{ session('changed-sku')['old'] }}) gebruikt, wij hebben dit voor u omgezet naar het nieuwe nummer: {{ session('changed-sku')['new'] }}.
+            </div>
+        @endif
+
         <div class="panel panel-primary visible-xs">
             <div class="panel-heading">
                 <h4 class="panel-title text-center">

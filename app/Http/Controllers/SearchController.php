@@ -19,7 +19,37 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
+        $productMap = \Cache::remember('old-skus', 3600, function () {
+            $productMap = [];
+            $handle = fopen(storage_path('app/sku-conversion.csv'), 'r');
+
+            while(($data = fgetcsv($handle, 0, ';')) !== false) {
+                $oldSku = $data[0] ?? false;
+                $newSku = $data[1] ?? false;
+
+                if (!$oldSku || !$newSku) {
+                    continue;
+                }
+
+                $productMap[$oldSku] = (int) $newSku;
+            }
+
+            return $productMap;
+        });
+
         $str = $request->get('q');
+
+        if (in_array($str, array_keys($productMap))) {
+            $newSku = $productMap[$str];
+
+            session()->flash('changed-sku', [
+                'old' => $str,
+                'new' => $newSku
+            ]);
+
+            return redirect(url('/search?q=' . $newSku));
+        }
+
         $query = Product::where(function ($query) use ($request) {
             if ($request->has('brand')) {
                 $query->where('brand', $request->input('brand'));
