@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         Commands\importDiscounts::class,
         Commands\resendOrder::class,
         Commands\convertSkus::class,
+	Commands\ListUnusedImages::class,
     ];
 
     /**

@@ -59,6 +59,7 @@ class Handler extends ExceptionHandler
         $class = get_class($e);
 
         if (app()->environment('production') &&
+             ! $e instanceof HttpException &&
              ! $e instanceof ModelNotFoundException &&
              ! $e instanceof MethodNotAllowedHttpException &&
              ! $e instanceof TokenMismatchException &&

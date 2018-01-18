@@ -75,7 +75,11 @@
                 <div class="col-md-4">
                     <div class="actiepaket">
                         <div class="title">
-                            {{ strlen($pack->product->name) > 40 ? substr($pack->product->name, 0 , 37) . "..." : $pack->product->name }}
+			    @if ($pack->product === null)
+                                Dit product ({{ $pack->product_number }}) bestaat niet meer
+                            @else
+                                {{ strlen($pack->product->name) > 40 ? substr($pack->product->name, 0 , 37) . "..." : $pack->product->name }}
+                            @endif
                         </div>
                         <div class="product-list">
                             <table class="table table-striped">

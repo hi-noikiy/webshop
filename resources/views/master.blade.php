@@ -18,9 +18,6 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <link rel="mask-icon" href="{{ asset('img/WTG-icon.svg') }}" color="red">
-    <link rel="apple-touch-icon" href="{{ asset('img/WTG-icon.svg') }}">
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

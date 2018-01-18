@@ -42,7 +42,7 @@ class CartController extends Controller
         $qty = $request->get('qty');
 
         $validator = \Validator::make($request->all(), [
-            'product'   => 'required|digits:7',
+            'product'   => 'required|digits:8',
             'qty'       => 'required|numeric|min:1',
         ]);
 

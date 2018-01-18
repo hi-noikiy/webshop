@@ -86,7 +86,7 @@ class AccountController extends Controller
 
             $validator = \Validator::make(
                 ['product' => $product],
-                ['product' => 'required|digits:7']
+                ['product' => 'required|digits:8']
             );
 
             if ($validator->passes()) {
@@ -142,7 +142,7 @@ class AccountController extends Controller
 
             $validator = \Validator::make(
                 ['product' => $product],
-                ['product' => 'required|digits:7']
+                ['product' => 'required|digits:8']
             );
 
             if ($validator->passes()) {
