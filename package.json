@@ -21,7 +21,7 @@
     "lodash": "^4.17.4",
     "popper.js": "^1.13.0",
     "random-material-color": "^1.0.3",
-    "tiny-slider": "^2.4.0",
+    "tiny-slider": "^2.5.0",
     "vue": "^2.5.13",
     "vue-googlemaps": "0.0.6"
   }

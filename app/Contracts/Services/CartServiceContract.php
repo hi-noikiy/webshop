@@ -4,6 +4,7 @@ namespace WTG\Contracts\Services;
 
 use Illuminate\Support\Collection;
 use WTG\Contracts\Models\AddressContract;
+use WTG\Contracts\Models\ProductContract;
 use WTG\Contracts\Models\CartItemContract;
 use WTG\Contracts\Models\CustomerContract;
 
@@ -22,7 +23,17 @@ interface CartServiceContract
      * @param  float  $quantity
      * @return null|CartItemContract
      */
-    public function addProductBySku(CustomerContract $customer, string $sku, float $quantity): ?CartItemContract;
+    public function addProductBySku(CustomerContract $customer, string $sku, float $quantity = 1.0): ?CartItemContract;
+
+    /**
+     * Add a product.
+     *
+     * @param  CustomerContract  $customer
+     * @param  ProductContract  $product
+     * @param  float  $quantity
+     * @return null|CartItemContract
+     */
+    public function addProduct(CustomerContract $customer, ProductContract $product, float $quantity = 1.0): ?CartItemContract;
 
     /**
      * Update a product by sku.

@@ -43,7 +43,7 @@ class CartService implements CartServiceContract
      * @param  float  $quantity
      * @return null|CartItemContract
      */
-    public function addProductBySku(CustomerContract $customer, string $sku, float $quantity): ?CartItemContract
+    public function addProductBySku(CustomerContract $customer, string $sku, float $quantity = 1.0): ?CartItemContract
     {
         $product = $this->findProduct($sku);
 
@@ -51,10 +51,24 @@ class CartService implements CartServiceContract
             return null;
         }
 
+        return $this->addProduct($customer, $product, $quantity);
+    }
+
+    /**
+     * Add a product.
+     *
+     * @param  CustomerContract  $customer
+     * @param  ProductContract  $product
+     * @param  float  $quantity
+     * @return null|CartItemContract
+     */
+    public function addProduct(CustomerContract $customer, ProductContract $product, float $quantity = 1.0): ?CartItemContract
+    {
         $this->cart->loadForCustomer($customer);
 
         return $this->cart->addProduct($product, $quantity);
     }
+
 
     /**
      * Update a product by sku.

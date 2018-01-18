@@ -7,6 +7,7 @@ use WTG\Models\Product;
 use WTG\Models\Customer;
 use Illuminate\Http\Request;
 use WTG\Http\Controllers\Controller;
+use WTG\Contracts\Services\CartServiceContract;
 use WTG\Http\Requests\AddFavoritesToCartRequest;
 
 /**
@@ -19,6 +20,21 @@ use WTG\Http\Requests\AddFavoritesToCartRequest;
 class FavoritesController extends Controller
 {
     /**
+     * @var CartServiceContract
+     */
+    protected $cartService;
+
+    /**
+     * FavoritesController constructor.
+     *
+     * @param  CartServiceContract  $cartService
+     */
+    public function __construct(CartServiceContract $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    /**
      * List of favorites
      *
      * @param  Request  $request
@@ -28,7 +44,7 @@ class FavoritesController extends Controller
     {
         /** @var Customer $customer */
         $customer = $request->user();
-        $favorites = $customer->favorites->sortBy('name');
+        $favorites = $customer->getFavorites()->sortBy('name');
 
         return view('pages.account.favorites', compact('favorites'));
     }
@@ -43,8 +59,6 @@ class FavoritesController extends Controller
     {
         /** @var Customer $customer */
         $customer = $request->user();
-        /** @var Quote $quote */
-        $quote = $customer->getActiveQuote();
         $errors = [];
 
         foreach ($request->input('products') as $productId) {
@@ -56,13 +70,13 @@ class FavoritesController extends Controller
                 continue;
             }
 
-            $quote->addProduct($product);
+            $this->cartService->addProduct($customer, $product);
         }
 
         return response()->json([
             'message' => __("De producten zijn toegevoegd aan uw winkelwagen."),
             'errors'  => $errors,
-            'cartQty' => $quote->items()->count()
+            'cartQty' => $this->cartService->getItemCount($customer)
         ]);
     }
 

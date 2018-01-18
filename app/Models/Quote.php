@@ -138,7 +138,7 @@ class Quote extends Model implements CartContract
         } else {
             /** @var CartItemContract|Model $item */
             $item = app()->make(CartItemContract::class);
-            $item->product($product);
+            $item->setProduct($product);
             $item->quantity($quantity);
             $item->cart($this);
         }
