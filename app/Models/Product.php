@@ -21,76 +21,99 @@ class Product extends Model implements ProductContract
     /**
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'webshop'];
 
     /**
      * Product identifier.
      *
-     * @param  null|string  $id
      * @return string
      */
-    public function identifier(?string $id = null): string
+    public function getId(): string
     {
         return $this->getAttribute('id');
     }
 
     /**
-     * Get or set the sku.
+     * Set the sku.
      *
-     * @param  null|string  $sku
+     * @param  string  $sku
+     * @return ProductContract
+     */
+    public function setSku(string $sku): ProductContract
+    {
+        return $this->setAttribute('sku', $sku);
+    }
+
+    /**
+     * Get the sku.
+     *
      * @return string
      */
-    public function sku(?string $sku = null): string
+    public function getSku(): string
     {
-        if ($sku) {
-            $this->setAttribute('sku', $sku);
-        }
-
         return $this->getAttribute('sku');
     }
 
     /**
-     * Get or set the product group.
+     * Set the product group.
      *
-     * @param  null|string  $group
+     * @param  string  $group
+     * @return ProductContract
+     */
+    public function setGroup(string $group): ProductContract
+    {
+        return $this->setAttribute('group', $group);
+    }
+
+    /**
+     * Get the product group.
+     *
      * @return string
      */
-    public function group(?string $group = null): string
+    public function getGroup(): string
     {
-        if ($group) {
-            $this->setAttribute('group', $group);
-        }
-
         return $this->getAttribute('group');
     }
 
     /**
      * Get or set the product name.
      *
-     * @param  null|string  $name
+     * @param  string  $name
+     * @return ProductContract
+     */
+    public function setName(string $name): ProductContract
+    {
+        return $this->setAttribute('name', $name);
+    }
+
+    /**
+     * Get the product name.
+     *
      * @return string
      */
-    public function name(?string $name = null): string
+    public function getName(): string
     {
-        if ($name) {
-            $this->setAttribute('name', $name);
-        }
-
         return $this->getAttribute('name');
     }
 
     /**
-     * Get or set the product sales unit.
+     * Set the product sales unit.
      *
-     * @param  null|string  $salesUnit
+     * @param  string  $salesUnit
+     * @return ProductContract
+     */
+    public function setSalesUnit(string $salesUnit): ProductContract
+    {
+        return $this->setAttribute('sales_unit', $salesUnit);
+    }
+
+    /**
+     * Get the product sales unit.
+     *
      * @return string
      */
-    public function salesUnit(?string $salesUnit = null): string
+    public function getSalesUnit(): string
     {
-        if ($salesUnit) {
-            $this->setAttribute('sales_unit', $salesUnit);
-        }
-
         return $this->getAttribute('sales_unit');
     }
 
@@ -130,6 +153,10 @@ class Product extends Model implements ProductContract
         ]);
 
         foreach (get_object_vars($product) as $key => $value) {
+            if (in_array($key, $model->guarded)) {
+                continue;
+            }
+
             $model->setAttribute($key, $value);
         }
 

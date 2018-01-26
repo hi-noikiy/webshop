@@ -13,40 +13,67 @@ interface ProductContract
     /**
      * Get or set the product identifier.
      *
-     * @param  null|string  $id
      * @return string
      */
-    public function identifier(?string $id = null): string;
+    public function getId(): string;
 
     /**
-     * Get or set the product sku.
+     * Set the product sku.
      *
-     * @param  null|string  $sku
-     * @return string
+     * @param  string  $sku
+     * @return ProductContract
      */
-    public function sku(?string $sku = null): string;
+    public function setSku(string $sku): ProductContract;
 
     /**
-     * Get or set the product group.
+     * Get the product sku.
      *
-     * @param  null|string  $group
      * @return string
      */
-    public function group(?string $group = null): string;
+    public function getSku(): string;
+
+    /**
+     * Set the product group.
+     *
+     * @param  string  $group
+     * @return ProductContract
+     */
+    public function setGroup(string $group): ProductContract;
+
+    /**
+     * Get the product group.
+     *
+     * @return string
+     */
+    public function getGroup(): string;
 
     /**
      * Get or set the product name.
      *
-     * @param  null|string  $name
-     * @return string
+     * @param  string  $name
+     * @return ProductContract
      */
-    public function name(?string $name = null): string;
+    public function setName(string $name): ProductContract;
 
     /**
-     * Get or set the product sales unit.
+     * Get the product name.
      *
-     * @param  null|string  $salesUnit
      * @return string
      */
-    public function salesUnit(?string $salesUnit = null): string;
+    public function getName(): string;
+
+    /**
+     * Set the product sales unit.
+     *
+     * @param  string  $salesUnit
+     * @return ProductContract
+     */
+    public function setSalesUnit(string $salesUnit): ProductContract;
+
+    /**
+     * Get the product sales unit.
+     *
+     * @return string
+     */
+    public function getSalesUnit(): string;
 }

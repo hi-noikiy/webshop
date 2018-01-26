@@ -97,12 +97,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="contact-url">{{ __('Website url') }}</label>
+                            <label for="contact-website">{{ __('Website url') }}</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">https://</div>
                                 </div>
-                                <input type="url" class="form-control" placeholder="{{ __('Website url') }}" name="contact-url">
+                                <input type="url" class="form-control" placeholder="{{ __('Website url') }}" name="contact-website">
                             </div>
                         </div>
                     </section>
@@ -118,8 +118,8 @@
 
                     <section id="location">
                         <div class="form-group">
-                            <label for="alt-address">{{ __('Straat + Huisnummer') }} *</label>
-                            <input type="text" class="form-control" name="alt-address" placeholder="{{ __('Straat + Huisnummer') }}" required>
+                            <label for="business-address">{{ __('Straat + Huisnummer') }} *</label>
+                            <input type="text" class="form-control" name="business-address" placeholder="{{ __('Straat + Huisnummer') }}" required>
                             <div class="invalid-feedback">
                                 {{ __('Vul aub een adres in') }}
                             </div>
@@ -128,8 +128,8 @@
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="alt-city">{{ __('Plaats') }} *</label>
-                                    <input type="text" class="form-control" name="alt-city" placeholder="{{ __('Plaats') }}" required>
+                                    <label for="business-city">{{ __('Plaats') }} *</label>
+                                    <input type="text" class="form-control" name="business-city" placeholder="{{ __('Plaats') }}" required>
                                     <div class="invalid-feedback">
                                         {{ __('Vul aub een plaats in') }}
                                     </div>
@@ -138,8 +138,8 @@
 
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="alt-postcode">{{ __('Postcode') }} *</label>
-                                    <input type="text" class="form-control" name="alt-postcode" placeholder="YYYYXX" maxlength="6" required>
+                                    <label for="business-postcode">{{ __('Postcode') }} *</label>
+                                    <input type="text" class="form-control" name="business-postcode" placeholder="YYYYXX" maxlength="6" required>
                                     <div class="invalid-feedback">
                                         {{ __('Vul aub een postcode in') }}
                                     </div>
@@ -148,8 +148,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="alt-phone-company">{{ __('Telefoon bedrijf') }} *</label>
-                            <input type="tel" class="form-control" name="alt-phone-company" placeholder="{{ __('Telefoon bedrijf') }}" required>
+                            <label for="business-phone">{{ __('Telefoon bedrijf') }} *</label>
+                            <input type="tel" class="form-control" name="business-phone" placeholder="{{ __('Telefoon bedrijf') }}" required>
                             <div class="invalid-feedback">
                                 {{ __('Vul aub een telefoonnummer in') }}
                             </div>
@@ -167,7 +167,7 @@
                     <section id="payment" class="mt-5">
                         <div class="form-group">
                             <label for="iban">{{ __('IBAN nummer') }} *</label>
-                            <input type="text" class="form-control" name="iban" placeholder="{{ __('IBAN nummer') }}" required>
+                            <input type="text" class="form-control" name="payment-iban" placeholder="{{ __('IBAN nummer') }}" required>
                             <div class="invalid-feedback">
                                 {{ __('Vul aub een IBAN nummer in') }}
                             </div>
@@ -175,7 +175,7 @@
 
                         <div class="form-group">
                             <label for="kvk">{{ __('KVK nummer') }} *</label>
-                            <input type="text" class="form-control" name="kvk" placeholder="{{ __('KVK nummer') }}" required>
+                            <input type="text" class="form-control" name="payment-kvk" placeholder="{{ __('KVK nummer') }}" required>
                             <div class="invalid-feedback">
                                 {{ __('Vul aub een KVK nummer in') }}
                             </div>
@@ -183,7 +183,7 @@
 
                         <div class="form-group">
                             <label for="vat">{{ __('BTW nummer') }} *</label>
-                            <input type="text" class="form-control" name="vat" placeholder="{{ __('BTW nummer') }}" required>
+                            <input type="text" class="form-control" name="payment-vat" placeholder="{{ __('BTW nummer') }}" required>
                             <div class="invalid-feedback">
                                 {{ __('Vul aub een BTW nummer in') }}
                             </div>
@@ -196,18 +196,18 @@
 
                     <section id="other" class="mt-5">
                         <div class="form-group mb-3">
-                            <label for="other-invoice-email">{{ __('Afwijkend e-mail adres voor facturen') }} *</label>
-                            <input type="email" class="form-control" name="other-email" placeholder="{{ __('E-Mail') }}">
+                            <label for="other-alt-email">{{ __('Afwijkend e-mail adres voor facturen') }}</label>
+                            <input type="email" class="form-control" name="other-alt-email" placeholder="{{ __('E-Mail') }}">
                         </div>
 
                         <div class="custom-control custom-checkbox mb-3">
-                            <input type="checkbox" class="custom-control-input" name="other-digital" id="other-digital">
-                            <label class="custom-control-label" for="other-digital">{{ __('Digitale orderbevestiging ontvangen') }}</label>
+                            <input type="checkbox" class="custom-control-input" name="other-order-confirmation" id="other-order-confirmation">
+                            <label class="custom-control-label" for="other-order-confirmation">{{ __('Digitale orderbevestiging ontvangen') }}</label>
                         </div>
 
                         <div class="custom-control custom-checkbox mb-3">
-                            <input type="checkbox" class="custom-control-input" name="other-productfile-email" id="other-productfile-email">
-                            <label class="custom-control-label" for="other-productfile-email">{{ __('Mail ontvangen bij nieuw artikelbestand') }}</label>
+                            <input type="checkbox" class="custom-control-input" name="other-mail-productfile" id="other-mail-productfile">
+                            <label class="custom-control-label" for="other-mail-productfile">{{ __('Mail ontvangen bij nieuw artikelbestand') }}</label>
                         </div>
                     </section>
                 </div>
@@ -226,7 +226,6 @@
 
 @section('extraJS')
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
             'use strict';
 

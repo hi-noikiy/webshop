@@ -13,7 +13,7 @@
         </button>
 
         <div class="my-2 my-lg-0">
-            <quick-search query="{{ request('request') }}" search-url="{{ route('catalog.search') }}"></quick-search>
+            <quick-search query="{{ request('query') }}" search-url="{{ route('catalog.search') }}"></quick-search>
         </div>
     </div>
 </nav>

@@ -95,10 +95,9 @@ class Customer extends Authenticatable implements CustomerContract
     /**
      * Get the identifier.
      *
-     * @param  null|string  $id
-     * @return string
+     * @return null|string
      */
-    public function identifier(?string $id = null): string
+    public function getId(): ?string
     {
         return $this->getAttribute('id');
     }
@@ -120,6 +119,48 @@ class Customer extends Authenticatable implements CustomerContract
         }
 
         return $contact;
+    }
+
+    /**
+     * Set the username.
+     *
+     * @param  string  $username
+     * @return CustomerContract
+     */
+    public function setUsername(string $username): CustomerContract
+    {
+        return $this->setAttribute('username', $username);
+    }
+
+    /**
+     * Get the username.
+     *
+     * @return null|string
+     */
+    public function getUsername(): ?string
+    {
+        return $this->getAttribute('username');
+    }
+
+    /**
+     * Set the active.
+     *
+     * @param  bool  $active
+     * @return CustomerContract
+     */
+    public function setActive(bool $active): CustomerContract
+    {
+        return $this->setAttribute('active', $active);
+    }
+
+    /**
+     * Get the active.
+     *
+     * @return bool
+     */
+    public function getActive(): bool
+    {
+        return (bool) $this->getAttribute('active');
     }
 
     /**
